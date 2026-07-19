@@ -8,7 +8,6 @@ import {
   TreePine,
   Home,
   BrickWall,
-  Roofing,
   Shovel,
 } from 'lucide-react';
 
@@ -44,7 +43,7 @@ const categories = [
   {
     name: 'Krovopokrivanje',
     slug: 'krovopokrivanje',
-    icon: Roofing,
+    icon: Home,
     count: 390,
     color: 'bg-red-50 text-red-600',
   },

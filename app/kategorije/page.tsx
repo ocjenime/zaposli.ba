@@ -10,7 +10,6 @@ import {
   TreePine,
   Home,
   BrickWall,
-  Roofing,
   Shovel,
   Thermometer,
   Wind,
@@ -55,7 +54,7 @@ const categories = [
   {
     name: 'Krovopokrivanje',
     slug: 'krovopokrivanje',
-    icon: Roofing,
+    icon: Home,
     description: 'Izrada i popravke krovova, oluci, hidroizolacija',
     count: 390,
     color: 'bg-red-50 text-red-600 border-red-200',

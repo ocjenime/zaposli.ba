@@ -4,29 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 249, 250, 251;
-  --background-end-rgb: 255, 255, 255;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-gray-50 text-gray-900 antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
   }
 }
 
@@ -48,7 +29,7 @@ body {
   }
   
   .card-hover {
-    @apply card hover:scale-[1.02] transition-all duration-200;
+    @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 p-6 hover:scale-[1.02];
   }
   
   .input-field {
@@ -62,12 +43,6 @@ body {
   .section-subtitle {
     @apply text-lg text-gray-600 mb-8;
   }
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
   
   .gradient-text {
     @apply bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent;
@@ -75,6 +50,28 @@ body {
   
   .hero-gradient {
     @apply bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900;
+  }
+
+  .category-card {
+    @apply relative overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer;
+  }
+
+  .category-card:hover .category-icon {
+    @apply scale-110;
+  }
+
+  .category-icon {
+    @apply transition-transform duration-300;
+  }
+
+  .star-rating {
+    @apply flex items-center gap-1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
@@ -127,30 +124,4 @@ body {
 
 .animate-slide-in {
   animation: slideIn 0.4s ease-out forwards;
-}
-
-/* Star rating */
-.star-rating {
-  @apply flex items-center gap-1;
-}
-
-.star {
-  @apply w-5 h-5 text-gray-300;
-}
-
-.star.filled {
-  @apply text-accent-500;
-}
-
-/* Category card */
-.category-card {
-  @apply relative overflow-hidden rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group;
-}
-
-.category-card:hover .category-icon {
-  @apply scale-110;
-}
-
-.category-icon {
-  @apply transition-transform duration-300;
 }
