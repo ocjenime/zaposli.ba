@@ -1,4 +1,4 @@
-import { ClipboardList, Users, CheckCircle } from 'lucide-react';
+import { ClipboardList, Users, CheckCircle, ArrowRight } from 'lucide-react';
 
 const steps = [
   {
@@ -6,59 +6,75 @@ const steps = [
     number: '01',
     title: 'Objavite projekat',
     description: 'Opišite šta vam je potrebno, dodajte fotografije i postavite budžet. Traje samo 2 minute.',
-    color: 'bg-primary-100 text-primary-600',
+    color: 'from-blue-500 to-blue-600',
+    bg: 'bg-blue-50',
+    iconColor: 'text-blue-600',
+    stepColor: 'text-blue-400',
   },
   {
     icon: Users,
     number: '02',
     title: 'Primite ponude',
     description: 'Provjereni majstori i firme će vam poslati svoje ponude sa cijenama i rokovima.',
-    color: 'bg-success-100 text-success-600',
+    color: 'from-emerald-500 to-emerald-600',
+    bg: 'bg-emerald-50',
+    iconColor: 'text-emerald-600',
+    stepColor: 'text-emerald-400',
   },
   {
     icon: CheckCircle,
     number: '03',
-    title: 'Odaberite i zaposlite',
+    title: 'Odaberite majstora',
     description: 'Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš projekat.',
-    color: 'bg-accent-100 text-accent-600',
+    color: 'from-brand-orange to-brand-orange-dark',
+    bg: 'bg-orange-50',
+    iconColor: 'text-brand-orange',
+    stepColor: 'text-brand-orange',
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="section-title">Kako funkcioniše?</h2>
-          <p className="section-subtitle max-w-2xl mx-auto">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary-50 rounded-full -translate-y-1/2 translate-x-1/2 opacity-50" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-50 rounded-full translate-y-1/2 -translate-x-1/2 opacity-50" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-primary-50 text-primary-600 rounded-full text-sm font-semibold mb-4">
+            Jednostavno &amp; brzo
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Kako funkcioniše?
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
             Jednostavan proces u 3 koraka do idealnog majstora za vaš projekat
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-3 gap-8 md:gap-6">
           {steps.map((step, index) => (
-            <div key={step.number} className="relative">
-              {/* Connector line */}
-              {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-12 left-[60%] w-[80%] h-0.5 bg-gray-200">
-                  <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 h-2 bg-gray-300 rounded-full" />
+            <div key={step.number} className="relative group">
+              <div className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 h-full relative overflow-hidden">
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${step.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${step.bg} mb-6`}>
+                  <step.icon className={`w-8 h-8 ${step.iconColor}`} />
                 </div>
-              )}
-              
-              <div className="text-center relative">
-                {/* Icon */}
-                <div className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${step.color} mb-6`}>
-                  <step.icon className="w-10 h-10" />
+
+                <div className={`text-xs font-bold ${step.stepColor} uppercase tracking-widest mb-2`}>
+                  Korak {step.number}
                 </div>
-                
-                {/* Number */}
-                <div className="text-sm font-bold text-gray-400 mb-2">KORAK {step.number}</div>
-                
-                {/* Title */}
+
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-                
-                {/* Description */}
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+
+                <p className="text-gray-500 leading-relaxed">{step.description}</p>
+
+                {index < steps.length - 1 && (
+                  <div className="hidden md:flex absolute top-1/2 -right-3 z-10 w-8 h-8 items-center justify-center">
+                    <ArrowRight className="w-5 h-5 text-gray-300" />
+                  </div>
+                )}
               </div>
             </div>
           ))}

@@ -1,86 +1,102 @@
-import { Users, Building2, Star, CheckCircle } from 'lucide-react';
+import { Users, Building2, Star, CheckCircle, Shield, CreditCard, MessageSquare } from 'lucide-react';
 
 const stats = [
   {
     icon: Users,
     value: '12,500+',
     label: 'Zadovoljnih kupaca',
-    color: 'text-primary-600',
+    gradient: 'from-blue-500 to-blue-600',
+    bg: 'bg-blue-50',
   },
   {
     icon: Building2,
     value: '2,800+',
     label: 'Prijavljenih firmi',
-    color: 'text-success-600',
+    gradient: 'from-emerald-500 to-emerald-600',
+    bg: 'bg-emerald-50',
   },
   {
     icon: Star,
     value: '4.8',
     label: 'Prosječna ocjena',
-    color: 'text-accent-500',
+    gradient: 'from-brand-amber to-brand-orange',
+    bg: 'bg-orange-50',
   },
   {
     icon: CheckCircle,
     value: '25,000+',
     label: 'Završenih projekata',
-    color: 'text-purple-600',
+    gradient: 'from-purple-500 to-purple-600',
+    bg: 'bg-purple-50',
+  },
+];
+
+const trustCards = [
+  {
+    icon: Shield,
+    title: 'Verificirane firme',
+    description: 'Sve firme prolaze provjeru identiteta i poslovanja prije odobravanja profila.',
+    gradient: 'from-emerald-500 to-emerald-600',
+    bg: 'bg-emerald-50',
+  },
+  {
+    icon: CreditCard,
+    title: 'Besplatno za kupce',
+    description: 'Objavljivanje projekata i primanje ponuda je potpuno besplatno.',
+    gradient: 'from-blue-500 to-blue-600',
+    bg: 'bg-blue-50',
+  },
+  {
+    icon: MessageSquare,
+    title: 'Ocjene i recenzije',
+    description: 'Pročitajte iskustva drugih kupaca prije nego što odaberete firmu.',
+    gradient: 'from-brand-amber to-brand-orange',
+    bg: 'bg-orange-50',
   },
 ];
 
 export default function StatsSection() {
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="section-title">Zašto Zaposli.ba?</h2>
-          <p className="section-subtitle">
+    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-600 rounded-full text-sm font-semibold mb-4">
+            Zašto baš mi?
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+            Zašto Zaposli.ba?
+          </h2>
+          <p className="text-lg text-gray-500">
             Platforma kojoj vjeruju hiljade kupaca i firmi širom Bosne i Hercegovine
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4 ${stat.color}`}>
-                <stat.icon className="w-8 h-8" />
+            <div key={stat.label} className="text-center p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100">
+              <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${stat.bg} mb-4`}>
+                <stat.icon className={`w-7 h-7 bg-gradient-to-r ${stat.gradient} bg-clip-text`} style={{color: 'inherit'}} />
               </div>
-              <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">{stat.value}</div>
-              <div className="text-gray-600">{stat.label}</div>
+              <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">{stat.value}</div>
+              <div className="text-sm text-gray-500">{stat.label}</div>
             </div>
           ))}
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="card text-center">
-            <div className="w-12 h-12 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-success-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Verificirane firme</h3>
-            <p className="text-sm text-gray-600">Sve firme prolaze provjeru identiteta i poslovanja prije odobravanja profila.</p>
-          </div>
+        <div className="mt-16 grid md:grid-cols-3 gap-6">
+          {trustCards.map((card) => (
+            <div key={card.title} className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden group">
+              <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity`} />
 
-          <div className="card text-center">
-            <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl ${card.bg} mb-5`}>
+                <card.icon className="w-7 h-7 text-gray-700" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2 text-lg">{card.title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed">{card.description}</p>
             </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Besplatno za kupce</h3>
-            <p className="text-sm text-gray-600">Objavljivanje projekata i primanje ponuda je potpuno besplatno.</p>
-          </div>
-
-          <div className="card text-center">
-            <div className="w-12 h-12 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-6 h-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-              </svg>
-            </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Ocjene i recenzije</h3>
-            <p className="text-sm text-gray-600">Pročitajte iskustva drugih kupaca prije nego što odaberete firmu.</p>
-          </div>
+          ))}
         </div>
       </div>
     </section>

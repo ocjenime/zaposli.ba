@@ -1,79 +1,80 @@
 import Link from 'next/link';
-import { ArrowRight, Building2 } from 'lucide-react';
+import { ArrowRight, Building2, CheckCircle, Sparkles, Wrench } from 'lucide-react';
 
 export default function CTASection() {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-r from-primary-600 to-primary-800">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-20 md:py-28 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-hero" />
+      <div className="absolute top-0 left-0 w-full h-full opacity-10">
+        <svg className="w-full h-full" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <pattern id="ctaGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
+          </pattern>
+          <rect width="100%" height="100%" fill="url(#ctaGrid)" />
+        </svg>
+      </div>
+      <div className="absolute top-10 right-10 w-80 h-80 bg-brand-orange/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 left-10 w-64 h-64 bg-primary-400/10 rounded-full blur-3xl" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center">
-          {/* For Customers */}
           <div className="text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+              <Sparkles className="w-4 h-4 text-brand-amber" />
+              <span className="text-sm font-medium text-white/90">Započnite danas</span>
+            </span>
+
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight tracking-tight">
               Tražite majstora?
             </h2>
-            <p className="text-lg text-blue-100 mb-6">
+            <p className="text-lg text-blue-100/80 mb-8 leading-relaxed">
               Objavite svoj projekat besplatno i primite ponude od provjerenih firmi u roku od 24 sata.
             </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-accent-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Potpuno besplatno</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-accent-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Više ponuda za usporedbu</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <svg className="w-5 h-5 text-accent-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Ocjene i recenzije drugih kupaca</span>
-              </li>
+
+            <ul className="space-y-4 mb-10">
+              {['Potpuno besplatno', 'Više ponuda za usporedbu', 'Ocjene i recenzije drugih kupaca'].map((item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <CheckCircle className="w-5 h-5 text-brand-emerald flex-shrink-0" />
+                  <span className="text-blue-50">{item}</span>
+                </li>
+              ))}
             </ul>
-            <Link href="/objavi-projekat" className="inline-flex items-center gap-2 bg-white text-primary-700 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+
+            <Link
+              href="/objavi-projekat/"
+              className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all duration-200 active:scale-95"
+            >
               Objavi projekat besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
 
-          {/* For Professionals */}
-          <div className="bg-white rounded-2xl p-8 shadow-xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-primary-600" />
+          <div className="bg-white rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-orange via-brand-amber to-brand-orange" />
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-2xl flex items-center justify-center shadow-lg">
+                <Wrench className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-900">Za firme i majstore</h3>
                 <p className="text-sm text-gray-500">Pridružite se našoj platformi</p>
               </div>
             </div>
-            
-            <ul className="space-y-3 mb-6">
-              <li className="flex items-center gap-3 text-gray-700">
-                <svg className="w-5 h-5 text-success-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Pristup hiljadama projekata</span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-700">
-                <svg className="w-5 h-5 text-success-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Izgradite reputaciju kroz recenzije</span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-700">
-                <svg className="w-5 h-5 text-success-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Besplatna registracija</span>
-              </li>
+
+            <ul className="space-y-4 mb-8">
+              {['Pristup hiljadama projekata', 'Izgradite reputaciju kroz recenzije', 'Besplatna registracija'].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-gray-700">
+                  <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
-            
-            <Link href="/registracija-firme" className="block w-full text-center btn-primary">
+
+            <Link
+              href="/registracija/"
+              className="block w-full text-center bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-200 active:scale-95"
+            >
               Registrujte firmu besplatno
             </Link>
           </div>
