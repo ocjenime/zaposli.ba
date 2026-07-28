@@ -72,6 +72,46 @@ textarea:focus-visible {
   animation: shimmer 1.6s ease-in-out infinite;
 }
 
+/* Ilustracije koraka — suptilne animacije (transform/opacity only) */
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.anim-float-soft {
+  animation: floatSoft 4s ease-in-out infinite;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(4deg); }
+  75% { transform: rotate(-4deg); }
+}
+.anim-wiggle {
+  animation: wiggle 2.4s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes pingDot {
+  0% { transform: scale(1); opacity: 0.7; }
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+.anim-ping-dot {
+  animation: pingDot 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes popSoft {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.14); }
+}
+.anim-pop {
+  animation: popSoft 2.2s ease-in-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

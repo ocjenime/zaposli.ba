@@ -17,7 +17,7 @@ const recentProjects = [
   {
     id: 2,
     title: 'Postavljanje laminata u dnevnom boravku',
-    category: 'Tilerski radovi',
+    category: 'Keramičarski radovi',
     catColor: 'bg-primary-50 text-brand-orange',
     location: 'Banja Luka - Centar',
     budget: '800 - 1,200 KM',

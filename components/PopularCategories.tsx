@@ -16,12 +16,12 @@ const categories = [
   { name: 'Građevinarstvo', slug: 'gradjevinarstvo', icon: BrickWall, count: 850 },
   { name: 'Vodoinstalacije', slug: 'vodoinstalacije', icon: Droplets, count: 620 },
   { name: 'Elektroinstalacije', slug: 'elektroinstalacije', icon: Zap, count: 540 },
-  { name: 'Slikanje', slug: 'slikanje', icon: Paintbrush, count: 480 },
+  { name: 'Molerski radovi', slug: 'molerski-radovi', icon: Paintbrush, count: 480 },
   { name: 'Krovopokrivanje', slug: 'krovopokrivanje', icon: Home, count: 390 },
-  { name: 'Tilerski radovi', slug: 'tilerski-radovi', icon: Hammer, count: 420 },
+  { name: 'Keramičarski radovi', slug: 'keramicarski-radovi', icon: Hammer, count: 420 },
   { name: 'Vrtlarstvo', slug: 'vrtlarstvo', icon: TreePine, count: 350 },
   { name: 'Adaptacije', slug: 'adaptacije', icon: Home, count: 720 },
-  { name: 'Demoliranje', slug: 'demoliranje', icon: Shovel, count: 180 },
+  { name: 'Rušenje i odvoz', slug: 'rusenje', icon: Shovel, count: 180 },
   { name: 'Alat i oprema', slug: 'alat-i-oprema', icon: Wrench, count: 290 },
 ];
 

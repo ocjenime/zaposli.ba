@@ -37,9 +37,9 @@ export const categories: Category[] = [
     count: 540, priceRange: '30 – 60 KM/h', priceNote: 'ili po tački',
   },
   {
-    name: 'Slikanje', slug: 'slikanje', seoSlug: 'soboslikar',
+    name: 'Molerski radovi', slug: 'molerski-radovi', seoSlug: 'soboslikar',
     profession: 'Soboslikar', icon: Paintbrush,
-    description: 'Slikanje zidova, fasada, dekorativno slikanje',
+    description: 'Molerski radovi, bojanje zidova i fasada',
     count: 480, priceRange: '4 – 9 KM/m²', priceNote: 'sa ili bez materijala',
   },
   {
@@ -49,9 +49,9 @@ export const categories: Category[] = [
     count: 390, priceRange: '25 – 55 KM/m²', priceNote: 'zavisno od pokrivača',
   },
   {
-    name: 'Tilerski radovi', slug: 'tilerski-radovi', seoSlug: 'keramicar',
+    name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
     profession: 'Keramičar', icon: Hammer,
-    description: 'Postavljanje keramike, laminata, parketa',
+    description: 'Postavljanje keramike, laminata i parketa',
     count: 420, priceRange: '15 – 35 KM/m²', priceNote: 'postavljanje',
   },
   {
@@ -67,9 +67,9 @@ export const categories: Category[] = [
     count: 720, priceRange: '150 – 400 KM/m²', priceNote: 'ključ u ruke',
   },
   {
-    name: 'Demoliranje', slug: 'demoliranje', seoSlug: 'demoliranje',
-    profession: 'Firma za demoliranje', icon: Shovel,
-    description: 'Rušenje, odvoz šuta, čišćenje gradilišta',
+    name: 'Rušenje i odvoz', slug: 'rusenje', seoSlug: 'rusenje',
+    profession: 'Firma za rušenje', icon: Shovel,
+    description: 'Rušenje objekata, odvoz šuta i čišćenje gradilišta',
     count: 180, priceRange: '10 – 30 KM/m³', priceNote: 'sa odvozom',
   },
   {
@@ -202,7 +202,7 @@ export const workers: Worker[] = [
   },
   {
     id: 'samir-haskovic', name: 'Samir Hasković', specialty: 'Keramičar',
-    categorySlug: 'tilerski-radovi', rating: 5.0, reviews: 203, location: 'Tuzla',
+    categorySlug: 'keramicarski-radovi', rating: 5.0, reviews: 203, location: 'Tuzla',
     projects: 480, initial: 'SH',
     about: 'Keramičar sa preko 20 godina iskustva. Velikoformatne pločice, mozaik, podno grijanje i kompletna kupatila ključ u ruke.',
     services: ['Keramika', 'Velike pločice', 'Podno grijanje', 'Kupatila ključ u ruke'],
@@ -267,8 +267,8 @@ export const projects: Project[] = [
     timeAgo: 'Prije 2 sata',
   },
   {
-    id: 2, title: 'Postavljanje laminata u dnevnom boravku', category: 'Tilerski radovi',
-    categorySlug: 'tilerski-radovi', location: 'Banja Luka - Centar', budget: '800 - 1,200 KM',
+    id: 2, title: 'Postavljanje laminata u dnevnom boravku', category: 'Keramičarski radovi',
+    categorySlug: 'keramicarski-radovi', location: 'Banja Luka - Centar', budget: '800 - 1,200 KM',
     deadline: 'Do 20.08.2026', bids: 5,
     description: 'Postavljanje laminata u dnevnom boravku površine 45m2. Materijal imam, potreban majstor za postavljanje.',
     timeAgo: 'Prije 5 sati',
@@ -288,10 +288,10 @@ export const projects: Project[] = [
     timeAgo: 'Prije 2 dana',
   },
   {
-    id: 5, title: 'Slikanje stana 80m2', category: 'Slikanje',
-    categorySlug: 'slikanje', location: 'Zenica - Centar', budget: '600 - 900 KM',
+    id: 5, title: 'Molerski radovi u stanu 80m2', category: 'Molerski radovi',
+    categorySlug: 'molerski-radovi', location: 'Zenica - Centar', budget: '600 - 900 KM',
     deadline: 'Do 25.08.2026', bids: 4,
-    description: 'Slikanje kompletnog stana u bijelu boju. Zidovi su pripremljeni, potrebno dvostruko slikanje.',
+    description: 'Molerski radovi u kompletnom stanu — bojanje zidova u bijelu boju. Zidovi su pripremljeni, potrebno dvostruko bojanje.',
     timeAgo: 'Prije 3 dana',
   },
   {

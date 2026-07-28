@@ -7,61 +7,6 @@ import Link from 'next/link';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities } from '@/lib/data';
 
-function WorkerIllustration() {
-  return (
-    <svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* Soft background shapes */}
-      <circle cx="250" cy="250" r="215" fill="#F0FAFC" />
-      <circle cx="250" cy="250" r="215" stroke="#E5E7EB" strokeWidth="2" strokeDasharray="4 8" fill="none" />
-      <circle cx="250" cy="250" r="170" fill="#fff" />
-
-      {/* House structure */}
-      <rect x="140" y="220" width="220" height="180" rx="6" fill="#ffffff" stroke="#94a3b8" strokeWidth="2.5" />
-      <polygon points="128,222 250,128 372,222" fill="#f97316" stroke="#ea580c" strokeWidth="2.5" strokeLinejoin="round" />
-      <rect x="220" y="310" width="60" height="90" rx="4" fill="#021117" />
-      <circle cx="268" cy="360" r="5" fill="#f97316" />
-      <rect x="165" y="260" width="50" height="40" rx="4" fill="#dbeff5" stroke="#9fcfdd" strokeWidth="2" />
-      <rect x="285" y="260" width="50" height="40" rx="4" fill="#dbeff5" stroke="#9fcfdd" strokeWidth="2" />
-      <line x1="190" y1="260" x2="190" y2="300" stroke="#9fcfdd" strokeWidth="1.5" />
-      <line x1="165" y1="280" x2="215" y2="280" stroke="#9fcfdd" strokeWidth="1.5" />
-      <line x1="310" y1="260" x2="310" y2="300" stroke="#9fcfdd" strokeWidth="1.5" />
-      <line x1="285" y1="280" x2="335" y2="280" stroke="#9fcfdd" strokeWidth="1.5" />
-
-      {/* Worker */}
-      <g transform="translate(385, 255)">
-        <rect x="-15" y="20" width="30" height="50" rx="6" fill="#f97316" />
-        <rect x="-35" y="25" width="22" height="12" rx="6" fill="#f97316" transform="rotate(-30 -35 25)" />
-        <rect x="13" y="25" width="35" height="12" rx="6" fill="#f97316" transform="rotate(20 13 25)" />
-        <circle cx="-52" cy="12" r="6" fill="#d4a574" />
-        <circle cx="52" cy="20" r="6" fill="#d4a574" />
-        <rect x="46" y="-5" width="4" height="30" rx="2" fill="#78716c" transform="rotate(20 48 10)" />
-        <rect x="40" y="-12" width="16" height="10" rx="2" fill="#44403c" transform="rotate(20 48 -7)" />
-        <rect x="-12" y="70" width="10" height="40" rx="4" fill="#021117" />
-        <rect x="2" y="70" width="10" height="40" rx="4" fill="#021117" />
-        <rect x="-14" y="105" width="14" height="8" rx="3" fill="#78350f" />
-        <rect x="0" y="105" width="14" height="8" rx="3" fill="#78350f" />
-        <circle cx="0" cy="8" r="16" fill="#d4a574" />
-        <ellipse cx="0" cy="-2" rx="20" ry="8" fill="#f59e0b" />
-        <rect x="-22" y="-4" width="44" height="6" rx="3" fill="#f59e0b" />
-        <circle cx="-5" cy="6" r="2" fill="#021117" />
-        <circle cx="5" cy="6" r="2" fill="#021117" />
-        <path d="M-4 14 Q0 18 4 14" stroke="#021117" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-      </g>
-
-      {/* Floating decorative elements */}
-      <g opacity="0.9">
-        <circle cx="105" cy="165" r="10" fill="#fbbf24" opacity="0.5" />
-        <g transform="translate(425, 175) rotate(30)">
-          <rect x="-2" y="-15" width="4" height="25" rx="2" fill="#94a3b8" opacity="0.5" />
-          <circle cx="0" cy="-18" r="6" stroke="#94a3b8" strokeWidth="3" fill="none" opacity="0.5" />
-        </g>
-        <polygon points="95,365 98,374 108,374 100,380 103,389 95,384 87,389 90,380 82,374 92,374" fill="#f97316" opacity="0.35" />
-        <circle cx="435" cy="355" r="14" stroke="#f97316" strokeWidth="2.5" fill="none" opacity="0.25" />
-      </g>
-    </svg>
-  );
-}
-
 export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
   const [query, setQuery] = useState('');
@@ -93,7 +38,7 @@ export default function HeroSection() {
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8">
               <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-              <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi</span>
+              <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi i zanatlija</span>
             </div>
 
             <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-4 md:mb-6 leading-[1.1] tracking-tight">
@@ -109,9 +54,27 @@ export default function HeroSection() {
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
-              {/* Mobilna ilustracija — kombinirana u karticu */}
-              <div className="lg:hidden w-52 h-44 mx-auto -mt-1 mb-1">
-                <WorkerIllustration />
+              {/* Mobilna fotografija — kombinirana u karticu sa trust čipovima */}
+              <div className="lg:hidden relative mb-2">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/zaposli.ba/images/majstor-hero.jpg"
+                  alt="Provjereni majstor u renoviranom domu"
+                  className="w-full h-44 object-cover object-[68%_15%] rounded-xl"
+                />
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
+                <div className="absolute top-2.5 right-2.5 bg-white rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-lg">
+                  <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
+                  <span className="text-xs font-extrabold text-ink">4.8</span>
+                </div>
+                <div className="absolute bottom-2.5 left-2.5 bg-white rounded-full pl-1.5 pr-3 py-1.5 flex items-center gap-2 shadow-lg">
+                  <span className="w-4 h-4 rounded-full bg-brand-emerald flex items-center justify-center shrink-0">
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                  <span className="text-xs font-bold text-ink">Provjereni majstori</span>
+                </div>
               </div>
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="flex-1 relative">
@@ -172,36 +135,47 @@ export default function HeroSection() {
 
           </div>
 
-          {/* Desno: ilustracija + plivajuće trust kartice */}
+          {/* Desno: fotografija + plivajuće trust kartice */}
           <div className="hidden lg:block relative">
-            <div className="relative w-[460px] h-[460px] mx-auto">
-              <WorkerIllustration />
+            {/* Dekorativni uglovi */}
+            <div className="absolute -top-5 -right-5 w-28 h-28 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-3xl" aria-hidden="true" />
+            <div className="absolute -bottom-5 -left-5 w-28 h-28 border-2 border-brand-orange/30 rounded-3xl" aria-hidden="true" />
 
-              {/* Kartica: ocjena */}
-              <div className="absolute -top-2 right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float">
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                  <Star className="w-5 h-5 text-white fill-white" />
-                </div>
-                <div>
-                  <div className="text-xl font-extrabold text-ink leading-none">4.8</div>
-                  <div className="text-xs text-steel mt-1 font-medium">Prosječna ocjena</div>
-                </div>
-              </div>
+            {/* Fotografija */}
+            <div className="relative rounded-3xl overflow-hidden shadow-float ring-1 ring-ink/5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/zaposli.ba/images/majstor-hero.jpg"
+                alt="Provjereni majstor u renoviranom domu"
+                className="object-cover w-full h-[540px]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+            </div>
 
-              {/* Kartica: projekat/ponude */}
-              <div className="absolute -left-8 top-1/3 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 animate-float" style={{ animationDelay: '1.2s' }}>
-                <div className="text-xs text-steel mb-1">Adaptacija kupatila</div>
-                <div className="flex items-center gap-2">
-                  <span className="font-extrabold text-ink">8 ponuda</span>
-                  <span className="text-xs font-semibold text-brand-orange">2,000 – 3,500 KM</span>
-                </div>
+            {/* Kartica: ocjena */}
+            <div className="absolute -top-4 right-6 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
+                <Star className="w-5 h-5 text-white fill-white" />
               </div>
+              <div>
+                <div className="text-xl font-extrabold text-ink leading-none">4.8</div>
+                <div className="text-xs text-steel mt-1 font-medium">Prosječna ocjena</div>
+              </div>
+            </div>
 
-              {/* Kartica: verifikacija */}
-              <div className="absolute -bottom-4 left-10 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float" style={{ animationDelay: '2.4s' }}>
-                <VerifiedBadge size="sm" />
-                <span className="text-xs text-steel font-medium">identitet i poslovanje<br />provjereni</span>
+            {/* Kartica: projekat/ponude */}
+            <div className="absolute -left-6 top-1/3 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 animate-float" style={{ animationDelay: '1.2s' }}>
+              <div className="text-xs text-steel mb-1">Adaptacija kupatila</div>
+              <div className="flex items-center gap-2">
+                <span className="font-extrabold text-ink">8 ponuda</span>
+                <span className="text-xs font-semibold text-brand-orange">2,000 – 3,500 KM</span>
               </div>
+            </div>
+
+            {/* Kartica: verifikacija */}
+            <div className="absolute -bottom-6 left-10 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float" style={{ animationDelay: '2.4s' }}>
+              <VerifiedBadge size="sm" />
+              <span className="text-xs text-steel font-medium">identitet i poslovanje<br />provjereni</span>
             </div>
           </div>
         </div>
