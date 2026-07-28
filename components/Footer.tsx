@@ -1,13 +1,14 @@
 import Link from 'next/link';
-import { Mail, Phone, MapPin, ArrowUpRight, Star } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
-import { categories, cities, workers } from '@/lib/data';
+import { categories, cities } from '@/lib/data';
 
 const footerLinks = {
   'Za kupce': [
     { name: 'Kako radi', href: '/kako-radi/' },
     { name: 'Objavi projekat', href: '/objavi-projekat/' },
     { name: 'Kategorije', href: '/kategorije/' },
+    { name: 'Izdvojeni majstori', href: '/izdvojeni-majstori/' },
     { name: 'Savjeti', href: '/savjeti/' },
   ],
   'Za majstore': [
@@ -60,10 +61,10 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Direktorij: kategorije + gradovi + izdvojeni majstori (werkspot obrazac) */}
+      {/* Direktorij: kategorije + gradovi (werkspot obrazac) */}
       <div className="border-t border-white/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-2 gap-10">
             <div>
               <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
                 Majstori po kategorijama
@@ -82,7 +83,7 @@ export default function Footer() {
               <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
                 Majstori po gradovima
               </h3>
-              <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
+              <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
                 {cities.map((city) => (
                   <li key={city.slug}>
                     <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
@@ -90,34 +91,6 @@ export default function Footer() {
                     </Link>
                   </li>
               ))}
-              </ul>
-            </div>
-            <div className="md:col-span-2 lg:col-span-1">
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
-                Izdvojeni majstori
-              </h3>
-              <ul className="space-y-3">
-                {workers.map((w) => (
-                  <li key={w.id}>
-                    <Link href={`/firma/${w.id}/`} className="flex items-center gap-3 group">
-                      <span className="w-9 h-9 rounded-lg bg-white/10 flex items-center justify-center text-brand-orange font-bold text-xs shrink-0 group-hover:bg-brand-orange/20 transition-colors">
-                        {w.initial}
-                      </span>
-                      <span className="flex-1 min-w-0">
-                        <span className="block text-sm text-gray-300 group-hover:text-brand-orange transition-colors font-medium truncate">
-                          {w.name}
-                        </span>
-                        <span className="block text-xs text-gray-500 truncate">
-                          {w.specialty} · {w.location}
-                        </span>
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-gray-400 shrink-0">
-                        <Star className="w-3 h-3 text-brand-orange fill-brand-orange" />
-                        {w.rating}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
               </ul>
             </div>
           </div>

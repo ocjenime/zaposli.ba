@@ -135,47 +135,43 @@ export default function HeroSection() {
 
           </div>
 
-          {/* Desno: fotografija + plivajuće trust kartice */}
-          <div className="hidden lg:block relative">
-            {/* Dekorativni uglovi */}
-            <div className="absolute -top-5 -right-5 w-28 h-28 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-3xl" aria-hidden="true" />
-            <div className="absolute -bottom-5 -left-5 w-28 h-28 border-2 border-brand-orange/30 rounded-3xl" aria-hidden="true" />
+          {/* Desno: arched fotografija (Collins tretman) */}
+          <div className="hidden lg:block relative mx-auto max-w-[440px] w-full">
+            {/* Offset prsten */}
+            <div className="absolute inset-0 rounded-t-full rounded-b-[2.5rem] border-2 border-brand-orange/25 translate-x-5 translate-y-5" aria-hidden="true" />
 
-            {/* Fotografija */}
-            <div className="relative rounded-3xl overflow-hidden shadow-float ring-1 ring-ink/5">
+            {/* Arched fotografija */}
+            <div className="relative rounded-t-full rounded-b-[2.5rem] overflow-hidden shadow-float ring-1 ring-ink/5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/zaposli.ba/images/majstor-hero.jpg"
                 alt="Provjereni majstor u renoviranom domu"
-                className="object-cover w-full h-[540px]"
+                className="object-cover w-full h-[560px] object-[62%_18%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2">
+                <VerifiedBadge />
+              </div>
             </div>
 
             {/* Kartica: ocjena */}
-            <div className="absolute -top-4 right-6 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                <Star className="w-5 h-5 text-white fill-white" />
+            <div className="absolute top-12 -right-5 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
+                <Star className="w-4 h-4 text-white fill-white" />
               </div>
               <div>
-                <div className="text-xl font-extrabold text-ink leading-none">4.8</div>
-                <div className="text-xs text-steel mt-1 font-medium">Prosječna ocjena</div>
+                <div className="text-lg font-extrabold text-ink leading-none">4.8</div>
+                <div className="text-[10px] text-steel mt-0.5 font-medium">prosječna ocjena</div>
               </div>
             </div>
 
             {/* Kartica: projekat/ponude */}
-            <div className="absolute -left-6 top-1/3 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 animate-float" style={{ animationDelay: '1.2s' }}>
-              <div className="text-xs text-steel mb-1">Adaptacija kupatila</div>
+            <div className="absolute bottom-24 -left-8 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 animate-float" style={{ animationDelay: '1.2s' }}>
+              <div className="text-[10px] text-steel mb-0.5">Adaptacija kupatila</div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-ink">8 ponuda</span>
-                <span className="text-xs font-semibold text-brand-orange">2,000 – 3,500 KM</span>
+                <span className="font-extrabold text-ink text-sm">8 ponuda</span>
+                <span className="text-[11px] font-semibold text-brand-orange">2,000–3,500 KM</span>
               </div>
-            </div>
-
-            {/* Kartica: verifikacija */}
-            <div className="absolute -bottom-6 left-10 bg-white rounded-2xl shadow-float border border-gray-100 px-5 py-4 flex items-center gap-3 animate-float" style={{ animationDelay: '2.4s' }}>
-              <VerifiedBadge size="sm" />
-              <span className="text-xs text-steel font-medium">identitet i poslovanje<br />provjereni</span>
             </div>
           </div>
         </div>
