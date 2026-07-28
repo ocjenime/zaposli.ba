@@ -54,9 +54,9 @@ const recentProjects = [
 
 export default function RecentProjects() {
   return (
-    <section className="py-20 md:py-28 bg-cloud relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-cloud relative overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
               <TrendingUp className="w-4 h-4 inline mr-1" />
@@ -77,7 +77,7 @@ export default function RecentProjects() {
 
         <div className="grid md:grid-cols-2 gap-5">
           {recentProjects.map((project) => (
-            <div key={project.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer">
+            <Link key={project.id} href="/projekti/" className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block">
               <div className="flex justify-between items-start mb-3">
                 <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold ${project.catColor}`}>
                   {project.category}
@@ -109,7 +109,7 @@ export default function RecentProjects() {
                   <span>{project.bids} ponuda</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

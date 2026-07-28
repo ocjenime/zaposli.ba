@@ -1,14 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
-
-const cities = [
-  'Sarajevo', 'Banja Luka', 'Tuzla', 'Mostar', 'Zenica',
-  'Bihać', 'Brčko', 'Doboj', 'Bijeljina', 'Travnik'
-];
+import { cities } from '@/lib/data';
 
 function WorkerIllustration() {
   return (
@@ -67,9 +64,16 @@ function WorkerIllustration() {
 
 export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
+  const [query, setQuery] = useState('');
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('/objavi-projekat/');
+  };
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-white">
+    <section className="relative md:min-h-[92vh] flex items-center overflow-hidden bg-white">
       {/* Svijetla dekoracija */}
       <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-cloud rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-50 rounded-full -translate-x-1/3 translate-y-1/3" />
@@ -83,16 +87,16 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-36 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 pb-14 md:py-36 w-full">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-8">
+            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8">
               <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
               <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-6 leading-[1.08] tracking-tight">
+            <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-4 md:mb-6 leading-[1.1] tracking-tight">
               Pronađite majstora
               <br />
               <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">
@@ -100,16 +104,18 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-steel mb-10 leading-relaxed">
+            <p className="text-base md:text-xl text-steel mb-7 md:mb-10 leading-relaxed">
               Besplatno objavite svoj projekat i primite ponude od provjerenih građevinskih firmi i zanatlija širom Bosne i Hercegovine.
             </p>
 
-            <div className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-8">
+            <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                   <input
                     type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                     placeholder="Šta vam je potrebno?"
                     className="w-full pl-12 pr-4 py-4 bg-cloud rounded-xl border-0 focus:ring-2 focus:ring-brand-orange/30 outline-none text-ink placeholder:text-steel/70 text-sm"
                   />
@@ -123,22 +129,22 @@ export default function HeroSection() {
                   >
                     <option value="">Svi gradovi</option>
                     {cities.map((city) => (
-                      <option key={city} value={city}>{city}</option>
+                      <option key={city.slug} value={city.name}>{city.name}</option>
                     ))}
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-steel pointer-events-none" />
                 </div>
-                <Link
-                  href="/objavi-projekat/"
+                <button
+                  type="submit"
                   className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold text-sm whitespace-nowrap hover:shadow-lg hover:shadow-brand-orange/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Objavi besplatno
                   <ArrowRight className="w-4 h-4" />
-                </Link>
+                </button>
               </div>
-            </div>
+            </form>
 
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-steel">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 text-sm text-steel">
               <div className="flex items-center gap-1.5">
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
@@ -157,6 +163,15 @@ export default function HeroSection() {
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-brand-orange" />
                 <span>Besplatno za kupce</span>
+              </div>
+            </div>
+
+            {/* Mobilna ilustracija */}
+            <div className="lg:hidden mt-8 relative w-64 h-64 mx-auto">
+              <WorkerIllustration />
+              <div className="absolute -top-1 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-2.5 flex items-center gap-2.5">
+                <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
+                <span className="font-extrabold text-ink">4.8</span>
               </div>
             </div>
           </div>

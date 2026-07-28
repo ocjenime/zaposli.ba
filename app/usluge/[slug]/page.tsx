@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { cat, city } = parsed;
   return {
     title: `${cat.profession} ${city.name} — provjerene firme | Zaposli.ba`,
-    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.name}? ${cat.count}+ provjerenih firmi, prosječne cijene ${cat.priceRange}. Objavite projekat besplatno i uporedite ponude.`,
+    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? ${cat.count}+ provjerenih firmi, prosječne cijene ${cat.priceRange}. Objavite projekat besplatno i uporedite ponude.`,
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
 }
@@ -52,16 +52,16 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
 
   const faqItems = [
     {
-      question: `Koliko košta ${cat.profession.toLowerCase()} u gradu ${city.name}?`,
-      answer: `Prosječne cijene za kategoriju ${cat.name.toLowerCase()} su ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude — objavite projekat besplatno i firme iz grada ${city.name} će vam poslati svoje cijene.`,
+      question: `Koliko košta ${cat.profession.toLowerCase()} u gradu ${city.loc}?`,
+      answer: `Prosječne cijene za kategoriju ${cat.name.toLowerCase()} su ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude — objavite projekat besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
     },
     {
-      question: `Koliko brzo mogu dobiti majstora u gradu ${city.name}?`,
-      answer: `Većina projekata u gradu ${city.name} dobije prve ponude u roku od 24 sata. Za hitne projekte firme često odgovore u roku od nekoliko sati.`,
+      question: `Koliko brzo mogu dobiti majstora u gradu ${city.loc}?`,
+      answer: `Većina projekata u gradu ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne projekte firme često odgovore u roku od nekoliko sati.`,
     },
     {
-      question: `Kako znam da je firma iz grada ${city.name} pouzdana?`,
-      answer: `Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih kupaca iz grada ${city.name} i okoline.`,
+      question: `Kako znam da je firma iz vašeg grada pouzdana?`,
+      answer: `Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih kupaca iz vašeg grada i okoline.`,
     },
   ];
 
@@ -111,7 +111,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-ink mb-2">
-              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.name}` : `Provjereni majstori — ${cat.name.toLowerCase()}`}
+              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori — ${cat.name.toLowerCase()}`}
             </h2>
             <p className="text-steel mb-8">Ocjene i recenzije stvarnih kupaca</p>
             {shownWorkers.length > 0 ? (

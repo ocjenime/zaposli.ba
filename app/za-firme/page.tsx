@@ -186,56 +186,76 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Pricing */}
-        <section className="py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="section-title text-center mb-4">Cijene</h2>
-            <p className="section-subtitle text-center">Odaberite paket koji vam odgovara</p>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <section className="py-14 md:py-20 bg-cloud relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-3">
+                Pretplate za firme
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-3 tracking-tight">
+                Jednostavne cijene, bez iznenađenja
+              </h2>
+              <p className="text-steel max-w-xl mx-auto">
+                Počnite besplatno. Nadogradite kada vidite da vam platforma donosi poslove.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`card relative ${
-                    plan.popular ? 'border-2 border-primary-500 shadow-xl' : ''
+                  className={`relative bg-white rounded-3xl p-8 flex flex-col transition-all duration-300 ${
+                    plan.popular
+                      ? 'ring-2 ring-brand-orange shadow-2xl shadow-brand-orange/15 md:-my-3 md:py-11 z-10'
+                      : 'border border-gray-100 hover:shadow-xl'
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-primary-600 text-white text-xs font-semibold px-4 py-1 rounded-full">
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
+                      <span className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-xs font-bold px-5 py-1.5 rounded-full shadow-md shadow-brand-orange/25 tracking-wide">
                         NAJPOPULARNIJI
                       </span>
                     </div>
                   )}
-                  
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                    <div className="mb-2">
-                      <span className="text-4xl font-bold text-gray-900">{plan.price}</span>
-                      <span className="text-gray-500 ml-1">KM</span>
+
+                  <div className="text-center mb-7">
+                    <h3 className="text-lg font-bold text-ink mb-1">{plan.name}</h3>
+                    <p className="text-sm text-steel mb-5">{plan.description}</p>
+                    <div className="flex items-end justify-center gap-1.5">
+                      <span className="text-5xl font-extrabold text-ink leading-none">{plan.price}</span>
+                      <span className="text-steel font-semibold mb-1">KM</span>
                     </div>
-                    <p className="text-sm text-gray-500">{plan.period}</p>
-                    <p className="text-sm text-gray-600 mt-2">{plan.description}</p>
+                    <p className="text-sm text-steel mt-1.5">{plan.period}</p>
                   </div>
 
-                  <ul className="space-y-3 mb-8">
+                  <ul className="space-y-3.5 mb-8 flex-1">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-600 text-sm">{feature}</span>
+                        <span className="text-ink/80 text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
                   <Link
-                    href="/registracija-firme"
-                    className={`block text-center ${
-                      plan.popular ? 'btn-primary' : 'btn-secondary'
+                    href="/registracija/"
+                    className={`block text-center px-6 py-3.5 rounded-xl font-bold transition-all active:scale-95 ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white hover:shadow-lg hover:shadow-brand-orange/30'
+                        : 'border-2 border-ink/10 text-ink hover:border-brand-orange hover:text-brand-orange'
                     }`}
                   >
                     {plan.cta}
                   </Link>
                 </div>
               ))}
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-10 text-sm text-steel">
+              <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-orange" /> Bez ugovorne obaveze</span>
+              <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-orange" /> Otkažite bilo kada</span>
+              <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-brand-orange" /> Podrška na bosanskom</span>
             </div>
           </div>
         </section>

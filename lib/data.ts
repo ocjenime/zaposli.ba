@@ -107,21 +107,48 @@ export function getCategory(slug: string) {
 export interface City {
   name: string;
   slug: string;
+  loc: string; // lokativ: "u gradu ..."
 }
 
 export const cities: City[] = [
-  { name: 'Sarajevo', slug: 'sarajevo' },
-  { name: 'Banja Luka', slug: 'banja-luka' },
-  { name: 'Tuzla', slug: 'tuzla' },
-  { name: 'Mostar', slug: 'mostar' },
-  { name: 'Zenica', slug: 'zenica' },
-  { name: 'Bihać', slug: 'bihac' },
-  { name: 'Brčko', slug: 'brcko' },
-  { name: 'Doboj', slug: 'doboj' },
-  { name: 'Bijeljina', slug: 'bijeljina' },
-  { name: 'Travnik', slug: 'travnik' },
-  { name: 'Konjic', slug: 'konjic' },
-  { name: 'Livno', slug: 'livno' },
+  // Federacija BiH
+  { name: 'Sarajevo', slug: 'sarajevo', loc: 'Sarajevu' },
+  { name: 'Tuzla', slug: 'tuzla', loc: 'Tuzli' },
+  { name: 'Zenica', slug: 'zenica', loc: 'Zenici' },
+  { name: 'Mostar', slug: 'mostar', loc: 'Mostaru' },
+  { name: 'Bihać', slug: 'bihac', loc: 'Bihaću' },
+  { name: 'Cazin', slug: 'cazin', loc: 'Cazinu' },
+  { name: 'Velika Kladuša', slug: 'velika-kladusa', loc: 'Velikoj Kladuši' },
+  { name: 'Sanski Most', slug: 'sanski-most', loc: 'Sanskom Mostu' },
+  { name: 'Travnik', slug: 'travnik', loc: 'Travniku' },
+  { name: 'Jajce', slug: 'jajce', loc: 'Jajcu' },
+  { name: 'Bugojno', slug: 'bugojno', loc: 'Bugojnu' },
+  { name: 'Kakanj', slug: 'kakanj', loc: 'Kaknju' },
+  { name: 'Visoko', slug: 'visoko', loc: 'Visokom' },
+  { name: 'Goražde', slug: 'gorazde', loc: 'Goraždu' },
+  { name: 'Gračanica', slug: 'gracanica', loc: 'Gračanici' },
+  { name: 'Živinice', slug: 'zivinice', loc: 'Živinicama' },
+  { name: 'Lukavac', slug: 'lukavac', loc: 'Lukavcu' },
+  { name: 'Konjic', slug: 'konjic', loc: 'Konjicu' },
+  { name: 'Jablanica', slug: 'jablanica', loc: 'Jablanici' },
+  { name: 'Livno', slug: 'livno', loc: 'Livnu' },
+  { name: 'Tomislavgrad', slug: 'tomislavgrad', loc: 'Tomislavgradu' },
+  { name: 'Široki Brijeg', slug: 'siroki-brijeg', loc: 'Širokom Brijegu' },
+  { name: 'Ljubuški', slug: 'ljubuski', loc: 'Ljubuškom' },
+  { name: 'Čapljina', slug: 'capljina', loc: 'Čapljini' },
+  // Republika Srpska
+  { name: 'Banja Luka', slug: 'banja-luka', loc: 'Banjoj Luci' },
+  { name: 'Bijeljina', slug: 'bijeljina', loc: 'Bijeljini' },
+  { name: 'Prijedor', slug: 'prijedor', loc: 'Prijedoru' },
+  { name: 'Doboj', slug: 'doboj', loc: 'Doboju' },
+  { name: 'Derventa', slug: 'derventa', loc: 'Derventi' },
+  { name: 'Gradiška', slug: 'gradiska', loc: 'Gradišci' },
+  { name: 'Zvornik', slug: 'zvornik', loc: 'Zvorniku' },
+  { name: 'Istočno Sarajevo', slug: 'istocno-sarajevo', loc: 'Istočnom Sarajevu' },
+  { name: 'Trebinje', slug: 'trebinje', loc: 'Trebinju' },
+  { name: 'Foča', slug: 'foca', loc: 'Foči' },
+  // Brčko distrikt
+  { name: 'Brčko', slug: 'brcko', loc: 'Brčkom' },
 ];
 
 /* ---------------------------------- FIRME / MAJSTORI ---------------------------------- */

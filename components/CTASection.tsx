@@ -3,7 +3,7 @@ import { ArrowRight, Building2, CheckCircle, Sparkles, Wrench } from 'lucide-rea
 
 export default function CTASection() {
   return (
-    <section className="py-20 md:py-28 relative overflow-hidden">
+    <section className="py-14 md:py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <svg className="w-full h-full" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">

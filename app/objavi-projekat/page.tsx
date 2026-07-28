@@ -21,20 +21,9 @@ const categories = [
   'Ostalo',
 ];
 
-const cities = [
-  'Sarajevo',
-  'Banja Luka',
-  'Tuzla',
-  'Mostar',
-  'Zenica',
-  'Bihać',
-  'Brčko',
-  'Doboj',
-  'Bijeljina',
-  'Travnik',
-  'Konjic',
-  'Livno',
-];
+import { cities as allCities } from '@/lib/data';
+
+const cities = allCities.map((c) => c.name);
 
 export default function PostProjectPage() {
   const [step, setStep] = useState(1);

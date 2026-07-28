@@ -5,12 +5,12 @@ import { workers } from '@/lib/data';
 
 export default function FeaturedWorkers() {
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-50 rounded-full opacity-60 blur-2xl" />
       <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-cloud rounded-full opacity-80 blur-2xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+        <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
             Naši najbolji
           </span>

@@ -27,11 +27,11 @@ const categories = [
 
 export default function PopularCategories() {
   return (
-    <section className="py-20 md:py-28 bg-cloud relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-cloud relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-100 to-orange-100 rounded-full opacity-30 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
             Istražite kategorije
           </span>
@@ -47,7 +47,7 @@ export default function PopularCategories() {
           {categories.map((category) => (
             <Link
               key={category.slug}
-              href={`/kategorije/`}
+              href={`/kategorije/${category.slug}/`}
               className="group bg-white rounded-2xl p-6 text-center border border-gray-100 hover:border-transparent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />

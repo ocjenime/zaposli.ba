@@ -44,11 +44,11 @@ const trustCards = [
 
 export default function StatsSection() {
   return (
-    <section className="py-20 md:py-28 bg-white relative overflow-hidden">
+    <section className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
             Zašto baš mi?
           </span>
@@ -74,7 +74,7 @@ export default function StatsSection() {
           ))}
         </div>
 
-        <div className="mt-16 grid md:grid-cols-3 gap-6">
+        <div className="mt-10 grid md:grid-cols-3 gap-6">
           {trustCards.map((card) => (
             <div key={card.title} className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -3,25 +3,29 @@ interface LogoProps {
   className?: string;
 }
 
-export function LogoMark({ className = 'w-10 h-10' }: { className?: string }) {
+export function LogoMark({ className = 'w-8 h-9' }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 52" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
-      {/* Pin */}
+      {/* Pin — okrugla glava, vrh prema dolje-lijevo */}
       <path
-        d="M24 3C14.6 3 7 10.6 7 20c0 12.2 17 25 17 25s17-12.8 17-25C41 10.6 33.4 3 24 3Z"
+        d="M27 2.5C16.3 2.5 7.5 11.3 7.5 22c0 4.3 1.5 8.2 4 11.2L6 44.6c-1 1.7.6 3.7 2.4 2.9l12.4-5.1c1.9.4 3.9.6 6.1.6 10.7 0 19.5-8.8 19.5-19.5S37.7 2.5 27 2.5Z"
         fill="#F97316"
       />
-      {/* Claw hammer */}
-      <g transform="rotate(-45 24 20)">
-        {/* Handle */}
-        <rect x="22" y="11" width="4" height="19" rx="2" fill="#fff" />
-        {/* Poll (striking block) */}
-        <rect x="24" y="5.5" width="8.5" height="9" rx="2.4" fill="#fff" />
-        {/* Claw */}
-        <path d="M24 5.5h-4.2c-3.6 0-6.8 2.4-7.8 5.8l-.5 1.7c-.2.8.6 1.5 1.4 1.2l11.1-4.2V5.5Z" fill="#fff" />
-      </g>
+      {/* Čekić — negativni prostor: kandža + drška */}
+      <path
+        d="M13.5 21.5C11.2 14.6 14 8.8 20.3 7.2c3.2-.8 6.6.4 8.4 3"
+        stroke="#fff"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M18.5 17.5l14 16.5"
+        stroke="#fff"
+        strokeWidth="6.5"
+        strokeLinecap="round"
+      />
       {/* Ground shadow */}
-      <ellipse cx="24" cy="49.5" rx="7.5" ry="2" fill="#021117" opacity="0.18" />
+      <ellipse cx="24" cy="49.5" rx="8" ry="2" fill="#021117" opacity="0.15" />
     </svg>
   );
 }
@@ -30,7 +34,7 @@ export default function Logo({ variant = 'dark', className = '' }: LogoProps) {
   const textColor = variant === 'light' ? 'text-white' : 'text-ink';
   return (
     <span className={`flex items-center gap-2.5 ${className}`}>
-      <LogoMark className="h-9 w-8 md:h-10 md:w-9 shrink-0" />
+      <LogoMark className="h-8 w-7 md:h-9 md:w-8 shrink-0" />
       <span className={`text-xl md:text-2xl font-extrabold tracking-tight ${textColor}`}>
         zaposli<span className="text-brand-orange">.ba</span>
       </span>
