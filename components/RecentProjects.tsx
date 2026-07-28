@@ -6,7 +6,7 @@ const recentProjects = [
     id: 1,
     title: 'Adaptacija kupatila - kompletan renovis',
     category: 'Vodoinstalacije',
-    catColor: 'bg-blue-50 text-blue-600',
+    catColor: 'bg-primary-50 text-brand-orange',
     location: 'Sarajevo - Centar',
     budget: '2,000 - 3,500 KM',
     deadline: 'Do 15.08.2026',
@@ -18,7 +18,7 @@ const recentProjects = [
     id: 2,
     title: 'Postavljanje laminata u dnevnom boravku',
     category: 'Tilerski radovi',
-    catColor: 'bg-teal-50 text-teal-600',
+    catColor: 'bg-primary-50 text-brand-orange',
     location: 'Banja Luka - Centar',
     budget: '800 - 1,200 KM',
     deadline: 'Do 20.08.2026',
@@ -30,7 +30,7 @@ const recentProjects = [
     id: 3,
     title: 'Izrada fasade na kući',
     category: 'Građevinarstvo',
-    catColor: 'bg-orange-50 text-orange-600',
+    catColor: 'bg-primary-50 text-brand-orange',
     location: 'Mostar - Jug',
     budget: '5,000 - 8,000 KM',
     deadline: 'Do 01.09.2026',
@@ -42,7 +42,7 @@ const recentProjects = [
     id: 4,
     title: 'Elektroinstalacije u novogradnji',
     category: 'Elektroinstalacije',
-    catColor: 'bg-amber-50 text-amber-600',
+    catColor: 'bg-primary-50 text-brand-orange',
     location: 'Tuzla - Centar',
     budget: '3,000 - 4,500 KM',
     deadline: 'Do 10.09.2026',
@@ -54,21 +54,21 @@ const recentProjects = [
 
 export default function RecentProjects() {
   return (
-    <section className="py-20 md:py-28 bg-gray-50 relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-cloud relative overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-12">
           <div>
-            <span className="inline-block px-4 py-1.5 bg-primary-50 text-primary-600 rounded-full text-sm font-semibold mb-4">
+            <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
               <TrendingUp className="w-4 h-4 inline mr-1" />
               Najnoviji projekti
             </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
               Nedavno objavljeni projekti
             </h2>
           </div>
           <Link
             href="/kategorije/"
-            className="inline-flex items-center gap-2 text-primary-500 font-semibold hover:text-primary-600 transition-colors group whitespace-nowrap"
+            className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group whitespace-nowrap"
           >
             Svi projekti
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -85,11 +85,11 @@ export default function RecentProjects() {
                 <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">{project.timeAgo}</span>
               </div>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-primary-500 transition-colors">
+              <h3 className="text-lg font-bold text-ink mb-2 group-hover:text-brand-orange transition-colors">
                 {project.title}
               </h3>
 
-              <p className="text-gray-500 text-sm mb-4 line-clamp-2">{project.description}</p>
+              <p className="text-steel text-sm mb-4 line-clamp-2">{project.description}</p>
 
               <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-4">
                 <div className="flex items-center gap-1.5">
@@ -103,9 +103,9 @@ export default function RecentProjects() {
               </div>
 
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-bold text-emerald-600 text-sm">{project.budget}</div>
-                <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg">
-                  <BadgeCheck className="w-3.5 h-3.5 text-primary-500" />
+                <div className="font-bold text-brand-orange text-sm">{project.budget}</div>
+                <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
+                  <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
                   <span>{project.bids} ponuda</span>
                 </div>
               </div>

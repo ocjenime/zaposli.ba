@@ -9,10 +9,11 @@ export default function HowItWorksPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="bg-gradient-to-r from-primary-600 to-primary-800 py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <section className="relative bg-gradient-hero py-16 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-bold text-white mb-4">Kako funkcioniše Zaposli.ba?</h1>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto">
+            <p className="text-lg text-white/60 max-w-2xl mx-auto">
               Jednostavan proces u 3 koraka do idealnog majstora za vaš projekat
             </p>
           </div>
@@ -37,10 +38,10 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="w-8 h-8 text-success-600" />
+                <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Users className="w-8 h-8 text-brand-orange" />
                 </div>
-                <div className="text-sm font-bold text-success-600 mb-2">KORAK 2</div>
+                <div className="text-sm font-bold text-brand-orange mb-2">KORAK 2</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Primite ponude</h3>
                 <p className="text-gray-600">
                   Provjereni majstori i firme će vam poslati svoje ponude sa cijenama i rokovima. 
@@ -49,10 +50,10 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="w-8 h-8 text-accent-600" />
+                <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <CheckCircle className="w-8 h-8 text-brand-orange" />
                 </div>
-                <div className="text-sm font-bold text-accent-600 mb-2">KORAK 3</div>
+                <div className="text-sm font-bold text-brand-orange mb-2">KORAK 3</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Odaberite majstora</h3>
                 <p className="text-gray-600">
                   Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš projekat.
@@ -86,10 +87,10 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Clock className="w-8 h-8 text-success-600" />
+                <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Clock className="w-8 h-8 text-brand-orange" />
                 </div>
-                <div className="text-sm font-bold text-success-600 mb-2">KORAK 2</div>
+                <div className="text-sm font-bold text-brand-orange mb-2">KORAK 2</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Pregledajte projekte</h3>
                 <p className="text-gray-600">
                   Pregledajte dostupne projekte u vašem okrugu i odaberite one koji vam odgovaraju.
@@ -97,10 +98,10 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <MessageSquare className="w-8 h-8 text-accent-600" />
+                <div className="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <MessageSquare className="w-8 h-8 text-brand-orange" />
                 </div>
-                <div className="text-sm font-bold text-accent-600 mb-2">KORAK 3</div>
+                <div className="text-sm font-bold text-brand-orange mb-2">KORAK 3</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Pošaljite ponudu</h3>
                 <p className="text-gray-600">
                   Pošaljite svoju ponudu sa cijenom i rokovima. Ako vas kupac odabere, dobijate posao!
@@ -131,24 +132,24 @@ export default function HowItWorksPage() {
               </div>
 
               <div className="card text-center">
-                <div className="w-12 h-12 bg-success-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-6 h-6 text-success-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-6 h-6 text-brand-orange" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Verificirane firme</h3>
                 <p className="text-sm text-gray-600">Sve firme prolaze provjeru identiteta i poslovanja.</p>
               </div>
 
               <div className="card text-center">
-                <div className="w-12 h-12 bg-accent-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-6 h-6 text-accent-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-6 h-6 text-brand-orange" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Brze ponude</h3>
                 <p className="text-sm text-gray-600">Primite ponude u roku od 24 sata od objave projekta.</p>
               </div>
 
               <div className="card text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageSquare className="w-6 h-6 text-purple-600" />
+                <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageSquare className="w-6 h-6 text-brand-orange" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Direktna komunikacija</h3>
                 <p className="text-sm text-gray-600">Komunicirajte direktno sa majstorima putem platforme.</p>

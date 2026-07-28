@@ -2,24 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 
 @layer base {
   body {
-    @apply bg-white text-gray-900 antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    @apply bg-white text-ink antialiased;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-600 transition-all duration-200 shadow-md hover:shadow-lg active:scale-95;
+    @apply bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95 inline-block;
   }
-  
+
   .btn-secondary {
-    @apply bg-white text-primary-500 border-2 border-primary-500 px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-all duration-200 active:scale-95;
+    @apply bg-white text-brand-orange border-2 border-brand-orange px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-all duration-200 active:scale-95 inline-block;
   }
-  
+
   .btn-accent {
     @apply bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95;
   }
@@ -37,7 +37,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f0fafc;
   border-radius: 4px;
 }
 
@@ -47,7 +47,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #f97316;
 }
 
 @keyframes fadeIn {

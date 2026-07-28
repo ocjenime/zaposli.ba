@@ -13,36 +13,36 @@ export default function CTASection() {
           <rect width="100%" height="100%" fill="url(#ctaGrid)" />
         </svg>
       </div>
-      <div className="absolute top-10 right-10 w-80 h-80 bg-brand-orange/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-10 left-10 w-64 h-64 bg-primary-400/10 rounded-full blur-3xl" />
+      <div className="absolute top-10 right-10 w-80 h-80 bg-brand-orange/15 rounded-full blur-3xl" />
+      <div className="absolute bottom-10 left-10 w-64 h-64 bg-ink-600/30 rounded-full blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="text-white">
             <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
-              <Sparkles className="w-4 h-4 text-brand-amber" />
+              <Sparkles className="w-4 h-4 text-brand-orange" />
               <span className="text-sm font-medium text-white/90">Započnite danas</span>
             </span>
 
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-6 leading-tight tracking-tight">
               Tražite majstora?
             </h2>
-            <p className="text-lg text-blue-100/80 mb-8 leading-relaxed">
+            <p className="text-lg text-white/60 mb-8 leading-relaxed">
               Objavite svoj projekat besplatno i primite ponude od provjerenih firmi u roku od 24 sata.
             </p>
 
             <ul className="space-y-4 mb-10">
               {['Potpuno besplatno', 'Više ponuda za usporedbu', 'Ocjene i recenzije drugih kupaca'].map((item) => (
                 <li key={item} className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-brand-emerald flex-shrink-0" />
-                  <span className="text-blue-50">{item}</span>
+                  <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0" />
+                  <span className="text-white/80">{item}</span>
                 </li>
               ))}
             </ul>
 
             <Link
               href="/objavi-projekat/"
-              className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all duration-200 active:scale-95"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
             >
               Objavi projekat besplatno
               <ArrowRight className="w-5 h-5" />
@@ -65,7 +65,7 @@ export default function CTASection() {
             <ul className="space-y-4 mb-8">
               {['Pristup hiljadama projekata', 'Izgradite reputaciju kroz recenzije', 'Besplatna registracija'].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-gray-700">
-                  <CheckCircle className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -73,7 +73,7 @@ export default function CTASection() {
 
             <Link
               href="/registracija/"
-              className="block w-full text-center bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-200 active:scale-95"
+              className="block w-full text-center bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
             >
               Registrujte firmu besplatno
             </Link>

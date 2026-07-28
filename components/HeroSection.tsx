@@ -21,12 +21,12 @@ function WorkerIllustration() {
       <polygon points="130,220 250,130 370,220" fill="#f97316" stroke="#ea580c" strokeWidth="2" />
       <rect x="220" y="310" width="60" height="90" rx="3" fill="#1e293b" stroke="#0f172a" strokeWidth="1.5" />
       <circle cx="268" cy="360" r="5" fill="#f59e0b" />
-      <rect x="165" y="260" width="50" height="40" rx="3" fill="#93c5fd" stroke="#60a5fa" strokeWidth="1.5" />
-      <rect x="285" y="260" width="50" height="40" rx="3" fill="#93c5fd" stroke="#60a5fa" strokeWidth="1.5" />
-      <line x1="190" y1="260" x2="190" y2="300" stroke="#60a5fa" strokeWidth="1" />
-      <line x1="165" y1="280" x2="215" y2="280" stroke="#60a5fa" strokeWidth="1" />
-      <line x1="310" y1="260" x2="310" y2="300" stroke="#60a5fa" strokeWidth="1" />
-      <line x1="285" y1="280" x2="335" y2="280" stroke="#60a5fa" strokeWidth="1" />
+      <rect x="165" y="260" width="50" height="40" rx="3" fill="#cfe8ef" stroke="#9fcfdd" strokeWidth="1.5" />
+      <rect x="285" y="260" width="50" height="40" rx="3" fill="#cfe8ef" stroke="#9fcfdd" strokeWidth="1.5" />
+      <line x1="190" y1="260" x2="190" y2="300" stroke="#9fcfdd" strokeWidth="1" />
+      <line x1="165" y1="280" x2="215" y2="280" stroke="#9fcfdd" strokeWidth="1" />
+      <line x1="310" y1="260" x2="310" y2="300" stroke="#9fcfdd" strokeWidth="1" />
+      <line x1="285" y1="280" x2="335" y2="280" stroke="#9fcfdd" strokeWidth="1" />
 
       {/* Worker */}
       <g transform="translate(380, 250)">
@@ -84,8 +84,8 @@ function WorkerIllustration() {
           <stop offset="100%" stopColor="#f59e0b" />
         </linearGradient>
         <linearGradient id="heroBg2" x1="70" y1="70" x2="430" y2="430">
-          <stop offset="0%" stopColor="#0070f3" />
-          <stop offset="100%" stopColor="#10b981" />
+          <stop offset="0%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#ea580c" />
         </linearGradient>
       </defs>
     </svg>
@@ -108,28 +108,28 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      <div className="absolute top-16 left-0 w-[500px] h-[500px] bg-brand-orange/8 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-primary-400/8 rounded-full blur-[120px]" />
-      <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-brand-emerald/5 rounded-full blur-[100px]" />
+      <div className="absolute top-16 left-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-orange/8 rounded-full blur-[120px]" />
+      <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-ink-600/20 rounded-full blur-[100px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-28 md:py-36 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2 mb-8">
-              <span className="w-2 h-2 bg-brand-emerald rounded-full animate-pulse" />
+              <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
               <span className="text-white/90 text-sm font-medium">Više od 2,800+ verificiranih firmi</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-white mb-6 leading-[1.08] tracking-tight">
               Pronađite majstora
               <br />
-              <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-red bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">
                 za vaš projekat
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-blue-100/70 mb-10 leading-relaxed">
+            <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed">
               Besplatno objavite svoj projekat i primite ponude od provjerenih građevinskih firmi i zanatlija širom Bosne i Hercegovine.
             </p>
 
@@ -174,7 +174,7 @@ export default function HeroSection() {
                 { icon: Star, text: 'Ocjene i recenzije' },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-2">
-                  <item.icon className="w-4 h-4 text-brand-emerald" />
+                  <item.icon className="w-4 h-4 text-brand-orange" />
                   <span>{item.text}</span>
                 </div>
               ))}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Search, ChevronRight } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 const navigation = [
   { name: 'Početna', href: '/' },
@@ -25,13 +26,8 @@ export default function Header() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 md:h-20 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 md:w-11 md:h-11 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-brand-orange/30 transition-shadow">
-              <span className="text-white font-bold text-lg md:text-xl">Z</span>
-            </div>
-            <span className={`text-xl md:text-2xl font-extrabold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-white'}`}>
-              Zaposli<span className="text-brand-orange">.ba</span>
-            </span>
+          <Link href="/" className="flex items-center group">
+            <Logo variant={scrolled ? 'dark' : 'light'} />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">

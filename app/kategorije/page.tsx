@@ -25,7 +25,7 @@ const categories = [
     icon: BrickWall,
     description: 'Temelji, konstrukcije, zidarski radovi, betoniranje',
     count: 850,
-    color: 'bg-orange-50 text-orange-600 border-orange-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Vodoinstalacije',
@@ -33,7 +33,7 @@ const categories = [
     icon: Droplets,
     description: 'Instalacije vode, kanalizacije, sanitarije',
     count: 620,
-    color: 'bg-blue-50 text-blue-600 border-blue-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Elektroinstalacije',
@@ -41,7 +41,7 @@ const categories = [
     icon: Zap,
     description: 'Rasvjeta, struja, automatske sklopke',
     count: 540,
-    color: 'bg-yellow-50 text-yellow-600 border-yellow-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Slikanje',
@@ -49,7 +49,7 @@ const categories = [
     icon: Paintbrush,
     description: 'Slikanje zidova, fasada, dekorativno slikanje',
     count: 480,
-    color: 'bg-purple-50 text-purple-600 border-purple-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Krovopokrivanje',
@@ -57,7 +57,7 @@ const categories = [
     icon: Home,
     description: 'Izrada i popravke krovova, oluci, hidroizolacija',
     count: 390,
-    color: 'bg-red-50 text-red-600 border-red-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Tilerski radovi',
@@ -65,7 +65,7 @@ const categories = [
     icon: Hammer,
     description: 'Postavljanje keramike, laminata, parketa',
     count: 420,
-    color: 'bg-teal-50 text-teal-600 border-teal-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Vrtlarstvo',
@@ -73,7 +73,7 @@ const categories = [
     icon: TreePine,
     description: 'Održavanje bašta, sadnja, uređenje okoliša',
     count: 350,
-    color: 'bg-green-50 text-green-600 border-green-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Adaptacije',
@@ -81,7 +81,7 @@ const categories = [
     icon: Home,
     description: 'Kompletne adaptacije stanova i kuća',
     count: 720,
-    color: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Demoliranje',
@@ -89,7 +89,7 @@ const categories = [
     icon: Shovel,
     description: 'Rušenje, odvoz šuta, čišćenje gradilišta',
     count: 180,
-    color: 'bg-gray-50 text-gray-600 border-gray-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Grijanje i hlađenje',
@@ -97,7 +97,7 @@ const categories = [
     icon: Thermometer,
     description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
     count: 310,
-    color: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Izolacija',
@@ -105,7 +105,7 @@ const categories = [
     icon: Shield,
     description: 'Termo izolacija, zvučna izolacija, hidroizolacija',
     count: 280,
-    color: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
   {
     name: 'Stolarija',
@@ -113,7 +113,7 @@ const categories = [
     icon: Wind,
     description: 'Prozori, vrata, namještaj po mjeri',
     count: 260,
-    color: 'bg-amber-50 text-amber-600 border-amber-200',
+    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
   },
 ];
 
@@ -123,10 +123,11 @@ export default function CategoriesPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="bg-gradient-to-r from-primary-600 to-primary-800 py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+        <section className="relative bg-gradient-hero py-16 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-bold text-white mb-4">Kategorije usluga</h1>
-            <p className="text-lg text-blue-100 max-w-2xl mx-auto">
+            <p className="text-lg text-white/60 max-w-2xl mx-auto">
               Pronađite majstore za sve vrste građevinskih i zanatskih radova u Bosni i Hercegovini
             </p>
           </div>
@@ -140,18 +141,18 @@ export default function CategoriesPage() {
                 <Link
                   key={category.slug}
                   href={`/kategorija/${category.slug}`}
-                  className={`card-hover border-2 ${category.color} group`}
+                  className={`card-hover rounded-2xl p-6 border-2 ${category.color} group transition-all duration-300 hover:shadow-xl`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-white shadow-sm flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <category.icon className="w-7 h-7" />
+                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <category.icon className="w-7 h-7 text-brand-orange" />
                     </div>
                     <div className="flex-1">
-                      <h2 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
+                      <h2 className="text-lg font-semibold text-ink mb-1 group-hover:text-brand-orange transition-colors">
                         {category.name}
                       </h2>
-                      <p className="text-sm text-gray-600 mb-2">{category.description}</p>
-                      <p className="text-sm font-medium text-primary-600">{category.count} firmi</p>
+                      <p className="text-sm text-steel mb-2">{category.description}</p>
+                      <p className="text-sm font-medium text-brand-orange">{category.count} firmi</p>
                     </div>
                   </div>
                 </Link>
@@ -161,10 +162,10 @@ export default function CategoriesPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Ne pronalazite traženu kategoriju?</h2>
-            <p className="text-gray-600 mb-6">Objavite projekat i opišite šta vam je potrebno. Majstori će vam se javiti sa ponudama.</p>
+            <h2 className="text-2xl font-bold text-ink mb-4">Ne pronalazite traženu kategoriju?</h2>
+            <p className="text-steel mb-6">Objavite projekat i opišite šta vam je potrebno. Majstori će vam se javiti sa ponudama.</p>
             <Link href="/objavi-projekat" className="btn-primary">
               Objavi projekat
             </Link>

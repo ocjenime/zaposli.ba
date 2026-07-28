@@ -62,7 +62,7 @@ export default function PostProjectPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow py-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">

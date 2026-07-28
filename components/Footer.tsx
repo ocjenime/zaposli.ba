@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Facebook, Instagram, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import Logo from '@/components/Logo';
 
 const footerLinks = {
   'Za kupce': [
@@ -30,17 +31,12 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-950 text-white">
+    <footer className="bg-ink text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5 mb-5">
-              <div className="w-10 h-10 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-lg">Z</span>
-              </div>
-              <span className="text-xl font-extrabold">
-                Zaposli<span className="text-brand-orange">.ba</span>
-              </span>
+            <Link href="/" className="inline-flex items-center mb-5">
+              <Logo variant="light" />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Platforma koja spaja kupce sa građevinskim firmama i zanatlijama u Bosni i Hercegovini.
