@@ -1,58 +1,7 @@
 import { Star, MapPin, BadgeCheck } from 'lucide-react';
 import Link from 'next/link';
 
-const workers = [
-  {
-    name: 'Edin Kovačević',
-    specialty: 'Vodoinstalater',
-    rating: 4.9,
-    reviews: 127,
-    location: 'Sarajevo',
-    verified: true,
-    projects: 340,
-    initial: 'EK',
-  },
-  {
-    name: 'Nikola Begić',
-    specialty: 'Električar',
-    rating: 4.8,
-    reviews: 98,
-    location: 'Banja Luka',
-    verified: true,
-    projects: 215,
-    initial: 'NB',
-  },
-  {
-    name: 'Samir Hasković',
-    specialty: 'Keramičar',
-    rating: 5.0,
-    reviews: 203,
-    location: 'Tuzla',
-    verified: true,
-    projects: 480,
-    initial: 'SH',
-  },
-  {
-    name: 'Mirza Delalić',
-    specialty: 'Fasader',
-    rating: 4.7,
-    reviews: 85,
-    location: 'Mostar',
-    verified: true,
-    projects: 190,
-    initial: 'MD',
-  },
-  {
-    name: 'Ante Milić',
-    specialty: 'Krovopokrivač',
-    rating: 4.9,
-    reviews: 156,
-    location: 'Zenica',
-    verified: true,
-    projects: 310,
-    initial: 'AM',
-  },
-];
+import { workers } from '@/lib/data';
 
 export default function FeaturedWorkers() {
   return (
@@ -75,9 +24,10 @@ export default function FeaturedWorkers() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
           {workers.map((worker) => (
-            <div
+            <Link
               key={worker.name}
-              className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+              href={`/firma/${worker.id}/`}
+              className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
             >
               <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                 {worker.initial}
@@ -101,7 +51,7 @@ export default function FeaturedWorkers() {
                 <BadgeCheck className="w-3 h-3" />
                 <span className="font-medium">{worker.projects} projekata</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

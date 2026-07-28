@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strateški okvir — zaposli.ba</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F97316;
+    --orange-dark: #EA580C;
+    --ink: #021117;
+    --steel: #687280;
+    --mist: #E5E7EB;
+    --cloud: #F0FAFC;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    background: var(--cloud);
+    color: var(--ink);
+    line-height: 1.65;
+    padding-bottom: 80px;
+  }
+  .topbar {
+    background: var(--ink);
+    color: #fff;
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .topbar svg { width: 40px; height: 44px; }
+  .topbar .word { font-size: 24px; font-weight: 800; }
+  .topbar .word span { color: var(--orange); }
+  .topbar .doc {
+    margin-left: auto;
+    font-size: 13px;
+    color: rgba(255,255,255,.55);
+    font-weight: 500;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 24px 0; }
+  h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .meta { color: var(--steel); font-size: 14px; margin-bottom: 40px; }
+  .meta b { color: var(--orange-dark); }
+  h2 {
+    font-size: 20px; font-weight: 800; margin: 44px 0 16px;
+    padding-left: 14px; border-left: 4px solid var(--orange);
+    letter-spacing: -0.01em;
+  }
+  h3 { font-size: 16px; font-weight: 700; margin: 24px 0 8px; }
+  p { margin-bottom: 12px; color: #1f2d33; }
+  .vp {
+    background: #fff; border: 1px solid var(--mist); border-radius: 16px;
+    padding: 20px 24px; margin: 12px 0;
+  }
+  .vp .label {
+    font-size: 11px; font-weight: 800; letter-spacing: .12em;
+    color: var(--orange); text-transform: uppercase; margin-bottom: 6px;
+  }
+  .vp p { font-size: 17px; font-weight: 600; margin: 0; }
+  .why { font-size: 14px; color: var(--steel); margin-top: 10px; font-style: italic; }
+  table {
+    width: 100%; border-collapse: collapse; margin: 14px 0;
+    background: #fff; border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--mist); font-size: 14px;
+  }
+  th {
+    background: var(--ink); color: #fff; text-align: left;
+    padding: 12px 14px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  }
+  td { padding: 12px 14px; border-top: 1px solid var(--mist); vertical-align: top; }
+  tr:nth-child(even) td { background: #fafcfd; }
+  td b { color: var(--ink); }
+  .insight {
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    color: #fff; border-radius: 16px; padding: 24px 28px; margin: 20px 0;
+  }
+  .insight .label { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; opacity: .85; margin-bottom: 8px; }
+  .insight p { color: #fff; font-size: 17px; font-weight: 600; margin: 0; }
+  .persona {
+    background: #fff; border: 1px solid var(--mist); border-radius: 16px;
+    padding: 22px 26px; margin: 14px 0;
+  }
+  .persona h3 { margin-top: 0; font-size: 17px; }
+  .persona h3 .tag {
+    display: inline-block; background: var(--cloud); color: var(--orange-dark);
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
+    margin-left: 8px; vertical-align: middle;
+  }
+  .persona ul { margin: 8px 0 0 20px; font-size: 14px; color: #1f2d33; }
+  .persona li { margin-bottom: 4px; }
+  ol.decisions { margin: 10px 0 0 22px; }
+  ol.decisions li { margin-bottom: 14px; }
+  ol.decisions b { color: var(--ink); }
+  .five-s {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 16px 0;
+  }
+  .five-s .card {
+    background: #fff; border: 1px solid var(--mist); border-radius: 14px; padding: 18px;
+  }
+  .five-s .num {
+    width: 30px; height: 30px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    color: #fff; font-weight: 800; font-size: 14px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
+  }
+  .five-s .card b { display: block; font-size: 14px; margin-bottom: 4px; }
+  .five-s .card span { font-size: 13px; color: var(--steel); }
+  .footer-note {
+    margin-top: 56px; padding: 20px 24px; background: var(--ink); color: rgba(255,255,255,.75);
+    border-radius: 14px; font-size: 14px;
+  }
+  .footer-note b { color: var(--orange); }
+  @media (max-width: 700px) {
+    .five-s { grid-template-columns: 1fr; }
+    .topbar { padding: 20px; }
+    h1 { font-size: 26px; }
+    table { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg viewBox="0 0 48 52" fill="none">
+    <path d="M24 3C14.6 3 7 10.6 7 20c0 12.2 17 25 17 25s17-12.8 17-25C41 10.6 33.4 3 24 3Z" fill="#F97316"/>
+    <g transform="rotate(-45 24 20)">
+      <rect x="22" y="11" width="4" height="19" rx="2" fill="#fff"/>
+      <rect x="24" y="5.5" width="8.5" height="9" rx="2.4" fill="#fff"/>
+      <path d="M24 5.5h-4.2c-3.6 0-6.8 2.4-7.8 5.8l-.5 1.7c-.2.8.6 1.5 1.4 1.2l11.1-4.2V5.5Z" fill="#fff"/>
+    </g>
+    <ellipse cx="24" cy="49.5" rx="7.5" ry="2" fill="#021117" opacity="0.18"/>
+  </svg>
+  <div class="word">zaposli<span>.ba</span></div>
+  <div class="doc">STRATEŠKI OKVIR · TOČKA 1 · v1.0</div>
+</div>
+
+<div class="wrap">
+  <h1>Strateški okvir</h1>
+  <div class="meta">Status: <b>odobreno od klijenta</b> · Brend: finalan · Backend: Firebase · Prioritet: objavljeni projekti (demand) · Domena: github.io</div>
+
+  <h2>1.1 Pozicioniranje i value proposition</h2>
+
+  <div class="vp">
+    <div class="label">Za kupca</div>
+    <p>Zaposli.ba je najbrži i najsigurniji način da nađete provjerenog majstora u BiH — besplatno objavite projekat i birajte između ponuda firmi čije su kvalitet i cijene potvrdili stvarni kupci, ne sreća.</p>
+  </div>
+  <div class="vp">
+    <div class="label">Za firmu</div>
+    <p>Zaposli.ba vam dovodi ozbiljne projekte s definisanim budžetom — bez ulaganja u marketing, bez hladnih poziva; plaćate samo kada rastete.</p>
+  </div>
+  <p class="why">Zašto dvije poruke: kupac se boji prevare, firma se boji bacanja novca. Jedna rečenica ne može riješiti oba straha. Glavni konkurent nije druga platforma nego preporuka ("znam čovjeka") — pobjeđujemo tako što reproduciramo sigurnost preporuke, a dodajemo izbor i transparentnost.</p>
+
+  <h2>1.2 Konkurentske alternative (što kupac STVARNO radi danas)</h2>
+  <table>
+    <tr><th>Alternativa</th><th>Što rade dobro</th><th>Gdje gube</th><th>Naša prilika</th></tr>
+    <tr><td><b>Preporuka</b> ("znam čovjeka")</td><td>Povjerenje kroz poznanstvo</td><td>Nema izbora, nema cijene, "zauzet do marta"</td><td>Ista sigurnost + izbor + slobodan termin</td></tr>
+    <tr><td><b>Facebook grupe</b></td><td>Brzina, puno odgovora</td><td>Nula verifikacije, haos, prevare</td><td>Strukturirane ponude + verifikacija</td></tr>
+    <tr><td><b>OLX.ba / pik.ba</b></td><td>Velika publika</td><td>Anonimni oglasi, zove se jedan po jedan</td><td>Jedna objava → više ponuda</td></tr>
+    <tr><td><b>Regionalne platforme</b></td><td>Fokus na zanatlije</td><td>Mrtve baze, slab UX, plaćanje unaprijed</td><td>Besplatno za kupce + živa baza</td></tr>
+    <tr><td><b>Google direktno</b></td><td>Recenzije postoje</td><td>Nema usporedbe, zvanje jednog po jednog</td><td>Agregacija + standardizirana usporedba</td></tr>
+  </table>
+
+  <div class="insight">
+    <div class="label">Ključni insight — diferencijacija</div>
+    <p>Niko na tržištu ne odgovara na "Koliko bi ovo trebalo koštati?" Strah od prevare je u osnovi strah od nepoznavanja fer cijene. Naši budžeti u KM na karticama projekata nisu samo podatak — to je brend: <b>"Kod nas znaš koliko košta prije nego iko pokuca na vrata."</b></p>
+  </div>
+
+  <h2>1.3 Persone</h2>
+
+  <div class="persona">
+    <h3>Amela, 41 — Sarajevo <span class="tag">vlasnica stana · renovira</span></h3>
+    <ul>
+      <li><b>JTBD:</b> "Hoću kupatilo gotovo bez da me iko prevari ili da jurim majstore telefonom."</li>
+      <li><b>Frustracije:</b> prevara ("uzeo avans i nestao"), ne zna koliko šta košta, majstori koji ne dolaze.</li>
+      <li><b>Ponašanje:</b> mobitel, navečer; Google + FB grupe + prijatelji. Sumnjičava: "svi su isti".</li>
+      <li><b>Uvjerava je:</b> recenzije s fotografijama, verifikacijski badge, vidljiv budžet, brz odgovor.</li>
+    </ul>
+  </div>
+
+  <div class="persona">
+    <h3>Marko, 38 — Banja Luka <span class="tag">investitor · 4–6 projekata godišnje</span></h3>
+    <ul>
+      <li><b>JTBD:</b> "Trebam izvođače na brzinu, svaki put, bez traženja ispočetka."</li>
+      <li><b>Frustracije:</b> neuporedive ponude, gubljenje vremena na obilaske, nestručnost.</li>
+      <li><b>Ponašanje:</b> desktop + mobitel, racionalan, tabelarno uspoređuje.</li>
+      <li><b>Uvjerava ga:</b> standardizirana ponuda (cijena / rok / ocjena / garancija), istorija firmi.</li>
+    </ul>
+  </div>
+
+  <div class="persona">
+    <h3>Senad, 47 — Tuzla <span class="tag">vlasnik firme · 4 radnika</span></h3>
+    <ul>
+      <li><b>JTBD:</b> "Hoću kontinuitet poslova bez reklama koje ne rade."</li>
+      <li><b>Frustracije:</b> sezonske rupe, nelikvidni kupci, "internetu ne vjeruje" — ali konkurencija raste online.</li>
+      <li><b>Ponašanje:</b> mobitel na gradilištu, ne čita duge tekstove, Viber logika.</li>
+      <li><b>Uvjerava ga:</b> besplatan start, odmah vidi projekte u svojoj kategoriji i gradu.</li>
+    </ul>
+  </div>
+
+  <h2>1.4 User journey — kupac (primarni)</h2>
+  <table>
+    <tr><th>Faza</th><th>Kupac osjeća</th><th>Trenje</th><th>Kako ga uklanjamo</th><th>Metrika</th></tr>
+    <tr><td><b>Dolazak</b></td><td>"Je li ovo za mene?"</td><td>Nejasna ponuda</td><td>Odgovor u 5 sekundi (vidi 1.5)</td><td>Bounce</td></tr>
+    <tr><td><b>Objava</b></td><td>"Hoće li me zvati 50 ljudi?"</td><td>Preduga forma, strah od spama</td><td>Multistep 2 min, kontakt na kraju, obećanje o privatnosti</td><td>Završene objave (&gt;35%)</td></tr>
+    <tr><td><b>Čekanje</b></td><td>Nelagoda</td><td>Tišina nakon objave</td><td>"Prve ponude obično u 24h" + notifikacije</td><td>Prva ponuda (&lt;24h)</td></tr>
+    <tr><td><b>Usporedba</b></td><td>"Kako da uporedim?"</td><td>Svaka ponuda u svom formatu</td><td>Standardizirana tabela ponuda</td><td>≥3 ponude/projekat</td></tr>
+    <tr><td><b>Odabir</b></td><td>Strah od greške</td><td>Nepoznata firma</td><td>Recenzije s fotografijama, badge, garancije</td><td>Stopa odabira</td></tr>
+    <tr><td><b>Recenzija</b></td><td>"Želim reći drugima"</td><td>Komplikovano</td><td>1-klik ocjena + foto, podsjetnik</td><td>&gt;40% s recenzijom</td></tr>
+  </table>
+  <p class="why">Journey firme: vidi stvarne projekte u svojoj kategoriji PRIJE registracije → besplatan start → profil (portfolio = prodavnica) → prva ponuda → recenzije rastu → premium kad vidi ROI. Vrijednost uvijek prije paywalla.</p>
+
+  <h2>1.5 Hijerarhija poruke — prvih 5 sekundi</h2>
+  <div class="five-s">
+    <div class="card"><div class="num">1</div><b>Šta je ovo</b><span>"Pronađite majstora za vaš projekat" — kategorija jasna odmah</span></div>
+    <div class="card"><div class="num">2</div><b>Bez rizika</b><span>"Besplatno objavite → primate ponude od provjerenih firmi"</span></div>
+    <div class="card"><div class="num">3</div><b>Zašto vjerovati</b><span>"2,800+ verificiranih firmi · 4.8 ocjena · 25,000+ projekata"</span></div>
+  </div>
+
+  <h2>1.6 Ključne strateške odluke</h2>
+  <ol class="decisions">
+    <li><b>"Objavi projekat besplatno" je jedini primarni CTA stranice.</b> Firme dolaze tamo gdje ima posla; svaki objavljeni projekat je i SEO sadržaj. "Za firme" živi u navigaciji — nikad kao vizuelni konkurent CTA-u.</li>
+    <li><b>Diferencijacija = transparentnost cijene + verifikacija.</b> Budžeti u KM vidljivi svugdje; "PROVJERENI MAJSTOR" badge je dizajn-sistemski element.</li>
+    <li><b>Povjerenje je sistem, ne stranica.</b> Trust signali ugrađeni u svaku komponentu, ne zakopani u "Kako radi".</li>
+    <li><b>Firebase uz statički frontend.</b> Auth + Firestore + Storage; SEO sadržaj statički pri buildu (SSG), dinamika client-side. Zadržavamo &lt;2s i besplatan hosting.</li>
+    <li><b>Jezik: dosljedan bosanski.</b> Svako stanje, greška i prazan prikaz — bez engleskih pozajmica.</li>
+  </ol>
+
+  <h2>1.7 KPI i definicija uspjeha (6 mjeseci)</h2>
+  <table>
+    <tr><th>KPI</th><th>Bazna linija</th><th>Cilj</th></tr>
+    <tr><td>Stopa završenih objava (započeta → završena forma)</td><td>mjeriti</td><td><b>&gt;35%</b></td></tr>
+    <tr><td>Vrijeme do prve ponude</td><td>mjeriti</td><td><b>&lt;24h</b></td></tr>
+    <tr><td>Ponuda po projektu</td><td>mjeriti</td><td><b>≥3</b></td></tr>
+    <tr><td>CTR primarnog CTA (hero)</td><td>mjeriti</td><td><b>+20%</b></td></tr>
+    <tr><td>% projekata s recenzijom</td><td>mjeriti</td><td><b>&gt;40%</b></td></tr>
+    <tr><td>Organski promet ("majstor/kategorija + grad")</td><td>mjeriti</td><td><b>rast m/m</b></td></tr>
+  </table>
+
+  <div class="footer-note">
+    Sljedeće: <b>Točka 2</b> — Sitemap + programmatic SEO struktura + wireframes (na odobrenje). Brend reference: <b>strategy/brand-board.png</b>.
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,129 +1,26 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import {
-  Hammer,
-  Wrench,
-  Paintbrush,
-  Zap,
-  Droplets,
-  TreePine,
-  Home,
-  BrickWall,
-  Shovel,
-  Thermometer,
-  Wind,
-  Sun,
-  Shield,
-  Building,
-} from 'lucide-react';
+import type { Metadata } from 'next';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { categories } from '@/lib/data';
+import { site } from '@/lib/site';
 
-const categories = [
-  {
-    name: 'Građevinarstvo',
-    slug: 'gradjevinarstvo',
-    icon: BrickWall,
-    description: 'Temelji, konstrukcije, zidarski radovi, betoniranje',
-    count: 850,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Vodoinstalacije',
-    slug: 'vodoinstalacije',
-    icon: Droplets,
-    description: 'Instalacije vode, kanalizacije, sanitarije',
-    count: 620,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Elektroinstalacije',
-    slug: 'elektroinstalacije',
-    icon: Zap,
-    description: 'Rasvjeta, struja, automatske sklopke',
-    count: 540,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Slikanje',
-    slug: 'slikanje',
-    icon: Paintbrush,
-    description: 'Slikanje zidova, fasada, dekorativno slikanje',
-    count: 480,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Krovopokrivanje',
-    slug: 'krovopokrivanje',
-    icon: Home,
-    description: 'Izrada i popravke krovova, oluci, hidroizolacija',
-    count: 390,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Tilerski radovi',
-    slug: 'tilerski-radovi',
-    icon: Hammer,
-    description: 'Postavljanje keramike, laminata, parketa',
-    count: 420,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Vrtlarstvo',
-    slug: 'vrtlarstvo',
-    icon: TreePine,
-    description: 'Održavanje bašta, sadnja, uređenje okoliša',
-    count: 350,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Adaptacije',
-    slug: 'adaptacije',
-    icon: Home,
-    description: 'Kompletne adaptacije stanova i kuća',
-    count: 720,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Demoliranje',
-    slug: 'demoliranje',
-    icon: Shovel,
-    description: 'Rušenje, odvoz šuta, čišćenje gradilišta',
-    count: 180,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Grijanje i hlađenje',
-    slug: 'grijanje-i-hladjenje',
-    icon: Thermometer,
-    description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
-    count: 310,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Izolacija',
-    slug: 'izolacija',
-    icon: Shield,
-    description: 'Termo izolacija, zvučna izolacija, hidroizolacija',
-    count: 280,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-  {
-    name: 'Stolarija',
-    slug: 'stolarija',
-    icon: Wind,
-    description: 'Prozori, vrata, namještaj po mjeri',
-    count: 260,
-    color: 'bg-white text-ink border-gray-100 hover:border-brand-orange/40',
-  },
-];
+export const metadata: Metadata = {
+  title: 'Kategorije usluga — pronađite majstore | Zaposli.ba',
+  description: 'Pronađite majstore za sve vrste građevinskih i zanatskih radova u Bosni i Hercegovini — 13 kategorija, 2,800+ provjerenih firmi.',
+  alternates: { canonical: `${site.url}/kategorije/` },
+};
 
 export default function CategoriesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
+        <Breadcrumbs items={[{ name: 'Kategorije' }]} />
+
         {/* Hero */}
-        <section className="relative bg-gradient-hero py-16 overflow-hidden">
+        <section className="relative bg-gradient-hero py-14 md:py-20 overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-bold text-white mb-4">Kategorije usluga</h1>
@@ -140,8 +37,8 @@ export default function CategoriesPage() {
               {categories.map((category) => (
                 <Link
                   key={category.slug}
-                  href={`/kategorija/${category.slug}`}
-                  className={`card-hover rounded-2xl p-6 border-2 ${category.color} group transition-all duration-300 hover:shadow-xl`}
+                  href={`/kategorije/${category.slug}/`}
+                  className="rounded-2xl p-6 border-2 bg-white text-ink border-gray-100 hover:border-brand-orange/40 group transition-all duration-300 hover:shadow-xl"
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -166,7 +63,7 @@ export default function CategoriesPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl font-bold text-ink mb-4">Ne pronalazite traženu kategoriju?</h2>
             <p className="text-steel mb-6">Objavite projekat i opišite šta vam je potrebno. Majstori će vam se javiti sa ponudama.</p>
-            <Link href="/objavi-projekat" className="btn-primary">
+            <Link href="/objavi-projekat/" className="btn-primary">
               Objavi projekat
             </Link>
           </div>

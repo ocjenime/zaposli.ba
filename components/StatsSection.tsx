@@ -1,4 +1,5 @@
 import { Users, Building2, Star, CheckCircle, Shield, CreditCard, MessageSquare } from 'lucide-react';
+import Counter from '@/components/ui/Counter';
 
 const stats = [
   {
@@ -65,7 +66,9 @@ export default function StatsSection() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
                 <stat.icon className="w-7 h-7 text-brand-orange" />
               </div>
-              <div className="text-3xl md:text-4xl font-extrabold text-ink mb-1">{stat.value}</div>
+              <div className="text-3xl md:text-4xl font-extrabold text-ink mb-1">
+                <Counter value={stat.value} />
+              </div>
               <div className="text-sm text-steel">{stat.label}</div>
             </div>
           ))}

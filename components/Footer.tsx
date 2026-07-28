@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Facebook, Instagram, Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
 
 const footerLinks = {
@@ -7,25 +7,25 @@ const footerLinks = {
     { name: 'Kako radi', href: '/kako-radi/' },
     { name: 'Objavi projekat', href: '/objavi-projekat/' },
     { name: 'Pronađi firmu', href: '/kategorije/' },
-    { name: 'Savjeti', href: '/' },
+    { name: 'Savjeti', href: '/savjeti/' },
   ],
   'Za firme': [
     { name: 'Registracija', href: '/registracija/' },
     { name: 'Premium paketi', href: '/za-firme/' },
-    { name: 'Uspjeh na platformi', href: '/' },
-    { name: 'Podrška', href: '/' },
+    { name: 'Aktivni projekti', href: '/projekti/' },
+    { name: 'Podrška (FAQ)', href: '/faq/' },
   ],
   'O nama': [
-    { name: 'O platformi', href: '/' },
-    { name: 'Kontakt', href: '/' },
-    { name: 'Uslovi korištenja', href: '/' },
-    { name: 'Privacy policy', href: '/' },
+    { name: 'O platformi', href: '/o-nama/' },
+    { name: 'Kontakt', href: '/kontakt/' },
+    { name: 'Uslovi korištenja', href: '/uslovi-koristenja/' },
+    { name: 'Privacy policy', href: '/privacy/' },
   ],
   'Gradovi': [
-    { name: 'Sarajevo', href: '/kategorije/' },
-    { name: 'Banja Luka', href: '/kategorije/' },
-    { name: 'Tuzla', href: '/kategorije/' },
-    { name: 'Mostar', href: '/kategorije/' },
+    { name: 'Sarajevo', href: '/usluge/vodoinstalater-sarajevo/' },
+    { name: 'Banja Luka', href: '/usluge/vodoinstalater-banja-luka/' },
+    { name: 'Tuzla', href: '/usluge/keramicar-tuzla/' },
+    { name: 'Mostar', href: '/usluge/izolacija-fasade-mostar/' },
   ],
 };
 
@@ -41,14 +41,9 @@ export default function Footer() {
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               Platforma koja spaja kupce sa građevinskim firmama i zanatlijama u Bosni i Hercegovini.
             </p>
-            <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 bg-white/5 hover:bg-brand-orange/20 rounded-xl flex items-center justify-center text-gray-400 hover:text-brand-orange transition-all">
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-9 h-9 bg-white/5 hover:bg-brand-orange/20 rounded-xl flex items-center justify-center text-gray-400 hover:text-brand-orange transition-all">
-                <Instagram className="w-4 h-4" />
-              </a>
-            </div>
+            <p className="text-brand-orange text-sm font-semibold italic">
+              Majstor na pravom mjestu. Kad ti treba.
+            </p>
           </div>
 
           {Object.entries(footerLinks).map(([category, links]) => (

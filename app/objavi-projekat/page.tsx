@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Upload, X, MapPin, Calendar, DollarSign, ChevronRight } from 'lucide-react';
@@ -54,12 +55,64 @@ export default function PostProjectPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Here you would typically send the data to your API
     console.log('Project submitted:', formData);
-    alert('Projekat je uspješno objavljen! (Demo)');
+    setSubmitted(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  if (submitted) {
+    return (
+      <div className="min-h-screen flex flex-col bg-cloud">
+        <Header />
+        <main className="flex-grow flex items-center justify-center py-20 px-4">
+          <div className="w-full max-w-lg text-center">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-orange/25 animate-fade-in">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-extrabold text-ink mb-3">Projekat je objavljen!</h1>
+            <p className="text-steel mb-8 leading-relaxed">
+              Vaš projekat <b className="text-ink">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
+              Prve ponude obično stižu u roku od <b className="text-ink">24 sata</b> — javimo vam emailom čim stignu.
+            </p>
+            <div className="bg-white rounded-2xl p-6 border border-gray-100 mb-8 text-left">
+              <h2 className="font-bold text-ink mb-4 text-sm uppercase tracking-wider">Šta se dešava dalje?</h2>
+              <div className="space-y-4">
+                {[
+                  { n: '1', text: 'Firme iz vaše kategorije i grada dobijaju notifikaciju o projektu' },
+                  { n: '2', text: 'Primate ponude s cijenama i rokovima — obično 3–8 ponuda' },
+                  { n: '3', text: 'Uporedite ponude, pročitajte recenzije i odaberite majstora' },
+                ].map((s) => (
+                  <div key={s.n} className="flex items-start gap-3">
+                    <span className="w-6 h-6 rounded-full bg-primary-50 text-brand-orange font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                      {s.n}
+                    </span>
+                    <p className="text-steel text-sm">{s.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link href="/projekti/" className="btn-secondary">Pogledajte aktivne projekte</Link>
+              <button
+                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMin: '', budgetMax: '', deadline: '', images: [] }); }}
+                className="btn-primary"
+              >
+                Objavite još jedan projekat
+              </button>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-cloud">

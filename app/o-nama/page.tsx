@@ -1,0 +1,171 @@
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import PageHero from '@/components/ui/PageHero';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import Link from 'next/link';
+import { ShieldCheck, MapPin, ThumbsUp, MessageSquare, Lock } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'O nama — Zaposli.ba',
+  description:
+    'Zaposli.ba je platforma koja spaja kupce i provjerene građevinske firme u BiH. Saznajte kako je sve počelo i koje vrijednosti nas vode.',
+  alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/o-nama/' },
+};
+
+const stats = [
+  { value: '2.800+', label: 'verificiranih firmi' },
+  { value: '12.500+', label: 'registrovanih kupaca' },
+  { value: '4,8', label: 'prosječna ocjena firmi' },
+  { value: '25.000+', label: 'realiziranih projekata' },
+];
+
+const values = [
+  {
+    icon: ShieldCheck,
+    title: 'Provjereno',
+    description:
+      'Svaka firma prolazi provjeru registracije, identiteta i referenci prije nego što se pojavi na platformi.',
+  },
+  {
+    icon: MapPin,
+    title: 'Lokalno',
+    description:
+      'Radimo isključivo sa firmama i majstorima iz Bosne i Hercegovine — podržavamo lokalnu ekonomiju.',
+  },
+  {
+    icon: ThumbsUp,
+    title: 'Preporučeno',
+    description:
+      'Ocjene i recenzije pišu isključivo stvarni kupci kojima je firma radila projekat preko platforme.',
+  },
+  {
+    icon: MessageSquare,
+    title: 'Brza komunikacija',
+    description:
+      'Direktan kontakt sa firmama kroz platformu — bez čekanja, bez posrednika, bez skrivenih brojeva.',
+  },
+  {
+    icon: Lock,
+    title: 'Sigurno',
+    description:
+      'Vaši podaci su zaštićeni, a kontakt informacije dijelimo samo uz vaše odobrenje.',
+  },
+];
+
+export default function ONamaPage() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-grow">
+        <Breadcrumbs items={[{ name: 'O nama' }]} />
+        <PageHero
+          title="O nama"
+          subtitle="Platforma koja spaja kupce i provjerene građevinske firme u Bosni i Hercegovini"
+        />
+
+        {/* Misija */}
+        <section className="py-16">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl font-bold text-ink mb-6">Naša misija</h2>
+            <p className="text-lg text-steel leading-relaxed">
+              Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
+              kupce i provjerene građevinske firme u BiH na jednom mjestu — kupac besplatno objavi
+              projekat, a provjerene firme se javljaju sa svojim ponudama. Transparentno, brzo i
+              bez posrednika koji uzimaju procenat.
+            </p>
+          </div>
+        </section>
+
+        {/* Statistike */}
+        <section className="pb-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="bg-white rounded-2xl border border-gray-100 p-6 text-center shadow-card"
+                >
+                  <div className="text-3xl md:text-4xl font-extrabold text-brand-orange mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-steel">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Kako je sve počelo */}
+        <section className="py-16 bg-cloud">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-ink mb-8 text-center">Kako je sve počelo</h2>
+            <div className="space-y-5 text-steel leading-relaxed">
+              <p>
+                Zaposli.ba je nastao u Sarajevu 2023. godine, iz sasvim lične frustracije. Naš
+                osnivač je renovirao stan i shvatio da je pronalaženje pouzdanog majstora bilo teže
+                od same adaptacije — preporuke preko poznanika, brojevi upisani na papir, majstori
+                koji se ne pojave na dogovoreni termin i cijene koje se mijenjaju iz dana u dan.
+              </p>
+              <p>
+                Znali smo da problem nije u majstorima — BiH je puna vrhunskih zanatlija i
+                građevinskih firmi koje rade kvalitetno i pošteno. Problem je bio u tome što ih je
+                bilo gotovo nemoguće pronaći, uporediti i provjeriti. Informacije su bile razbacane
+                po oglasima, društvenim mrežama i usmenim preporukama.
+              </p>
+              <p>
+                Tako je rođena ideja: jedna platforma na kojoj kupac opiše šta mu treba, a
+                provjerene firme se jave sa ponudama. Danas Zaposli.ba koriste hiljade kupaca
+                širom Bosne i Hercegovine, a naš cilj ostaje isti — da svaki projekat, od zamjene
+                slavine do kompletne adaptacije, počne sa pravim majstorom.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Vrijednosti */}
+        <section className="py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-ink mb-12 text-center">Vrijednosti koje nas vode</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
+              {values.map((value) => (
+                <div
+                  key={value.title}
+                  className="bg-white rounded-2xl border border-gray-100 p-6 shadow-card text-center"
+                >
+                  <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <value.icon className="w-6 h-6 text-brand-orange" />
+                  </div>
+                  <h3 className="font-bold text-ink mb-2">{value.title}</h3>
+                  <p className="text-sm text-steel leading-relaxed">{value.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="pb-20">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-gradient-hero rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
+              <div className="relative">
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                  Spremni za vaš sljedeći projekat?
+                </h2>
+                <p className="text-white/60 mb-8 max-w-lg mx-auto">
+                  Objavite projekat besplatno i primite ponude od provjerenih firmi — obično u roku
+                  od 24 sata.
+                </p>
+                <Link href="/objavi-projekat/" className="btn-primary text-lg">
+                  Objavi projekat besplatno
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}

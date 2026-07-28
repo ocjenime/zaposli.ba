@@ -1,0 +1,319 @@
+import {
+  BrickWall, Droplets, Zap, Paintbrush, Home, Hammer, TreePine,
+  Shovel, Thermometer, Shield, Wind, Sparkles, type LucideIcon,
+} from 'lucide-react';
+
+/* ---------------------------------- KATEGORIJE ---------------------------------- */
+
+export interface Category {
+  name: string;
+  slug: string;
+  seoSlug: string;        // za /usluge/[seoSlug]-[grad]
+  profession: string;     // "Vodoinstalater"
+  icon: LucideIcon;
+  description: string;
+  count: number;
+  priceRange: string;
+  priceNote: string;
+}
+
+export const categories: Category[] = [
+  {
+    name: 'Građevinarstvo', slug: 'gradjevinarstvo', seoSlug: 'gradjevinske-firme',
+    profession: 'Građevinske firme', icon: BrickWall,
+    description: 'Temelji, konstrukcije, zidarski radovi, betoniranje',
+    count: 850, priceRange: '45 – 90 KM/m²', priceNote: 'zavisno od vrste radova',
+  },
+  {
+    name: 'Vodoinstalacije', slug: 'vodoinstalacije', seoSlug: 'vodoinstalater',
+    profession: 'Vodoinstalater', icon: Droplets,
+    description: 'Instalacije vode, kanalizacije, sanitarije',
+    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po projektu',
+  },
+  {
+    name: 'Elektroinstalacije', slug: 'elektroinstalacije', seoSlug: 'elektricar',
+    profession: 'Električar', icon: Zap,
+    description: 'Rasvjeta, struja, automatske sklopke',
+    count: 540, priceRange: '30 – 60 KM/h', priceNote: 'ili po tački',
+  },
+  {
+    name: 'Slikanje', slug: 'slikanje', seoSlug: 'soboslikar',
+    profession: 'Soboslikar', icon: Paintbrush,
+    description: 'Slikanje zidova, fasada, dekorativno slikanje',
+    count: 480, priceRange: '4 – 9 KM/m²', priceNote: 'sa ili bez materijala',
+  },
+  {
+    name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
+    profession: 'Krovopokrivač', icon: Home,
+    description: 'Izrada i popravke krovova, oluci, hidroizolacija',
+    count: 390, priceRange: '25 – 55 KM/m²', priceNote: 'zavisno od pokrivača',
+  },
+  {
+    name: 'Tilerski radovi', slug: 'tilerski-radovi', seoSlug: 'keramicar',
+    profession: 'Keramičar', icon: Hammer,
+    description: 'Postavljanje keramike, laminata, parketa',
+    count: 420, priceRange: '15 – 35 KM/m²', priceNote: 'postavljanje',
+  },
+  {
+    name: 'Vrtlarstvo', slug: 'vrtlarstvo', seoSlug: 'vrtlar',
+    profession: 'Vrtlar', icon: TreePine,
+    description: 'Održavanje bašta, sadnja, uređenje okoliša',
+    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po projektu',
+  },
+  {
+    name: 'Adaptacije', slug: 'adaptacije', seoSlug: 'adaptacije',
+    profession: 'Majstor za adaptacije', icon: Home,
+    description: 'Kompletne adaptacije stanova i kuća',
+    count: 720, priceRange: '150 – 400 KM/m²', priceNote: 'ključ u ruke',
+  },
+  {
+    name: 'Demoliranje', slug: 'demoliranje', seoSlug: 'demoliranje',
+    profession: 'Firma za demoliranje', icon: Shovel,
+    description: 'Rušenje, odvoz šuta, čišćenje gradilišta',
+    count: 180, priceRange: '10 – 30 KM/m³', priceNote: 'sa odvozom',
+  },
+  {
+    name: 'Grijanje i hlađenje', slug: 'grijanje-i-hladjenje', seoSlug: 'grijanje-i-klima',
+    profession: 'Tehničar grijanja i klime', icon: Thermometer,
+    description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
+    count: 310, priceRange: '40 – 80 KM/h', priceNote: 'servis i montaža',
+  },
+  {
+    name: 'Izolacija', slug: 'izolacija', seoSlug: 'izolacija-fasade',
+    profession: 'Fasader / Izolater', icon: Shield,
+    description: 'Termo izolacija, zvučna izolacija, hidroizolacija',
+    count: 280, priceRange: '20 – 45 KM/m²', priceNote: 'sa materijalom',
+  },
+  {
+    name: 'Stolarija', slug: 'stolarija', seoSlug: 'stolar',
+    profession: 'Stolar', icon: Wind,
+    description: 'Prozori, vrata, namještaj po mjeri',
+    count: 260, priceRange: 'po ponudi', priceNote: 'zavisno od mjere',
+  },
+  {
+    name: 'Čišćenje', slug: 'ciscenje', seoSlug: 'ciscenje',
+    profession: 'Agencija za čišćenje', icon: Sparkles,
+    description: 'Čišćenje nakon radova, stanova i poslovnih prostora',
+    count: 190, priceRange: '3 – 8 KM/m²', priceNote: 'ili po satu',
+  },
+];
+
+export function getCategory(slug: string) {
+  return categories.find((c) => c.slug === slug);
+}
+
+/* ---------------------------------- GRADOVI ---------------------------------- */
+
+export interface City {
+  name: string;
+  slug: string;
+}
+
+export const cities: City[] = [
+  { name: 'Sarajevo', slug: 'sarajevo' },
+  { name: 'Banja Luka', slug: 'banja-luka' },
+  { name: 'Tuzla', slug: 'tuzla' },
+  { name: 'Mostar', slug: 'mostar' },
+  { name: 'Zenica', slug: 'zenica' },
+  { name: 'Bihać', slug: 'bihac' },
+  { name: 'Brčko', slug: 'brcko' },
+  { name: 'Doboj', slug: 'doboj' },
+  { name: 'Bijeljina', slug: 'bijeljina' },
+  { name: 'Travnik', slug: 'travnik' },
+  { name: 'Konjic', slug: 'konjic' },
+  { name: 'Livno', slug: 'livno' },
+];
+
+/* ---------------------------------- FIRME / MAJSTORI ---------------------------------- */
+
+export interface Review {
+  author: string;
+  rating: number;
+  date: string;
+  text: string;
+}
+
+export interface Worker {
+  id: string;
+  name: string;
+  specialty: string;
+  categorySlug: string;
+  rating: number;
+  reviews: number;
+  location: string;
+  projects: number;
+  initial: string;
+  about: string;
+  services: string[];
+  reviewList: Review[];
+}
+
+export const workers: Worker[] = [
+  {
+    id: 'edin-kovacevic', name: 'Edin Kovačević', specialty: 'Vodoinstalater',
+    categorySlug: 'vodoinstalacije', rating: 4.9, reviews: 127, location: 'Sarajevo',
+    projects: 340, initial: 'EK',
+    about: 'Vodoinstalater sa 15 godina iskustva. Specijaliziran za kompletne adaptacije kupatila, hitne intervencije i ugradnju sanitarnih instalacija u novogradnji.',
+    services: ['Adaptacije kupatila', 'Hitne intervencije', 'Ugradnja sanitarija', 'Vodovodne instalacije'],
+    reviewList: [
+      { author: 'Amir H.', rating: 5, date: 'Juli 2026', text: 'Kompletna adaptacija kupatila urađena u dogovorenom roku. Čisto, precizno i po dogovorenoj cijeni.' },
+      { author: 'Lejla M.', rating: 5, date: 'Juni 2026', text: 'Došao isti dan kada je cijev pukla. Brzo riješeno, korektna cijena. Preporuka!' },
+      { author: 'Tarik S.', rating: 4, date: 'Maj 2026', text: 'Kvalitetan rad. Jedina zamjerka — kasnio je prvi dan, ali je sve nadoknadio tempom.' },
+    ],
+  },
+  {
+    id: 'nikola-begic', name: 'Nikola Begić', specialty: 'Električar',
+    categorySlug: 'elektroinstalacije', rating: 4.8, reviews: 98, location: 'Banja Luka',
+    projects: 215, initial: 'NB',
+    about: 'Ovlašteni električar za stambene i poslovne objekte. Kompletne elektroinstalacije, pametne instalacije i rekonstrukcije razvodnih ormara.',
+    services: ['Elektroinstalacije', 'Pametna kuća', 'Razvodni ormari', 'Rasvjeta'],
+    reviewList: [
+      { author: 'Jelena M.', rating: 5, date: 'Juli 2026', text: 'Kompletne instalacije u novogradnji — sve po projektu i propisima. Profesionalac.' },
+      { author: 'Dragan K.', rating: 5, date: 'Juni 2026', text: 'Brzo, uredno, fer cijena. Sve preporuke.' },
+      { author: 'Ivana P.', rating: 4, date: 'April 2026', text: 'Dobar rad na zamjeni instalacija u staroj kući.' },
+    ],
+  },
+  {
+    id: 'samir-haskovic', name: 'Samir Hasković', specialty: 'Keramičar',
+    categorySlug: 'tilerski-radovi', rating: 5.0, reviews: 203, location: 'Tuzla',
+    projects: 480, initial: 'SH',
+    about: 'Keramičar sa preko 20 godina iskustva. Velikoformatne pločice, mozaik, podno grijanje i kompletna kupatila ključ u ruke.',
+    services: ['Keramika', 'Velike pločice', 'Podno grijanje', 'Kupatila ključ u ruke'],
+    reviewList: [
+      { author: 'Fatima K.', rating: 5, date: 'Juli 2026', text: 'Savršeno postavljene pločice 120x60. Milimetarska preciznost. Najbolji u gradu.' },
+      { author: 'Mirza D.', rating: 5, date: 'Juni 2026', text: 'Kupatilo ključ u ruke za 10 dana. Sve preporuke, majstor za svaku pohvalu.' },
+      { author: 'Aida B.', rating: 5, date: 'Maj 2026', text: 'Čistoća, tačnost i ljubaznost. Rijetkost danas.' },
+    ],
+  },
+  {
+    id: 'mirza-delalic', name: 'Mirza Delalić', specialty: 'Fasader',
+    categorySlug: 'izolacija', rating: 4.7, reviews: 85, location: 'Mostar',
+    projects: 190, initial: 'MD',
+    about: 'Specijaliziran za termo fasade i vanjsku izolaciju. Rad sa svim sistemima — stiropor, kamena vuna, dekorativne završnice.',
+    services: ['Termo fasade', 'Kamena vuna', 'Dekorativne fasade', 'Hidroizolacija'],
+    reviewList: [
+      { author: 'Ante M.', rating: 5, date: 'Juni 2026', text: 'Fasada na kući 150m2 urađena kvalitetno i u roku. Kuća je neprepoznatljiva.' },
+      { author: 'Ivana S.', rating: 5, date: 'Maj 2026', text: 'Profesionalan pristup, uredno gradilište.' },
+      { author: 'Goran T.', rating: 4, date: 'April 2026', text: 'Dobar omjer cijene i kvaliteta.' },
+    ],
+  },
+  {
+    id: 'ante-milic', name: 'Ante Milić', specialty: 'Krovopokrivač',
+    categorySlug: 'krovopokrivanje', rating: 4.9, reviews: 156, location: 'Zenica',
+    projects: 310, initial: 'AM',
+    about: 'Krovopokrivač sa iskustvom na svim tipovima krovova — limeni krovovi, crijep, ravni krovovi. Garancija na rad 10 godina.',
+    services: ['Limeni krovovi', 'Crijep', 'Ravni krovovi', 'Oluci i žljebovi'],
+    reviewList: [
+      { author: 'Senad H.', rating: 5, date: 'Juli 2026', text: 'Novi limeni krov za 5 dana. Precizno, uredno, s garancijom. Preporuka.' },
+      { author: 'Zlatko B.', rating: 5, date: 'Maj 2026', text: 'Sanacija curenja riješena iz prve. Končno bez problema.' },
+      { author: 'Marko P.', rating: 4, date: 'April 2026', text: 'Kvalitetan rad, malo duži termin zbog vremena.' },
+    ],
+  },
+];
+
+export function getWorker(id: string) {
+  return workers.find((w) => w.id === id);
+}
+
+/* ---------------------------------- PROJEKTI ---------------------------------- */
+
+export interface Project {
+  id: number;
+  title: string;
+  category: string;
+  categorySlug: string;
+  location: string;
+  budget: string;
+  deadline: string;
+  bids: number;
+  description: string;
+  timeAgo: string;
+  urgent?: boolean;
+}
+
+export const projects: Project[] = [
+  {
+    id: 1, title: 'Adaptacija kupatila - kompletan renovis', category: 'Vodoinstalacije',
+    categorySlug: 'vodoinstalacije', location: 'Sarajevo - Centar', budget: '2,000 - 3,500 KM',
+    deadline: 'Do 15.08.2026', bids: 8,
+    description: 'Potrebna adaptacija kupatila u stanu od 60m2. Uključuje demontažu stare keramike, nove vodoinstalacije, postavljanje keramike i sanitarije.',
+    timeAgo: 'Prije 2 sata',
+  },
+  {
+    id: 2, title: 'Postavljanje laminata u dnevnom boravku', category: 'Tilerski radovi',
+    categorySlug: 'tilerski-radovi', location: 'Banja Luka - Centar', budget: '800 - 1,200 KM',
+    deadline: 'Do 20.08.2026', bids: 5,
+    description: 'Postavljanje laminata u dnevnom boravku površine 45m2. Materijal imam, potreban majstor za postavljanje.',
+    timeAgo: 'Prije 5 sati',
+  },
+  {
+    id: 3, title: 'Izrada fasade na kući', category: 'Izolacija',
+    categorySlug: 'izolacija', location: 'Mostar - Jug', budget: '5,000 - 8,000 KM',
+    deadline: 'Do 01.09.2026', bids: 12,
+    description: 'Potrebna izrada termo fasade na kući od 150m2. Stiropor 10cm, završni sloj po želji. Sve uključujući materijal i rad.',
+    timeAgo: 'Prije 1 dan', urgent: true,
+  },
+  {
+    id: 4, title: 'Elektroinstalacije u novogradnji', category: 'Elektroinstalacije',
+    categorySlug: 'elektroinstalacije', location: 'Tuzla - Centar', budget: '3,000 - 4,500 KM',
+    deadline: 'Do 10.09.2026', bids: 7,
+    description: 'Kompletne elektroinstalacije u kući od 120m2. Uključuje razvod struje, utičnice, prekidače i rasvjetu.',
+    timeAgo: 'Prije 2 dana',
+  },
+  {
+    id: 5, title: 'Slikanje stana 80m2', category: 'Slikanje',
+    categorySlug: 'slikanje', location: 'Zenica - Centar', budget: '600 - 900 KM',
+    deadline: 'Do 25.08.2026', bids: 4,
+    description: 'Slikanje kompletnog stana u bijelu boju. Zidovi su pripremljeni, potrebno dvostruko slikanje.',
+    timeAgo: 'Prije 3 dana',
+  },
+  {
+    id: 6, title: 'Montaža klime - 2 jedinice', category: 'Grijanje i hlađenje',
+    categorySlug: 'grijanje-i-hladjenje', location: 'Sarajevo - Novo Sarajevo', budget: '300 - 500 KM',
+    deadline: 'Do 05.08.2026', bids: 9,
+    description: 'Montaža dvije inverter klima jedinice (12 i 18). Uređaji su kupljeni, potrebna profesionalna montaža.',
+    timeAgo: 'Prije 3 dana', urgent: true,
+  },
+];
+
+/* ---------------------------------- FAQ ---------------------------------- */
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export const faqs: FaqItem[] = [
+  {
+    question: 'Koliko košta korištenje Zaposli.ba za kupce?',
+    answer: 'Za kupce je korištenje platforme potpuno besplatno — objava projekta, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
+  },
+  {
+    question: 'Kako funkcioniše verifikacija firmi?',
+    answer: 'Svaka firma prolazi provjeru identiteta vlasnika, registracije firme (ID broj) i reference prije nego što profil postane javan. Firme koje prođu provjeru dobijaju oznaku "Provjerena firma" na profilu.',
+  },
+  {
+    question: 'Koliko brzo ću dobiti ponude?',
+    answer: 'Većina projekata dobije prve ponude u roku od 24 sata od objave. Projekti u većim gradovima i hitni projekti često dobiju ponude u roku od nekoliko sati.',
+  },
+  {
+    question: 'Jesam li obavezan odabrati neku ponudu?',
+    answer: 'Ne. Objava projekta je neobavezujuća — ako vam nijedna ponuda ne odgovara, projekat jednostavno zatvarate bez ikakvih troškova.',
+  },
+  {
+    question: 'Šta ako nisam zadovoljan izvedenim radovima?',
+    answer: 'Preporučujemo da prije početka radova s firmom dogovorite sve detalje pisanim putem kroz platformu. U slučaju spora, naš tim pomaže u posredovanju, a vaša recenzija štiti druge kupce.',
+  },
+  {
+    question: 'Kako firma dobija oznaku dobre reputacije?',
+    answer: 'Ocjena se računa isključivo od recenzija stvarnih kupaca kojima je firma radila projekat preko platforme. Ocjene se ne mogu kupiti niti ukloniti na zahtjev firme.',
+  },
+  {
+    question: 'Mogu li objaviti hitan projekat?',
+    answer: 'Da. Prilikom objave označite da je projekat hitan i firme u vašem gradu dobijaju prioritetnu notifikaciju. Hitni projekti u prosjeku dobiju prvu ponudu u roku od nekoliko sati.',
+  },
+  {
+    question: 'Kako se registrujem kao firma i koliko to košta?',
+    answer: 'Registracija firme je besplatna i traje 5 minuta. Besplatni paket uključuje profil i do 5 odgovora mjesečno. Premium paketi (od 49 KM/mjesečno) nude neograničene odgovore, istaknuti profil i prioritetan prikaz.',
+  },
+];

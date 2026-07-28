@@ -9,6 +9,7 @@ import Logo from '@/components/Logo';
 const navigation = [
   { name: 'Početna', href: '/' },
   { name: 'Kategorije', href: '/kategorije/' },
+  { name: 'Projekti', href: '/projekti/' },
   { name: 'Kako radi', href: '/kako-radi/' },
   { name: 'Za firme', href: '/za-firme/' },
 ];
