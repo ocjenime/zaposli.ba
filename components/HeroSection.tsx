@@ -109,6 +109,10 @@ export default function HeroSection() {
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
+              {/* Mobilna ilustracija — kombinirana u karticu */}
+              <div className="lg:hidden w-52 h-44 mx-auto -mt-1 mb-1">
+                <WorkerIllustration />
+              </div>
               <div className="flex flex-col md:flex-row gap-3">
                 <div className="flex-1 relative">
                   <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
@@ -166,14 +170,6 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Mobilna ilustracija */}
-            <div className="lg:hidden mt-8 relative w-64 h-64 mx-auto">
-              <WorkerIllustration />
-              <div className="absolute -top-1 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-2.5 flex items-center gap-2.5">
-                <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                <span className="font-extrabold text-ink">4.8</span>
-              </div>
-            </div>
           </div>
 
           {/* Desno: ilustracija + plivajuće trust kartice */}
