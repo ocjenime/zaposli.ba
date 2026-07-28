@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Search, ChevronRight } from 'lucide-react';
 import Logo from '@/components/Logo';
 
@@ -15,6 +16,9 @@ const navigation = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  // Samo početna ima tamni hero — na ostalim stranicama header je odmah "solid"
+  const solid = scrolled || pathname !== '/';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -23,11 +27,11 @@ export default function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${solid ? 'bg-white/95 backdrop-blur-md shadow-lg' : 'bg-transparent'}`}>
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 md:h-20 items-center justify-between">
           <Link href="/" className="flex items-center group">
-            <Logo variant={scrolled ? 'dark' : 'light'} />
+            <Logo variant={solid ? 'dark' : 'light'} />
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
@@ -36,7 +40,7 @@ export default function Header() {
                 key={item.name}
                 href={item.href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  scrolled
+                  solid
                     ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                     : 'text-white/80 hover:text-white hover:bg-white/10'
                 }`}
@@ -50,7 +54,7 @@ export default function Header() {
             <Link
               href="/prijava/"
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                scrolled
+                solid
                   ? 'text-gray-600 hover:text-gray-900'
                   : 'text-white/80 hover:text-white'
               }`}
@@ -67,7 +71,7 @@ export default function Header() {
 
           <button
             type="button"
-            className={`md:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-gray-900' : 'text-white'}`}
+            className={`md:hidden p-2 rounded-lg transition-colors ${solid ? 'text-gray-900' : 'text-white'}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
