@@ -54,26 +54,26 @@ export default function HeroSection() {
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
-              {/* Mobilna fotografija — kombinirana u karticu sa trust čipovima */}
-              <div className="lg:hidden relative mb-2">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/zaposli.ba/images/majstor-hero.jpg"
-                  alt="Provjereni majstor u renoviranom domu"
-                  className="w-full h-44 object-cover object-[68%_15%] rounded-xl"
-                />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
-                <div className="absolute top-2.5 right-2.5 bg-white rounded-full px-3 py-1.5 flex items-center gap-1.5 shadow-lg">
-                  <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
-                  <span className="text-xs font-extrabold text-ink">4.8</span>
+              {/* Mobilna fotografija — arched tretman kao desktop */}
+              <div className="lg:hidden relative mb-3 mt-1">
+                <div className="absolute inset-0 rounded-t-full rounded-b-2xl border-2 border-brand-orange/25 translate-x-2.5 translate-y-2.5" aria-hidden="true" />
+                <div className="relative rounded-t-full rounded-b-2xl overflow-hidden ring-1 ring-ink/5 shadow-float">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/zaposli.ba/images/majstor-hero.jpg"
+                    alt="Provjereni majstor u renoviranom domu"
+                    className="w-full h-52 object-cover object-[62%_15%]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
                 </div>
-                <div className="absolute bottom-2.5 left-2.5 bg-white rounded-full pl-1.5 pr-3 py-1.5 flex items-center gap-2 shadow-lg">
-                  <span className="w-4 h-4 rounded-full bg-brand-emerald flex items-center justify-center shrink-0">
-                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none">
-                      <path d="M5 13l4 4L19 7" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </span>
-                  <span className="text-xs font-bold text-ink">Provjereni majstori</span>
+                <div className="absolute top-10 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
+                    <Star className="w-3.5 h-3.5 text-white fill-white" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-extrabold text-ink leading-none">4.8</div>
+                    <div className="text-[9px] text-steel mt-0.5 font-medium">prosječna ocjena</div>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col md:flex-row gap-3">
@@ -149,9 +149,6 @@ export default function HeroSection() {
                 className="object-cover w-full h-[560px] object-[62%_18%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-1/2 -translate-x-1/2">
-                <VerifiedBadge />
-              </div>
             </div>
 
             {/* Kartica: ocjena */}
