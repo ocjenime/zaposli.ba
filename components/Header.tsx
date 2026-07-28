@@ -2,16 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, Search, ChevronRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
-
-const navigation = [
-  { name: 'Početna', href: '/' },
-  { name: 'Kategorije', href: '/kategorije/' },
-  { name: 'Projekti', href: '/projekti/' },
-  { name: 'Kako radi', href: '/kako-radi/' },
-  { name: 'Za firme', href: '/za-firme/' },
-];
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,30 +23,25 @@ export default function Header() {
             <Logo variant="dark" />
           </Link>
 
-          <div className="hidden md:flex items-center gap-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center gap-3">
+          {/* Desktop: 3 akcije (werkspot obrazac) */}
+          <div className="hidden md:flex items-center gap-2">
+            <Link
+              href="/za-firme/"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
+            >
+              Za majstore
+            </Link>
             <Link
               href="/prijava/"
-              className="px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-600 hover:text-gray-900"
+              className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
             >
               Prijava
             </Link>
             <Link
-              href="/registracija/"
-              className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
+              href="/objavi-projekat/"
+              className="ml-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
             >
-              Registracija
+              Objavi projekat
             </Link>
           </div>
 
@@ -62,6 +49,7 @@ export default function Header() {
             type="button"
             className="md:hidden p-2 rounded-lg transition-colors text-gray-900"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Meni"
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -69,24 +57,27 @@ export default function Header() {
 
         {mobileMenuOpen && (
           <div className="md:hidden bg-white rounded-2xl shadow-xl mt-2 p-4 mb-4 border border-gray-100">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block px-4 py-3 rounded-xl text-gray-700 hover:bg-orange-50 hover:text-brand-orange font-medium transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className="border-t border-gray-100 mt-3 pt-3 space-y-2">
-              <Link href="/prijava/" className="block text-center px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Prijava
-              </Link>
-              <Link href="/registracija/" className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-semibold" onClick={() => setMobileMenuOpen(false)}>
-                Registracija
-              </Link>
-            </div>
+            <Link
+              href="/objavi-projekat/"
+              className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-semibold mb-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Objavi projekat
+            </Link>
+            <Link
+              href="/prijava/"
+              className="block text-center px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Prijava
+            </Link>
+            <Link
+              href="/za-firme/"
+              className="block text-center px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Za majstore
+            </Link>
           </div>
         )}
       </nav>

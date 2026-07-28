@@ -6,26 +6,29 @@ interface LogoProps {
 export function LogoMark({ className = 'w-8 h-9' }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 52" fill="none" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
-      {/* Pin — okrugla glava, vrh prema dolje-lijevo */}
+      {/* Pin — uspravan, vrh na sredini */}
       <path
-        d="M27 2.5C16.3 2.5 7.5 11.3 7.5 22c0 4.3 1.5 8.2 4 11.2L6 44.6c-1 1.7.6 3.7 2.4 2.9l12.4-5.1c1.9.4 3.9.6 6.1.6 10.7 0 19.5-8.8 19.5-19.5S37.7 2.5 27 2.5Z"
+        d="M24 2.5C13.8 2.5 5.7 10.6 5.7 20.8c0 11.8 18.3 25 18.3 25s18.3-13.2 18.3-25c0-10.2-8.1-18.3-18.3-18.3Z"
         fill="#F97316"
       />
-      {/* Čekić — negativni prostor: kandža + drška */}
+      {/* Kandža čekića (negativni prostor) */}
       <path
-        d="M13.5 21.5C11.2 14.6 14 8.8 20.3 7.2c3.2-.8 6.6.4 8.4 3"
+        d="M30.5 9.3C25.8 5.8 17 6.8 13.8 12.4c-1.2 2.1-1.3 4.6-.3 6.7"
         stroke="#fff"
-        strokeWidth="6"
+        strokeWidth="4.4"
         strokeLinecap="round"
       />
+      {/* Glava čekića */}
+      <circle cx="13.2" cy="17.5" r="3.4" fill="#fff" />
+      {/* Drška — dijagonala ~25° kroz desnu ivicu */}
       <path
-        d="M18.5 17.5l14 16.5"
+        d="M16.8 16.2 41.5 28.4"
         stroke="#fff"
-        strokeWidth="6.5"
+        strokeWidth="5"
         strokeLinecap="round"
       />
       {/* Ground shadow */}
-      <ellipse cx="24" cy="49.5" rx="8" ry="2" fill="#021117" opacity="0.15" />
+      <ellipse cx="24" cy="49.5" rx="9" ry="2" fill="#021117" opacity="0.15" />
     </svg>
   );
 }

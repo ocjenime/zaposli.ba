@@ -10,12 +10,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     '', '/kategorije', '/projekti', '/kako-radi', '/za-firme', '/savjeti',
     '/faq', '/kontakt', '/o-nama', '/objavi-projekat', '/prijava', '/registracija',
-    '/uslovi-koristenja', '/privacy',
+    '/uslovi-koristenja', '/privacy', '/gradovi',
   ].map((path) => ({
     url: `${site.url}${path}/`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: path === '' ? 1 : 0.8,
+  }));
+
+  const cityPages = cities.map((city) => ({
+    url: `${site.url}/gradovi/${city.slug}/`,
+    lastModified: now,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
   }));
 
   const categoryPages = categories.map((c) => ({
@@ -41,5 +48,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...categoryPages, ...servicePages, ...workerPages];
+  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...workerPages];
 }
