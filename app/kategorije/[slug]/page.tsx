@@ -42,19 +42,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/`, providerCount: cat.count })} />
 
         {/* Hero */}
-        <section className="relative bg-gradient-hero py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-5 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-lg shrink-0">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-lg shadow-brand-orange/25 shrink-0">
                 <Icon className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{cat.name}</h1>
-                <p className="text-white/60 mt-1">{cat.count} provjerenih firmi širom BiH</p>
+                <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{cat.name}</h1>
+                <p className="text-steel mt-1">{cat.count} provjerenih firmi širom BiH</p>
               </div>
             </div>
-            <p className="text-lg text-white/60 max-w-2xl mb-8">{cat.description}.</p>
+            <p className="text-lg text-steel max-w-2xl mb-8">{cat.description}.</p>
             <Link
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"

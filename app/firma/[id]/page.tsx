@@ -43,23 +43,24 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
         <JsonLd data={localBusinessSchema({ name: w.name, specialty: w.specialty, location: w.location, rating: w.rating, reviews: w.reviews, url: `/firma/${w.id}/` })} />
 
         {/* Profil hero */}
-        <section className="relative bg-gradient-hero py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-              <div className="w-24 h-24 rounded-3xl bg-white/10 backdrop-blur-sm border border-white/15 flex items-center justify-center text-brand-orange font-extrabold text-3xl shrink-0">
+              <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-3xl shrink-0 shadow-lg">
                 {w.initial}
               </div>
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">{w.name}</h1>
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{w.name}</h1>
                   <VerifiedBadge />
                 </div>
-                <p className="text-white/60 text-lg mb-3">{w.specialty}</p>
-                <div className="flex flex-wrap items-center gap-5 text-sm text-white/70">
+                <p className="text-steel text-lg mb-3">{w.specialty}</p>
+                <div className="flex flex-wrap items-center gap-5 text-sm text-steel">
                   <span className="flex items-center gap-1.5">
                     <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                    <b className="text-white">{w.rating}</b> ({w.reviews} recenzija)
+                    <b className="text-ink">{w.rating}</b> ({w.reviews} recenzija)
                   </span>
                   <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{w.location}</span>
                   <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-brand-orange" />{w.projects} završenih projekata</span>

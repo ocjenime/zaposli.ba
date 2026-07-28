@@ -81,15 +81,16 @@ export default function ForCompaniesPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative bg-gradient-hero py-16 md:py-24 overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative bg-cloud py-16 md:py-24 overflow-hidden">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                  Proširite svoje poslovanje sa Zaposli.ba
+              <div>
+                <h1 className="text-4xl md:text-5xl font-extrabold text-ink mb-6 tracking-tight">
+                  Proširite svoje poslovanje sa <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">Zaposli.ba</span>
                 </h1>
-                <p className="text-lg text-white/60 mb-8">
+                <p className="text-lg text-steel mb-8">
                   Pridružite se hiljadama firmi i majstora koji redovno dobijaju nove projekte 
                   preko naše platforme. Besplatna registracija, plaćate samo kada dobijete posao.
                 </p>
@@ -99,7 +100,7 @@ export default function ForCompaniesPage() {
                 </Link>
               </div>
               <div className="hidden md:block">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8">
+                <div className="bg-white rounded-2xl p-8 shadow-float border border-gray-100">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white rounded-xl p-4 text-center">
                       <div className="text-3xl font-bold text-brand-orange">2,800+</div>

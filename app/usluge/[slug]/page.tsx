@@ -78,20 +78,21 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <JsonLd data={faqSchema(faqItems)} />
 
         {/* Hero */}
-        <section className="relative bg-gradient-hero py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/15 rounded-full px-4 py-2 mb-6">
+            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-6">
               <MapPin className="w-4 h-4 text-brand-orange" />
-              <span className="text-white/90 text-sm font-medium">{city.name}</span>
+              <span className="text-ink/80 text-sm font-medium">{city.name}</span>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-5 tracking-tight">
-              {cat.profession} {city.name}
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-ink mb-5 tracking-tight">
+              {cat.profession} <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
             </h1>
-            <p className="text-lg text-white/60 max-w-2xl mb-4">
+            <p className="text-lg text-steel max-w-2xl mb-4">
               {cat.description} u gradu {city.name}. Objavite projekat besplatno i primite ponude od provjerenih firmi — prosječne cijene: <span className="text-brand-orange font-semibold">{cat.priceRange}</span>.
             </p>
-            <div className="flex flex-wrap gap-5 text-sm text-white/60 mb-8">
+            <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
               <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
               <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
