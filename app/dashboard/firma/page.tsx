@@ -22,6 +22,8 @@ interface Job {
 
 interface Bid {
   id: string;
+  job_id: string;
+  firm_id: string;
   amount: number;
   message: string | null;
   status: 'pending' | 'accepted' | 'rejected';
@@ -152,7 +154,7 @@ export default function FirmDashboard() {
   }
 
   function hasBidForJob(jobId: string) {
-    return myBids.some((b) => b.jobs?.id === jobId);
+    return myBids.some((b) => b.job_id === jobId);
   }
 
   if (loading || !user) {
@@ -213,9 +215,13 @@ export default function FirmDashboard() {
                       const category = getCategory(job.category_slug);
                       const alreadyBid = hasBidForJob(job.id);
                       return (
-                        <div key={job.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
+                        <div
+                          key={job.id}
+                          className={`bg-white rounded-xl border p-4 shadow-sm transition-all duration-200 ${alreadyBid ? 'border-gray-100 opacity-75' : 'border-gray-100 hover:border-brand-orange/30 hover:shadow-md cursor-pointer'}`}
+                          onClick={() => { if (!alreadyBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
+                        >
                           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                            <div>
+                            <div className="flex-1">
                               <h3 className="font-bold text-ink">{job.title}</h3>
                               <div className="flex flex-wrap items-center gap-2 text-sm text-steel mt-1">
                                 <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {job.city}</span>
@@ -227,9 +233,9 @@ export default function FirmDashboard() {
                               </div>
                             </div>
                             <button
-                              onClick={() => setExpandedJob(expandedJob === job.id ? null : job.id)}
+                              onClick={(e) => { e.stopPropagation(); if (!alreadyBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
                               disabled={alreadyBid}
-                              className="text-sm py-2 px-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-orange-50 text-brand-orange hover:bg-orange-100"
+                              className="text-sm py-2 px-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-orange-50 text-brand-orange hover:bg-orange-100 shrink-0"
                             >
                               {alreadyBid ? 'Već ste poslali ponudu' : expandedJob === job.id ? 'Zatvori' : 'Pošalji ponudu'}
                             </button>
