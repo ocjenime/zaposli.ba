@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MapPin, ArrowRight, BadgeCheck, Star, Siren } from 'lucide-react';
+import { StepOneIllustration, StepTwoIllustration, StepThreeIllustration } from '@/components/StepIllustrations';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -100,17 +101,22 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
         {/* Kako funkcioniše: samo za hitne intervencije */}
         {cat.featured && (
-        <section className="py-12 bg-white border-b border-gray-100">
+        <section className="py-12 md:py-16 bg-white border-b border-gray-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-ink mb-2">Kako funkcioniše hitna intervencija?</h2>
-            <p className="text-steel mb-8">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
-            <div className="grid sm:grid-cols-3 gap-5">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-ink mb-3">Kako funkcioniše hitna intervencija?</h2>
+              <p className="text-steel">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-6">
               {[
-                { n: '01', title: 'Opišite kvar', text: 'Objavite hitan posao za 30 sekundi: šta se desilo i gdje se nalazite.' },
-                { n: '02', title: 'Firme se javljaju odmah', text: 'Vaš posao dobija prioritet i firme za hitne intervencije u vašem gradu odmah šalju ponude.' },
-                { n: '03', title: 'Majstor dolazi', text: 'Dogovorite dolazak, često isti dan. Dostupno vikendom, noću i za praznike.' },
+                { n: '01', title: 'Opišite kvar', text: 'Objavite hitan posao za 30 sekundi: šta se desilo i gdje se nalazite.', Illustration: StepOneIllustration },
+                { n: '02', title: 'Firme se javljaju odmah', text: 'Vaš posao dobija prioritet i firme za hitne intervencije u vašem gradu odmah šalju ponude.', Illustration: StepTwoIllustration },
+                { n: '03', title: 'Majstor dolazi', text: 'Dogovorite dolazak, često isti dan. Dostupno vikendom, noću i za praznike.', Illustration: StepThreeIllustration },
               ].map((step) => (
-                <div key={step.n} className="bg-red-50/60 border border-red-100 rounded-2xl p-6">
+                <div key={step.n} className="bg-red-50/60 border border-red-100 rounded-2xl p-6 text-center">
+                  <div className="h-36 mb-4">
+                    <step.Illustration />
+                  </div>
                   <div className="text-red-600 text-sm font-extrabold mb-2">{step.n}</div>
                   <h3 className="font-bold text-ink mb-1.5">{step.title}</h3>
                   <p className="text-steel text-sm leading-relaxed">{step.text}</p>
