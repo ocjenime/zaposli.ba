@@ -30,10 +30,12 @@ export default function ProjectsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
   const { user, role } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
     loadJobs();
   }, []);
 
@@ -124,7 +126,7 @@ export default function ProjectsPage() {
                           className="inline-flex items-center gap-1.5 text-sm py-2 px-3 rounded-xl font-medium bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors"
                         >
                           <Send className="w-4 h-4" />
-                          {user ? (role === 'firm' ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
+                          {!mounted ? 'Pošalji ponudu' : user ? (role === 'firm' ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
                         </button>
                       </div>
                     </div>

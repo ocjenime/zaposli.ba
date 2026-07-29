@@ -22,30 +22,41 @@ export default function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   async function loadNotifications() {
     if (!user) return;
     setLoading(true);
-    const { data, error } = await supabase
-      .from('notifications')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(20);
-    if (!error) {
-      const list = (data as Notification[]) || [];
-      setNotifications(list);
-      setUnreadCount(list.filter((n) => !n.read).length);
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      if (!error) {
+        const list = (data as Notification[]) || [];
+        setNotifications(list);
+        setUnreadCount(list.filter((n) => !n.read).length);
+      }
+    } catch (err) {
+      console.error('loadNotifications error:', err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
+    if (!mounted || !user) return;
     loadNotifications();
-  }, [user]);
+  }, [mounted, user]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!mounted || !user) return;
     const channel = supabase
       .channel('notifications')
       .on(
@@ -69,9 +80,10 @@ export default function NotificationBell() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [user]);
+  }, [mounted, user]);
 
   useEffect(() => {
+    if (!mounted) return;
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
@@ -79,30 +91,36 @@ export default function NotificationBell() {
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [mounted]);
 
   async function markAllRead() {
     if (!user) return;
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
     if (unreadIds.length === 0) return;
-    await supabase.from('notifications').update({ read: true }).in('id', unreadIds);
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    setUnreadCount(0);
+    try {
+      await supabase.from('notifications').update({ read: true }).in('id', unreadIds);
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      setUnreadCount(0);
+    } catch (err) {
+      console.error('markAllRead error:', err);
+    }
   }
 
   async function markRead(id: string) {
-    await supabase.from('notifications').update({ read: true }).eq('id', id);
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-    setUnreadCount((c) => Math.max(0, c - 1));
+    try {
+      await supabase.from('notifications').update({ read: true }).eq('id', id);
+      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+      setUnreadCount((c) => Math.max(0, c - 1));
+    } catch (err) {
+      console.error('markRead error:', err);
+    }
   }
 
   function formatTime(iso: string) {
     return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short' });
   }
 
-  if (!user) return null;
+  if (!mounted || !user) return null;
 
   return (
     <div className="relative" ref={containerRef}>
@@ -138,42 +156,45 @@ export default function NotificationBell() {
             ) : notifications.length === 0 ? (
               <p className="text-sm text-steel text-center py-6">Nema obavještenja.</p>
             ) : (
-              notifications.map((n) => (
-                <div
-                  key={n.id}
-                  className={`px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors ${
-                    n.read ? 'bg-white' : 'bg-orange-50/50'
-                  }`}
-                >
-                  <button
+              notifications.map((n) => {
+                const href = n.job_id
+                  ? n.type === 'bid_accepted'
+                    ? `/dashboard/razgovor/?job_id=${n.job_id}`
+                    : `/dashboard/poslovi/?id=${n.job_id}`
+                  : undefined;
+
+                const content = (
+                  <div className="px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50">
+                    <p className="text-sm font-medium text-ink">{n.title}</p>
+                    <p className="text-xs text-steel mt-0.5">{n.message}</p>
+                    <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
+                  </div>
+                );
+
+                return href ? (
+                  <Link
+                    key={n.id}
+                    href={href}
                     onClick={() => {
                       if (!n.read) markRead(n.id);
-                      if (n.job_id) {
-                        setOpen(false);
-                      }
+                      setOpen(false);
                     }}
-                    className="w-full text-left"
+                    className={`block ${n.read ? 'bg-white' : 'bg-orange-50/50'}`}
                   >
-                    {n.job_id ? (
-                      <Link
-                        href={n.type === 'bid_accepted' ? `/dashboard/razgovor/?job_id=${n.job_id}` : `/dashboard/poslovi/?id=${n.job_id}`}
-                        onClick={() => setOpen(false)}
-                        className="block"
-                      >
-                        <p className="text-sm font-medium text-ink">{n.title}</p>
-                        <p className="text-xs text-steel mt-0.5">{n.message}</p>
-                        <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
-                      </Link>
-                    ) : (
-                      <>
-                        <p className="text-sm font-medium text-ink">{n.title}</p>
-                        <p className="text-xs text-steel mt-0.5">{n.message}</p>
-                        <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
-                      </>
-                    )}
+                    {content}
+                  </Link>
+                ) : (
+                  <button
+                    key={n.id}
+                    onClick={() => {
+                      if (!n.read) markRead(n.id);
+                    }}
+                    className={`w-full text-left ${n.read ? 'bg-white' : 'bg-orange-50/50'}`}
+                  >
+                    {content}
                   </button>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
