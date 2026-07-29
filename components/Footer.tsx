@@ -86,7 +86,7 @@ export default function Footer() {
                 Majstori po gradovima
               </h3>
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
-                {sortedCities.filter((c) => c.slug !== 'sarajevo').map((city) => (
+                {sortedCities.map((city) => (
                   <li key={city.slug}>
                     <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
                       {city.name}
@@ -116,7 +116,7 @@ export default function Footer() {
               <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>Sarajevo, Bosna i Hercegovina</span>
+                <span>Bosna i Hercegovina</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm">
