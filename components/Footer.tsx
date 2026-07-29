@@ -86,7 +86,7 @@ export default function Footer() {
                 Majstori po gradovima
               </h3>
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
-                {sortedCities.map((city) => (
+                {sortedCities.filter((c) => c.slug !== 'sarajevo').map((city) => (
                   <li key={city.slug}>
                     <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
                       {city.name}
