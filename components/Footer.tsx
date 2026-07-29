@@ -116,7 +116,7 @@ export default function Footer() {
               <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>Bosna i Hercegovina Dio kompanije Luxari</span>
+                <span>Bosna i Hercegovina · Dio kompanije Luxari</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm">
