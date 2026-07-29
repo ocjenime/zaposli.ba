@@ -112,16 +112,6 @@ export default function HeroSection() {
             </form>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 text-sm text-steel">
-              <div className="flex items-center gap-1.5">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                  ))}
-                </div>
-                <span className="font-bold text-ink ml-1">4.8</span>
-                <span>prosječna ocjena</span>
-              </div>
-              <span className="hidden sm:block w-1 h-1 bg-mist rounded-full" />
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-brand-orange" />
                 <span>Verificirane firme</span>
