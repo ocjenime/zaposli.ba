@@ -54,17 +54,17 @@ export default function HeroSection() {
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
-              {/* Mobilna fotografija — arched tretman kao desktop */}
+              {/* Mobilna fotografija — cijela scena */}
               <div className="lg:hidden relative mb-3 mt-1">
-                <div className="absolute inset-0 rounded-t-full rounded-b-2xl border-2 border-brand-orange/25 translate-x-2.5 translate-y-2.5" aria-hidden="true" />
-                <div className="relative rounded-t-full rounded-b-2xl overflow-hidden ring-1 ring-ink/5 shadow-float">
+                <div className="absolute inset-0 rounded-2xl border-2 border-brand-orange/25 translate-x-2.5 translate-y-2.5" aria-hidden="true" />
+                <div className="relative rounded-2xl overflow-hidden ring-1 ring-ink/5 shadow-float">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src="/zaposli.ba/images/majstor-hero.jpg"
                     alt="Provjereni majstor u renoviranom domu"
-                    className="w-full h-52 object-cover object-[62%_15%]"
+                    className="w-full h-48 object-cover object-[62%_35%]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
                 </div>
                 <div className="absolute top-10 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
@@ -135,20 +135,20 @@ export default function HeroSection() {
 
           </div>
 
-          {/* Desno: arched fotografija (Collins tretman) */}
-          <div className="hidden lg:block relative mx-auto max-w-[440px] w-full">
+          {/* Desno: fotografija — cijela scena (majstor + dom) */}
+          <div className="hidden lg:block relative">
             {/* Offset prsten */}
-            <div className="absolute inset-0 rounded-t-full rounded-b-[2.5rem] border-2 border-brand-orange/25 translate-x-5 translate-y-5" aria-hidden="true" />
+            <div className="absolute inset-0 rounded-[2rem] border-2 border-brand-orange/25 translate-x-4 translate-y-4" aria-hidden="true" />
 
-            {/* Arched fotografija */}
-            <div className="relative rounded-t-full rounded-b-[2.5rem] overflow-hidden shadow-float ring-1 ring-ink/5">
+            {/* Fotografija */}
+            <div className="relative rounded-[2rem] overflow-hidden shadow-float ring-1 ring-ink/5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/zaposli.ba/images/majstor-hero.jpg"
                 alt="Provjereni majstor u renoviranom domu"
-                className="object-cover w-full h-[560px] object-[62%_18%]"
+                className="object-cover w-full h-[430px] object-[58%_40%]"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/25 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
             </div>
 
             {/* Kartica: ocjena */}

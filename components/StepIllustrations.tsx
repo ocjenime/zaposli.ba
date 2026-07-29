@@ -1,37 +1,52 @@
-/* Animirane ilustracije za 3 koraka — brend stil, transform/opacity animacije */
+/* Cartoon ilustracije koraka (werkspot stil) — likovi + transform/opacity animacije */
+
+const SKIN = '#d4a574';
+const INK = '#021117';
+const ORANGE = '#F97316';
+const CLOUD = '#F0FAFC';
 
 export function StepOneIllustration() {
   return (
     <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* Pozadinski krug */}
-      <circle cx="100" cy="75" r="62" fill="#F0FAFC" />
+      <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
-      {/* Kartica forme */}
-      <rect x="50" y="22" width="100" height="112" rx="10" fill="#fff" stroke="#E5E7EB" strokeWidth="2" />
-      <rect x="62" y="36" width="52" height="7" rx="3.5" fill="#021117" />
-      <rect x="62" y="51" width="76" height="5" rx="2.5" fill="#E5E7EB" />
-      <rect x="62" y="63" width="62" height="5" rx="2.5" fill="#E5E7EB" />
-
-      {/* Foto thumbnail */}
-      <rect x="62" y="76" width="36" height="30" rx="6" fill="#dbeff5" stroke="#9fcfdd" strokeWidth="1.5" />
-      <circle cx="70" cy="84" r="3" fill="#F97316" />
-      <path d="M64 100 L74 89 L82 96 L90 88 L96 100 Z" fill="#9fcfdd" />
-
-      {/* Budžet tag */}
-      <rect x="104" y="76" width="34" height="14" rx="7" fill="#F97316" />
-      <text x="121" y="86" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="8" fontWeight="800" fill="#fff">KM</text>
-      <rect x="104" y="96" width="34" height="5" rx="2.5" fill="#E5E7EB" />
-
-      {/* Olovka — wiggle */}
+      {/* Telefon sa projektom */}
       <g className="anim-wiggle">
-        <rect x="146" y="88" width="7" height="30" rx="3" fill="#F97316" transform="rotate(35 149 103)" />
-        <path d="M154.5 116 l4.5 6.5 l2.5 -7.5 Z" fill="#021117" transform="rotate(35 157 117)" />
+        <rect x="46" y="32" width="58" height="98" rx="10" fill={INK} />
+        <rect x="50" y="38" width="50" height="86" rx="6" fill="#fff" />
+        {/* Kućica na ekranu */}
+        <polygon points="63,66 75,55 87,66" fill={ORANGE} />
+        <rect x="66" y="66" width="18" height="14" rx="2" fill={CLOUD} stroke={ORANGE} strokeWidth="1.5" />
+        {/* Linije forme */}
+        <rect x="58" y="86" width="34" height="4" rx="2" fill="#E5E7EB" />
+        <rect x="58" y="94" width="26" height="4" rx="2" fill="#E5E7EB" />
+        {/* KM tag */}
+        <rect x="58" y="104" width="22" height="10" rx="5" fill={ORANGE} />
+        <text x="69" y="112" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="7" fontWeight="800" fill="#fff">KM</text>
       </g>
 
-      {/* Upload pin */}
-      <circle cx="152" cy="30" r="11" fill="#021117" />
-      <circle cx="152" cy="30" r="11" fill="#F97316" className="anim-ping-dot" />
-      <path d="M152 25v10M147 30h10" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+      {/* Kupac — osoba */}
+      <g className="anim-float-soft">
+        {/* Glava */}
+        <circle cx="138" cy="56" r="12" fill={SKIN} />
+        <path d="M126 53a12 12 0 0 1 24 0Z" fill={INK} />
+        <circle cx="134" cy="56" r="1.6" fill={INK} />
+        <circle cx="142" cy="56" r="1.6" fill={INK} />
+        <path d="M134 62q4 3 8 0" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+        {/* Tijelo */}
+        <rect x="124" y="70" width="28" height="34" rx="9" fill={INK} />
+        {/* Ruka ka telefonu */}
+        <rect x="112" y="74" width="16" height="8" rx="4" fill={INK} transform="rotate(-15 120 78)" />
+        <circle cx="113" cy="76" r="4" fill={SKIN} />
+        {/* Noge */}
+        <rect x="128" y="104" width="8" height="22" rx="4" fill={INK} />
+        <rect x="140" y="104" width="8" height="22" rx="4" fill={INK} />
+      </g>
+
+      {/* Ping na telefonu */}
+      <circle cx="98" cy="36" r="8" fill={ORANGE} className="anim-ping-dot" />
+      <circle cx="98" cy="36" r="8" fill={ORANGE} />
+      <path d="M98 32v8M94 36h8" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -39,39 +54,54 @@ export function StepOneIllustration() {
 export function StepTwoIllustration() {
   return (
     <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="100" cy="75" r="62" fill="#F0FAFC" />
+      <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
-      {/* Ponuda 3 (pozadi) */}
-      <g className="anim-float-soft" style={{ animationDelay: '1.6s' }}>
-        <rect x="28" y="52" width="88" height="58" rx="8" fill="#fff" stroke="#E5E7EB" strokeWidth="2" transform="rotate(-6 72 81)" />
-        <circle cx="48" cy="68" r="7" fill="#021117" />
-        <rect x="60" y="64" width="34" height="5" rx="2.5" fill="#E5E7EB" transform="rotate(-6 77 66)" />
-        <text x="60" y="92" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="10" fontWeight="800" fill="#F97316" transform="rotate(-6 60 92)">2.400 KM</text>
+      {/* Majstor 1 (lijevo) */}
+      <g className="anim-float-soft" style={{ animationDelay: '0.4s' }}>
+        <circle cx="48" cy="66" r="11" fill={SKIN} />
+        <path d="M37 63a11 11 0 0 1 22 0Z" fill={ORANGE} />
+        <rect x="35" y="61" width="26" height="4" rx="2" fill={ORANGE} />
+        <circle cx="45" cy="66" r="1.5" fill={INK} />
+        <circle cx="51" cy="66" r="1.5" fill={INK} />
+        <path d="M45 71q3 2.5 6 0" stroke={INK} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        <rect x="36" y="79" width="24" height="30" rx="8" fill={ORANGE} />
+        <rect x="40" y="109" width="7" height="18" rx="3.5" fill={INK} />
+        <rect x="49" y="109" width="7" height="18" rx="3.5" fill={INK} />
       </g>
 
-      {/* Ponuda 2 (sredina) */}
+      {/* Majstor 2 (desno) */}
+      <g className="anim-float-soft" style={{ animationDelay: '1.2s' }}>
+        <circle cx="152" cy="66" r="11" fill={SKIN} />
+        <path d="M141 63a11 11 0 0 1 22 0Z" fill={ORANGE} />
+        <rect x="139" y="61" width="26" height="4" rx="2" fill={ORANGE} />
+        <circle cx="149" cy="66" r="1.5" fill={INK} />
+        <circle cx="155" cy="66" r="1.5" fill={INK} />
+        <path d="M149 71q3 2.5 6 0" stroke={INK} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        <rect x="140" y="79" width="24" height="30" rx="8" fill={ORANGE} />
+        <rect x="144" y="109" width="7" height="18" rx="3.5" fill={INK} />
+        <rect x="153" y="109" width="7" height="18" rx="3.5" fill={INK} />
+      </g>
+
+      {/* Ponuda 1 */}
       <g className="anim-float-soft" style={{ animationDelay: '0.8s' }}>
-        <rect x="82" y="42" width="88" height="58" rx="8" fill="#fff" stroke="#E5E7EB" strokeWidth="2" transform="rotate(4 126 71)" />
-        <circle cx="102" cy="58" r="7" fill="#021117" />
-        <rect x="114" y="54" width="34" height="5" rx="2.5" fill="#E5E7EB" transform="rotate(4 131 56)" />
-        <text x="112" y="82" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="10" fontWeight="800" fill="#F97316" transform="rotate(4 112 82)">3.100 KM</text>
+        <rect x="66" y="30" width="68" height="40" rx="7" fill="#fff" stroke="#E5E7EB" strokeWidth="2" transform="rotate(-4 100 50)" />
+        <circle cx="80" cy="46" r="6" fill={INK} />
+        <text x="92" y="44" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(-4 92 44)">2.400 KM</text>
+        <rect x="92" y="50" width="30" height="4" rx="2" fill="#E5E7EB" transform="rotate(-4 107 52)" />
       </g>
 
-      {/* Ponuda 1 (naprijed) */}
+      {/* Ponuda 2 */}
       <g className="anim-float-soft">
-        <rect x="56" y="68" width="92" height="60" rx="8" fill="#fff" stroke="#E5E7EB" strokeWidth="2" />
-        <circle cx="76" cy="86" r="8" fill="#021117" />
-        <circle cx="76" cy="82" r="3" fill="#F97316" />
-        <path d="M70 92c1.5-4 10.5-4 12 0" stroke="#F97316" strokeWidth="2.5" fill="none" />
-        <rect x="90" y="80" width="40" height="5" rx="2.5" fill="#E5E7EB" />
-        <rect x="90" y="90" width="28" height="5" rx="2.5" fill="#E5E7EB" />
-        <text x="66" y="118" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="11" fontWeight="800" fill="#F97316">2.800 KM</text>
+        <rect x="72" y="52" width="68" height="40" rx="7" fill="#fff" stroke="#E5E7EB" strokeWidth="2" transform="rotate(3 106 72)" />
+        <circle cx="86" cy="68" r="6" fill={INK} />
+        <text x="98" y="66" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(3 98 66)">2.800 KM</text>
+        <rect x="98" y="72" width="30" height="4" rx="2" fill="#E5E7EB" transform="rotate(3 113 74)" />
       </g>
 
       {/* Notifikacija */}
-      <circle cx="160" cy="34" r="10" fill="#F97316" />
-      <circle cx="160" cy="34" r="10" fill="#F97316" className="anim-ping-dot" />
-      <path d="M160 29c-2.8 0-4.5 2-4.5 4.5v2.5l-1.5 2.5h12l-1.5-2.5v-2.5c0-2.5-1.7-4.5-4.5-4.5Z" fill="#fff" />
+      <circle cx="106" cy="24" r="9" fill={ORANGE} className="anim-ping-dot" />
+      <circle cx="106" cy="24" r="9" fill={ORANGE} />
+      <path d="M106 19.5c-2.5 0-4 1.8-4 4v2.2l-1.3 2.2h10.6l-1.3-2.2v-2.2c0-2.2-1.5-4-4-4Z" fill="#fff" />
     </svg>
   );
 }
@@ -79,41 +109,56 @@ export function StepTwoIllustration() {
 export function StepThreeIllustration() {
   return (
     <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <circle cx="100" cy="75" r="62" fill="#F0FAFC" />
+      <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
-      {/* Profil kartica */}
-      <rect x="52" y="30" width="96" height="98" rx="10" fill="#fff" stroke="#E5E7EB" strokeWidth="2" />
-
-      {/* Avatar sa kacigom */}
-      <circle cx="100" cy="60" r="17" fill="#021117" />
-      <path d="M84 56a16 16 0 0 1 32 0Z" fill="#F97316" />
-      <rect x="82" y="54" width="36" height="5" rx="2.5" fill="#F97316" />
-      <circle cx="94" cy="60" r="2" fill="#fff" />
-      <circle cx="106" cy="60" r="2" fill="#fff" />
-      <path d="M95 67q5 4 10 0" stroke="#fff" strokeWidth="2" strokeLinecap="round" fill="none" />
-
-      {/* Zvjezdice — pop na srednjoj */}
-      <g>
-        {[0, 1, 2, 3, 4].map((i) => (
-          <path
-            key={i}
-            d="M0 -5 L1.4 -1.6 L5 -1.5 L2.2 1 L3.3 4.6 L0 2.6 L-3.3 4.6 L-2.2 1 L-5 -1.5 L-1.4 -1.6 Z"
-            fill="#F97316"
-            transform={`translate(${80 + i * 10}, 92)`}
-            className={i === 2 ? 'anim-pop' : undefined}
-          />
-        ))}
+      {/* Kupac (lijevo) */}
+      <g className="anim-float-soft" style={{ animationDelay: '0.5s' }}>
+        <circle cx="58" cy="70" r="11" fill={SKIN} />
+        <path d="M47 67a11 11 0 0 1 22 0Z" fill={INK} />
+        <circle cx="55" cy="70" r="1.5" fill={INK} />
+        <circle cx="61" cy="70" r="1.5" fill={INK} />
+        <path d="M55 75q3 2.5 6 0" stroke={INK} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        <rect x="46" y="83" width="24" height="30" rx="8" fill={INK} />
+        <rect x="50" y="113" width="7" height="16" rx="3.5" fill={INK} />
+        <rect x="59" y="113" width="7" height="16" rx="3.5" fill={INK} />
+        {/* Ruka ka rukovanju */}
+        <rect x="66" y="88" width="18" height="8" rx="4" fill={INK} transform="rotate(12 75 92)" />
       </g>
 
-      {/* Dugme */}
-      <rect x="66" y="106" width="68" height="14" rx="7" fill="#F97316" />
-      <rect x="84" y="111" width="32" height="4" rx="2" fill="#fff" />
+      {/* Majstor (desno, kaciga) */}
+      <g className="anim-float-soft" style={{ animationDelay: '1s' }}>
+        <circle cx="142" cy="70" r="11" fill={SKIN} />
+        <path d="M131 67a11 11 0 0 1 22 0Z" fill={ORANGE} />
+        <rect x="129" y="65" width="26" height="4" rx="2" fill={ORANGE} />
+        <circle cx="139" cy="70" r="1.5" fill={INK} />
+        <circle cx="145" cy="70" r="1.5" fill={INK} />
+        <path d="M139 75q3 2.5 6 0" stroke={INK} strokeWidth="1.4" strokeLinecap="round" fill="none" />
+        <rect x="130" y="83" width="24" height="30" rx="8" fill={ORANGE} />
+        <rect x="134" y="113" width="7" height="16" rx="3.5" fill={INK} />
+        <rect x="143" y="113" width="7" height="16" rx="3.5" fill={INK} />
+        {/* Ruka ka rukovanju */}
+        <rect x="116" y="88" width="18" height="8" rx="4" fill={ORANGE} transform="rotate(-12 125 92)" />
+      </g>
 
-      {/* Check badge */}
+      {/* Rukovanje */}
+      <circle cx="100" cy="94" r="5" fill={SKIN} />
+
+      {/* Check badge iznad */}
       <g className="anim-pop">
-        <circle cx="142" cy="34" r="12" fill="#F97316" stroke="#fff" strokeWidth="2.5" />
-        <path d="M136.5 34.5l3.5 3.5l7 -7" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="100" cy="36" r="14" fill={ORANGE} stroke="#fff" strokeWidth="3" />
+        <path d="M93.5 36.5l4.5 4.5l8.5 -8.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </g>
+
+      {/* Zvjezdice oko badgea */}
+      {[0, 1, 2].map((i) => (
+        <path
+          key={i}
+          d="M0 -4 L1.1 -1.3 L4 -1.2 L1.8 0.8 L2.6 3.7 L0 2 L-2.6 3.7 L-1.8 0.8 L-4 -1.2 L-1.1 -1.3 Z"
+          fill={ORANGE}
+          opacity="0.6"
+          transform={`translate(${72 + i * 28}, ${i === 1 ? 14 : 20})`}
+        />
+      ))}
     </svg>
   );
 }
