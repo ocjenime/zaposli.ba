@@ -69,15 +69,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
             <p className="text-lg text-steel max-w-2xl mb-6">{cat.description}.</p>
 
-            {/* Pod-usluge */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {cat.services.map((s) => (
-                <span key={s} className="px-3.5 py-1.5 bg-white rounded-lg text-sm text-ink font-medium border border-gray-100 shadow-sm">
-                  {s}
-                </span>
-              ))}
-            </div>
-
             {/* Usluge u kategoriji */}
             <div className="flex flex-wrap gap-2 mb-8">
               {cat.services.map((s) => (
