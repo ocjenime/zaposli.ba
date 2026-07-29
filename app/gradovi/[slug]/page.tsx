@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!city) return {};
   return {
     title: `Majstori ${city.name} — sve kategorije | Zaposli.ba`,
-    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 13 kategorija usluga, besplatna objava projekta, ponude u roku od 24 sata.`,
+    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 20 kategorija usluga, besplatna objava projekta, ponude u roku od 24 sata.`,
     alternates: { canonical: `${site.url}/gradovi/${city.slug}/` },
   };
 }
@@ -73,7 +73,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             <h2 className="text-2xl font-bold text-ink mb-2">Sve usluge — {city.name}</h2>
             <p className="text-steel mb-8">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categories.map((cat) => (
+              {categories.filter((cat) => !cat.noSeo).map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/usluge/${cat.seoSlug}-${city.slug}/`}

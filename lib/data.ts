@@ -1,6 +1,7 @@
 import {
   BrickWall, Droplets, Zap, Paintbrush, Home, Hammer, TreePine,
-  Shovel, Thermometer, Shield, Wind, Sparkles, type LucideIcon,
+  Shovel, Thermometer, Shield, Sparkles, Siren, Layers, KeySquare,
+  Wifi, Armchair, Truck, Car, HelpCircle, type LucideIcon,
 } from 'lucide-react';
 
 /* ---------------------------------- KATEGORIJE ---------------------------------- */
@@ -15,86 +16,181 @@ export interface Category {
   count: number;
   priceRange: string;
   priceNote: string;
+  group: string;          // grupa za prikaz na /kategorije/
+  services: string[];     // pod-usluge
+  featured?: boolean;     // hitne intervencije — izdvojeni stil
+  noSeo?: boolean;        // bez programatskih stranica (npr. Ostale usluge)
 }
 
 export const categories: Category[] = [
+  // HITNO 24/7 — izdvojena kategorija
+  {
+    name: 'Hitne intervencije', slug: 'hitne-intervencije', seoSlug: 'hitne-intervencije',
+    profession: 'Hitne intervencije 24/7', icon: Siren,
+    description: 'Vodoinstalater, električar i bravar 24/7 — dolazak u najkraćem roku',
+    count: 320, priceRange: '50 – 120 KM', priceNote: 'po intervenciji',
+    group: 'Hitno 24/7', featured: true,
+    services: ['Vodoinstalater 24/7', 'Električar 24/7', 'Bravar — zaključana vrata', 'Servis bojlera', 'Odštopavanje odvoda', 'Kvar grijanja', 'Kvar klime'],
+  },
+  // Građevina i završni radovi
   {
     name: 'Građevinarstvo', slug: 'gradjevinarstvo', seoSlug: 'gradjevinske-firme',
     profession: 'Građevinske firme', icon: BrickWall,
     description: 'Temelji, konstrukcije, zidarski radovi, betoniranje',
     count: 850, priceRange: '45 – 90 KM/m²', priceNote: 'zavisno od vrste radova',
-  },
-  {
-    name: 'Vodoinstalacije', slug: 'vodoinstalacije', seoSlug: 'vodoinstalater',
-    profession: 'Vodoinstalater', icon: Droplets,
-    description: 'Instalacije vode, kanalizacije, sanitarije',
-    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po projektu',
-  },
-  {
-    name: 'Elektroinstalacije', slug: 'elektroinstalacije', seoSlug: 'elektricar',
-    profession: 'Električar', icon: Zap,
-    description: 'Rasvjeta, struja, automatske sklopke',
-    count: 540, priceRange: '30 – 60 KM/h', priceNote: 'ili po tački',
-  },
-  {
-    name: 'Molerski radovi', slug: 'molerski-radovi', seoSlug: 'soboslikar',
-    profession: 'Soboslikar', icon: Paintbrush,
-    description: 'Molerski radovi, bojanje zidova i fasada',
-    count: 480, priceRange: '4 – 9 KM/m²', priceNote: 'sa ili bez materijala',
-  },
-  {
-    name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
-    profession: 'Krovopokrivač', icon: Home,
-    description: 'Izrada i popravke krovova, oluci, hidroizolacija',
-    count: 390, priceRange: '25 – 55 KM/m²', priceNote: 'zavisno od pokrivača',
-  },
-  {
-    name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
-    profession: 'Keramičar', icon: Hammer,
-    description: 'Postavljanje keramike, laminata i parketa',
-    count: 420, priceRange: '15 – 35 KM/m²', priceNote: 'postavljanje',
-  },
-  {
-    name: 'Vrtlarstvo', slug: 'vrtlarstvo', seoSlug: 'vrtlar',
-    profession: 'Vrtlar', icon: TreePine,
-    description: 'Održavanje bašta, sadnja, uređenje okoliša',
-    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po projektu',
+    group: 'Građevina i završni radovi',
+    services: ['Temelji i betoniranje', 'Zidarski radovi', 'Konstrukcije', 'Nadogradnja'],
   },
   {
     name: 'Adaptacije', slug: 'adaptacije', seoSlug: 'adaptacije',
     profession: 'Majstor za adaptacije', icon: Home,
     description: 'Kompletne adaptacije stanova i kuća',
     count: 720, priceRange: '150 – 400 KM/m²', priceNote: 'ključ u ruke',
+    group: 'Građevina i završni radovi',
+    services: ['Adaptacije stanova', 'Adaptacije kuća', 'Kupatila ključ u ruke', 'Stan za izdavanje'],
   },
   {
-    name: 'Rušenje i odvoz', slug: 'rusenje', seoSlug: 'rusenje',
-    profession: 'Firma za rušenje', icon: Shovel,
-    description: 'Rušenje objekata, odvoz šuta i čišćenje gradilišta',
-    count: 180, priceRange: '10 – 30 KM/m³', priceNote: 'sa odvozom',
+    name: 'Završni radovi', slug: 'zavrsni-radovi', seoSlug: 'zavrsni-radovi',
+    profession: 'Majstor završnih radova', icon: Layers,
+    description: 'Gipsani ukrasi, epoksidni podovi, dekorativni zidovi, mikrocement',
+    count: 260, priceRange: '10 – 40 KM/m²', priceNote: 'zavisno od tehnike',
+    group: 'Građevina i završni radovi',
+    services: ['Gipsani ukrasi', 'Epoksidni podovi', 'Dekorativni zidovi', 'Mikrocement'],
   },
   {
-    name: 'Grijanje i hlađenje', slug: 'grijanje-i-hladjenje', seoSlug: 'grijanje-i-klima',
-    profession: 'Tehničar grijanja i klime', icon: Thermometer,
-    description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
-    count: 310, priceRange: '40 – 80 KM/h', priceNote: 'servis i montaža',
+    name: 'Molerski radovi', slug: 'molerski-radovi', seoSlug: 'soboslikar',
+    profession: 'Soboslikar', icon: Paintbrush,
+    description: 'Molerski radovi, bojanje zidova i fasada',
+    count: 480, priceRange: '4 – 9 KM/m²', priceNote: 'sa ili bez materijala',
+    group: 'Građevina i završni radovi',
+    services: ['Bojanje zidova', 'Bojanje fasada', 'Gletovanje', 'Dekorativne tehnike'],
+  },
+  {
+    name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
+    profession: 'Keramičar', icon: Hammer,
+    description: 'Postavljanje keramike, laminata i parketa',
+    count: 420, priceRange: '15 – 35 KM/m²', priceNote: 'postavljanje',
+    group: 'Građevina i završni radovi',
+    services: ['Keramika', 'Velike pločice', 'Laminat i parket', 'Podno grijanje'],
+  },
+  {
+    name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
+    profession: 'Krovopokrivač', icon: Home,
+    description: 'Izrada i popravke krovova, oluci, hidroizolacija',
+    count: 390, priceRange: '25 – 55 KM/m²', priceNote: 'zavisno od pokrivača',
+    group: 'Građevina i završni radovi',
+    services: ['Limeni krovovi', 'Crijep', 'Ravni krovovi', 'Oluci i žljebovi'],
   },
   {
     name: 'Izolacija', slug: 'izolacija', seoSlug: 'izolacija-fasade',
     profession: 'Fasader / Izolater', icon: Shield,
     description: 'Termo izolacija, zvučna izolacija, hidroizolacija',
     count: 280, priceRange: '20 – 45 KM/m²', priceNote: 'sa materijalom',
+    group: 'Građevina i završni radovi',
+    services: ['Termo fasade', 'Kamena vuna', 'Hidroizolacija', 'Zvučna izolacija'],
   },
   {
-    name: 'Stolarija', slug: 'stolarija', seoSlug: 'stolar',
-    profession: 'Stolar', icon: Wind,
-    description: 'Prozori, vrata, namještaj po mjeri',
-    count: 260, priceRange: 'po ponudi', priceNote: 'zavisno od mjere',
+    name: 'Rušenje i odvoz', slug: 'rusenje', seoSlug: 'rusenje',
+    profession: 'Firma za rušenje', icon: Shovel,
+    description: 'Rušenje objekata, odvoz šuta i čišćenje gradilišta',
+    count: 180, priceRange: '10 – 30 KM/m³', priceNote: 'sa odvozom',
+    group: 'Građevina i završni radovi',
+    services: ['Rušenje objekata', 'Odvoz šuta', 'Čišćenje gradilišta', 'Rušenje stabala'],
+  },
+  // Instalacije
+  {
+    name: 'Vodoinstalacije', slug: 'vodoinstalacije', seoSlug: 'vodoinstalater',
+    profession: 'Vodoinstalater', icon: Droplets,
+    description: 'Instalacije vode, kanalizacije, sanitarije',
+    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po projektu',
+    group: 'Instalacije',
+    services: ['Vodovodne instalacije', 'Sanitarije', 'Odštopavanje odvoda', 'Servis bojlera'],
   },
   {
-    name: 'Čišćenje', slug: 'ciscenje', seoSlug: 'ciscenje',
+    name: 'Elektroinstalacije', slug: 'elektroinstalacije', seoSlug: 'elektricar',
+    profession: 'Električar', icon: Zap,
+    description: 'Rasvjeta, struja, automatske sklopke',
+    count: 540, priceRange: '30 – 60 KM/h', priceNote: 'ili po tački',
+    group: 'Instalacije',
+    services: ['Elektroinstalacije', 'Pametna kuća', 'Razvodni ormari', 'Rasvjeta'],
+  },
+  {
+    name: 'Grijanje i hlađenje', slug: 'grijanje-i-hladjenje', seoSlug: 'grijanje-i-klima',
+    profession: 'Tehničar grijanja i klime', icon: Thermometer,
+    description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
+    count: 310, priceRange: '40 – 80 KM/h', priceNote: 'servis i montaža',
+    group: 'Instalacije',
+    services: ['Montaža klime', 'Centralno grijanje', 'Toplotne pumpe', 'Servis klime'],
+  },
+  // Dom i održavanje
+  {
+    name: 'Čišćenje i održavanje', slug: 'ciscenje', seoSlug: 'ciscenje',
     profession: 'Agencija za čišćenje', icon: Sparkles,
-    description: 'Čišćenje nakon radova, stanova i poslovnih prostora',
-    count: 190, priceRange: '3 – 8 KM/m²', priceNote: 'ili po satu',
+    description: 'Čišćenje stanova i kuća, dubinsko čišćenje, pranje prozora, dimnjačar',
+    count: 290, priceRange: '3 – 8 KM/m²', priceNote: 'ili po satu',
+    group: 'Dom i održavanje',
+    services: ['Čišćenje stanova i kuća', 'Dubinsko čišćenje namještaja', 'Pranje prozora', 'Održavanje zgrada', 'Dimnjačar'],
+  },
+  {
+    name: 'Sigurnost', slug: 'sigurnost', seoSlug: 'bravar',
+    profession: 'Bravar', icon: KeySquare,
+    description: 'Bravar, video nadzor, alarmni sistemi, interfoni',
+    count: 190, priceRange: '30 – 70 KM/h', priceNote: 'ili po projektu',
+    group: 'Dom i održavanje',
+    services: ['Otključavanje vrata', 'Video nadzor', 'Alarmni sistemi', 'Interfoni'],
+  },
+  {
+    name: 'Tehnologija', slug: 'tehnologija', seoSlug: 'it-tehnicar',
+    profession: 'IT tehničar', icon: Wifi,
+    description: 'WiFi mreže, servis računara i laptopa, Smart Home, montaža TV-a',
+    count: 160, priceRange: '30 – 70 KM/h', priceNote: 'ili po projektu',
+    group: 'Dom i održavanje',
+    services: ['Postavljanje WiFi mreže', 'Servis računara', 'Servis laptopa', 'Smart Home', 'Montaža TV-a'],
+  },
+  // Namještaj
+  {
+    name: 'Stolarija i namještaj', slug: 'stolarija', seoSlug: 'stolar',
+    profession: 'Stolar', icon: Armchair,
+    description: 'Namještaj po mjeri, sklapanje IKEA namještaja, restauracija, prozori i vrata',
+    count: 260, priceRange: 'po ponudi', priceNote: 'zavisno od mjere',
+    group: 'Namještaj',
+    services: ['Namještaj po mjeri', 'Sklapanje IKEA namještaja', 'Restauracija namještaja', 'Prozori i vrata'],
+  },
+  // Dvorište
+  {
+    name: 'Vrtlarstvo i dvorište', slug: 'vrtlarstvo', seoSlug: 'vrtlar',
+    profession: 'Vrtlar', icon: TreePine,
+    description: 'Košenje trave, orezivanje voća, sadnja i uređenje vrta, navodnjavanje',
+    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po projektu',
+    group: 'Dvorište',
+    services: ['Košenje trave', 'Orezivanje voća', 'Rušenje stabala', 'Sadnja i uređenje vrta', 'Navodnjavanje'],
+  },
+  // Selidbe i prevoz
+  {
+    name: 'Selidbe i kombi prevoz', slug: 'selidbe', seoSlug: 'selidbe',
+    profession: 'Firma za selidbe', icon: Truck,
+    description: 'Selidbe, odvoz starog namještaja, kombi prevoz robe',
+    count: 140, priceRange: '50 – 150 KM', priceNote: 'po selidbi/vožnji',
+    group: 'Selidbe i prevoz',
+    services: ['Selidbe stanova i kuća', 'Odvoz starog namještaja', 'Kombi prevoz', 'Pakovanje i utovar'],
+  },
+  // Auto usluge
+  {
+    name: 'Auto usluge', slug: 'auto-usluge', seoSlug: 'auto-majstor',
+    profession: 'Auto majstor', icon: Car,
+    description: 'Autoelektričar, dijagnostika, limarija i lakiranje, vulkanizer, detailing',
+    count: 210, priceRange: '20 – 80 KM/h', priceNote: 'ili po usluzi',
+    group: 'Auto usluge',
+    services: ['Autoelektričar', 'Auto dijagnostika', 'Limarija i lakiranje', 'Vulkanizer', 'Auto detailing', 'Pranje vozila'],
+  },
+  // Ostale usluge — free text, bez SEO stranica
+  {
+    name: 'Ostale usluge', slug: 'ostale-usluge', seoSlug: 'ostale-usluge',
+    profession: 'Majstor za sve', icon: HelpCircle,
+    description: 'Sastavljanje kreveta, vješanje TV-a, odnošenje frižidera — bilo šta',
+    count: 500, priceRange: 'po dogovoru', priceNote: 'opširnije u projektu',
+    group: 'Ostalo', noSeo: true,
+    services: ['Sastavljanje namještaja', 'Vješanje TV-a i polica', 'Odnošenje starih stvari', 'Sitni popravci'],
   },
 ];
 

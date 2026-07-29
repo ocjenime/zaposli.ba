@@ -6,22 +6,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Upload, X, MapPin, Calendar, DollarSign, ChevronRight } from 'lucide-react';
 
-const categories = [
-  'Građevinarstvo',
-  'Vodoinstalacije',
-  'Elektroinstalacije',
-  'Molerski radovi',
-  'Krovopokrivanje',
-  'Keramičarski radovi',
-  'Vrtlarstvo',
-  'Adaptacije',
-  'Grijanje i hlađenje',
-  'Izolacija',
-  'Stolarija',
-  'Ostalo',
-];
+import { categories as allCategories, cities as allCities } from '@/lib/data';
 
-import { cities as allCities } from '@/lib/data';
+const categories = allCategories.map((c) => c.name);
 
 const cities = allCities.map((c) => c.name);
 

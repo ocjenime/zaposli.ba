@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import HowItWorks from '@/components/HowItWorks';
+import EmergencySection from '@/components/EmergencySection';
 import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
 import RecentProjects from '@/components/RecentProjects';
@@ -18,6 +19,7 @@ export default function Home() {
       <main className="flex-grow">
         <HeroSection />
         <HowItWorks />
+        <EmergencySection />
         <PopularCategories />
         <StatsSection />
         <RecentProjects />

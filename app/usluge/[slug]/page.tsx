@@ -22,9 +22,9 @@ function parseSlug(slug: string): { cat: Category; city: City } | null {
 }
 
 export function generateStaticParams() {
-  return categories.flatMap((c) =>
-    cities.map((city) => ({ slug: `${c.seoSlug}-${city.slug}` }))
-  );
+  return categories
+    .filter((c) => !c.noSeo)
+    .flatMap((c) => cities.map((city) => ({ slug: `${c.seoSlug}-${city.slug}` })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

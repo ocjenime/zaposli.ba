@@ -25,14 +25,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const categoryPages = categories.map((c) => ({
+  const categoryPages = categories.filter((c) => !c.noSeo).map((c) => ({
     url: `${site.url}/kategorije/${c.slug}/`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  const servicePages = categories.flatMap((c) =>
+  const servicePages = categories.filter((c) => !c.noSeo).flatMap((c) =>
     cities.map((city) => ({
       url: `${site.url}/usluge/${c.seoSlug}-${city.slug}/`,
       lastModified: now,

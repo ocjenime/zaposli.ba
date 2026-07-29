@@ -70,7 +70,7 @@ export default function Footer() {
                 Majstori po kategorijama
               </h3>
               <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
-                {categories.map((cat) => (
+                {categories.filter((cat) => !cat.noSeo).map((cat) => (
                   <li key={cat.slug}>
                     <Link href={`/kategorije/${cat.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
                       {cat.name}

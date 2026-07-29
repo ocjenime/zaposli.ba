@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, BadgeCheck, TrendingUp, Star } from 'lucide-react';
+import { MapPin, ArrowRight, BadgeCheck, TrendingUp, Star, Siren } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -11,7 +11,7 @@ import { categories, getCategory, cities, workers, projects } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export function generateStaticParams() {
-  return categories.map((c) => ({ slug: c.slug }));
+  return categories.filter((c) => !c.noSeo).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -47,15 +47,52 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-5 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-lg shadow-brand-orange/25 shrink-0">
+              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg shrink-0 ${
+                cat.featured
+                  ? 'bg-gradient-to-br from-red-600 to-red-700 shadow-red-600/25'
+                  : 'bg-gradient-to-br from-brand-orange to-brand-orange-dark shadow-brand-orange/25'
+              }`}>
                 <Icon className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{cat.name}</h1>
+                <div className="flex flex-wrap items-center gap-3">
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{cat.name}</h1>
+                  {cat.featured && (
+                    <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      <Siren className="w-3.5 h-3.5" />
+                      24/7 — dostupno odmah
+                    </span>
+                  )}
+                </div>
                 <p className="text-steel mt-1">{cat.count} provjerenih firmi širom BiH</p>
               </div>
             </div>
-            <p className="text-lg text-steel max-w-2xl mb-8">{cat.description}.</p>
+            <p className="text-lg text-steel max-w-2xl mb-6">{cat.description}.</p>
+
+            {/* Pod-usluge */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {cat.services.map((s) => (
+                <span key={s} className="px-3.5 py-1.5 bg-white rounded-lg text-sm text-ink font-medium border border-gray-100 shadow-sm">
+                  {s}
+                </span>
+              ))}
+            </div>
+
+            {/* Usluge u kategoriji */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {cat.services.map((s) => (
+                <span
+                  key={s}
+                  className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border ${
+                    cat.featured
+                      ? 'bg-red-50 border-red-100 text-red-800'
+                      : 'bg-white border-gray-100 text-ink/80'
+                  }`}
+                >
+                  {s}
+                </span>
+              ))}
+            </div>
             <Link
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
@@ -69,7 +106,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* Cijene + gradovi */}
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-6 mb-14">
+            <div className={`grid ${cat.noSeo ? '' : 'md:grid-cols-2'} gap-6 mb-14`}>
               <div className="bg-cloud rounded-2xl p-8">
                 <div className="flex items-center gap-3 mb-3">
                   <TrendingUp className="w-6 h-6 text-brand-orange" />
@@ -78,6 +115,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 <div className="text-3xl font-extrabold text-ink mb-1">{cat.priceRange}</div>
                 <p className="text-steel text-sm">{cat.priceNote}. Tačna cijena zavisi od obima posla — zato objavite projekat i uporedite stvarne ponude.</p>
               </div>
+              {!cat.noSeo && (
               <div className="bg-cloud rounded-2xl p-8">
                 <div className="flex items-center gap-3 mb-3">
                   <MapPin className="w-6 h-6 text-brand-orange" />
@@ -95,6 +133,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   ))}
                 </div>
               </div>
+              )}
             </div>
 
             {/* Majstori */}
