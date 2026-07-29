@@ -9,8 +9,8 @@ import { cities } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Majstori po gradovima — cijela BiH | Zaposli.ba',
-  description: 'Pronađite provjerene majstore i građevinske firme u 35 gradova širom Bosne i Hercegovine — Federacija, Republika Srpska i Brčko distrikt.',
+  title: 'Majstori po gradovima: cijela BiH | Zaposli.ba',
+  description: 'Pronađite provjerene majstore i građevinske firme u 35 gradova širom Bosne i Hercegovine. Federacija, Republika Srpska i Brčko distrikt.',
   alternates: { canonical: `${site.url}/gradovi/` },
 };
 
@@ -45,7 +45,7 @@ export default function CitiesPage() {
             </div>
 
             <div className="text-center mt-12">
-              <p className="text-steel mb-6">Koji god grad da ste — objavite posao i firme iz vašeg kraja će se javiti s ponudama.</p>
+              <p className="text-steel mb-6">Koji god grad da ste: objavite posao i firme iz vašeg kraja će se javiti s ponudama.</p>
               <Link href="/objavi-projekat/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95">
                 Objavi posao besplatno
                 <ArrowRight className="w-5 h-5" />

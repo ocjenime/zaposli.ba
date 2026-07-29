@@ -54,7 +54,7 @@ export default function HeroSection() {
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
-              {/* Mobilna fotografija — cijela scena */}
+              {/* Mobilna fotografija: cijela scena */}
               <div className="lg:hidden relative mb-3 mt-1">
                 <div className="absolute inset-0 rounded-2xl border-2 border-brand-orange/25 translate-x-2.5 translate-y-2.5" aria-hidden="true" />
                 <div className="relative rounded-2xl overflow-hidden ring-1 ring-ink/5 shadow-float">
@@ -135,7 +135,7 @@ export default function HeroSection() {
 
           </div>
 
-          {/* Desno: fotografija — cijela scena (majstor + dom) */}
+          {/* Desno: fotografija: cijela scena (majstor + dom) */}
           <div className="hidden lg:block relative">
             {/* Offset prsten */}
             <div className="absolute inset-0 rounded-[2rem] border-2 border-brand-orange/25 translate-x-4 translate-y-4" aria-hidden="true" />
@@ -167,7 +167,7 @@ export default function HeroSection() {
               <div className="text-[10px] text-steel mb-0.5">Adaptacija kupatila</div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-ink text-sm">8 ponuda</span>
-                <span className="text-[11px] font-semibold text-brand-orange">2,000–3,500 KM</span>
+                <span className="text-[11px] font-semibold text-brand-orange">2,000-3,500 KM</span>
               </div>
             </div>
           </div>

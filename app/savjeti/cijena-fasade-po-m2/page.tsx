@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Cijena fasade po m² u BiH — vodič za 2026. | Zaposli.ba',
+  title: 'Cijena fasade po m² u BiH: vodič za 2026. | Zaposli.ba',
   description:
     'Koliko košta fasada po m² u BiH 2026: stiropor vs kamena vuna, cijene po sistemu, šta ulazi u cijenu i greške koje poskupljuju radove.',
   alternates: {
@@ -15,11 +15,11 @@ export const metadata: Metadata = {
 };
 
 const priceRows = [
-  { system: 'Stiropor (EPS) 5 cm', range: '35 – 50 KM/m²' },
-  { system: 'Stiropor (EPS) 10 cm', range: '40 – 55 KM/m²' },
-  { system: 'Kamena vuna 10 cm', range: '55 – 80 KM/m²' },
-  { system: 'Dekorativna fasada (bavalit, mozaik)', range: '+5 – 15 KM/m²' },
-  { system: 'Samostojeća skele (ako nema)', range: '+5 – 10 KM/m²' },
+  { system: 'Stiropor (EPS) 5 cm', range: '35-50 KM/m²' },
+  { system: 'Stiropor (EPS) 10 cm', range: '40-55 KM/m²' },
+  { system: 'Kamena vuna 10 cm', range: '55-80 KM/m²' },
+  { system: 'Dekorativna fasada (bavalit, mozaik)', range: '+5-15 KM/m²' },
+  { system: 'Samostojeća skele (ako nema)', range: '+5-10 KM/m²' },
 ];
 
 export default function CijenaFasadePoM2Page() {
@@ -30,11 +30,11 @@ export default function CijenaFasadePoM2Page() {
         <Breadcrumbs
           items={[
             { name: 'Savjeti', href: '/savjeti/' },
-            { name: 'Cijena fasade po m² u BiH — vodič za 2026.' },
+            { name: 'Cijena fasade po m² u BiH: vodič za 2026.' },
           ]}
         />
         <PageHero
-          title="Cijena fasade po m² u BiH — vodič za 2026."
+          title="Cijena fasade po m² u BiH: vodič za 2026."
           subtitle="Stiropor ili kamena vuna, stvarne cijene po sistemu i najčešće greške"
         />
 
@@ -45,7 +45,7 @@ export default function CijenaFasadePoM2Page() {
             </p>
 
             <p className="text-steel leading-relaxed mb-4">
-              Termo fasada je jedna od najisplativijih investicija u kuću — smanjuje račune za
+              Termo fasada je jedna od najisplativijih investicija u kuću: smanjuje račune za
               grijanje i do 40% i štiti zidove od vlage. U 2026. godini kompletna demit fasada u BiH
               košta između <strong className="text-ink">35 i 80 KM po kvadratnom metru</strong>, sa
               materijalom i radom, zavisno od izabranog sistema. Evo detaljnog pregleda.
@@ -55,11 +55,11 @@ export default function CijenaFasadePoM2Page() {
             <p className="text-steel leading-relaxed mb-4">
               <strong className="text-ink">Stiropor (EPS)</strong> je najčešći izbor: jeftiniji je,
               lakše se obrađuje i daje odličnu toplotnu izolaciju. Za većinu porodičnih kuća u BiH
-              debljina od 10 cm je danas standard — ušteda u grijanju lako pokrije malu razliku u
+              debljina od 10 cm je danas standard: ušteda u grijanju lako pokrije malu razliku u
               cijeni prema 5 cm.
             </p>
             <p className="text-steel leading-relaxed mb-4">
-              <strong className="text-ink">Kamena vuna</strong> košta 40–60% više, ali ima dvije
+              <strong className="text-ink">Kamena vuna</strong> košta 40-60% više, ali ima dvije
               velike prednosti: ne gori (klasa A1 protupožarne zaštite) i propušta paru, pa je bolji
               izbor za višespratnice, stare vlažne zidove i objekte uz prometne saobraćajnice jer
               odlično prigušuje buku.
@@ -87,8 +87,8 @@ export default function CijenaFasadePoM2Page() {
               </table>
             </div>
             <p className="text-steel leading-relaxed mb-4">
-              Za kuću sa 150 m² fasadne površine, stiropor 10 cm iznosi otprilike 6.000–8.200 KM,
-              a kamena vuna 8.200–12.000 KM — uključujući materijal, rad i osnovnu završnicu.
+              Za kuću sa 150 m² fasadne površine, stiropor 10 cm iznosi otprilike 6.000-8.200 KM,
+              a kamena vuna 8.200-12.000 KM: uključujući materijal, rad i osnovnu završnicu.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Šta mora ući u cijenu</h2>
@@ -97,41 +97,41 @@ export default function CijenaFasadePoM2Page() {
               <li>Lijepljenje ploča i tiplovi (klinovi za učvršćenje)</li>
               <li>Armatura: osnovni sloj ljepila + mrežica, uključujući ugaone letvice i kape</li>
               <li>Završni sloj (bavalit, silikonska ili akrilna malta) u boji po želji</li>
-              <li>Obračun otvora — prozori i vrata se obično ne odbijaju u cijelosti od kvadrature</li>
+              <li>Obračun otvora: prozori i vrata se obično ne odbijaju u cijelosti od kvadrature</li>
             </ul>
             <p className="text-steel leading-relaxed mb-4">
               Ako ponuda ne navodi armaturu ili završni sloj kao posebne stavke, tražite pojašnjenje
-              — to su najčešće „zaboravljene" stavke koje se kasnije dodaju na fakturu.
+             : to su najčešće „zaboravljene" stavke koje se kasnije dodaju na fakturu.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Greške koje poskupljuju fasadu</h2>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-2">
               <li>
-                <strong className="text-ink">Preskakanje grunda</strong> — štedi 1–2 KM/m², a
+                <strong className="text-ink">Preskakanje grunda</strong>: štedi 1-2 KM/m², a
                 povećava rizik od odvajanja cijelog sistema.
               </li>
               <li>
-                <strong className="text-ink">Premalo tiplova</strong> — propisano je 4–6 tiplova po
+                <strong className="text-ink">Premalo tiplova</strong>: propisano je 4-6 tiplova po
                 m², a na uglovima i više; štednja tu znači ploče koje „puštaju" nakon par zima.
               </li>
               <li>
-                <strong className="text-ink">Jeftina završna malta</strong> — akrilna malta je
+                <strong className="text-ink">Jeftina završna malta</strong>: akrilna malta je
                 najjeftinija, ali na sunčanim južnim stranama brzo puca i skuplja prašinu;
                 silikonska košta više, ali traje duplo duže.
               </li>
               <li>
-                <strong className="text-ink">Rad po vlažnom ili prehladnom vremenu</strong> — radovi
+                <strong className="text-ink">Rad po vlažnom ili prehladnom vremenu</strong>: radovi
                 ispod +5°C ili po kiši zahtijevaju presvlačenje i dvostruko koštaju.
               </li>
               <li>
-                <strong className="text-ink">Zaboravljena skela</strong> — ako firma nema vlastitu,
-                iznajmljivanje dodaje 5–10 KM/m²; provjerite je li uključena u ponudu.
+                <strong className="text-ink">Zaboravljena skela</strong>: ako firma nema vlastitu,
+                iznajmljivanje dodaje 5-10 KM/m²; provjerite je li uključena u ponudu.
               </li>
             </ul>
 
             <p className="text-steel leading-relaxed mb-4">
               Zadnji savjet: fasadu uvijek ugovarajte s cjenikom <strong className="text-ink">po
-              kvadratu sa jasno navedenim sistemom</strong>, a ne „za cijelu kuću" — razlike u
+              kvadratu sa jasno navedenim sistemom</strong>, a ne „za cijelu kuću": razlike u
               obračunu otvora i uglova znaju iznositi i do 15% ukupne cijene.
             </p>
 

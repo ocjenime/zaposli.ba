@@ -10,8 +10,8 @@ import { workers, getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Izdvojeni majstori — najbolje ocijenjeni | Zaposli.ba',
-  description: 'Provjereni profesionalci sa najboljim ocjenama na platformi — vodoinstalateri, električari, keramičari, fasaderi i krovopokrivači širom BiH.',
+  title: 'Izdvojeni majstori: najbolje ocijenjeni | Zaposli.ba',
+  description: 'Provjereni profesionalci sa najboljim ocjenama na platformi: vodoinstalateri, električari, keramičari, fasaderi i krovopokrivači širom BiH.',
   alternates: { canonical: `${site.url}/izdvojeni-majstori/` },
 };
 

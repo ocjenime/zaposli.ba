@@ -1,4 +1,4 @@
-/* Cartoon ilustracije koraka (werkspot stil) — likovi + transform/opacity animacije */
+/* Cartoon ilustracije koraka (werkspot stil): likovi + transform/opacity animacije */
 
 const SKIN = '#d4a574';
 const INK = '#021117';
@@ -25,7 +25,7 @@ export function StepOneIllustration() {
         <text x="69" y="112" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="7" fontWeight="800" fill="#fff">KM</text>
       </g>
 
-      {/* Kupac — osoba */}
+      {/* Kupac: osoba */}
       <g className="anim-float-soft">
         {/* Glava */}
         <circle cx="138" cy="56" r="12" fill={SKIN} />
@@ -146,14 +146,14 @@ export function StepThreeIllustration() {
       {/* Check badge iznad */}
       <g className="anim-pop">
         <circle cx="100" cy="36" r="14" fill={ORANGE} stroke="#fff" strokeWidth="3" />
-        <path d="M93.5 36.5l4.5 4.5l8.5 -8.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M93.5 36.5l4.5 4.5l8.5-8.5" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </g>
 
       {/* Zvjezdice oko badgea */}
       {[0, 1, 2].map((i) => (
         <path
           key={i}
-          d="M0 -4 L1.1 -1.3 L4 -1.2 L1.8 0.8 L2.6 3.7 L0 2 L-2.6 3.7 L-1.8 0.8 L-4 -1.2 L-1.1 -1.3 Z"
+          d="M0-4 L1.1-1.3 L4-1.2 L1.8 0.8 L2.6 3.7 L0 2 L-2.6 3.7 L-1.8 0.8 L-4-1.2 L-1.1-1.3 Z"
           fill={ORANGE}
           opacity="0.6"
           transform={`translate(${72 + i * 28}, ${i === 1 ? 14 : 20})`}

@@ -9,7 +9,7 @@ import { projects } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Aktivni poslovi — pronađite nove klijente | Zaposli.ba',
+  title: 'Aktivni poslovi: pronađite nove klijente | Zaposli.ba',
   description: 'Pregledajte aktivne poslove kupaca širom BiH s budžetima i rokovima. Registrujte firmu besplatno i pošaljite ponudu.',
   alternates: { canonical: `${site.url}/projekti/` },
 };
@@ -22,7 +22,7 @@ export default function ProjectsPage() {
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
         <PageHero
           title="Aktivni poslovi"
-          subtitle="Stvarni poslovi kupaca s budžetima i rokovima — registrujte firmu i pošaljite ponudu"
+          subtitle="Stvarni poslovi kupaca s budžetima i rokovima: registrujte firmu i pošaljite ponudu"
         />
 
         <section className="py-14 bg-cloud">

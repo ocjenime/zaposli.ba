@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const city = cities.find((c) => c.slug === slug);
   if (!city) return {};
   return {
-    title: `Majstori ${city.name} — sve kategorije | Zaposli.ba`,
+    title: `Majstori ${city.name}: sve kategorije | Zaposli.ba`,
     description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 20 kategorija usluga, besplatna objava posla, ponude u roku od 24 sata.`,
     alternates: { canonical: `${site.url}/gradovi/${city.slug}/` },
   };
@@ -50,7 +50,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Majstori <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
             </h1>
             <p className="text-lg text-steel max-w-2xl mb-4">
-              Provjerene građevinske firme i zanatlije u gradu {city.loc} — objavite posao besplatno i primite ponude u roku od 24 sata.
+              Provjerene građevinske firme i zanatlije u gradu {city.loc}: objavite posao besplatno i primite ponude u roku od 24 sata.
             </p>
             <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
@@ -70,7 +70,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         {/* Sve usluge u gradu */}
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-ink mb-2">Sve usluge — {city.name}</h2>
+            <h2 className="text-2xl font-bold text-ink mb-2">Sve usluge Â· {city.name}</h2>
             <p className="text-steel mb-8">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {categories.filter((cat) => !cat.noSeo).map((cat) => (
@@ -138,7 +138,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Trebate majstora u gradu {city.loc}?
             </h2>
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
-              Objavite posao besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
+              Objavite posao besplatno danas: prve ponude stižu u prosjeku u roku od 24 sata.
             </p>
             <Link
               href="/objavi-projekat/"

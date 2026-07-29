@@ -6,9 +6,9 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Politika privatnosti — Zaposli.ba',
+  title: 'Politika privatnosti. Zaposli.ba',
   description:
-    'Kako Zaposli.ba prikuplja, koristi i štiti vaše lične podatke — kolačići, dijeljenje s firmama, vaša prava i rokovi čuvanja podataka.',
+    'Kako Zaposli.ba prikuplja, koristi i štiti vaše lične podatke: kolačići, dijeljenje s firmama, vaša prava i rokovi čuvanja podataka.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/privacy/' },
 };
 
@@ -35,10 +35,10 @@ export default function PrivacyPage() {
               pružanje usluge:
             </p>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-1">
-              <li><strong className="text-ink">Kontakt podaci</strong> — ime i prezime, email adresa i broj telefona prilikom registracije ili objave posla.</li>
-              <li><strong className="text-ink">Podaci o poslu</strong> — opis radova, lokacija (grad), budžet i rokovi koje sami unesete.</li>
-              <li><strong className="text-ink">Fotografije</strong> — slike prostora ili radova koje dobrovoljno priložite uz posao ili profil.</li>
-              <li><strong className="text-ink">Tehnički podaci</strong> — IP adresa, tip preglednika i podaci o korištenju stranice, u anonimiziranom obliku za statistiku.</li>
+              <li><strong className="text-ink">Kontakt podaci</strong>: ime i prezime, email adresa i broj telefona prilikom registracije ili objave posla.</li>
+              <li><strong className="text-ink">Podaci o poslu</strong>: opis radova, lokacija (grad), budžet i rokovi koje sami unesete.</li>
+              <li><strong className="text-ink">Fotografije</strong>: slike prostora ili radova koje dobrovoljno priložite uz posao ili profil.</li>
+              <li><strong className="text-ink">Tehnički podaci</strong>. IP adresa, tip preglednika i podaci o korištenju stranice, u anonimiziranom obliku za statistiku.</li>
             </ul>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">2. Zašto prikupljamo podatke</h2>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">3. Čije su fotografije</h2>
             <p className="text-steel leading-relaxed mb-4">
               Fotografije koje objavite ostaju vaše vlasništvo. Objavom fotografije Platformi dajete
-              ograničenu dozvolu da je prikazuje isključivo u svrhu pružanja usluge — uz vaš
+              ograničenu dozvolu da je prikazuje isključivo u svrhu pružanja usluge: uz vaš
               posao ili profil. Fotografije ne koristimo u marketinške svrhe bez vaše izričite
               saglasnosti. Odgovorni ste da na fotografijama nema podataka ili osoba za čije
               objavljivanje nemate pravo.
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
             <p className="text-steel leading-relaxed mb-4">
               Vaši kontakt podaci (ime, telefon, email) <strong className="text-ink">nisu javno
               vidljivi</strong> na Platformi. Firma vidi vaše kontakt podatke tek nakon što vi to
-              odobrite — prihvatanjem ponude ili direktnom porukom firmi. Opis posla, grad i
+              odobrite: prihvatanjem ponude ili direktnom porukom firmi. Opis posla, grad i
               priložene fotografije vidljivi su registrovanim firmama radi pripreme ponude.
             </p>
             <p className="text-steel leading-relaxed mb-4">
@@ -85,10 +85,10 @@ export default function PrivacyPage() {
               U skladu sa Zakonom o zaštiti ličnih podataka BiH i principima GDPR-a, imate pravo na:
             </p>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-1">
-              <li><strong className="text-ink">Pristup</strong> — zatražiti uvid u sve podatke koje čuvamo o vama.</li>
-              <li><strong className="text-ink">Ispravku</strong> — zatražiti ispravku netačnih ili nepotpunih podataka.</li>
-              <li><strong className="text-ink">Brisanje</strong> — zatražiti brisanje računa i povezanih ličnih podataka.</li>
-              <li><strong className="text-ink">Prigovor</strong> — prigovoriti obradi podataka u određene svrhe.</li>
+              <li><strong className="text-ink">Pristup</strong>: zatražiti uvid u sve podatke koje čuvamo o vama.</li>
+              <li><strong className="text-ink">Ispravku</strong>: zatražiti ispravku netačnih ili nepotpunih podataka.</li>
+              <li><strong className="text-ink">Brisanje</strong>: zatražiti brisanje računa i povezanih ličnih podataka.</li>
+              <li><strong className="text-ink">Prigovor</strong>: prigovoriti obradi podataka u određene svrhe.</li>
             </ul>
             <p className="text-steel leading-relaxed mb-4">
               Za ostvarivanje bilo kojeg od ovih prava kontaktirajte nas na{' '}
@@ -111,7 +111,7 @@ export default function PrivacyPage() {
               Podatke čuvamo na sigurnim serverima uz primjenu savremenih tehničkih i
               organizacijskih mjera zaštite: enkripciju prometa (HTTPS), ograničen pristup podacima
               samo ovlaštenim osobama i redovne sigurnosne provjere. Iako primjenjujemo najbolje
-              prakse, nijedan sistem ne može garantovati apsolutnu sigurnost — o eventualnom
+              prakse, nijedan sistem ne može garantovati apsolutnu sigurnost: o eventualnom
               sigurnosnom incidentu koji ugrožava vaše podatke bit ćete obaviješteni bez odlaganja.
             </p>
 

@@ -75,7 +75,7 @@ export function localBusinessSchema(worker: {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: worker.name,
-    description: `${worker.specialty} — ${worker.location}`,
+    description: `${worker.specialty}: ${worker.location}`,
     url: `${site.url}${worker.url}`,
     address: {
       '@type': 'PostalAddress',

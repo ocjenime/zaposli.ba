@@ -18,26 +18,26 @@ export interface Category {
   priceNote: string;
   group: string;          // grupa za prikaz na /kategorije/
   services: string[];     // pod-usluge
-  featured?: boolean;     // hitne intervencije — izdvojeni stil
+  featured?: boolean;     // hitne intervencije: izdvojeni stil
   noSeo?: boolean;        // bez programatskih stranica (npr. Ostale usluge)
 }
 
 export const categories: Category[] = [
-  // HITNO 24/7 — izdvojena kategorija
+  // HITNO 24/7: izdvojena kategorija
   {
     name: 'Hitne intervencije', slug: 'hitne-intervencije', seoSlug: 'hitne-intervencije',
     profession: 'Hitne intervencije 24/7', icon: Siren,
-    description: 'Vodoinstalater, električar i bravar 24/7 — dolazak u najkraćem roku',
-    count: 320, priceRange: '50 – 120 KM', priceNote: 'po intervenciji',
+    description: 'Vodoinstalater, električar i bravar 24/7: dolazak u najkraćem roku',
+    count: 320, priceRange: '50-120 KM', priceNote: 'po intervenciji',
     group: 'Hitno 24/7', featured: true,
-    services: ['Vodoinstalater 24/7', 'Električar 24/7', 'Bravar — zaključana vrata', 'Servis bojlera', 'Odštopavanje odvoda', 'Kvar grijanja', 'Kvar klime'],
+    services: ['Vodoinstalater 24/7', 'Električar 24/7', 'Bravar: zaključana vrata', 'Servis bojlera', 'Odštopavanje odvoda', 'Kvar grijanja', 'Kvar klime'],
   },
   // Građevina i završni radovi
   {
     name: 'Građevinarstvo', slug: 'gradjevinarstvo', seoSlug: 'gradjevinske-firme',
     profession: 'Građevinske firme', icon: BrickWall,
     description: 'Temelji, konstrukcije, zidarski radovi, betoniranje',
-    count: 850, priceRange: '45 – 90 KM/m²', priceNote: 'zavisno od vrste radova',
+    count: 850, priceRange: '45-90 KM/m²', priceNote: 'zavisno od vrste radova',
     group: 'Građevina i završni radovi',
     services: ['Temelji i betoniranje', 'Zidarski radovi', 'Konstrukcije', 'Nadogradnja'],
   },
@@ -45,7 +45,7 @@ export const categories: Category[] = [
     name: 'Adaptacije', slug: 'adaptacije', seoSlug: 'adaptacije',
     profession: 'Majstor za adaptacije', icon: Home,
     description: 'Kompletne adaptacije stanova i kuća',
-    count: 720, priceRange: '150 – 400 KM/m²', priceNote: 'ključ u ruke',
+    count: 720, priceRange: '150-400 KM/m²', priceNote: 'ključ u ruke',
     group: 'Građevina i završni radovi',
     services: ['Adaptacije stanova', 'Adaptacije kuća', 'Kupatila ključ u ruke', 'Stan za izdavanje'],
   },
@@ -53,7 +53,7 @@ export const categories: Category[] = [
     name: 'Završni radovi', slug: 'zavrsni-radovi', seoSlug: 'zavrsni-radovi',
     profession: 'Majstor završnih radova', icon: Layers,
     description: 'Gipsani ukrasi, epoksidni podovi, dekorativni zidovi, mikrocement',
-    count: 260, priceRange: '10 – 40 KM/m²', priceNote: 'zavisno od tehnike',
+    count: 260, priceRange: '10-40 KM/m²', priceNote: 'zavisno od tehnike',
     group: 'Građevina i završni radovi',
     services: ['Gipsani ukrasi', 'Epoksidni podovi', 'Dekorativni zidovi', 'Mikrocement'],
   },
@@ -61,7 +61,7 @@ export const categories: Category[] = [
     name: 'Molerski radovi', slug: 'molerski-radovi', seoSlug: 'soboslikar',
     profession: 'Soboslikar', icon: Paintbrush,
     description: 'Molerski radovi, bojanje zidova i fasada',
-    count: 480, priceRange: '4 – 9 KM/m²', priceNote: 'sa ili bez materijala',
+    count: 480, priceRange: '4-9 KM/m²', priceNote: 'sa ili bez materijala',
     group: 'Građevina i završni radovi',
     services: ['Bojanje zidova', 'Bojanje fasada', 'Gletovanje', 'Dekorativne tehnike'],
   },
@@ -69,7 +69,7 @@ export const categories: Category[] = [
     name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
     profession: 'Keramičar', icon: Hammer,
     description: 'Postavljanje keramike, laminata i parketa',
-    count: 420, priceRange: '15 – 35 KM/m²', priceNote: 'postavljanje',
+    count: 420, priceRange: '15-35 KM/m²', priceNote: 'postavljanje',
     group: 'Građevina i završni radovi',
     services: ['Keramika', 'Velike pločice', 'Laminat i parket', 'Podno grijanje'],
   },
@@ -77,7 +77,7 @@ export const categories: Category[] = [
     name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
     profession: 'Krovopokrivač', icon: Home,
     description: 'Izrada i popravke krovova, oluci, hidroizolacija',
-    count: 390, priceRange: '25 – 55 KM/m²', priceNote: 'zavisno od pokrivača',
+    count: 390, priceRange: '25-55 KM/m²', priceNote: 'zavisno od pokrivača',
     group: 'Građevina i završni radovi',
     services: ['Limeni krovovi', 'Crijep', 'Ravni krovovi', 'Oluci i žljebovi'],
   },
@@ -85,7 +85,7 @@ export const categories: Category[] = [
     name: 'Izolacija', slug: 'izolacija', seoSlug: 'izolacija-fasade',
     profession: 'Fasader / Izolater', icon: Shield,
     description: 'Termo izolacija, zvučna izolacija, hidroizolacija',
-    count: 280, priceRange: '20 – 45 KM/m²', priceNote: 'sa materijalom',
+    count: 280, priceRange: '20-45 KM/m²', priceNote: 'sa materijalom',
     group: 'Građevina i završni radovi',
     services: ['Termo fasade', 'Kamena vuna', 'Hidroizolacija', 'Zvučna izolacija'],
   },
@@ -93,7 +93,7 @@ export const categories: Category[] = [
     name: 'Rušenje i odvoz', slug: 'rusenje', seoSlug: 'rusenje',
     profession: 'Firma za rušenje', icon: Shovel,
     description: 'Rušenje objekata, odvoz šuta i čišćenje gradilišta',
-    count: 180, priceRange: '10 – 30 KM/m³', priceNote: 'sa odvozom',
+    count: 180, priceRange: '10-30 KM/m³', priceNote: 'sa odvozom',
     group: 'Građevina i završni radovi',
     services: ['Rušenje objekata', 'Odvoz šuta', 'Čišćenje gradilišta', 'Rušenje stabala'],
   },
@@ -102,7 +102,7 @@ export const categories: Category[] = [
     name: 'Vodoinstalacije', slug: 'vodoinstalacije', seoSlug: 'vodoinstalater',
     profession: 'Vodoinstalater', icon: Droplets,
     description: 'Instalacije vode, kanalizacije, sanitarije',
-    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po poslu',
+    count: 620, priceRange: '30-60 KM/h', priceNote: 'ili po poslu',
     group: 'Instalacije',
     services: ['Vodovodne instalacije', 'Sanitarije', 'Odštopavanje odvoda', 'Servis bojlera'],
   },
@@ -110,7 +110,7 @@ export const categories: Category[] = [
     name: 'Elektroinstalacije', slug: 'elektroinstalacije', seoSlug: 'elektricar',
     profession: 'Električar', icon: Zap,
     description: 'Rasvjeta, struja, automatske sklopke',
-    count: 540, priceRange: '30 – 60 KM/h', priceNote: 'ili po tački',
+    count: 540, priceRange: '30-60 KM/h', priceNote: 'ili po tački',
     group: 'Instalacije',
     services: ['Elektroinstalacije', 'Pametna kuća', 'Razvodni ormari', 'Rasvjeta'],
   },
@@ -118,7 +118,7 @@ export const categories: Category[] = [
     name: 'Grijanje i hlađenje', slug: 'grijanje-i-hladjenje', seoSlug: 'grijanje-i-klima',
     profession: 'Tehničar grijanja i klime', icon: Thermometer,
     description: 'Centralno grijanje, klimatizacija, toplotne pumpe',
-    count: 310, priceRange: '40 – 80 KM/h', priceNote: 'servis i montaža',
+    count: 310, priceRange: '40-80 KM/h', priceNote: 'servis i montaža',
     group: 'Instalacije',
     services: ['Montaža klime', 'Centralno grijanje', 'Toplotne pumpe', 'Servis klime'],
   },
@@ -127,7 +127,7 @@ export const categories: Category[] = [
     name: 'Čišćenje i održavanje', slug: 'ciscenje', seoSlug: 'ciscenje',
     profession: 'Agencija za čišćenje', icon: Sparkles,
     description: 'Čišćenje stanova i kuća, dubinsko čišćenje, pranje prozora, dimnjačar',
-    count: 290, priceRange: '3 – 8 KM/m²', priceNote: 'ili po satu',
+    count: 290, priceRange: '3-8 KM/m²', priceNote: 'ili po satu',
     group: 'Dom i održavanje',
     services: ['Čišćenje stanova i kuća', 'Dubinsko čišćenje namještaja', 'Pranje prozora', 'Održavanje zgrada', 'Dimnjačar'],
   },
@@ -135,7 +135,7 @@ export const categories: Category[] = [
     name: 'Sigurnost', slug: 'sigurnost', seoSlug: 'bravar',
     profession: 'Bravar', icon: KeySquare,
     description: 'Bravar, video nadzor, alarmni sistemi, interfoni',
-    count: 190, priceRange: '30 – 70 KM/h', priceNote: 'ili po poslu',
+    count: 190, priceRange: '30-70 KM/h', priceNote: 'ili po poslu',
     group: 'Dom i održavanje',
     services: ['Otključavanje vrata', 'Video nadzor', 'Alarmni sistemi', 'Interfoni'],
   },
@@ -143,7 +143,7 @@ export const categories: Category[] = [
     name: 'Tehnologija', slug: 'tehnologija', seoSlug: 'it-tehnicar',
     profession: 'IT tehničar', icon: Wifi,
     description: 'WiFi mreže, servis računara i laptopa, Smart Home, montaža TV-a',
-    count: 160, priceRange: '30 – 70 KM/h', priceNote: 'ili po poslu',
+    count: 160, priceRange: '30-70 KM/h', priceNote: 'ili po poslu',
     group: 'Dom i održavanje',
     services: ['Postavljanje WiFi mreže', 'Servis računara', 'Servis laptopa', 'Smart Home', 'Montaža TV-a'],
   },
@@ -161,7 +161,7 @@ export const categories: Category[] = [
     name: 'Vrtlarstvo i dvorište', slug: 'vrtlarstvo', seoSlug: 'vrtlar',
     profession: 'Vrtlar', icon: TreePine,
     description: 'Košenje trave, orezivanje voća, sadnja i uređenje vrta, navodnjavanje',
-    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po poslu',
+    count: 350, priceRange: '20-45 KM/h', priceNote: 'ili po poslu',
     group: 'Dvorište',
     services: ['Košenje trave', 'Orezivanje voća', 'Rušenje stabala', 'Sadnja i uređenje vrta', 'Navodnjavanje'],
   },
@@ -170,7 +170,7 @@ export const categories: Category[] = [
     name: 'Selidbe i kombi prevoz', slug: 'selidbe', seoSlug: 'selidbe',
     profession: 'Firma za selidbe', icon: Truck,
     description: 'Selidbe, odvoz starog namještaja, kombi prevoz robe',
-    count: 140, priceRange: '50 – 150 KM', priceNote: 'po selidbi/vožnji',
+    count: 140, priceRange: '50-150 KM', priceNote: 'po selidbi/vožnji',
     group: 'Selidbe i prevoz',
     services: ['Selidbe stanova i kuća', 'Odvoz starog namještaja', 'Kombi prevoz', 'Pakovanje i utovar'],
   },
@@ -179,15 +179,15 @@ export const categories: Category[] = [
     name: 'Auto usluge', slug: 'auto-usluge', seoSlug: 'auto-majstor',
     profession: 'Auto majstor', icon: Car,
     description: 'Autoelektričar, dijagnostika, limarija i lakiranje, vulkanizer, detailing',
-    count: 210, priceRange: '20 – 80 KM/h', priceNote: 'ili po usluzi',
+    count: 210, priceRange: '20-80 KM/h', priceNote: 'ili po usluzi',
     group: 'Auto usluge',
     services: ['Autoelektričar', 'Auto dijagnostika', 'Limarija i lakiranje', 'Vulkanizer', 'Auto detailing', 'Pranje vozila'],
   },
-  // Ostale usluge — free text, bez SEO stranica
+  // Ostale usluge: free text, bez SEO stranica
   {
     name: 'Ostale usluge', slug: 'ostale-usluge', seoSlug: 'ostale-usluge',
     profession: 'Majstor za sve', icon: HelpCircle,
-    description: 'Sastavljanje kreveta, vješanje TV-a, odnošenje frižidera — bilo šta',
+    description: 'Sastavljanje kreveta, vješanje TV-a, odnošenje frižidera: bilo šta',
     count: 500, priceRange: 'po dogovoru', priceNote: 'opširnije u poslu',
     group: 'Ostalo', noSeo: true,
     services: ['Sastavljanje namještaja', 'Vješanje TV-a i polica', 'Odnošenje starih stvari', 'Sitni popravci'],
@@ -281,7 +281,7 @@ export const workers: Worker[] = [
     reviewList: [
       { author: 'Amir H.', rating: 5, date: 'Juli 2026', text: 'Kompletna adaptacija kupatila urađena u dogovorenom roku. Čisto, precizno i po dogovorenoj cijeni.' },
       { author: 'Lejla M.', rating: 5, date: 'Juni 2026', text: 'Došao isti dan kada je cijev pukla. Brzo riješeno, korektna cijena. Preporuka!' },
-      { author: 'Tarik S.', rating: 4, date: 'Maj 2026', text: 'Kvalitetan rad. Jedina zamjerka — kasnio je prvi dan, ali je sve nadoknadio tempom.' },
+      { author: 'Tarik S.', rating: 4, date: 'Maj 2026', text: 'Kvalitetan rad. Jedina zamjerka: kasnio je prvi dan, ali je sve nadoknadio tempom.' },
     ],
   },
   {
@@ -291,7 +291,7 @@ export const workers: Worker[] = [
     about: 'Ovlašteni električar za stambene i poslovne objekte. Kompletne elektroinstalacije, pametne instalacije i rekonstrukcije razvodnih ormara.',
     services: ['Elektroinstalacije', 'Pametna kuća', 'Razvodni ormari', 'Rasvjeta'],
     reviewList: [
-      { author: 'Jelena M.', rating: 5, date: 'Juli 2026', text: 'Kompletne instalacije u novogradnji — sve po projektu i propisima. Profesionalac.' },
+      { author: 'Jelena M.', rating: 5, date: 'Juli 2026', text: 'Kompletne instalacije u novogradnji: sve po projektu i propisima. Profesionalac.' },
       { author: 'Dragan K.', rating: 5, date: 'Juni 2026', text: 'Brzo, uredno, fer cijena. Sve preporuke.' },
       { author: 'Ivana P.', rating: 4, date: 'April 2026', text: 'Dobar rad na zamjeni instalacija u staroj kući.' },
     ],
@@ -312,7 +312,7 @@ export const workers: Worker[] = [
     id: 'mirza-delalic', name: 'Mirza Delalić', specialty: 'Fasader',
     categorySlug: 'izolacija', rating: 4.7, reviews: 85, location: 'Mostar',
     projects: 190, initial: 'MD',
-    about: 'Specijaliziran za termo fasade i vanjsku izolaciju. Rad sa svim sistemima — stiropor, kamena vuna, dekorativne završnice.',
+    about: 'Specijaliziran za termo fasade i vanjsku izolaciju. Rad sa svim sistemima: stiropor, kamena vuna, dekorativne završnice.',
     services: ['Termo fasade', 'Kamena vuna', 'Dekorativne fasade', 'Hidroizolacija'],
     reviewList: [
       { author: 'Ante M.', rating: 5, date: 'Juni 2026', text: 'Fasada na kući 150m2 urađena kvalitetno i u roku. Kuća je neprepoznatljiva.' },
@@ -324,7 +324,7 @@ export const workers: Worker[] = [
     id: 'ante-milic', name: 'Ante Milić', specialty: 'Krovopokrivač',
     categorySlug: 'krovopokrivanje', rating: 4.9, reviews: 156, location: 'Zenica',
     projects: 310, initial: 'AM',
-    about: 'Krovopokrivač sa iskustvom na svim tipovima krovova — limeni krovovi, crijep, ravni krovovi. Garancija na rad 10 godina.',
+    about: 'Krovopokrivač sa iskustvom na svim tipovima krovova: limeni krovovi, crijep, ravni krovovi. Garancija na rad 10 godina.',
     services: ['Limeni krovovi', 'Crijep', 'Ravni krovovi', 'Oluci i žljebovi'],
     reviewList: [
       { author: 'Senad H.', rating: 5, date: 'Juli 2026', text: 'Novi limeni krov za 5 dana. Precizno, uredno, s garancijom. Preporuka.' },
@@ -356,43 +356,43 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    id: 1, title: 'Adaptacija kupatila - kompletan renovis', category: 'Vodoinstalacije',
-    categorySlug: 'vodoinstalacije', location: 'Sarajevo - Centar', budget: '2,000 - 3,500 KM',
+    id: 1, title: 'Adaptacija kupatila: kompletan renovis', category: 'Vodoinstalacije',
+    categorySlug: 'vodoinstalacije', location: 'Sarajevo, Centar', budget: '2,000-3,500 KM',
     deadline: 'Do 15.08.2026', bids: 8,
     description: 'Potrebna adaptacija kupatila u stanu od 60m2. Uključuje demontažu stare keramike, nove vodoinstalacije, postavljanje keramike i sanitarije.',
     timeAgo: 'Prije 2 sata',
   },
   {
     id: 2, title: 'Postavljanje laminata u dnevnom boravku', category: 'Keramičarski radovi',
-    categorySlug: 'keramicarski-radovi', location: 'Banja Luka - Centar', budget: '800 - 1,200 KM',
+    categorySlug: 'keramicarski-radovi', location: 'Banja Luka, Centar', budget: '800-1,200 KM',
     deadline: 'Do 20.08.2026', bids: 5,
     description: 'Postavljanje laminata u dnevnom boravku površine 45m2. Materijal imam, potreban majstor za postavljanje.',
     timeAgo: 'Prije 5 sati',
   },
   {
     id: 3, title: 'Izrada fasade na kući', category: 'Izolacija',
-    categorySlug: 'izolacija', location: 'Mostar - Jug', budget: '5,000 - 8,000 KM',
+    categorySlug: 'izolacija', location: 'Mostar, Jug', budget: '5,000-8,000 KM',
     deadline: 'Do 01.09.2026', bids: 12,
     description: 'Potrebna izrada termo fasade na kući od 150m2. Stiropor 10cm, završni sloj po želji. Sve uključujući materijal i rad.',
     timeAgo: 'Prije 1 dan', urgent: true,
   },
   {
     id: 4, title: 'Elektroinstalacije u novogradnji', category: 'Elektroinstalacije',
-    categorySlug: 'elektroinstalacije', location: 'Tuzla - Centar', budget: '3,000 - 4,500 KM',
+    categorySlug: 'elektroinstalacije', location: 'Tuzla, Centar', budget: '3,000-4,500 KM',
     deadline: 'Do 10.09.2026', bids: 7,
     description: 'Kompletne elektroinstalacije u kući od 120m2. Uključuje razvod struje, utičnice, prekidače i rasvjetu.',
     timeAgo: 'Prije 2 dana',
   },
   {
     id: 5, title: 'Molerski radovi u stanu 80m2', category: 'Molerski radovi',
-    categorySlug: 'molerski-radovi', location: 'Zenica - Centar', budget: '600 - 900 KM',
+    categorySlug: 'molerski-radovi', location: 'Zenica, Centar', budget: '600-900 KM',
     deadline: 'Do 25.08.2026', bids: 4,
-    description: 'Molerski radovi u kompletnom stanu — bojanje zidova u bijelu boju. Zidovi su pripremljeni, potrebno dvostruko bojanje.',
+    description: 'Molerski radovi u kompletnom stanu: bojanje zidova u bijelu boju. Zidovi su pripremljeni, potrebno dvostruko bojanje.',
     timeAgo: 'Prije 3 dana',
   },
   {
-    id: 6, title: 'Montaža klime - 2 jedinice', category: 'Grijanje i hlađenje',
-    categorySlug: 'grijanje-i-hladjenje', location: 'Sarajevo - Novo Sarajevo', budget: '300 - 500 KM',
+    id: 6, title: 'Montaža klime: 2 jedinice', category: 'Grijanje i hlađenje',
+    categorySlug: 'grijanje-i-hladjenje', location: 'Sarajevo, Novo Sarajevo', budget: '300-500 KM',
     deadline: 'Do 05.08.2026', bids: 9,
     description: 'Montaža dvije inverter klima jedinice (12 i 18). Uređaji su kupljeni, potrebna profesionalna montaža.',
     timeAgo: 'Prije 3 dana', urgent: true,
@@ -409,7 +409,7 @@ export interface FaqItem {
 export const faqs: FaqItem[] = [
   {
     question: 'Koliko košta korištenje Zaposli.ba za kupce?',
-    answer: 'Za kupce je korištenje platforme potpuno besplatno — objava posla, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
+    answer: 'Za kupce je korištenje platforme potpuno besplatno: objava posla, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
   },
   {
     question: 'Kako funkcioniše verifikacija firmi?',
@@ -421,7 +421,7 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Jesam li obavezan odabrati neku ponudu?',
-    answer: 'Ne. Objava posla je neobavezujuća — ako vam nijedna ponuda ne odgovara, posao jednostavno zatvarate bez ikakvih troškova.',
+    answer: 'Ne. Objava posla je neobavezujuća: ako vam nijedna ponuda ne odgovara, posao jednostavno zatvarate bez ikakvih troškova.',
   },
   {
     question: 'Šta ako nisam zadovoljan izvedenim radovima?',

@@ -8,20 +8,20 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Koliko košta adaptacija kupatila u 2026? | Zaposli.ba',
   description:
-    'Cijena adaptacije kupatila u BiH 2026: demontaža, instalacije, keramika i sanitarije — realni rasponi u KM i savjeti za upoređivanje ponuda.',
+    'Cijena adaptacije kupatila u BiH 2026: demontaža, instalacije, keramika i sanitarije: realni rasponi u KM i savjeti za upoređivanje ponuda.',
   alternates: {
     canonical: 'https://ocjenime.github.io/zaposli.ba/savjeti/cijena-adaptacije-kupatila/',
   },
 };
 
 const priceRows = [
-  { phase: 'Demontaža i odvoz šuta', range: '200 – 500 KM' },
-  { phase: 'Vodovodne instalacije', range: '600 – 1.200 KM' },
-  { phase: 'Elektroinstalacije', range: '200 – 500 KM' },
-  { phase: 'Priprema zidova (malter, estrih)', range: '300 – 700 KM' },
-  { phase: 'Keramika (rad, bez pločica)', range: '700 – 1.500 KM' },
-  { phase: 'Sanitarije i montaža', range: '400 – 1.500 KM' },
-  { phase: 'Završni radovi (silikoni, sitnice)', range: '100 – 300 KM' },
+  { phase: 'Demontaža i odvoz šuta', range: '200-500 KM' },
+  { phase: 'Vodovodne instalacije', range: '600-1.200 KM' },
+  { phase: 'Elektroinstalacije', range: '200-500 KM' },
+  { phase: 'Priprema zidova (malter, estrih)', range: '300-700 KM' },
+  { phase: 'Keramika (rad, bez pločica)', range: '700-1.500 KM' },
+  { phase: 'Sanitarije i montaža', range: '400-1.500 KM' },
+  { phase: 'Završni radovi (silikoni, sitnice)', range: '100-300 KM' },
 ];
 
 export default function CijenaAdaptacijeKupatilaPage() {
@@ -47,7 +47,7 @@ export default function CijenaAdaptacijeKupatilaPage() {
             </p>
 
             <p className="text-steel leading-relaxed mb-4">
-              Adaptacija kupatila je jedan od najčešćih — i najneizvjesnijih — poslova kada su
+              Adaptacija kupatila je jedan od najčešćih, a ujedno i najneizvjesnijih poslova kada su
               cijene u pitanju. Za standardno kupatilo od 3 do 5 m², kompletna adaptacija
               „ključ u ruke" u BiH u 2026. godini košta između <strong className="text-ink">2.500 i
               6.000 KM</strong>, zavisno od obima radova i izbora materijala. Evo kako se ta cijena
@@ -84,41 +84,41 @@ export default function CijenaAdaptacijeKupatilaPage() {
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Šta najviše utiče na cijenu</h2>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-2">
               <li>
-                <strong className="text-ink">Stanje postojećih instalacija</strong> — u starijim
+                <strong className="text-ink">Stanje postojećih instalacija</strong>: u starijim
                 zgradama često treba mijenjati kompletne cijevi do glavnog vertikala, što može
-                dodati 500–1.000 KM.
+                dodati 500-1.000 KM.
               </li>
               <li>
-                <strong className="text-ink">Veličina i format pločica</strong> — velikoformatne
+                <strong className="text-ink">Veličina i format pločica</strong>: velikoformatne
                 pločice (120×60 i veće) zahtijevaju iskusnijeg keramičara i skuplje lijepljenje,
-                obično 30–50% više od standardnih formata.
+                obično 30-50% više od standardnih formata.
               </li>
               <li>
-                <strong className="text-ink">Premještanje sanitarija</strong> — svako pomjeranje WC
+                <strong className="text-ink">Premještanje sanitarija</strong>: svako pomjeranje WC
                 školjke ili tuša znači nove instalacije i probijanje, a ne samo zamjenu.
               </li>
               <li>
-                <strong className="text-ink">Podno grijanje</strong> — električno podno grijanje
-                dodaje otprilike 60–100 KM/m², vodeno i više.
+                <strong className="text-ink">Podno grijanje</strong>: električno podno grijanje
+                dodaje otprilike 60-100 KM/m², vodeno i više.
               </li>
               <li>
-                <strong className="text-ink">Grad</strong> — cijene u Sarajevu su u prosjeku 10–20%
+                <strong className="text-ink">Grad</strong>: cijene u Sarajevu su u prosjeku 10-20%
                 više nego u manjim gradovima.
               </li>
             </ul>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Materijal: koliko još treba dodati</h2>
             <p className="text-steel leading-relaxed mb-4">
-              Na cijene radova iz tabele dodajte materijal. Pločice srednje klase koštaju 25–60
+              Na cijene radova iz tabele dodajte materijal. Pločice srednje klase koštaju 25-60
               KM/m², sanitarije (WC, umivaonik, tuš kabina) od 800 KM za osnovni set do 3.000+ KM
               za višu klasu. Lijepilo, fugna, hidroizolacija i sitan materijal obično iznose još
-              200–400 KM. Kao pravilo: <strong className="text-ink">materijal čini 40–60% ukupnog
+              200-400 KM. Kao pravilo: <strong className="text-ink">materijal čini 40-60% ukupnog
               budžeta</strong>.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Kako uporediti ponude</h2>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-2">
-              <li>Tražite ponudu <strong className="text-ink">po fazama</strong>, ne samo ukupan zbroj — tako se vidi gdje su razlike.</li>
+              <li>Tražite ponudu <strong className="text-ink">po fazama</strong>, ne samo ukupan zbroj: tako se vidi gdje su razlike.</li>
               <li>Provjerite da li je u cijenu uključen odvoz šuta i završno čišćenje.</li>
               <li>Pazite na preniske ponude: cijena ispod 2.000 KM za kompletnu adaptaciju obično znači preskočenu hidroizolaciju ili naknadne „nepredviđene" stavke.</li>
               <li>Dogovorite pisano šta se dešava ako se otkriju skriveni problemi (trule cijevi, vlažni zidovi).</li>
@@ -135,7 +135,7 @@ export default function CijenaAdaptacijeKupatilaPage() {
               <div className="relative">
                 <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
                 <p className="text-white/60 mb-6">
-                  Objavite posao besplatno i primite ponude od provjerenih firmi — obično u roku
+                  Objavite posao besplatno i primite ponude od provjerenih firmi: obično u roku
                   od 24 sata.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary">

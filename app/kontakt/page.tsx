@@ -33,7 +33,7 @@ const contactInfo = [
   {
     icon: Clock,
     title: 'Radno vrijeme',
-    value: 'Pon – Pet, 9 – 17h',
+    value: 'Pon-Pet, 9-17h',
     note: 'Vikendom odgovaramo na email',
   },
 ];
@@ -66,7 +66,7 @@ export default function KontaktPage() {
         <Breadcrumbs items={[{ name: 'Kontakt' }]} />
         <PageHero
           title="Kontakt"
-          subtitle="Imate pitanje ili prijedlog? Pišite nam — tu smo da pomognemo."
+          subtitle="Imate pitanje ili prijedlog? Pišite nam: tu smo da pomognemo."
         />
 
         <section className="py-16 bg-cloud">

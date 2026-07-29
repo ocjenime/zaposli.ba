@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!parsed) return {};
   const { cat, city } = parsed;
   return {
-    title: `${cat.profession} ${city.name} — provjerene firme | Zaposli.ba`,
+    title: `${cat.profession} ${city.name}: provjerene firme | Zaposli.ba`,
     description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? ${cat.count}+ provjerenih firmi. Objavite posao besplatno i uporedite ponude.`,
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
@@ -53,7 +53,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
   const faqItems = [
     {
       question: `Koliko košta ${cat.profession.toLowerCase()} u gradu ${city.loc}?`,
-      answer: `Cijena zavisi od obima posla i materijala. Tačnu cijenu dobijate kroz ponude — objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
+      answer: `Cijena zavisi od obima posla i materijala. Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
     },
     {
       question: `Koliko brzo mogu dobiti majstora u gradu ${city.loc}?`,
@@ -111,7 +111,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-ink mb-2">
-              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori — ${cat.name.toLowerCase()}`}
+              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori: ${cat.name.toLowerCase()}`}
             </h2>
             <p className="text-steel mb-8">Ocjene i recenzije stvarnih kupaca</p>
             {shownWorkers.length > 0 ? (
@@ -156,7 +156,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         {localProjects.length > 0 && (
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-ink mb-6">Primjeri poslova — {cat.name.toLowerCase()}</h2>
+            <h2 className="text-2xl font-bold text-ink mb-6">Primjeri poslova Â· {cat.name.toLowerCase()}</h2>
             <div className="grid md:grid-cols-2 gap-5">
               {localProjects.map((p) => (
                 <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100">
@@ -202,7 +202,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
               Tražite {cat.profession.toLowerCase()} u gradu {city.name}?
             </h2>
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
-              Objavite posao besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
+              Objavite posao besplatno danas: prve ponude stižu u prosjeku u roku od 24 sata.
             </p>
             <Link
               href="/objavi-projekat/"

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { categories } from '@/lib/data';
 
-// Izbor za homepage — izvodi se iz lib/data (single source of truth)
+// Izbor za homepage: izvodi se iz lib/data (single source of truth)
 const featuredSlugs = [
   'gradjevinarstvo',
   'adaptacije',
@@ -35,7 +35,7 @@ export default function PopularCategories() {
             Popularne kategorije
           </h2>
           <p className="text-lg text-gray-500">
-            Pronađite majstore za sve vrste usluga — od građevine do čišćenja i selidbi
+            Pronađite majstore za sve vrste usluga: od građevine do čišćenja i selidbi
           </p>
         </div>
 

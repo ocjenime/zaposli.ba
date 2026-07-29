@@ -7,7 +7,7 @@ import { Clock, Calendar, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Savjeti — Zaposli.ba',
+  title: 'Savjeti. Zaposli.ba',
   description:
     'Praktični savjeti za renoviranje i građevinske radove u BiH: cijene adaptacija i fasada, provjera majstora i upoređivanje ponuda.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/savjeti/' },
@@ -19,7 +19,7 @@ const articles = [
     category: 'Cijene',
     title: 'Koliko košta adaptacija kupatila u 2026?',
     excerpt:
-      'Detaljan prikaz cijena adaptacije kupatila u BiH — od demontaže i instalacija do keramike i sanitarija, sa realnim rasponima u KM.',
+      'Detaljan prikaz cijena adaptacije kupatila u BiH: od demontaže i instalacija do keramike i sanitarija, sa realnim rasponima u KM.',
     readTime: '6 min čitanja',
     date: '15. juli 2026.',
   },
@@ -35,7 +35,7 @@ const articles = [
   {
     slug: 'cijena-fasade-po-m2',
     category: 'Cijene',
-    title: 'Cijena fasade po m² u BiH — vodič za 2026.',
+    title: 'Cijena fasade po m² u BiH: vodič za 2026.',
     excerpt:
       'Stiropor ili kamena vuna? Koliko košta fasada po kvadratu, šta ulazi u cijenu i koje greške najviše poskupljuju radove.',
     readTime: '6 min čitanja',

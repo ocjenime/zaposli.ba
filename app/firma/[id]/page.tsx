@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const w = getWorker(id);
   if (!w) return {};
   return {
-    title: `${w.name} — ${w.specialty} ${w.location} | Zaposli.ba`,
+    title: `${w.name}: ${w.specialty} ${w.location} | Zaposli.ba`,
     description: `${w.name}, ${w.specialty.toLowerCase()} u gradu ${w.location}. Ocjena ${w.rating} od ${w.reviews} recenzija, ${w.projects} završenih poslova. Provjerena firma na Zaposli.ba.`,
     alternates: { canonical: `${site.url}/firma/${w.id}/` },
   };

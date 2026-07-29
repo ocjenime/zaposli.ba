@@ -9,7 +9,7 @@ import { JsonLd, faqSchema } from '@/lib/jsonld';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Česta pitanja — Zaposli.ba',
+  title: 'Česta pitanja. Zaposli.ba',
   description:
     'Odgovori na najčešća pitanja o Zaposli.ba: cijene, verifikacija firmi, ponude, recenzije i registracija. Sve što trebate znati na jednom mjestu.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/faq/' },
@@ -66,7 +66,7 @@ export default function FaqPage() {
                   Niste pronašli odgovor?
                 </h2>
                 <p className="text-white/60 mb-8 max-w-md mx-auto">
-                  Naš tim vam stoji na raspolaganju — pošaljite nam poruku i odgovorit ćemo u najkraćem mogućem roku.
+                  Naš tim vam stoji na raspolaganju: pošaljite nam poruku i odgovorit ćemo u najkraćem mogućem roku.
                 </p>
                 <Link href="/kontakt/" className="btn-primary text-lg">
                   Kontaktirajte nas

@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cat = getCategory(slug);
   if (!cat) return {};
   return {
-    title: `${cat.name} — ${cat.count} provjerenih firmi | Zaposli.ba`,
+    title: `${cat.name}: ${cat.count} provjerenih firmi | Zaposli.ba`,
     description: `${cat.description}. Pronađite ${cat.profession.toLowerCase()} širom BiH. Objavite posao besplatno i primite ponude.`,
     alternates: { canonical: `${site.url}/kategorije/${cat.slug}/` },
   };
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   {cat.featured && (
                     <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                       <Siren className="w-3.5 h-3.5" />
-                      24/7 — dostupno odmah
+                      24/7 · dostupno odmah
                     </span>
                   )}
                 </div>
@@ -86,13 +86,40 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
             <Link
               href="/objavi-projekat/"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+              className={`inline-flex items-center gap-2 bg-gradient-to-r text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
+                cat.featured
+                  ? 'from-red-600 to-red-700 hover:shadow-red-600/25'
+                  : 'from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
+              }`}
             >
-              Objavi posao besplatno
+              {cat.featured ? 'Objavi hitan posao besplatno' : 'Objavi posao besplatno'}
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </section>
+
+        {/* Kako funkcioniše: samo za hitne intervencije */}
+        {cat.featured && (
+        <section className="py-12 bg-white border-b border-gray-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl font-bold text-ink mb-2">Kako funkcioniše hitna intervencija?</h2>
+            <p className="text-steel mb-8">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
+            <div className="grid sm:grid-cols-3 gap-5">
+              {[
+                { n: '01', title: 'Opišite kvar', text: 'Objavite hitan posao za 30 sekundi: šta se desilo i gdje se nalazite.' },
+                { n: '02', title: 'Firme se javljaju odmah', text: 'Vaš posao dobija prioritet i firme za hitne intervencije u vašem gradu odmah šalju ponude.' },
+                { n: '03', title: 'Majstor dolazi', text: 'Dogovorite dolazak, često isti dan. Dostupno vikendom, noću i za praznike.' },
+              ].map((step) => (
+                <div key={step.n} className="bg-red-50/60 border border-red-100 rounded-2xl p-6">
+                  <div className="text-red-600 text-sm font-extrabold mb-2">{step.n}</div>
+                  <h3 className="font-bold text-ink mb-1.5">{step.title}</h3>
+                  <p className="text-steel text-sm leading-relaxed">{step.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        )}
 
         {/* Gradovi */}
         <section className="py-14 bg-white">
@@ -122,7 +149,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Majstori */}
             {catWorkers.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Provjereni majstori — {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-ink mb-6">Provjereni majstori Â· {cat.name.toLowerCase()}</h2>
                 <div className="grid md:grid-cols-3 gap-5 mb-14">
                   {catWorkers.map((w) => (
                     <Link
@@ -157,7 +184,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Poslovi */}
             {catProjects.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Aktivni poslovi — {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-ink mb-6">Aktivni poslovi Â· {cat.name.toLowerCase()}</h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   {catProjects.map((p) => (
                     <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all">

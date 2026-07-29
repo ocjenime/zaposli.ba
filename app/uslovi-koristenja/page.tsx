@@ -5,9 +5,9 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Uslovi korištenja — Zaposli.ba',
+  title: 'Uslovi korištenja. Zaposli.ba',
   description:
-    'Uslovi korištenja platforme Zaposli.ba — prava i obaveze korisnika i firmi, plaćanje, odgovornost platforme i mjerodavno pravo BiH.',
+    'Uslovi korištenja platforme Zaposli.ba: prava i obaveze korisnika i firmi, plaćanje, odgovornost platforme i mjerodavno pravo BiH.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/uslovi-koristenja/' },
 };
 
@@ -23,13 +23,13 @@ const sections = [
     title: '2. Opis usluge',
     paragraphs: [
       'Zaposli.ba je onlajn tržište koje kupcima omogućava besplatnu objavu građevinskih i zanatskih poslova, a registrovanim firmama i majstorima omogućava slanje ponuda za te poslove. Platforma pruža alate za komunikaciju, upoređivanje ponuda, pregled profila firmi, ocjena i recenzija.',
-      'Platforma nije izvođač radova, ne zapošljava firme niti majstore i nije strana u ugovoru koji kupac i firma eventualno zaključe. Uloga Platforme je isključivo posrednička — povezivanje ponude i potražnje.',
+      'Platforma nije izvođač radova, ne zapošljava firme niti majstore i nije strana u ugovoru koji kupac i firma eventualno zaključe. Uloga Platforme je isključivo posrednička: povezivanje ponude i potražnje.',
     ],
   },
   {
     title: '3. Obaveze korisnika (kupaca)',
     paragraphs: [
-      'Kupac se obavezuje da prilikom objave posla navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje poslove čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava posla je neobavezujuća — kupac nije dužan odabrati nijednu ponudu.',
+      'Kupac se obavezuje da prilikom objave posla navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje poslove čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava posla je neobavezujuća: kupac nije dužan odabrati nijednu ponudu.',
       'Kupac snosi isključivu odgovornost za provjeru referenci, licence i stručnosti firme prije zaključenja ugovora o izvođenju radova, kao i za sadržaj sporazuma koji sa firmom sklopi. Preporučujemo da svi dogovori budu sačinjeni u pisanoj formi.',
     ],
   },
@@ -57,7 +57,7 @@ const sections = [
   {
     title: '7. Intelektualna svojina',
     paragraphs: [
-      'Svi sadržaji Platforme — uključujući logo, dizajn, tekstove, bazu podataka i programski kod — vlasništvo su Platforme ili su korišteni uz dozvolu i zaštićeni su propisima o intelektualnoj svojini. Zabranjeno je njihovo kopiranje, distribucija ili komercijalna upotreba bez pisane saglasnosti.',
+      'Svi sadržaji Platforme: uključujući logo, dizajn, tekstove, bazu podataka i programski kod: vlasništvo su Platforme ili su korišteni uz dozvolu i zaštićeni su propisima o intelektualnoj svojini. Zabranjeno je njihovo kopiranje, distribucija ili komercijalna upotreba bez pisane saglasnosti.',
       'Korisnici koji objavljuju fotografije, opise poslova i recenzije zadržavaju svoja prava, ali Platformi daju neisključivu, neograničenu dozvolu za prikazivanje tog sadržaja u svrhu pružanja usluge. Korisnik garantuje da posjeduje prava na sav sadržaj koji objavi.',
     ],
   },

@@ -55,14 +55,14 @@ export default function PostProjectPage() {
             <h1 className="text-3xl font-extrabold text-ink mb-3">Posao je objavljen!</h1>
             <p className="text-steel mb-8 leading-relaxed">
               Vaš posao <b className="text-ink">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
-              Prve ponude obično stižu u roku od <b className="text-ink">24 sata</b> — javimo vam emailom čim stignu.
+              Prve ponude obično stižu u roku od <b className="text-ink">24 sata</b>: javimo vam emailom čim stignu.
             </p>
             <div className="bg-white rounded-2xl p-6 border border-gray-100 mb-8 text-left">
               <h2 className="font-bold text-ink mb-4 text-sm uppercase tracking-wider">Šta se dešava dalje?</h2>
               <div className="space-y-4">
                 {[
                   { n: '1', text: 'Firme iz vaše kategorije i grada dobijaju notifikaciju o poslu' },
-                  { n: '2', text: 'Primate ponude s cijenama i rokovima — obično 3–8 ponuda' },
+                  { n: '2', text: 'Primate ponude s cijenama i rokovima: obično 3-8 ponuda' },
                   { n: '3', text: 'Uporedite ponude, pročitajte recenzije i odaberite majstora' },
                 ].map((s) => (
                   <div key={s.n} className="flex items-start gap-3">
@@ -338,7 +338,7 @@ export default function PostProjectPage() {
                         <dt className="text-gray-500">Budžet:</dt>
                         <dd className="font-medium text-gray-900">
                           {formData.budgetMin && formData.budgetMax
-                            ? `${formData.budgetMin} - ${formData.budgetMax} KM`
+                            ? `${formData.budgetMin}: ${formData.budgetMax} KM`
                             : 'Nije specificiran'}
                         </dd>
                       </div>

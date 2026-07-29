@@ -8,8 +8,8 @@ import { categories, type Category } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Kategorije usluga — pronađite majstore | Zaposli.ba',
-  description: 'Pronađite majstore za sve vrste usluga u Bosni i Hercegovini — 20 kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.',
+  title: 'Kategorije usluga: pronađite majstore | Zaposli.ba',
+  description: 'Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. 20 kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.',
   alternates: { canonical: `${site.url}/kategorije/` },
 };
 
@@ -59,7 +59,7 @@ export default function CategoriesPage() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-extrabold text-ink mb-4 tracking-tight">Kategorije usluga</h1>
             <p className="text-lg text-steel max-w-2xl mx-auto">
-              Pronađite majstore za sve — od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7
+              Pronađite majstore za sve: od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7
             </p>
           </div>
         </section>
