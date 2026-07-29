@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/lib/auth-context';
-import NotificationBell from '@/components/NotificationBell';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -37,9 +36,6 @@ export default function Header() {
             </Link>
             {user ? (
               <>
-                <div className="hidden md:block">
-                  <NotificationBell />
-                </div>
                 <Link
                   href={dashboardHref}
                   className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
@@ -77,12 +73,7 @@ export default function Header() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-1 md:hidden">
-            {user && (
-              <div className="md:hidden">
-                <NotificationBell />
-              </div>
-            )}
+          <div className="flex items-center md:hidden">
             <button
               type="button"
               className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50"
