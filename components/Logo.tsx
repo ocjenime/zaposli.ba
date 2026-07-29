@@ -26,7 +26,7 @@ export default function Logo({ variant = 'dark', className = '' }: LogoProps) {
           zaposli<span className="text-brand-orange">.ba</span>
         </span>
         <span className={`text-[10px] md:text-xs font-medium tracking-wide ${sloganColor} mt-0.5`}>
-          Provjereni majstori za svaki posao
+          Prava odluka za svaki posao.
         </span>
       </span>
     </span>
