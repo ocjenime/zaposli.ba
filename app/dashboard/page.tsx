@@ -16,8 +16,14 @@ export default function DashboardPage() {
     if (!loading && !user) router.push('/prijava');
   }, [user, loading, router]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-cloud"><p className="text-steel">Učitavanje...</p></div>;
-  if (!user) return null;
+  if (loading || !user) return (
+    <div className="min-h-screen flex flex-col bg-cloud">
+      <Header />
+      <main className="flex-grow flex items-center justify-center">
+        <p className="text-steel">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
+      </main>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
