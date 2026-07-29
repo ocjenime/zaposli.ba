@@ -202,14 +202,14 @@ export default function FirmProfileContent() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/objavi-projekat/"
+                href={`/objavi-projekat/?firm_id=${firm.id}`}
                 className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
               >
                 Zatraži ponudu
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/objavi-projekat/"
+                href={`/objavi-projekat/?firm_id=${firm.id}&message=1`}
                 className="inline-flex items-center justify-center gap-2 bg-white text-brand-orange border-2 border-brand-orange px-6 py-3 rounded-xl font-bold hover:bg-primary-50 transition-all active:scale-95"
               >
                 <MessageSquare className="w-4 h-4" />
@@ -343,7 +343,7 @@ export default function FirmProfileContent() {
                     </div>
                   </div>
                   <Link
-                    href="/objavi-projekat/"
+                    href={`/objavi-projekat/?firm_id=${firm.id}`}
                     className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
                   >
                     Zatraži ponudu

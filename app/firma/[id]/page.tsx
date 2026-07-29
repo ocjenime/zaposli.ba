@@ -68,7 +68,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
               </div>
             </div>
             <Link
-              href="/objavi-projekat/"
+              href={`/objavi-projekat/?worker_id=${w.id}`}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
               Zatraži ponudu
@@ -150,7 +150,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                     </div>
                   </div>
                   <Link
-                    href="/objavi-projekat/"
+                    href={`/objavi-projekat/?worker_id=${w.id}`}
                     className="block w-full text-center mt-8 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
                   >
                     Zatraži ponudu

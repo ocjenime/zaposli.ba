@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Upload, MapPin, Calendar, DollarSign, ChevronRight } from 'lucide-react';
-import { categories as allCategories, cities as allCities } from '@/lib/data';
+import { categories as allCategories, cities as allCities, getWorker, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 
@@ -42,10 +42,13 @@ function PostProjectContent() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [targetProvider, setTargetProvider] = useState<{ id: string; name: string; type: 'worker' | 'firm'; ownerId?: string } | null>(null);
 
   useEffect(() => {
     const serviceParam = searchParams.get('service');
     const cityParam = searchParams.get('city');
+    const workerId = searchParams.get('worker_id');
+    const firmId = searchParams.get('firm_id');
 
     if (serviceParam || cityParam) {
       setPrefill({ service: serviceParam, city: cityParam });
@@ -62,6 +65,43 @@ function PostProjectContent() {
       } else {
         setFormData((prev) => ({ ...prev, title: serviceParam }));
       }
+    }
+
+    if (workerId) {
+      const worker = getWorker(workerId);
+      if (worker) {
+        const cat = getCategory(worker.categorySlug);
+        setTargetProvider({ id: worker.id, name: worker.name, type: 'worker' });
+        setFormData((prev) => ({
+          ...prev,
+          category: cat?.name || prev.category,
+          title: prev.title || worker.specialty,
+        }));
+      }
+    } else if (firmId) {
+      (async () => {
+        const { data: firmData } = await supabase
+          .from('firms')
+          .select('id, name, owner_id')
+          .eq('id', firmId)
+          .single();
+        if (firmData) {
+          const typed = firmData as unknown as { id: string; name: string; owner_id: string };
+          const { data: catData } = await supabase
+            .from('firm_categories')
+            .select('category_slug')
+            .eq('firm_id', firmId)
+            .limit(1);
+          const catSlug = (catData as unknown as { category_slug: string }[])?.[0]?.category_slug;
+          const cat = catSlug ? getCategory(catSlug) : null;
+          setTargetProvider({ id: typed.id, name: typed.name, type: 'firm', ownerId: typed.owner_id });
+          setFormData((prev) => ({
+            ...prev,
+            category: cat?.name || prev.category,
+            title: prev.title || cat?.name || prev.title,
+          }));
+        }
+      })();
     }
   }, [searchParams]);
 
@@ -83,17 +123,35 @@ function PostProjectContent() {
     if (!cat) { setError('Odaberite kategoriju'); return; }
 
     setSubmitting(true);
-    const { error: err } = await supabase.from('jobs').insert({
-      client_id: user.id,
-      category_slug: cat.slug,
-      title: formData.title,
-      description: formData.description,
-      city: formData.city,
-      status: 'open',
-    });
+    const { data: jobData, error: err } = await supabase
+      .from('jobs')
+      .insert({
+        client_id: user.id,
+        category_slug: cat.slug,
+        title: formData.title,
+        description: formData.description,
+        city: formData.city,
+        status: 'open',
+      })
+      .select('id')
+      .single();
     setSubmitting(false);
 
-    if (err) { setError(err.message); return; }
+    if (err || !jobData) { setError(err?.message || 'Došlo je do greške'); return; }
+
+    // Obavijesti ciljanu firmu ako je posao zatražen s profila firme
+    if (targetProvider?.type === 'firm' && targetProvider.ownerId) {
+      try {
+        await supabase.from('notifications').insert({
+          user_id: targetProvider.ownerId,
+          type: 'direct_quote_request',
+          title: 'Novi zahtjev za ponudu',
+          message: `Klijent traži ponudu za "${formData.title || 'posao'}" s vašeg profila.`,
+          job_id: jobData.id,
+        });
+      } catch {}
+    }
+
     router.push('/dashboard/');
   };
 
@@ -163,7 +221,15 @@ function PostProjectContent() {
           </div>
 
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Objavite novi posao</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+              {targetProvider ? 'Zatraži ponudu' : 'Objavite novi posao'}
+            </h1>
+            {targetProvider && (
+              <div className="mb-6 p-3 bg-gradient-to-r from-brand-orange/10 to-brand-orange/5 border border-brand-orange/20 rounded-xl text-sm">
+                <p className="text-steel">Zahtjev za ponudu od:</p>
+                <p className="font-bold text-ink text-lg">{targetProvider.name}</p>
+              </div>
+            )}
             {(prefill.service || prefill.city) && (
               <div className="mb-6 p-3 bg-orange-50 border border-orange-100 rounded-xl text-sm">
                 <p className="text-steel">Preuzeto iz pretrage:</p>

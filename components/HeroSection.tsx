@@ -84,12 +84,17 @@ export default function HeroSection() {
                     className="w-full h-48 object-cover object-[62%_35%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
-                  <div className="absolute top-2 left-2 inline-flex items-center gap-1.5 bg-ink/40 backdrop-blur-md text-white/90 rounded-full px-2 py-0.5 text-[10px] font-medium shadow-sm">
-                    <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
-                    <span>2.800+ verificiranih majstora</span>
+                  <div className="absolute top-2 left-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
+                      <Shield className="w-3.5 h-3.5 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-extrabold text-ink leading-none">2.800+</div>
+                      <div className="text-[9px] text-steel mt-0.5 font-medium">verificiranih majstora i firmi</div>
+                    </div>
                   </div>
                 </div>
-                <div className="absolute top-10 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
+                <div className="absolute bottom-3 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
                     <Star className="w-3.5 h-3.5 text-white fill-white" />
                   </div>
@@ -162,14 +167,19 @@ export default function HeroSection() {
                 className="object-cover w-full h-[430px] object-[58%_40%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
-              <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-ink/40 backdrop-blur-md text-white/90 rounded-full px-2.5 py-0.5 text-xs font-medium shadow-sm">
-                <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
-                <span>2.800+ verificiranih majstora</span>
+              <div className="absolute top-3 left-3 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
+                  <Shield className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <div className="text-lg font-extrabold text-ink leading-none">2.800+</div>
+                  <div className="text-[10px] text-steel mt-0.5 font-medium">verificiranih majstora i firmi</div>
+                </div>
               </div>
             </div>
 
             {/* Kartica: ocjena */}
-            <div className="absolute top-12 -right-5 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
+            <div className="absolute bottom-12 -right-5 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
                 <Star className="w-4 h-4 text-white fill-white" />
               </div>
