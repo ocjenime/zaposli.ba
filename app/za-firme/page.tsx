@@ -94,7 +94,7 @@ export default function ForCompaniesPage() {
                   Pridružite se hiljadama firmi i majstora koji redovno dobijaju nove poslove 
                   preko naše platforme. Besplatna registracija, plaćate samo kada dobijete posao.
                 </p>
-                <Link href="/registracija-firme" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
+                <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
                   Registrujte firmu besplatno
                   <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -270,7 +270,7 @@ export default function ForCompaniesPage() {
             <p className="text-lg text-white/60 mb-8 max-w-2xl mx-auto">
               Registrujte firmu danas i počnite da primate nove poslove već sutra.
             </p>
-            <Link href="/registracija-firme" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
+            <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
               Registrujte firmu besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
