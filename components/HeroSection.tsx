@@ -1,8 +1,8 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck, Siren } from 'lucide-react';
+import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck, Siren, X } from 'lucide-react';
 import Link from 'next/link';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities } from '@/lib/data';
@@ -10,7 +10,27 @@ import { cities } from '@/lib/data';
 export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
   const [query, setQuery] = useState('');
+  const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+    try {
+      if (typeof window !== 'undefined' && localStorage.getItem('emergencyBannerDismissed') === 'true') {
+        setEmergencyBannerVisible(false);
+      }
+    } catch {}
+  }, []);
+
+  const dismissEmergencyBanner = () => {
+    setEmergencyBannerVisible(false);
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('emergencyBannerDismissed', 'true');
+      }
+    } catch {}
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +41,8 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative md:min-h-[92vh] flex items-center overflow-hidden bg-white">
+    <>
+      <section className="relative md:min-h-[92vh] flex items-center overflow-hidden bg-white">
       {/* Svijetla dekoracija */}
       <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-cloud rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary-50 rounded-full -translate-x-1/3 translate-y-1/3" />
@@ -39,18 +60,6 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
-            <Link
-              href="/kategorije/hitne-intervencije/"
-              className="inline-flex items-center gap-2 bg-red-50 border border-red-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8 hover:bg-red-100 transition-colors"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600" />
-              </span>
-              <span className="text-red-700 text-sm font-semibold">Hitne intervencije 24/7</span>
-              <ArrowRight className="w-3.5 h-3.5 text-red-500" />
-            </Link>
-
             <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-4 md:mb-6 leading-[1.1] tracking-tight">
               Pronađite majstora
               <br />
@@ -75,9 +84,9 @@ export default function HeroSection() {
                     className="w-full h-48 object-cover object-[62%_35%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3 inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm border border-gray-100 shadow-sm rounded-full px-3 py-1.5">
-                    <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-                    <span className="text-ink/80 text-xs font-medium">Više od 2,800+ verificiranih firmi i majstora</span>
+                  <div className="absolute bottom-2 left-2 inline-flex items-center gap-1.5 bg-ink/45 backdrop-blur-md text-white/90 rounded-full px-2 py-1 text-[10px] font-medium shadow-sm">
+                    <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
+                    <span>2.800+ verificiranih majstora</span>
                   </div>
                 </div>
                 <div className="absolute top-10 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
@@ -153,9 +162,9 @@ export default function HeroSection() {
                 className="object-cover w-full h-[430px] object-[58%_40%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
-              <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm border border-gray-100 shadow-sm rounded-full px-4 py-2">
-                <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-                <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi i majstora</span>
+              <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-ink/45 backdrop-blur-md text-white/90 rounded-full px-2.5 py-1 text-xs font-medium shadow-sm">
+                <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
+                <span>2.800+ verificiranih majstora</span>
               </div>
             </div>
 
@@ -182,5 +191,34 @@ export default function HeroSection() {
         </div>
       </div>
     </section>
+
+    {/* Sticky hitne intervencije banner — zakačen za dno ekrana, ne skrola se, može se ukloniti */}
+    {mounted && emergencyBannerVisible && (
+      <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-white shadow-[0_-4px_20px_rgba(220,38,38,0.25)]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
+          <Link
+            href="/kategorije/hitne-intervencije/"
+            className="flex items-center gap-3 min-w-0 hover:opacity-90 transition-opacity"
+          >
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-100" />
+            </span>
+            <Siren className="w-4 h-4 shrink-0" />
+            <span className="text-sm font-semibold truncate">Hitne intervencije 24/7 — majstori dostupni odmah</span>
+            <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
+          </Link>
+          <button
+            type="button"
+            onClick={dismissEmergencyBanner}
+            className="p-1.5 hover:bg-white/10 rounded-lg transition-colors shrink-0"
+            aria-label="Zatvori"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
