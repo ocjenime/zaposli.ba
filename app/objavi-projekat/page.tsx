@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Upload, MapPin, Calendar, DollarSign, ChevronRight } from 'lucide-react';
@@ -13,10 +13,22 @@ import { supabase } from '@/lib/supabase';
 const categories = allCategories.filter((c) => !c.noSeo);
 const cities = allCities.map((c) => c.name);
 
-export default function PostProjectPage() {
+function findCategoryByService(service: string) {
+  const s = service.toLowerCase();
+  return (
+    categories.find((c) => c.name.toLowerCase() === s) ||
+    categories.find((c) => c.name.toLowerCase().includes(s)) ||
+    categories.find((c) => c.services.some((svc) => svc.toLowerCase().includes(s) || s.includes(svc.toLowerCase()))) ||
+    null
+  );
+}
+
+function PostProjectContent() {
   const { user, loading, role } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [step, setStep] = useState(1);
+  const [prefill, setPrefill] = useState<{ service: string | null; city: string | null }>({ service: null, city: null });
   const [formData, setFormData] = useState({
     title: '',
     category: '',
@@ -30,6 +42,28 @@ export default function PostProjectPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const serviceParam = searchParams.get('service');
+    const cityParam = searchParams.get('city');
+
+    if (serviceParam || cityParam) {
+      setPrefill({ service: serviceParam, city: cityParam });
+    }
+
+    if (cityParam && cities.includes(cityParam)) {
+      setFormData((prev) => ({ ...prev, city: cityParam }));
+    }
+
+    if (serviceParam) {
+      const matched = findCategoryByService(serviceParam);
+      if (matched) {
+        setFormData((prev) => ({ ...prev, category: matched.name, title: serviceParam }));
+      } else {
+        setFormData((prev) => ({ ...prev, title: serviceParam }));
+      }
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!loading && !user) router.push('/prijava/');
@@ -129,7 +163,17 @@ export default function PostProjectPage() {
           </div>
 
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Objavite novi posao</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Objavite novi posao</h1>
+            {(prefill.service || prefill.city) && (
+              <div className="mb-6 p-3 bg-orange-50 border border-orange-100 rounded-xl text-sm">
+                <p className="text-steel">Preuzeto iz pretrage:</p>
+                <p className="font-medium text-ink">
+                  {prefill.service && <span className="text-brand-orange">{prefill.service}</span>}
+                  {prefill.service && prefill.city && <span className="text-steel mx-1">·</span>}
+                  {prefill.city && <span className="inline-flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {prefill.city}</span>}
+                </p>
+              </div>
+            )}
 
             {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
 
@@ -217,5 +261,23 @@ export default function PostProjectPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function PostProjectPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col bg-cloud">
+          <Header />
+          <main className="flex-grow flex items-center justify-center">
+            <p className="text-steel">Učitavanje...</p>
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <PostProjectContent />
+    </Suspense>
   );
 }

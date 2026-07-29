@@ -14,7 +14,10 @@ export default function HeroSection() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/objavi-projekat/');
+    const params = new URLSearchParams();
+    if (query.trim()) params.set('service', query.trim());
+    if (selectedCity) params.set('city', selectedCity);
+    router.push(`/objavi-projekat/?${params.toString()}`);
   };
 
   return (
