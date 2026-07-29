@@ -84,7 +84,7 @@ export default function HeroSection() {
                     className="w-full h-48 object-cover object-[62%_35%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 left-2 inline-flex items-center gap-1.5 bg-ink/45 backdrop-blur-md text-white/90 rounded-full px-2 py-1 text-[10px] font-medium shadow-sm">
+                  <div className="absolute top-2 left-2 inline-flex items-center gap-1.5 bg-ink/40 backdrop-blur-md text-white/90 rounded-full px-2 py-0.5 text-[10px] font-medium shadow-sm">
                     <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
                     <span>2.800+ verificiranih majstora</span>
                   </div>
@@ -162,7 +162,7 @@ export default function HeroSection() {
                 className="object-cover w-full h-[430px] object-[58%_40%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
-              <div className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-ink/45 backdrop-blur-md text-white/90 rounded-full px-2.5 py-1 text-xs font-medium shadow-sm">
+              <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 bg-ink/40 backdrop-blur-md text-white/90 rounded-full px-2.5 py-0.5 text-xs font-medium shadow-sm">
                 <span className="w-1.5 h-1.5 bg-brand-orange rounded-full animate-pulse" />
                 <span>2.800+ verificiranih majstora</span>
               </div>
