@@ -15,21 +15,21 @@ const sections = [
   {
     title: '1. Opšte odredbe',
     paragraphs: [
-      'Ovi Uslovi korištenja (u daljem tekstu: "Uslovi") uređuju odnos između platforme Zaposli.ba (u daljem tekstu: "Platforma") i svih korisnika koji pristupaju ili koriste Platformu, bilo kao kupci koji objavljuju projekte, bilo kao firme i majstori koji šalju ponude. Korištenjem Platforme smatra se da ste pročitali, razumjeli i u cijelosti prihvatili ove Uslove.',
+      'Ovi Uslovi korištenja (u daljem tekstu: "Uslovi") uređuju odnos između platforme Zaposli.ba (u daljem tekstu: "Platforma") i svih korisnika koji pristupaju ili koriste Platformu, bilo kao kupci koji objavljuju poslove, bilo kao firme i majstori koji šalju ponude. Korištenjem Platforme smatra se da ste pročitali, razumjeli i u cijelosti prihvatili ove Uslove.',
       'Platforma zadržava pravo da odbije registraciju ili ukloni korisnički račun koji krši ove Uslove, važeće propise Bosne i Hercegovine ili dobre poslovne običaje, uz prethodnu najavu kada je to moguće.',
     ],
   },
   {
     title: '2. Opis usluge',
     paragraphs: [
-      'Zaposli.ba je onlajn tržište koje kupcima omogućava besplatnu objavu građevinskih i zanatskih projekata, a registrovanim firmama i majstorima omogućava slanje ponuda za te projekte. Platforma pruža alate za komunikaciju, upoređivanje ponuda, pregled profila firmi, ocjena i recenzija.',
+      'Zaposli.ba je onlajn tržište koje kupcima omogućava besplatnu objavu građevinskih i zanatskih poslova, a registrovanim firmama i majstorima omogućava slanje ponuda za te poslove. Platforma pruža alate za komunikaciju, upoređivanje ponuda, pregled profila firmi, ocjena i recenzija.',
       'Platforma nije izvođač radova, ne zapošljava firme niti majstore i nije strana u ugovoru koji kupac i firma eventualno zaključe. Uloga Platforme je isključivo posrednička — povezivanje ponude i potražnje.',
     ],
   },
   {
     title: '3. Obaveze korisnika (kupaca)',
     paragraphs: [
-      'Kupac se obavezuje da prilikom objave projekta navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje projekte čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava projekta je neobavezujuća — kupac nije dužan odabrati nijednu ponudu.',
+      'Kupac se obavezuje da prilikom objave posla navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje poslove čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava posla je neobavezujuća — kupac nije dužan odabrati nijednu ponudu.',
       'Kupac snosi isključivu odgovornost za provjeru referenci, licence i stručnosti firme prije zaključenja ugovora o izvođenju radova, kao i za sadržaj sporazuma koji sa firmom sklopi. Preporučujemo da svi dogovori budu sačinjeni u pisanoj formi.',
     ],
   },
@@ -58,13 +58,13 @@ const sections = [
     title: '7. Intelektualna svojina',
     paragraphs: [
       'Svi sadržaji Platforme — uključujući logo, dizajn, tekstove, bazu podataka i programski kod — vlasništvo su Platforme ili su korišteni uz dozvolu i zaštićeni su propisima o intelektualnoj svojini. Zabranjeno je njihovo kopiranje, distribucija ili komercijalna upotreba bez pisane saglasnosti.',
-      'Korisnici koji objavljuju fotografije, opise projekata i recenzije zadržavaju svoja prava, ali Platformi daju neisključivu, neograničenu dozvolu za prikazivanje tog sadržaja u svrhu pružanja usluge. Korisnik garantuje da posjeduje prava na sav sadržaj koji objavi.',
+      'Korisnici koji objavljuju fotografije, opise poslova i recenzije zadržavaju svoja prava, ali Platformi daju neisključivu, neograničenu dozvolu za prikazivanje tog sadržaja u svrhu pružanja usluge. Korisnik garantuje da posjeduje prava na sav sadržaj koji objavi.',
     ],
   },
   {
     title: '8. Raskid',
     paragraphs: [
-      'Korisnik može u svakom trenutku zatvoriti svoj račun slanjem zahtjeva na info@zaposli.ba, čime prestaje njegovo pravo korištenja Platforme. Aktivni projekti i komunikacija mogu ostati vidljivi učesnicima do njihovog završetka.',
+      'Korisnik može u svakom trenutku zatvoriti svoj račun slanjem zahtjeva na info@zaposli.ba, čime prestaje njegovo pravo korištenja Platforme. Aktivni poslovi i komunikacija mogu ostati vidljivi učesnicima do njihovog završetka.',
       'Platforma može suspendovati ili trajno ukinuti račun koji krši ove Uslove, uz obavještenje korisniku. Odredbe o odgovornosti, intelektualnoj svojini i mjerodavnom pravu ostaju na snazi i nakon raskida.',
     ],
   },

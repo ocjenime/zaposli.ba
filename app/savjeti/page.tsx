@@ -51,7 +51,7 @@ export default function SavjetiPage() {
         <Breadcrumbs items={[{ name: 'Savjeti' }]} />
         <PageHero
           title="Savjeti"
-          subtitle="Praktični vodiči i stvarne cijene za vaše građevinske projekte u BiH"
+          subtitle="Praktični vodiči i stvarne cijene za vaše građevinske poslove u BiH"
         />
 
         <section className="py-16">
@@ -98,13 +98,13 @@ export default function SavjetiPage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  Imate projekat na umu?
+                  Imate posao na umu?
                 </h2>
                 <p className="text-white/60 mb-8 max-w-lg mx-auto">
                   Objavite ga besplatno i primite ponude od provjerenih firmi iz vašeg grada.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary text-lg">
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                 </Link>
               </div>
             </div>

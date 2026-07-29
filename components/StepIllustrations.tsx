@@ -10,7 +10,7 @@ export function StepOneIllustration() {
     <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
       <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
-      {/* Telefon sa projektom */}
+      {/* Telefon sa poslom */}
       <g className="anim-wiggle">
         <rect x="46" y="32" width="58" height="98" rx="10" fill={INK} />
         <rect x="50" y="38" width="50" height="86" rx="6" fill="#fff" />

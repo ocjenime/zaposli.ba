@@ -21,7 +21,7 @@ const testimonials = [
     id: 3,
     name: 'Marko Petrović',
     role: 'Vlasnik firme, Tuzla',
-    content: 'Otkad sam registrovao firmu na Zaposli.ba, dobijam redovno nove projekte. Sistem recenzija mi pomaže da se istaknem od konkurencije.',
+    content: 'Otkad sam registrovao firmu na Zaposli.ba, dobijam redovno nove poslove. Sistem recenzija mi pomaže da se istaknem od konkurencije.',
     rating: 5,
     avatar: 'MP',
   },

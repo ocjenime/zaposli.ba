@@ -20,7 +20,7 @@ const stats = [
   {
     icon: CheckCircle,
     value: '25,000+',
-    label: 'Završenih projekata',
+    label: 'Završenih poslova',
   },
 ];
 
@@ -33,7 +33,7 @@ const trustCards = [
   {
     icon: CreditCard,
     title: 'Besplatno za kupce',
-    description: 'Objavljivanje projekata i primanje ponuda je potpuno besplatno.',
+    description: 'Objavljivanje poslova i primanje ponuda je potpuno besplatno.',
   },
   {
     icon: MessageSquare,

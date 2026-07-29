@@ -128,9 +128,9 @@ export default function CategoriesPage() {
         <section className="py-12 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl font-bold text-ink mb-4">Ne pronalazite traženu kategoriju?</h2>
-            <p className="text-steel mb-6">Objavite projekat i opišite šta vam je potrebno. Majstori će vam se javiti sa ponudama.</p>
+            <p className="text-steel mb-6">Objavite posao i opišite šta vam je potrebno. Majstori će vam se javiti sa ponudama.</p>
             <Link href="/objavi-projekat/" className="btn-primary">
-              Objavi projekat
+              Objavi posao
             </Link>
           </div>
         </section>

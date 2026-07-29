@@ -141,11 +141,11 @@ export default function CijenaFasadePoM2Page() {
               <div className="relative">
                 <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
                 <p className="text-white/60 mb-6">
-                  Objavite projekat besplatno i primite ponude od provjerenih fasadera iz vašeg
+                  Objavite posao besplatno i primite ponude od provjerenih fasadera iz vašeg
                   grada.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary">
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                 </Link>
               </div>
             </div>

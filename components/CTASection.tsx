@@ -28,7 +28,7 @@ export default function CTASection() {
               Tražite majstora?
             </h2>
             <p className="text-lg text-white/60 mb-8 leading-relaxed">
-              Objavite svoj projekat besplatno i primite ponude od provjerenih firmi u roku od 24 sata.
+              Objavite svoj posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.
             </p>
 
             <ul className="space-y-4 mb-10">
@@ -44,7 +44,7 @@ export default function CTASection() {
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -63,7 +63,7 @@ export default function CTASection() {
             </div>
 
             <ul className="space-y-4 mb-8">
-              {['Pristup hiljadama projekata', 'Izgradite reputaciju kroz recenzije', 'Besplatna registracija'].map((item) => (
+              {['Pristup hiljadama poslova', 'Izgradite reputaciju kroz recenzije', 'Besplatna registracija'].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-gray-700">
                   <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0" />
                   <span>{item}</span>

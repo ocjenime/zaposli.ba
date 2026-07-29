@@ -9,8 +9,8 @@ import { projects } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Aktivni projekti — pronađite posao | Zaposli.ba',
-  description: 'Pregledajte aktivne projekte kupaca širom BiH s budžetima i rokovima. Registrujte firmu besplatno i pošaljite ponudu.',
+  title: 'Aktivni poslovi — pronađite nove klijente | Zaposli.ba',
+  description: 'Pregledajte aktivne poslove kupaca širom BiH s budžetima i rokovima. Registrujte firmu besplatno i pošaljite ponudu.',
   alternates: { canonical: `${site.url}/projekti/` },
 };
 
@@ -19,10 +19,10 @@ export default function ProjectsPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Projekti' }]} />
+        <Breadcrumbs items={[{ name: 'Poslovi' }]} />
         <PageHero
-          title="Aktivni projekti"
-          subtitle="Stvarni projekti kupaca s budžetima i rokovima — registrujte firmu i pošaljite ponudu"
+          title="Aktivni poslovi"
+          subtitle="Stvarni poslovi kupaca s budžetima i rokovima — registrujte firmu i pošaljite ponudu"
         />
 
         <section className="py-14 bg-cloud">
@@ -69,9 +69,9 @@ export default function ProjectsPage() {
             <div className="bg-ink rounded-3xl p-10 text-center relative overflow-hidden">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Želite slati ponude na ove projekte?</h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Želite slati ponude na ove poslove?</h2>
                 <p className="text-white/60 mb-8 max-w-xl mx-auto">
-                  Registrujte firmu besplatno, pregledajte projekte u vašoj kategoriji i pošaljite prvu ponudu već danas.
+                  Registrujte firmu besplatno, pregledajte poslove u vašoj kategoriji i pošaljite prvu ponudu već danas.
                 </p>
                 <Link
                   href="/registracija/"

@@ -60,17 +60,17 @@ export default function RecentProjects() {
           <div>
             <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
               <TrendingUp className="w-4 h-4 inline mr-1" />
-              Najnoviji projekti
+              Najnoviji poslovi
             </span>
             <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
-              Nedavno objavljeni projekti
+              Nedavno objavljeni poslovi
             </h2>
           </div>
           <Link
             href="/kategorije/"
             className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group whitespace-nowrap"
           >
-            Svi projekti
+            Svi poslovi
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

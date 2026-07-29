@@ -35,16 +35,16 @@ export default function PrivacyPage() {
               pružanje usluge:
             </p>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-1">
-              <li><strong className="text-ink">Kontakt podaci</strong> — ime i prezime, email adresa i broj telefona prilikom registracije ili objave projekta.</li>
-              <li><strong className="text-ink">Podaci o projektu</strong> — opis radova, lokacija (grad), budžet i rokovi koje sami unesete.</li>
-              <li><strong className="text-ink">Fotografije</strong> — slike prostora ili radova koje dobrovoljno priložite uz projekat ili profil.</li>
+              <li><strong className="text-ink">Kontakt podaci</strong> — ime i prezime, email adresa i broj telefona prilikom registracije ili objave posla.</li>
+              <li><strong className="text-ink">Podaci o poslu</strong> — opis radova, lokacija (grad), budžet i rokovi koje sami unesete.</li>
+              <li><strong className="text-ink">Fotografije</strong> — slike prostora ili radova koje dobrovoljno priložite uz posao ili profil.</li>
               <li><strong className="text-ink">Tehnički podaci</strong> — IP adresa, tip preglednika i podaci o korištenju stranice, u anonimiziranom obliku za statistiku.</li>
             </ul>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">2. Zašto prikupljamo podatke</h2>
             <p className="text-steel leading-relaxed mb-4">
               Podatke koristimo isključivo radi pružanja usluge Platforme: objave i pokretanja
-              projekata, dostavljanja ponuda firmama, omogućavanja komunikacije između kupaca i
+              poslova, dostavljanja ponuda firmama, omogućavanja komunikacije između kupaca i
               firmi, prikazivanja profila i recenzija, te poboljšanja funkcionalnosti Platforme.
               Podatke ne koristimo za profilisanje niti ih prodajemo trećim stranama.
             </p>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
             <p className="text-steel leading-relaxed mb-4">
               Fotografije koje objavite ostaju vaše vlasništvo. Objavom fotografije Platformi dajete
               ograničenu dozvolu da je prikazuje isključivo u svrhu pružanja usluge — uz vaš
-              projekat ili profil. Fotografije ne koristimo u marketinške svrhe bez vaše izričite
+              posao ili profil. Fotografije ne koristimo u marketinške svrhe bez vaše izričite
               saglasnosti. Odgovorni ste da na fotografijama nema podataka ili osoba za čije
               objavljivanje nemate pravo.
             </p>
@@ -71,7 +71,7 @@ export default function PrivacyPage() {
             <p className="text-steel leading-relaxed mb-4">
               Vaši kontakt podaci (ime, telefon, email) <strong className="text-ink">nisu javno
               vidljivi</strong> na Platformi. Firma vidi vaše kontakt podatke tek nakon što vi to
-              odobrite — prihvatanjem ponude ili direktnom porukom firmi. Opis projekta, grad i
+              odobrite — prihvatanjem ponude ili direktnom porukom firmi. Opis posla, grad i
               priložene fotografije vidljivi su registrovanim firmama radi pripreme ponude.
             </p>
             <p className="text-steel leading-relaxed mb-4">

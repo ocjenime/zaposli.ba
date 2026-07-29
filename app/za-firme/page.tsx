@@ -7,7 +7,7 @@ const benefits = [
   {
     icon: TrendingUp,
     title: 'Rastite sa nama',
-    description: 'Dobijajte redovno nove projekte i klijente bez dodatnog ulaganja u marketing.',
+    description: 'Dobijajte redovno nove poslove i klijente bez dodatnog ulaganja u marketing.',
   },
   {
     icon: Users,
@@ -22,7 +22,7 @@ const benefits = [
   {
     icon: CheckCircle,
     title: 'Besplatna registracija',
-    description: 'Registrujte firmu besplatno i počnite da primate projekte odmah.',
+    description: 'Registrujte firmu besplatno i počnite da primate poslove odmah.',
   },
 ];
 
@@ -91,7 +91,7 @@ export default function ForCompaniesPage() {
                   Proširite svoje poslovanje sa <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">Zaposli.ba</span>
                 </h1>
                 <p className="text-lg text-steel mb-8">
-                  Pridružite se hiljadama firmi i majstora koji redovno dobijaju nove projekte 
+                  Pridružite se hiljadama firmi i majstora koji redovno dobijaju nove poslove 
                   preko naše platforme. Besplatna registracija, plaćate samo kada dobijete posao.
                 </p>
                 <Link href="/registracija-firme" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
@@ -108,7 +108,7 @@ export default function ForCompaniesPage() {
                     </div>
                     <div className="bg-white rounded-xl p-4 text-center">
                       <div className="text-3xl font-bold text-brand-orange">25,000+</div>
-                      <div className="text-sm text-gray-600">Projekata</div>
+                      <div className="text-sm text-gray-600">Poslova</div>
                     </div>
                     <div className="bg-white rounded-xl p-4 text-center">
                       <div className="text-3xl font-bold text-brand-orange">4.8</div>
@@ -162,8 +162,8 @@ export default function ForCompaniesPage() {
                 <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
                   2
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Pregledajte projekte</h3>
-                <p className="text-sm text-gray-600">Pronađite projekte koji vam odgovaraju</p>
+                <h3 className="font-semibold text-gray-900 mb-2">Pregledajte poslove</h3>
+                <p className="text-sm text-gray-600">Pronađite poslove koji vam odgovaraju</p>
               </div>
 
               <div className="text-center">
@@ -268,7 +268,7 @@ export default function ForCompaniesPage() {
               Spremni ste da rastete?
             </h2>
             <p className="text-lg text-white/60 mb-8 max-w-2xl mx-auto">
-              Registrujte firmu danas i počnite da primate nove projekte već sutra.
+              Registrujte firmu danas i počnite da primate nove poslove već sutra.
             </p>
             <Link href="/registracija-firme" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
               Registrujte firmu besplatno

@@ -47,7 +47,7 @@ export default function CijenaAdaptacijeKupatilaPage() {
             </p>
 
             <p className="text-steel leading-relaxed mb-4">
-              Adaptacija kupatila je jedan od najčešćih — i najneizvjesnijih — projekata kada su
+              Adaptacija kupatila je jedan od najčešćih — i najneizvjesnijih — poslova kada su
               cijene u pitanju. Za standardno kupatilo od 3 do 5 m², kompletna adaptacija
               „ključ u ruke" u BiH u 2026. godini košta između <strong className="text-ink">2.500 i
               6.000 KM</strong>, zavisno od obima radova i izbora materijala. Evo kako se ta cijena
@@ -135,11 +135,11 @@ export default function CijenaAdaptacijeKupatilaPage() {
               <div className="relative">
                 <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
                 <p className="text-white/60 mb-6">
-                  Objavite projekat besplatno i primite ponude od provjerenih firmi — obično u roku
+                  Objavite posao besplatno i primite ponude od provjerenih firmi — obično u roku
                   od 24 sata.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary">
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                 </Link>
               </div>
             </div>

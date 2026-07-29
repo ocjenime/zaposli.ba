@@ -15,7 +15,7 @@ export default function HowItWorksPage() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-extrabold text-ink mb-4 tracking-tight">Kako funkcioniše Zaposli.ba?</h1>
             <p className="text-lg text-steel max-w-2xl mx-auto">
-              Jednostavan proces u 3 koraka do idealnog majstora za vaš projekat
+              Jednostavan proces u 3 koraka do idealnog majstora za vaš posao
             </p>
           </div>
         </section>
@@ -31,7 +31,7 @@ export default function HowItWorksPage() {
                   <ClipboardList className="w-8 h-8 text-primary-600" />
                 </div>
                 <div className="text-sm font-bold text-primary-600 mb-2">KORAK 1</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Objavite projekat</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Objavite posao</h3>
                 <p className="text-gray-600">
                   Opišite šta vam je potrebno, dodajte fotografije i postavite budžet. 
                   Traje samo 2 minute i potpuno je besplatno.
@@ -57,14 +57,14 @@ export default function HowItWorksPage() {
                 <div className="text-sm font-bold text-brand-orange mb-2">KORAK 3</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Odaberite majstora</h3>
                 <p className="text-gray-600">
-                  Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš projekat.
+                  Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš posao.
                 </p>
               </div>
             </div>
 
             <div className="text-center mt-12">
               <Link href="/objavi-projekat" className="btn-primary text-lg">
-                Objavi projekat besplatno
+                Objavi posao besplatno
               </Link>
             </div>
           </div>
@@ -92,9 +92,9 @@ export default function HowItWorksPage() {
                   <Clock className="w-8 h-8 text-brand-orange" />
                 </div>
                 <div className="text-sm font-bold text-brand-orange mb-2">KORAK 2</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Pregledajte projekte</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Pregledajte poslove</h3>
                 <p className="text-gray-600">
-                  Pregledajte dostupne projekte u vašem okrugu i odaberite one koji vam odgovaraju.
+                  Pregledajte dostupne poslove u vašem okrugu i odaberite one koji vam odgovaraju.
                 </p>
               </div>
 
@@ -145,7 +145,7 @@ export default function HowItWorksPage() {
                   <Clock className="w-6 h-6 text-brand-orange" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Brze ponude</h3>
-                <p className="text-sm text-gray-600">Primite ponude u roku od 24 sata od objave projekta.</p>
+                <p className="text-sm text-gray-600">Primite ponude u roku od 24 sata od objave posla.</p>
               </div>
 
               <div className="card text-center">

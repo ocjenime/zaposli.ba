@@ -52,16 +52,16 @@ export default function PostProjectPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-3xl font-extrabold text-ink mb-3">Projekat je objavljen!</h1>
+            <h1 className="text-3xl font-extrabold text-ink mb-3">Posao je objavljen!</h1>
             <p className="text-steel mb-8 leading-relaxed">
-              Vaš projekat <b className="text-ink">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
+              Vaš posao <b className="text-ink">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
               Prve ponude obično stižu u roku od <b className="text-ink">24 sata</b> — javimo vam emailom čim stignu.
             </p>
             <div className="bg-white rounded-2xl p-6 border border-gray-100 mb-8 text-left">
               <h2 className="font-bold text-ink mb-4 text-sm uppercase tracking-wider">Šta se dešava dalje?</h2>
               <div className="space-y-4">
                 {[
-                  { n: '1', text: 'Firme iz vaše kategorije i grada dobijaju notifikaciju o projektu' },
+                  { n: '1', text: 'Firme iz vaše kategorije i grada dobijaju notifikaciju o poslu' },
                   { n: '2', text: 'Primate ponude s cijenama i rokovima — obično 3–8 ponuda' },
                   { n: '3', text: 'Uporedite ponude, pročitajte recenzije i odaberite majstora' },
                 ].map((s) => (
@@ -75,12 +75,12 @@ export default function PostProjectPage() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/projekti/" className="btn-secondary">Pogledajte aktivne projekte</Link>
+              <Link href="/projekti/" className="btn-secondary">Pogledajte aktivne poslove</Link>
               <button
                 onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMin: '', budgetMax: '', deadline: '', images: [] }); }}
                 className="btn-primary"
               >
-                Objavite još jedan projekat
+                Objavite još jedan posao
               </button>
             </div>
           </div>
@@ -121,13 +121,13 @@ export default function PostProjectPage() {
             </div>
             <div className="hidden sm:flex justify-between mt-2 text-sm text-gray-500">
               <span>Osnovne informacije</span>
-              <span>Detalji projekta</span>
+              <span>Detalji posla</span>
               <span>Pregled i objava</span>
             </div>
           </div>
 
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Objavite novi projekat</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Objavite novi posao</h1>
 
             <form onSubmit={handleSubmit}>
               {/* Step 1: Basic Info */}
@@ -135,7 +135,7 @@ export default function PostProjectPage() {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Naslov projekta *
+                      Naslov posla *
                     </label>
                     <input
                       type="text"
@@ -170,7 +170,7 @@ export default function PostProjectPage() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Opis projekta *
+                      Opis posla *
                     </label>
                     <textarea
                       name="description"
@@ -319,7 +319,7 @@ export default function PostProjectPage() {
               {step === 3 && (
                 <div className="space-y-6">
                   <div className="bg-gray-50 rounded-lg p-6">
-                    <h3 className="font-semibold text-gray-900 mb-4">Pregled projekta</h3>
+                    <h3 className="font-semibold text-gray-900 mb-4">Pregled posla</h3>
                     
                     <dl className="space-y-3">
                       <div className="flex justify-between">
@@ -358,7 +358,7 @@ export default function PostProjectPage() {
 
                   <div className="bg-primary-50 rounded-lg p-4">
                     <p className="text-sm text-primary-800">
-                      <strong>Napomena:</strong> Vaš projekat će biti vidljiv svim firmama u odabranom gradu. 
+                      <strong>Napomena:</strong> Vaš posao će biti vidljiv svim firmama u odabranom gradu. 
                       Obično primate ponude u roku od 24 sata.
                     </p>
                   </div>
@@ -375,7 +375,7 @@ export default function PostProjectPage() {
                       type="submit"
                       className="flex-1 btn-accent"
                     >
-                      Objavi projekat besplatno
+                      Objavi posao besplatno
                     </button>
                   </div>
                 </div>

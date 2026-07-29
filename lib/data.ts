@@ -102,7 +102,7 @@ export const categories: Category[] = [
     name: 'Vodoinstalacije', slug: 'vodoinstalacije', seoSlug: 'vodoinstalater',
     profession: 'Vodoinstalater', icon: Droplets,
     description: 'Instalacije vode, kanalizacije, sanitarije',
-    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po projektu',
+    count: 620, priceRange: '30 – 60 KM/h', priceNote: 'ili po poslu',
     group: 'Instalacije',
     services: ['Vodovodne instalacije', 'Sanitarije', 'Odštopavanje odvoda', 'Servis bojlera'],
   },
@@ -135,7 +135,7 @@ export const categories: Category[] = [
     name: 'Sigurnost', slug: 'sigurnost', seoSlug: 'bravar',
     profession: 'Bravar', icon: KeySquare,
     description: 'Bravar, video nadzor, alarmni sistemi, interfoni',
-    count: 190, priceRange: '30 – 70 KM/h', priceNote: 'ili po projektu',
+    count: 190, priceRange: '30 – 70 KM/h', priceNote: 'ili po poslu',
     group: 'Dom i održavanje',
     services: ['Otključavanje vrata', 'Video nadzor', 'Alarmni sistemi', 'Interfoni'],
   },
@@ -143,7 +143,7 @@ export const categories: Category[] = [
     name: 'Tehnologija', slug: 'tehnologija', seoSlug: 'it-tehnicar',
     profession: 'IT tehničar', icon: Wifi,
     description: 'WiFi mreže, servis računara i laptopa, Smart Home, montaža TV-a',
-    count: 160, priceRange: '30 – 70 KM/h', priceNote: 'ili po projektu',
+    count: 160, priceRange: '30 – 70 KM/h', priceNote: 'ili po poslu',
     group: 'Dom i održavanje',
     services: ['Postavljanje WiFi mreže', 'Servis računara', 'Servis laptopa', 'Smart Home', 'Montaža TV-a'],
   },
@@ -161,7 +161,7 @@ export const categories: Category[] = [
     name: 'Vrtlarstvo i dvorište', slug: 'vrtlarstvo', seoSlug: 'vrtlar',
     profession: 'Vrtlar', icon: TreePine,
     description: 'Košenje trave, orezivanje voća, sadnja i uređenje vrta, navodnjavanje',
-    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po projektu',
+    count: 350, priceRange: '20 – 45 KM/h', priceNote: 'ili po poslu',
     group: 'Dvorište',
     services: ['Košenje trave', 'Orezivanje voća', 'Rušenje stabala', 'Sadnja i uređenje vrta', 'Navodnjavanje'],
   },
@@ -188,7 +188,7 @@ export const categories: Category[] = [
     name: 'Ostale usluge', slug: 'ostale-usluge', seoSlug: 'ostale-usluge',
     profession: 'Majstor za sve', icon: HelpCircle,
     description: 'Sastavljanje kreveta, vješanje TV-a, odnošenje frižidera — bilo šta',
-    count: 500, priceRange: 'po dogovoru', priceNote: 'opširnije u projektu',
+    count: 500, priceRange: 'po dogovoru', priceNote: 'opširnije u poslu',
     group: 'Ostalo', noSeo: true,
     services: ['Sastavljanje namještaja', 'Vješanje TV-a i polica', 'Odnošenje starih stvari', 'Sitni popravci'],
   },
@@ -338,7 +338,7 @@ export function getWorker(id: string) {
   return workers.find((w) => w.id === id);
 }
 
-/* ---------------------------------- PROJEKTI ---------------------------------- */
+/* ---------------------------------- POSLOVI ---------------------------------- */
 
 export interface Project {
   id: number;
@@ -409,7 +409,7 @@ export interface FaqItem {
 export const faqs: FaqItem[] = [
   {
     question: 'Koliko košta korištenje Zaposli.ba za kupce?',
-    answer: 'Za kupce je korištenje platforme potpuno besplatno — objava projekta, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
+    answer: 'Za kupce je korištenje platforme potpuno besplatno — objava posla, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
   },
   {
     question: 'Kako funkcioniše verifikacija firmi?',
@@ -417,11 +417,11 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Koliko brzo ću dobiti ponude?',
-    answer: 'Većina projekata dobije prve ponude u roku od 24 sata od objave. Projekti u većim gradovima i hitni projekti često dobiju ponude u roku od nekoliko sati.',
+    answer: 'Većina poslova dobije prve ponude u roku od 24 sata od objave. Poslovi u većim gradovima i hitni poslovi često dobiju ponude u roku od nekoliko sati.',
   },
   {
     question: 'Jesam li obavezan odabrati neku ponudu?',
-    answer: 'Ne. Objava projekta je neobavezujuća — ako vam nijedna ponuda ne odgovara, projekat jednostavno zatvarate bez ikakvih troškova.',
+    answer: 'Ne. Objava posla je neobavezujuća — ako vam nijedna ponuda ne odgovara, posao jednostavno zatvarate bez ikakvih troškova.',
   },
   {
     question: 'Šta ako nisam zadovoljan izvedenim radovima?',
@@ -429,11 +429,11 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Kako firma dobija oznaku dobre reputacije?',
-    answer: 'Ocjena se računa isključivo od recenzija stvarnih kupaca kojima je firma radila projekat preko platforme. Ocjene se ne mogu kupiti niti ukloniti na zahtjev firme.',
+    answer: 'Ocjena se računa isključivo od recenzija stvarnih kupaca kojima je firma radila posao preko platforme. Ocjene se ne mogu kupiti niti ukloniti na zahtjev firme.',
   },
   {
-    question: 'Mogu li objaviti hitan projekat?',
-    answer: 'Da. Prilikom objave označite da je projekat hitan i firme u vašem gradu dobijaju prioritetnu notifikaciju. Hitni projekti u prosjeku dobiju prvu ponudu u roku od nekoliko sati.',
+    question: 'Mogu li objaviti hitan posao?',
+    answer: 'Da. Prilikom objave označite da je posao hitan i firme u vašem gradu dobijaju prioritetnu notifikaciju. Hitni poslovi u prosjeku dobiju prvu ponudu u roku od nekoliko sati.',
   },
   {
     question: 'Kako se registrujem kao firma i koliko to košta?',

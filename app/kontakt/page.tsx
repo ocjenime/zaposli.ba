@@ -97,9 +97,9 @@ export default function KontaktPage() {
                     <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
                       Česta pitanja
                     </Link>
-                    . Ako tražite majstora za projekat, najbrži put je da{' '}
+                    . Ako tražite majstora za posao, najbrži put je da{' '}
                     <Link href="/objavi-projekat/" className="text-brand-orange font-medium hover:underline">
-                      objavite projekat
+                      objavite posao
                     </Link>{' '}
                     i primite ponude direktno od firmi.
                   </p>

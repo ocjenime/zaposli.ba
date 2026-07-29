@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!city) return {};
   return {
     title: `Majstori ${city.name} — sve kategorije | Zaposli.ba`,
-    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 20 kategorija usluga, besplatna objava projekta, ponude u roku od 24 sata.`,
+    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 20 kategorija usluga, besplatna objava posla, ponude u roku od 24 sata.`,
     alternates: { canonical: `${site.url}/gradovi/${city.slug}/` },
   };
 }
@@ -50,7 +50,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Majstori <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
             </h1>
             <p className="text-lg text-steel max-w-2xl mb-4">
-              Provjerene građevinske firme i zanatlije u gradu {city.loc} — objavite projekat besplatno i primite ponude u roku od 24 sata.
+              Provjerene građevinske firme i zanatlije u gradu {city.loc} — objavite posao besplatno i primite ponude u roku od 24 sata.
             </p>
             <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
@@ -61,7 +61,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -85,7 +85,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                   <h3 className="font-semibold text-ink text-sm group-hover:text-brand-orange transition-colors mb-0.5">
                     {cat.profession}
                   </h3>
-                  <p className="text-xs text-steel">{cat.priceRange}</p>
+                  <p className="text-xs text-steel">{cat.count} firmi</p>
                 </Link>
               ))}
             </div>
@@ -121,7 +121,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                     </div>
                     <div className="flex items-center justify-between">
                       <VerifiedBadge size="sm" />
-                      <span className="text-xs text-steel">{w.projects} projekata</span>
+                      <span className="text-xs text-steel">{w.projects} poslova</span>
                     </div>
                   </Link>
                 ))}
@@ -138,13 +138,13 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Trebate majstora u gradu {city.loc}?
             </h2>
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
-              Objavite projekat besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
+              Objavite posao besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
             </p>
             <Link
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

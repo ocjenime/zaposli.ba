@@ -6,7 +6,7 @@ import { categories, cities } from '@/lib/data';
 const footerLinks = {
   'Za kupce': [
     { name: 'Kako radi', href: '/kako-radi/' },
-    { name: 'Objavi projekat', href: '/objavi-projekat/' },
+    { name: 'Objavi posao', href: '/objavi-projekat/' },
     { name: 'Kategorije', href: '/kategorije/' },
     { name: 'Izdvojeni majstori', href: '/izdvojeni-majstori/' },
     { name: 'Savjeti', href: '/savjeti/' },
@@ -14,7 +14,7 @@ const footerLinks = {
   'Za majstore': [
     { name: 'Registracija', href: '/registracija/' },
     { name: 'Premium paketi', href: '/za-firme/' },
-    { name: 'Aktivni projekti', href: '/projekti/' },
+    { name: 'Aktivni poslovi', href: '/projekti/' },
     { name: 'Podrška (FAQ)', href: '/faq/' },
   ],
   'O nama': [
@@ -26,6 +26,8 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
+
   return (
     <footer className="bg-ink text-white">
       {/* Glavni footer */}
@@ -84,7 +86,7 @@ export default function Footer() {
                 Majstori po gradovima
               </h3>
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
-                {cities.map((city) => (
+                {sortedCities.map((city) => (
                   <li key={city.slug}>
                     <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
                       {city.name}

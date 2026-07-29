@@ -40,7 +40,7 @@ export default function FeaturedWorkersPage() {
               </span>
               <span className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-brand-orange" />
-                Sortirano prema ocjeni i broju projekata
+                Sortirano prema ocjeni i broju poslova
               </span>
             </div>
           </div>
@@ -101,7 +101,7 @@ export default function FeaturedWorkersPage() {
                         {w.location}
                       </span>
                       <span className="text-xs font-semibold text-ink bg-cloud px-2.5 py-1 rounded-lg">
-                        {w.projects} projekata
+                        {w.projects} poslova
                       </span>
                     </div>
                   </Link>
@@ -114,16 +114,16 @@ export default function FeaturedWorkersPage() {
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                  Želite ovakvog majstora za vaš projekat?
+                  Želite ovakvog majstora za vaš posao?
                 </h2>
                 <p className="text-white/60 mb-8 max-w-xl mx-auto">
-                  Objavite projekat besplatno i primite ponude od provjerenih firmi i zanatlija u roku od 24 sata.
+                  Objavite posao besplatno i primite ponude od provjerenih firmi i zanatlija u roku od 24 sata.
                 </p>
                 <Link
                   href="/objavi-projekat/"
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
                 >
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>

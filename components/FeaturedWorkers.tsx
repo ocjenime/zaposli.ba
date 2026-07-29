@@ -49,7 +49,7 @@ export default function FeaturedWorkers() {
 
               <div className="flex items-center justify-center gap-1 text-xs text-brand-orange bg-primary-50 rounded-lg px-2 py-1 mx-auto">
                 <BadgeCheck className="w-3 h-3" />
-                <span className="font-medium">{worker.projects} projekata</span>
+                <span className="font-medium">{worker.projects} poslova</span>
               </div>
             </Link>
           ))}

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, BadgeCheck, TrendingUp, Star, Siren } from 'lucide-react';
+import { MapPin, ArrowRight, BadgeCheck, Star, Siren } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!cat) return {};
   return {
     title: `${cat.name} — ${cat.count} provjerenih firmi | Zaposli.ba`,
-    description: `${cat.description}. Pronađite ${cat.profession.toLowerCase()} širom BiH — prosječne cijene: ${cat.priceRange}. Objavite projekat besplatno.`,
+    description: `${cat.description}. Pronađite ${cat.profession.toLowerCase()} širom BiH. Objavite posao besplatno i primite ponude.`,
     alternates: { canonical: `${site.url}/kategorije/${cat.slug}/` },
   };
 }
@@ -97,25 +97,17 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </section>
 
-        {/* Cijene + gradovi */}
+        {/* Gradovi */}
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className={`grid ${cat.noSeo ? '' : 'md:grid-cols-2'} gap-6 mb-14`}>
-              <div className="bg-cloud rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-3">
-                  <TrendingUp className="w-6 h-6 text-brand-orange" />
-                  <h2 className="text-xl font-bold text-ink">Prosječne cijene</h2>
-                </div>
-                <div className="text-3xl font-extrabold text-ink mb-1">{cat.priceRange}</div>
-                <p className="text-steel text-sm">{cat.priceNote}. Tačna cijena zavisi od obima posla — zato objavite projekat i uporedite stvarne ponude.</p>
-              </div>
-              {!cat.noSeo && (
+            {!cat.noSeo && (
+            <div className="mb-14">
               <div className="bg-cloud rounded-2xl p-8">
                 <div className="flex items-center gap-3 mb-3">
                   <MapPin className="w-6 h-6 text-brand-orange" />
@@ -133,8 +125,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   ))}
                 </div>
               </div>
-              )}
             </div>
+            )}
 
             {/* Majstori */}
             {catWorkers.length > 0 && (
@@ -163,7 +155,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                       </div>
                       <div className="flex items-center justify-between">
                         <VerifiedBadge size="sm" />
-                        <span className="text-xs text-steel">{w.projects} projekata</span>
+                        <span className="text-xs text-steel">{w.projects} poslova</span>
                       </div>
                     </Link>
                   ))}
@@ -171,10 +163,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               </>
             )}
 
-            {/* Projekti */}
+            {/* Poslovi */}
             {catProjects.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Aktivni projekti — {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-ink mb-6">Aktivni poslovi — {cat.name.toLowerCase()}</h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   {catProjects.map((p) => (
                     <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all">
@@ -208,8 +200,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl font-bold text-ink mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
-            <p className="text-steel mb-6 max-w-xl mx-auto">Objavite projekat besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
-            <Link href="/objavi-projekat/" className="btn-primary">Objavi projekat besplatno</Link>
+            <p className="text-steel mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
+            <Link href="/objavi-projekat/" className="btn-primary">Objavi posao besplatno</Link>
           </div>
         </section>
       </main>

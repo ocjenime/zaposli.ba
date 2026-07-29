@@ -41,7 +41,7 @@ export default function Header() {
               href="/objavi-projekat/"
               className="ml-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95"
             >
-              Objavi projekat
+              Objavi posao
             </Link>
           </div>
 
@@ -62,7 +62,7 @@ export default function Header() {
               className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-semibold mb-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Objavi projekat
+              Objavi posao
             </Link>
             <Link
               href="/prijava/"

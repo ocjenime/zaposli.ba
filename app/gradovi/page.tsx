@@ -45,9 +45,9 @@ export default function CitiesPage() {
             </div>
 
             <div className="text-center mt-12">
-              <p className="text-steel mb-6">Koji god grad da ste — objavite projekat i firme iz vašeg kraja će se javiti s ponudama.</p>
+              <p className="text-steel mb-6">Koji god grad da ste — objavite posao i firme iz vašeg kraja će se javiti s ponudama.</p>
               <Link href="/objavi-projekat/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95">
-                Objavi projekat besplatno
+                Objavi posao besplatno
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>

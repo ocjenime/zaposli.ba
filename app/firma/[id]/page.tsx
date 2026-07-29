@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!w) return {};
   return {
     title: `${w.name} — ${w.specialty} ${w.location} | Zaposli.ba`,
-    description: `${w.name}, ${w.specialty.toLowerCase()} u gradu ${w.location}. Ocjena ${w.rating} od ${w.reviews} recenzija, ${w.projects} završenih projekata. Provjerena firma na Zaposli.ba.`,
+    description: `${w.name}, ${w.specialty.toLowerCase()} u gradu ${w.location}. Ocjena ${w.rating} od ${w.reviews} recenzija, ${w.projects} završenih poslova. Provjerena firma na Zaposli.ba.`,
     alternates: { canonical: `${site.url}/firma/${w.id}/` },
   };
 }
@@ -63,7 +63,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                     <b className="text-ink">{w.rating}</b> ({w.reviews} recenzija)
                   </span>
                   <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{w.location}</span>
-                  <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-brand-orange" />{w.projects} završenih projekata</span>
+                  <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-brand-orange" />{w.projects} završenih poslova</span>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                       <span className="font-bold">{w.reviews}</span>
                     </div>
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Projekata</span>
+                      <span className="text-white/60 text-sm">Poslova</span>
                       <span className="font-bold">{w.projects}</span>
                     </div>
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">

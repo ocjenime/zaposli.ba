@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, Star, Shield, Clock, BadgeCheck, TrendingUp } from 'lucide-react';
+import { MapPin, ArrowRight, Star, Shield, Clock, BadgeCheck } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { cat, city } = parsed;
   return {
     title: `${cat.profession} ${city.name} — provjerene firme | Zaposli.ba`,
-    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? ${cat.count}+ provjerenih firmi, prosječne cijene ${cat.priceRange}. Objavite projekat besplatno i uporedite ponude.`,
+    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? ${cat.count}+ provjerenih firmi. Objavite posao besplatno i uporedite ponude.`,
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
 }
@@ -53,11 +53,11 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
   const faqItems = [
     {
       question: `Koliko košta ${cat.profession.toLowerCase()} u gradu ${city.loc}?`,
-      answer: `Prosječne cijene za kategoriju ${cat.name.toLowerCase()} su ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude — objavite projekat besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
+      answer: `Cijena zavisi od obima posla i materijala. Tačnu cijenu dobijate kroz ponude — objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
     },
     {
       question: `Koliko brzo mogu dobiti majstora u gradu ${city.loc}?`,
-      answer: `Većina projekata u gradu ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne projekte firme često odgovore u roku od nekoliko sati.`,
+      answer: `Većina poslova u gradu ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.`,
     },
     {
       question: `Kako znam da je firma iz vašeg grada pouzdana?`,
@@ -90,7 +90,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
               {cat.profession} <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
             </h1>
             <p className="text-lg text-steel max-w-2xl mb-4">
-              {cat.description} u gradu {city.name}. Objavite projekat besplatno i primite ponude od provjerenih firmi — prosječne cijene: <span className="text-brand-orange font-semibold">{cat.priceRange}</span>.
+              {cat.description} u gradu {city.name}. Objavite posao besplatno i primite ponude od provjerenih firmi iz vašeg grada.
             </p>
             <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
@@ -101,7 +101,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
@@ -138,54 +138,43 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
                     </div>
                     <div className="flex items-center justify-between">
                       <VerifiedBadge size="sm" />
-                      <span className="text-xs text-steel">{w.projects} projekata</span>
+                      <span className="text-xs text-steel">{w.projects} poslova</span>
                     </div>
                   </Link>
                 ))}
               </div>
             ) : (
               <div className="bg-cloud rounded-2xl p-8 text-center">
-                <p className="text-steel mb-4">Firme iz kategorije {cat.name.toLowerCase()} se aktivno registruju u gradu {city.name}. Objavite projekat i budite među prvima koji će primiti ponude.</p>
-                <Link href="/objavi-projekat/" className="btn-primary">Objavi projekat</Link>
+                <p className="text-steel mb-4">Firme iz kategorije {cat.name.toLowerCase()} se aktivno registruju u gradu {city.name}. Objavite posao i budite među prvima koji će primiti ponude.</p>
+                <Link href="/objavi-projekat/" className="btn-primary">Objavi posao</Link>
               </div>
             )}
           </div>
         </section>
 
-        {/* Cijene + projekti */}
+        {/* Poslovi */}
+        {localProjects.length > 0 && (
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 mb-10">
-              <div className="flex items-center gap-3 mb-3">
-                <TrendingUp className="w-6 h-6 text-brand-orange" />
-                <h2 className="text-xl font-bold text-ink">Cijene — {cat.name.toLowerCase()} u gradu {city.name}</h2>
-              </div>
-              <div className="text-3xl font-extrabold text-ink mb-2">{cat.priceRange}</div>
-              <p className="text-steel text-sm">{cat.priceNote}. Cijene su orijentacione — tačnu cijenu za vaš projekat dobijate kroz ponude firmi.</p>
-            </div>
-
-            {localProjects.length > 0 && (
-              <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Primjeri projekata — {cat.name.toLowerCase()}</h2>
-                <div className="grid md:grid-cols-2 gap-5">
-                  {localProjects.map((p) => (
-                    <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100">
-                      <h3 className="text-lg font-bold text-ink mb-2">{p.title}</h3>
-                      <p className="text-steel text-sm mb-4 line-clamp-2">{p.description}</p>
-                      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                        <div className="font-bold text-brand-orange text-sm">{p.budget}</div>
-                        <div className="flex items-center gap-1.5 text-xs text-steel">
-                          <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-                          {p.bids} ponuda
-                        </div>
-                      </div>
+            <h2 className="text-2xl font-bold text-ink mb-6">Primjeri poslova — {cat.name.toLowerCase()}</h2>
+            <div className="grid md:grid-cols-2 gap-5">
+              {localProjects.map((p) => (
+                <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100">
+                  <h3 className="text-lg font-bold text-ink mb-2">{p.title}</h3>
+                  <p className="text-steel text-sm mb-4 line-clamp-2">{p.description}</p>
+                  <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                    <div className="font-bold text-brand-orange text-sm">{p.budget}</div>
+                    <div className="flex items-center gap-1.5 text-xs text-steel">
+                      <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
+                      {p.bids} ponuda
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </>
-            )}
+              ))}
+            </div>
           </div>
         </section>
+        )}
 
         {/* FAQ */}
         <section className="py-14 bg-white">
@@ -213,13 +202,13 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
               Tražite {cat.profession.toLowerCase()} u gradu {city.name}?
             </h2>
             <p className="text-white/60 mb-8 max-w-xl mx-auto">
-              Objavite projekat besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
+              Objavite posao besplatno danas — prve ponude stižu u prosjeku u roku od 24 sata.
             </p>
             <Link
               href="/objavi-projekat/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
-              Objavi projekat besplatno
+              Objavi posao besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>

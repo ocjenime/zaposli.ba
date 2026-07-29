@@ -6,7 +6,7 @@ const steps = [
   {
     illustration: StepOneIllustration,
     number: '1',
-    title: 'Objavite projekat',
+    title: 'Objavite posao',
     description: 'Opišite šta vam je potrebno, dodajte fotografije i postavite budžet. Traje samo 2 minute.',
   },
   {
@@ -19,7 +19,7 @@ const steps = [
     illustration: StepThreeIllustration,
     number: '3',
     title: 'Odaberite majstora',
-    description: 'Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš projekat.',
+    description: 'Uporedite ponude, pročitajte recenzije i odaberite najboljeg izvođača za vaš posao.',
   },
 ];
 
@@ -35,7 +35,7 @@ export default function HowItWorks() {
             Kako funkcioniše?
           </h2>
           <p className="text-steel max-w-xl mx-auto">
-            Jednostavan proces u 3 koraka do idealnog majstora za vaš projekat
+            Jednostavan proces u 3 koraka do idealnog majstora za vaš posao
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default function HowItWorks() {
             href="/objavi-projekat/"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
           >
-            Objavite projekat besplatno
+            Objavite posao besplatno
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

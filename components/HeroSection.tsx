@@ -45,12 +45,12 @@ export default function HeroSection() {
               Pronađite majstora
               <br />
               <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">
-                za vaš projekat
+                za vaš posao
               </span>
             </h1>
 
             <p className="text-base md:text-xl text-steel mb-7 md:mb-10 leading-relaxed">
-              Besplatno objavite svoj projekat i primite ponude od provjerenih građevinskih firmi i zanatlija širom Bosne i Hercegovine.
+              Besplatno objavite svoj posao i primite ponude od provjerenih građevinskih firmi i zanatlija širom Bosne i Hercegovine.
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
@@ -162,7 +162,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Kartica: projekat/ponude */}
+            {/* Kartica: posao/ponude */}
             <div className="absolute bottom-24 -left-8 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 animate-float" style={{ animationDelay: '1.2s' }}>
               <div className="text-[10px] text-steel mb-0.5">Adaptacija kupatila</div>
               <div className="flex items-center gap-2">

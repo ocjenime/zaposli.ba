@@ -17,7 +17,7 @@ const stats = [
   { value: '2.800+', label: 'verificiranih firmi' },
   { value: '12.500+', label: 'registrovanih kupaca' },
   { value: '4,8', label: 'prosječna ocjena firmi' },
-  { value: '25.000+', label: 'realiziranih projekata' },
+  { value: '25.000+', label: 'realiziranih poslova' },
 ];
 
 const values = [
@@ -37,7 +37,7 @@ const values = [
     icon: ThumbsUp,
     title: 'Preporučeno',
     description:
-      'Ocjene i recenzije pišu isključivo stvarni kupci kojima je firma radila projekat preko platforme.',
+      'Ocjene i recenzije pišu isključivo stvarni kupci kojima je firma radila posao preko platforme.',
   },
   {
     icon: MessageSquare,
@@ -71,7 +71,7 @@ export default function ONamaPage() {
             <p className="text-lg text-steel leading-relaxed">
               Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
               kupce i provjerene građevinske firme u BiH na jednom mjestu — kupac besplatno objavi
-              projekat, a provjerene firme se javljaju sa svojim ponudama. Transparentno, brzo i
+              posao, a provjerene firme se javljaju sa svojim ponudama. Transparentno, brzo i
               bez posrednika koji uzimaju procenat.
             </p>
           </div>
@@ -116,7 +116,7 @@ export default function ONamaPage() {
               <p>
                 Tako je rođena ideja: jedna platforma na kojoj kupac opiše šta mu treba, a
                 provjerene firme se jave sa ponudama. Danas Zaposli.ba koriste hiljade kupaca
-                širom Bosne i Hercegovine, a naš cilj ostaje isti — da svaki projekat, od zamjene
+                širom Bosne i Hercegovine, a naš cilj ostaje isti — da svaki posao, od zamjene
                 slavine do kompletne adaptacije, počne sa pravim majstorom.
               </p>
             </div>
@@ -151,14 +151,14 @@ export default function ONamaPage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
                 <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                  Spremni za vaš sljedeći projekat?
+                  Spremni za vaš sljedeći posao?
                 </h2>
                 <p className="text-white/60 mb-8 max-w-lg mx-auto">
-                  Objavite projekat besplatno i primite ponude od provjerenih firmi — obično u roku
+                  Objavite posao besplatno i primite ponude od provjerenih firmi — obično u roku
                   od 24 sata.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary text-lg">
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                 </Link>
               </div>
             </div>

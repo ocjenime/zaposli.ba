@@ -58,12 +58,12 @@ export default function KakoProvjeritiMajstoraPage() {
               konkretne detalje: da li kupci spominju poštovanje rokova, čistoću na gradilištu,
               drže li se dogovorene cijene. Sumnjiv znak je niz petica bez ikakvog teksta ili sve
               recenzije objavljene u kratkom periodu. Na Zaposli.ba ocjene mogu ostaviti isključivo
-              kupci kojima je firma stvarno radila projekat preko platforme.
+              kupci kojima je firma stvarno radila posao preko platforme.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">3. Zatražite fotografije ranijih radova</h2>
             <p className="text-steel leading-relaxed mb-4">
-              Ozbiljan majstor ima telefon pun fotografija svojih projekata. Zatražite slike
+              Ozbiljan majstor ima telefon pun fotografija svojih poslova. Zatražite slike
               radova <strong className="text-ink">sličnih vašem</strong> — ako adaptirate kupatilo,
               nije dovoljno da vam pokaže fasadu. Još bolje: pitajte možete li kontaktirati jednog
               ili dva ranija kupca. Majstor koji odbija bilo kakvu referencu vjerovatno ima razlog.
@@ -108,11 +108,11 @@ export default function KakoProvjeritiMajstoraPage() {
               <div className="relative">
                 <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
                 <p className="text-white/60 mb-6">
-                  Objavite projekat besplatno i birajte između ponuda provjerenih firmi sa stvarnim
+                  Objavite posao besplatno i birajte između ponuda provjerenih firmi sa stvarnim
                   recenzijama.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary">
-                  Objavi projekat besplatno
+                  Objavi posao besplatno
                 </Link>
               </div>
             </div>

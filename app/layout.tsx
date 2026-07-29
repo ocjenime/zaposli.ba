@@ -5,7 +5,7 @@ import { site } from '@/lib/site';
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Zaposli.ba — Pronađite majstore za vaš projekat',
+    default: 'Zaposli.ba — Pronađite majstore za vaš posao',
     template: '%s',
   },
   description: site.description,
@@ -13,17 +13,17 @@ export const metadata: Metadata = {
   authors: [{ name: site.name }],
   alternates: { canonical: site.url },
   openGraph: {
-    title: 'Zaposli.ba — Pronađite majstore za vaš projekat',
+    title: 'Zaposli.ba — Pronađite majstore za vaš posao',
     description: site.description,
     url: site.url,
     siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
-    images: [{ url: 'images/og-cover.png', width: 1200, height: 630, alt: 'Zaposli.ba — Pronađite majstora za vaš projekat' }],
+    images: [{ url: 'images/og-cover.png', width: 1200, height: 630, alt: 'Zaposli.ba — Pronađite majstora za vaš posao' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zaposli.ba — Pronađite majstore za vaš projekat',
+    title: 'Zaposli.ba — Pronađite majstore za vaš posao',
     description: site.description,
     images: ['images/og-cover.png'],
   },
