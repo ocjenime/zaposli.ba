@@ -1,128 +1,212 @@
-/* Animirana scena hitne intervencije — custom SVG samo za /kategorije/hitne-intervencije */
+/* Premium animirana scena hitne intervencije — custom SVG za /kategorije/hitne-intervencije */
 
-const SKIN = '#d4a574';
 const INK = '#021117';
 const RED = '#DC2626';
 const ORANGE = '#F97316';
+const ORANGE_LIGHT = '#FFF7ED';
 const CLOUD = '#F0FAFC';
-const WATER = '#60A5FA';
+const WATER = '#38BDF8';
+const SKIN = '#E8B89A';
+const STEEL = '#64748B';
+const WHITE = '#FFFFFF';
 
 export function EmergencyProcessAnimation() {
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      <svg viewBox="0 0 720 220" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-        {/* Pozadinski krugovi za svaki korak */}
-        <circle cx="120" cy="110" r="90" fill={CLOUD} />
-        <circle cx="360" cy="110" r="90" fill={CLOUD} />
-        <circle cx="600" cy="110" r="90" fill={CLOUD} />
+    <div className="w-full max-w-5xl mx-auto">
+      <svg
+        viewBox="0 0 900 240"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="w-full h-auto"
+        aria-labelledby="emergency-title"
+        role="img"
+      >
+        <title id="emergency-title">Kako funkcioniše hitna intervencija: problem, odgovor, rješenje</title>
+
+        {/* Pozadinski okruženje za svaki korak */}
+        <circle cx="170" cy="120" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="450" cy="120" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="730" cy="120" r="108" fill={CLOUD} opacity="0.9" />
+
+        {/* Dekorativni akcenti u pozadini */}
+        <circle cx="120" cy="90" r="8" fill={ORANGE_LIGHT} />
+        <circle cx="800" cy="80" r="10" fill={ORANGE_LIGHT} />
+        <rect x="390" y="72" width="24" height="24" rx="6" fill={ORANGE_LIGHT} transform="rotate(12 402 84)" />
+
+        {/* Linija vremenske ose između koraka */}
+        <line x1="240" y1="120" x2="380" y2="120" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
+        <line x1="520" y1="120" x2="660" y2="120" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
+
+        {/* Pokretni markeri na vremenskoj osi */}
+        <g className="anim-timeline-dot">
+          <circle cx="310" cy="120" r="5" fill={ORANGE} opacity="0.85" />
+        </g>
+        <g className="anim-timeline-dot anim-timeline-dot-delay">
+          <circle cx="590" cy="120" r="5" fill={ORANGE} opacity="0.85" />
+        </g>
 
         {/* Strelica 1 */}
-        <path d="M230 110 L290 110" stroke="#E5E7EB" strokeWidth="3" strokeLinecap="round" strokeDasharray="6 6" />
-        <path d="M280 104 L290 110 L280 116" fill="#E5E7EB" />
+        <path d="M366 120 L378 120" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M372 115 L378 120 L372 125" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
         {/* Strelica 2 */}
-        <path d="M470 110 L530 110" stroke="#E5E7EB" strokeWidth="3" strokeLinecap="round" strokeDasharray="6 6" />
-        <path d="M520 104 L530 110 L520 116" fill="#E5E7EB" />
+        <path d="M646 120 L658 120" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M652 115 L658 120 L652 125" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
-        {/* === KORAK 1: Problem === */}
-        {/* Kuća sa prozorom */}
+        {/* ========== KORAK 1: PROBLEM ========== */}
         <g>
-          <polygon points="70,130 120,90 170,130" fill={INK} />
-          <rect x="82" y="130" width="76" height="52" rx="4" fill={INK} />
-          <rect x="95" y="145" width="22" height="22" rx="2" fill="#fff" />
-          <rect x="125" y="145" width="22" height="22" rx="2" fill="#fff" />
-          {/* Voda curi iz prozora */}
-          <path d="M125 155 Q125 170 132 175" stroke={WATER} strokeWidth="4" strokeLinecap="round" fill="none" className="anim-water-drop" />
-          <ellipse cx="132" cy="178" rx="5" ry="3" fill={WATER} className="anim-water-drop" />
+          {/* Kuća — moderan, zaobljen oblik */}
+          <rect x="98" y="88" width="76" height="74" rx="10" fill={WHITE} stroke={INK} strokeWidth="2" />
+          <path d="M96 100 L136 66 L176 100" fill={INK} />
+          <rect x="104" y="104" width="20" height="20" rx="4" fill={CLOUD} stroke={INK} strokeWidth="1.5" />
+          <rect x="148" y="104" width="20" height="20" rx="4" fill={CLOUD} stroke={INK} strokeWidth="1.5" />
+          <rect x="124" y="132" width="24" height="30" rx="5" fill={ORANGE_LIGHT} stroke={INK} strokeWidth="1.5" />
+          <circle cx="142" cy="147" r="2" fill={INK} />
+
+          {/* Cijev koja curi */}
+          <rect x="156" y="122" width="12" height="28" rx="3" fill={STEEL} stroke={INK} strokeWidth="1.5" />
+          <path d="M165 150 L165 168" stroke={WATER} strokeWidth="4" strokeLinecap="round" />
+          <ellipse cx="165" cy="174" rx="6" ry="4" fill={WATER} className="anim-water-puddle" />
+
+          {/* Voda koja kaplje */}
+          <circle cx="165" cy="156" r="4" fill={WATER} className="anim-water-drop-1" />
+          <circle cx="165" cy="148" r="3" fill={WATER} className="anim-water-drop-2" />
+
+          {/* Osoba s telefonom — panični korisnik */}
+          <g className="anim-float-subtle" transform="translate(0, 0)">
+            {/* Telo */}
+            <rect x="184" y="112" width="28" height="42" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
+            {/* Vrat */}
+            <rect x="194" y="104" width="8" height="12" rx="3" fill={SKIN} />
+            {/* Glava */}
+            <circle cx="198" cy="96" r="14" fill={SKIN} stroke={INK} strokeWidth="2" />
+            {/* Kosa */}
+            <path d="M184 94 C184 80 196 78 212 84 C210 76 198 72 188 78 C178 84 180 94 184 94" fill={INK} />
+            {/* Oči */}
+            <circle cx="194" cy="96" r="2" fill={INK} />
+            <circle cx="204" cy="96" r="2" fill={INK} />
+            {/* Usta — zabrinut izraz */}
+            <path d="M195 104 Q199 100 203 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+            {/* Ruka + telefon */}
+            <rect x="176" y="116" width="12" height="22" rx="4" fill={WHITE} stroke={INK} strokeWidth="2" transform="rotate(-15 182 127)" />
+            <rect x="180" y="122" width="10" height="10" rx="2" fill={RED} transform="rotate(-15 185 127)" />
+            <rect x="196" y="126" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" transform="rotate(-15 200 135)" />
+          </g>
+
+          {/* Hitna oznaka */}
+          <g className="anim-ping-ring" transform="translate(0, 0)">
+            <circle cx="110" cy="74" r="14" fill={RED} opacity="0.12" />
+            <circle cx="110" cy="74" r="10" fill={RED} />
+            <path d="M110 68 L110 80 M104 74 L116 74" stroke={WHITE} strokeWidth="2.5" strokeLinecap="round" />
+          </g>
         </g>
 
-        {/* Osoba panično drži telefon */}
-        <g className="anim-shake-soft">
-          <circle cx="160" cy="82" r="11" fill={SKIN} />
-          <path d="M149 79a11 11 0 0 1 22 0Z" fill={INK} />
-          <circle cx="156" cy="82" r="1.5" fill={INK} />
-          <circle cx="164" cy="82" r="1.5" fill={INK} />
-          <path d="M154 87q6 -4 12 0" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-          <rect x="150" y="94" width="22" height="28" rx="7" fill={INK} />
-          <rect x="152" y="122" width="7" height="18" rx="3.5" fill={INK} />
-          <rect x="161" y="122" width="7" height="18" rx="3.5" fill={INK} />
-          {/* Ruka sa telefonom */}
-          <rect x="138" y="98" width="14" height="7" rx="3.5" fill={INK} transform="rotate(-20 145 102)" />
-          <rect x="136" y="94" width="10" height="16" rx="2" fill={ORANGE} transform="rotate(-20 141 102)" />
-        </g>
+        {/* Label koraka */}
+        <text x="170" y="210" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">PROBLEM</text>
+        <text x="170" y="228" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Kvar se desi</text>
 
-        {/* Sirena */}
-        <g className="anim-siren-flash">
-          <path d="M60 78 L48 58 M60 78 L72 58 M60 78 L60 54" stroke={RED} strokeWidth="3" strokeLinecap="round" />
-          <rect x="52" y="78" width="16" height="12" rx="3" fill={RED} />
-          <circle cx="60" cy="72" r="9" fill={RED} opacity="0.3" className="anim-ping-dot" />
-        </g>
-
-        {/* 24/7 */}
-        <text x="120" y="200" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="11" fontWeight="800" fill={INK}>PROBLEM</text>
-
-        {/* === KORAK 2: Odgovor === */}
-        {/* Telefon sa notifikacijom */}
-        <g className="anim-wiggle">
-          <rect x="318" y="62" width="34" height="58" rx="6" fill={INK} />
-          <rect x="322" y="68" width="26" height="46" rx="3" fill="#fff" />
-          {/* Notifikacija */}
-          <rect x="326" y="78" width="18" height="24" rx="3" fill={RED} />
-          <path d="M331 86 L339 86 M331 92 L337 92" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-          {/* Ping */}
-          <circle cx="335" cy="62" r="7" fill={RED} className="anim-ping-dot" />
-        </g>
-
-        {/* Majstor koji kreće */}
-        <g className="anim-rush">
-          <circle cx="400" cy="78" r="12" fill={SKIN} />
-          <path d="M388 75a12 12 0 0 1 24 0Z" fill={ORANGE} />
-          <circle cx="396" cy="78" r="1.6" fill={INK} />
-          <circle cx="404" cy="78" r="1.6" fill={INK} />
-          <path d="M396 83q4 3 8 0" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-          <rect x="388" y="92" width="26" height="32" rx="8" fill={ORANGE} />
-          <rect x="392" y="124" width="7" height="20" rx="3.5" fill={INK} />
-          <rect x="401" y="124" width="7" height="20" rx="3.5" fill={INK} />
-          {/* Aktivni korak / brzina */}
-          <path d="M370 132 L382 132" stroke="#E5E7EB" strokeWidth="3" strokeLinecap="round" className="anim-speed-line" />
-          <path d="M374 140 L386 140" stroke="#E5E7EB" strokeWidth="3" strokeLinecap="round" className="anim-speed-line" />
-          {/* Toolbox */}
-          <rect x="408" y="106" width="16" height="12" rx="2" fill={INK} />
-          <rect x="412" y="104" width="8" height="3" rx="1.5" fill={INK} />
-        </g>
-
-        <text x="360" y="200" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="11" fontWeight="800" fill={INK}>ODGOVOR</text>
-
-        {/* === KORAK 3: Dolazak === */}
-        {/* Vrata */}
+        {/* ========== KORAK 2: ODGOVOR ========== */}
         <g>
-          <rect x="548" y="62" width="56" height="96" rx="4" fill={INK} />
-          <rect x="556" y="72" width="40" height="76" rx="2" fill="#fff" />
-          <circle cx="588" cy="112" r="3" fill={INK} />
+          {/* Notifikacija na telefonu */}
+          <g className="anim-float-subtle" transform="translate(0, 0)">
+            <rect x="372" y="72" width="36" height="64" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <rect x="376" y="80" width="28" height="48" rx="4" fill={CLOUD} />
+            {/* Urgentna notifikacija */}
+            <rect x="378" y="92" width="24" height="28" rx="5" fill={RED} />
+            <path d="M384 102 L396 102 M384 108 L394 108" stroke={WHITE} strokeWidth="2" strokeLinecap="round" />
+            <path d="M388 116 L392 116" stroke={WHITE} strokeWidth="2" strokeLinecap="round" />
+            {/* Ping ring */}
+            <circle cx="390" cy="72" r="8" fill={RED} className="anim-ping-ring" />
+            <circle cx="390" cy="72" r="6" fill={RED} />
+          </g>
+
+          {/* Servisno vozilo */}
+          <g className="anim-drive-subtle" transform="translate(0, 0)">
+            {/* Auto body */}
+            <rect x="432" y="124" width="72" height="32" rx="10" fill={INK} stroke={INK} strokeWidth="2" />
+            <path d="M432 140 L504 140" stroke={INK} strokeWidth="2" />
+            <path d="M476 124 L476 140" stroke={INK} strokeWidth="2" />
+            <rect x="440" y="130" width="28" height="14" rx="3" fill={WHITE} opacity="0.95" />
+            <rect x="478" y="128" width="20" height="16" rx="3" fill={WHITE} opacity="0.95" />
+            {/* Sirena na krovu */}
+            <rect x="462" y="116" width="12" height="8" rx="3" fill={RED} />
+            <path d="M468 116 L468 108" stroke={RED} strokeWidth="2" strokeLinecap="round" />
+            <circle cx="468" cy="108" r="4" fill={RED} className="anim-siren-pulse" />
+            {/* Tockovi */}
+            <circle cx="446" cy="156" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <circle cx="446" cy="156" r="4" fill={INK} />
+            <circle cx="490" cy="156" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <circle cx="490" cy="156" r="4" fill={INK} />
+            {/* Brzinske linije */}
+            <path d="M410 144 L424 144" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line" />
+            <path d="M404 154 L418 154" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line anim-speed-line-delay" />
+          </g>
+
+          {/* Profesionalac kao vozač */}
+          <g className="anim-float-subtle" transform="translate(0, 0)">
+            <circle cx="520" cy="98" r="12" fill={SKIN} stroke={INK} strokeWidth="2" />
+            <path d="M508 94 C508 84 520 82 532 88 C530 80 518 78 512 82 C506 86 506 92 508 94" fill={INK} />
+            <circle cx="516" cy="98" r="1.8" fill={INK} />
+            <circle cx="524" cy="98" r="1.8" fill={INK} />
+            <path d="M516 104 Q520 107 524 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+            <rect x="510" y="112" width="20" height="30" rx="8" fill={ORANGE} stroke={INK} strokeWidth="2" />
+          </g>
         </g>
 
-        {/* Majstor na vratima sa alatom */}
-        <g className="anim-float-soft">
-          <circle cx="630" cy="82" r="12" fill={SKIN} />
-          <path d="M618 79a12 12 0 0 1 24 0Z" fill={ORANGE} />
-          <circle cx="626" cy="82" r="1.6" fill={INK} />
-          <circle cx="634" cy="82" r="1.6" fill={INK} />
-          <path d="M626 87q4 3 8 0" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-          <rect x="618" y="96" width="26" height="34" rx="8" fill={ORANGE} />
-          <rect x="622" y="130" width="7" height="18" rx="3.5" fill={INK} />
-          <rect x="631" y="130" width="7" height="18" rx="3.5" fill={INK} />
-          {/* Alat u ruci */}
-          <rect x="602" y="100" width="6" height="28" rx="2" fill="#9CA3AF" transform="rotate(-30 605 114)" />
-          <rect x="594" y="96" width="10" height="10" rx="2" fill={INK} transform="rotate(-30 599 101)" />
+        {/* Label koraka */}
+        <text x="450" y="210" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">ODGOVOR</text>
+        <text x="450" y="228" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>24/7 reakcija</text>
+
+        {/* ========== KORAK 3: RIJEŠENJE ========== */}
+        <g>
+          {/* Kuća sa popravkom */}
+          <rect x="676" y="88" width="76" height="74" rx="10" fill={WHITE} stroke={INK} strokeWidth="2" />
+          <path d="M674 100 L714 66 L754 100" fill={INK} />
+          <rect x="682" y="104" width="20" height="20" rx="4" fill={CLOUD} stroke={INK} strokeWidth="1.5" />
+          <rect x="726" y="104" width="20" height="20" rx="4" fill={CLOUD} stroke={INK} strokeWidth="1.5" />
+          <rect x="702" y="132" width="24" height="30" rx="5" fill={ORANGE_LIGHT} stroke={INK} strokeWidth="1.5" />
+          <circle cx="720" cy="147" r="2" fill={INK} />
+
+          {/* Vrata u fokusu */}
+          <rect x="694" y="118" width="40" height="44" rx="4" fill={WHITE} stroke={INK} strokeWidth="2" />
+          <rect x="700" y="124" width="28" height="32" rx="2" fill={CLOUD} />
+          <circle cx="722" cy="140" r="2.5" fill={INK} />
+
+          {/* Majstor sa alatom */}
+          <g className="anim-float-subtle" transform="translate(0, 0)">
+            {/* Telo */}
+            <rect x="750" y="112" width="28" height="42" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
+            {/* Vrat */}
+            <rect x="760" y="104" width="8" height="12" rx="3" fill={SKIN} />
+            {/* Glava */}
+            <circle cx="764" cy="96" r="14" fill={SKIN} stroke={INK} strokeWidth="2" />
+            {/* Kosa / kaciga */}
+            <path d="M750 94 C750 80 762 78 778 84 C776 76 764 72 754 78 C744 84 746 94 750 94" fill={INK} />
+            {/* Oči */}
+            <circle cx="760" cy="96" r="2" fill={INK} />
+            <circle cx="770" cy="96" r="2" fill={INK} />
+            {/* Osmiјeh */}
+            <path d="M760 104 Q765 108 770 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+            {/* Ruka */}
+            <rect x="742" y="122" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+            {/* Alat — ključ */}
+            <g transform="rotate(-35 746 132)">
+              <rect x="740" y="118" width="6" height="28" rx="2" fill="#94A3B8" stroke={INK} strokeWidth="1.5" />
+              <circle cx="743" cy="116" r="7" fill="#94A3B8" stroke={INK} strokeWidth="1.5" />
+              <circle cx="743" cy="116" r="3" fill={WHITE} />
+            </g>
+          </g>
+
+          {/* Check badge */}
+          <g className="anim-check-pop" transform="translate(0, 0)">
+            <circle cx="660" cy="80" r="16" fill={ORANGE} stroke={WHITE} strokeWidth="2.5" />
+            <path d="M653 80 L657 85 L667 75" stroke={WHITE} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </g>
         </g>
 
-        {/* Check badge */}
-        <g className="anim-pop">
-          <circle cx="576" cy="52" r="12" fill={ORANGE} stroke="#fff" strokeWidth="2" />
-          <path d="M570 53 L574 57 L582 48" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        </g>
-
-        <text x="600" y="200" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="11" fontWeight="800" fill={INK}>RIJEŠENO</text>
+        {/* Label koraka */}
+        <text x="730" y="210" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">RIJEŠENJE</text>
+        <text x="730" y="228" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Majstor popravlja</text>
       </svg>
     </div>
   );

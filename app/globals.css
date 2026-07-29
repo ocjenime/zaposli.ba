@@ -116,49 +116,108 @@ textarea:focus-visible {
   transform-box: fill-box;
 }
 
-/* Hitna intervencija specijalne animacije */
-@keyframes shakeSoft {
-  0%, 100% { transform: translateX(0) rotate(0deg); }
-  25% { transform: translateX(-2px) rotate(-1deg); }
-  50% { transform: translateX(2px) rotate(1deg); }
-  75% { transform: translateX(-1px) rotate(-0.5deg); }
+/* Premium hitna intervencija animacije — suptilne, profesionalne, 60fps */
+
+@keyframes floatSubtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
 }
-.anim-shake-soft {
-  animation: shakeSoft 0.8s ease-in-out infinite;
+.anim-float-subtle {
+  animation: floatSubtle 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   transform-origin: center;
   transform-box: fill-box;
 }
 
-@keyframes sirenFlash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+@keyframes waterDrop {
+  0% { transform: translateY(0) scale(0.85); opacity: 0.6; }
+  50% { transform: translateY(10px) scale(1); opacity: 1; }
+  100% { transform: translateY(18px) scale(0.7); opacity: 0; }
 }
-.anim-siren-flash {
-  animation: sirenFlash 0.6s ease-in-out infinite;
+.anim-water-drop-1 {
+  animation: waterDrop 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-water-drop-2 {
+  animation: waterDrop 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.55s infinite;
+  transform-origin: center;
+  transform-box: fill-box;
 }
 
-@keyframes rush {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(4px); }
+@keyframes waterPuddle {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.08); opacity: 0.55; }
 }
-.anim-rush {
-  animation: rush 1.2s ease-in-out infinite;
+.anim-water-puddle {
+  animation: waterPuddle 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes pingRing {
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+.anim-ping-ring {
+  animation: pingRing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes driveSubtle {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+.anim-drive-subtle {
+  animation: driveSubtle 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
 }
 
 @keyframes speedLine {
-  0%, 100% { opacity: 0.3; transform: translateX(0); }
-  50% { opacity: 1; transform: translateX(-6px); }
+  0%, 100% { opacity: 0.25; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(-8px); }
 }
 .anim-speed-line {
-  animation: speedLine 0.8s ease-in-out infinite;
+  animation: speedLine 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-speed-line-delay {
+  animation-delay: 0.35s;
 }
 
-@keyframes waterDrop {
-  0%, 100% { opacity: 1; transform: translateY(0); }
-  50% { opacity: 0.6; transform: translateY(3px); }
+@keyframes sirenPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.6; }
 }
-.anim-water-drop {
-  animation: waterDrop 1s ease-in-out infinite;
+.anim-siren-pulse {
+  animation: sirenPulse 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes checkPop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.anim-check-pop {
+  animation: checkPop 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+@keyframes timelineDot {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(18px); opacity: 1; }
+}
+.anim-timeline-dot {
+  animation: timelineDot 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-timeline-dot-delay {
+  animation-delay: 0.7s;
 }
 
 ::-webkit-scrollbar {
