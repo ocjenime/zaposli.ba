@@ -26,15 +26,27 @@ CREATE POLICY "admin_requests_update_admin" ON admin_requests FOR UPDATE USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
 );
 
+-- Helper function to check admin status without causing RLS recursion on profiles
+CREATE OR REPLACE FUNCTION is_admin_user(uid UUID)
+RETURNS BOOLEAN
+SET row_security = off
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  RETURN EXISTS (SELECT 1 FROM profiles WHERE id = uid AND is_admin = true);
+END;
+$$;
+
 -- Admin needs to read/update all profiles in admin panel
 DROP POLICY IF EXISTS "profiles_select_admin" ON profiles;
 CREATE POLICY "profiles_select_admin" ON profiles FOR SELECT USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+  is_admin_user(auth.uid())
 );
 
 DROP POLICY IF EXISTS "profiles_update_admin" ON profiles;
 CREATE POLICY "profiles_update_admin" ON profiles FOR UPDATE USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+  is_admin_user(auth.uid())
 );
 
 -- Helper: promote a user to admin by email (run once for first admin)

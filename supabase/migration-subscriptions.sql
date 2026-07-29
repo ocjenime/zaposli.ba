@@ -1,5 +1,17 @@
 -- Subscription and admin panel schema (ispravljena verzija)
 
+-- Helper function to check admin status without causing RLS recursion on profiles
+CREATE OR REPLACE FUNCTION is_admin_user(uid UUID)
+RETURNS BOOLEAN
+SET row_security = off
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  RETURN EXISTS (SELECT 1 FROM profiles WHERE id = uid AND is_admin = true);
+END;
+$$;
+
 -- Prvo dodaj admin kolonu na profiles (prije nego je RLS policy koristi)
 ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
 
@@ -41,17 +53,17 @@ ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "subscriptions_select_firm_or_admin" ON subscriptions;
 CREATE POLICY "subscriptions_select_firm_or_admin" ON subscriptions FOR SELECT USING (
   EXISTS (SELECT 1 FROM firms WHERE id = firm_id AND owner_id = auth.uid())
-  OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+  OR is_admin_user(auth.uid())
 );
 
 DROP POLICY IF EXISTS "subscriptions_insert_admin" ON subscriptions;
 CREATE POLICY "subscriptions_insert_admin" ON subscriptions FOR INSERT WITH CHECK (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+  is_admin_user(auth.uid())
 );
 
 DROP POLICY IF EXISTS "subscriptions_update_admin" ON subscriptions;
 CREATE POLICY "subscriptions_update_admin" ON subscriptions FOR UPDATE USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND is_admin = true)
+  is_admin_user(auth.uid())
 );
 
 -- Default plans
