@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck } from 'lucide-react';
+import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck, Siren } from 'lucide-react';
 import Link from 'next/link';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities } from '@/lib/data';
@@ -36,10 +36,19 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8">
+            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-3">
               <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
               <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi i zanatlija</span>
             </div>
+
+            <Link
+              href="/kategorije/hitne-intervencije/"
+              className="inline-flex items-center gap-2 bg-red-50 border border-red-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8 hover:bg-red-100 transition-colors"
+            >
+              <Siren className="w-4 h-4 text-red-600" />
+              <span className="text-red-700 text-sm font-semibold">Hitne intervencije 24/7</span>
+              <ArrowRight className="w-3.5 h-3.5 text-red-500" />
+            </Link>
 
             <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-4 md:mb-6 leading-[1.1] tracking-tight">
               Pronađite majstora
