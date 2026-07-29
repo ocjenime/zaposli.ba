@@ -37,7 +37,9 @@ export default function Header() {
             </Link>
             {user ? (
               <>
-                <NotificationBell />
+                <div className="hidden md:block">
+                  <NotificationBell />
+                </div>
                 <Link
                   href={dashboardHref}
                   className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
@@ -75,14 +77,21 @@ export default function Header() {
             </Link>
           </div>
 
-          <button
-            type="button"
-            className="md:hidden p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Meni"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="flex items-center gap-1 md:hidden">
+            {user && (
+              <div className="md:hidden">
+                <NotificationBell />
+              </div>
+            )}
+            <button
+              type="button"
+              className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Meni"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
         {mobileMenuOpen && (
@@ -96,9 +105,6 @@ export default function Header() {
             </Link>
             {user ? (
               <>
-                <div className="flex items-center justify-center px-4 py-2">
-                  <NotificationBell />
-                </div>
                 <Link
                   href={dashboardHref}
                   className="block text-center px-4 py-3 rounded-xl bg-orange-50 text-brand-orange font-semibold"
