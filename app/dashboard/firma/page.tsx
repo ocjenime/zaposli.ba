@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 import { Briefcase, Clock, CheckCircle, XCircle } from 'lucide-react';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 export default function FirmDashboard() {
   const { user, loading, role, signOut } = useAuth();
@@ -14,6 +15,7 @@ export default function FirmDashboard() {
   const [firmId, setFirmId] = useState<string | null>(null);
   const [jobs, setJobs] = useState<any[]>([]);
   const [bids, setBids] = useState<any[]>([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (!loading && (!user || role !== 'firm')) router.push('/prijava');
@@ -21,7 +23,8 @@ export default function FirmDashboard() {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from('firms').select('id').eq('owner_id', user.id).single().then(({ data }) => {
+    supabase.from('firms').select('id').eq('owner_id', user.id).single().then(({ data, error: err }) => {
+      if (err) setError(err.message);
       if (data) setFirmId(data.id);
     });
   }, [user]);
@@ -45,7 +48,22 @@ export default function FirmDashboard() {
     </div>
   );
 
+  if (error) return (
+    <div className="min-h-screen flex flex-col bg-cloud">
+      <Header />
+      <main className="flex-grow flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="text-red-600 font-bold mb-2">Greška</p>
+          <p className="text-sm text-steel">{error}</p>
+          <button onClick={() => window.location.reload()} className="mt-4 px-4 py-2 bg-brand-orange text-white rounded-lg">Pokušaj ponovo</button>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+
   return (
+    <ErrorBoundary>
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow py-10 px-4">
@@ -93,6 +111,7 @@ export default function FirmDashboard() {
         </div>
       </main>
       <Footer />
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
