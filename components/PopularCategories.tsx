@@ -23,7 +23,7 @@ const popular = featuredSlugs.flatMap((slug) => {
 
 export default function PopularCategories() {
   return (
-    <section className="py-14 md:py-20 bg-cloud relative overflow-hidden">
+    <section className="py-10 md:py-14 bg-cloud relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-primary-100 to-orange-100 rounded-full opacity-30 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

@@ -32,7 +32,7 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 pb-14 md:py-36 w-full">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-12 md:py-28 w-full">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
