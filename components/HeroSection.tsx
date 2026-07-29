@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, Users, ArrowRight, BadgeCheck, Siren, X } from 'lucide-react';
+import { Search, MapPin, ChevronDown, Shield, Star, CheckCircle, ArrowRight, BadgeCheck, Siren, X } from 'lucide-react';
 import Link from 'next/link';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities } from '@/lib/data';
@@ -158,11 +158,6 @@ export default function HeroSection() {
               <div className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-brand-orange" />
                 <span>Stvarne recenzije</span>
-              </div>
-              <span className="hidden sm:block w-1 h-1 bg-mist rounded-full" />
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-brand-orange" />
-                <span>Više ponuda</span>
               </div>
             </div>
 
