@@ -62,7 +62,7 @@ export default function RegisterPage() {
       });
     }
 
-    router.push('/dashboard/');
+    router.push(userType === 'firm' ? '/dashboard/firma/' : '/dashboard/');
   };
 
   return (
