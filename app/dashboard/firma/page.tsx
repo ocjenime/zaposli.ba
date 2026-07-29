@@ -8,7 +8,15 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
-import { MapPin, Tag, Loader2, Send, MessageSquare, CheckCircle, XCircle, Clock, Briefcase } from 'lucide-react';
+import {
+  getPlanAndUsage,
+  Subscription,
+  remainingBidsText,
+} from '@/lib/subscriptions';
+import {
+  MapPin, Tag, Loader2, Send, MessageSquare, CheckCircle, XCircle, Clock,
+  Briefcase, Crown, AlertTriangle,
+} from 'lucide-react';
 
 interface Job {
   id: string;
@@ -62,6 +70,11 @@ export default function FirmDashboard() {
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitJobId, setSubmitJobId] = useState<string | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [bidsUsed, setBidsUsed] = useState(0);
+  const [bidsLimit, setBidsLimit] = useState(0);
+  const [canBid, setCanBid] = useState(true);
+  const [loadingPlan, setLoadingPlan] = useState(true);
 
   useEffect(() => {
     if (!loading) {
@@ -89,7 +102,26 @@ export default function FirmDashboard() {
     }
     setFirmId(data.id);
     setLoadingFirm(false);
-    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id)]);
+    await Promise.all([
+      fetchOpenJobs(),
+      fetchMyBids(data.id),
+      loadPlan(data.id),
+    ]);
+  }
+
+  async function loadPlan(id: string) {
+    setLoadingPlan(true);
+    try {
+      const usage = await getPlanAndUsage(id);
+      setSubscription(usage.subscription);
+      setBidsUsed(usage.bidsUsed);
+      setBidsLimit(usage.bidsLimit);
+      setCanBid(usage.canBid);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingPlan(false);
+    }
   }
 
   async function fetchOpenJobs() {
@@ -127,6 +159,10 @@ export default function FirmDashboard() {
     const value = parseFloat(amount);
     if (isNaN(value) || value <= 0) {
       setError('Unesite ispravan iznos ponude.');
+      return;
+    }
+    if (!canBid) {
+      setError('Dostigli ste mjesečno ograničenje ponuda. Nadogradite paket.');
       return;
     }
     setSubmitting(true);
@@ -183,10 +219,31 @@ export default function FirmDashboard() {
               <Link href="/dashboard/firma/profil/" className="btn-secondary text-sm py-2.5 px-4 inline-flex items-center gap-2">
                 Uredi profil
               </Link>
+              <Link href="/dashboard/firma/pretplata/" className="btn-secondary text-sm py-2.5 px-4 inline-flex items-center gap-2">
+                <Crown className="w-4 h-4 text-brand-orange" /> Pretplata
+              </Link>
             </div>
           </div>
 
           {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
+
+          {firmId && !loadingPlan && (
+            <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 rounded-xl border px-4 py-3 text-sm ${canBid ? 'bg-white border-gray-100' : 'bg-orange-50 border-orange-100'}`}>
+              <div className="flex items-center gap-2">
+                <Crown className={`w-4 h-4 ${subscription?.plans?.featured ? 'text-brand-orange' : 'text-steel'}`} />
+                <span className="font-medium text-ink">
+                  {subscription?.plans?.name || 'Besplatno'}
+                </span>
+                <span className="text-steel">· {remainingBidsText(bidsUsed, bidsLimit)}</span>
+              </div>
+              {!canBid && (
+                <div className="flex items-center gap-2 text-brand-orange-dark">
+                  <AlertTriangle className="w-4 h-4" />
+                  <span className="font-medium">Ograničenje dostignuto</span>
+                </div>
+              )}
+            </div>
+          )}
 
           {loadingFirm ? (
             <div className="flex items-center justify-center py-12 text-steel">
@@ -217,8 +274,8 @@ export default function FirmDashboard() {
                       return (
                         <div
                           key={job.id}
-                          className={`bg-white rounded-xl border p-4 shadow-sm transition-all duration-200 ${alreadyBid ? 'border-gray-100 opacity-75' : 'border-gray-100 hover:border-brand-orange/30 hover:shadow-md cursor-pointer'}`}
-                          onClick={() => { if (!alreadyBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
+                          className={`bg-white rounded-xl border p-4 shadow-sm transition-all duration-200 ${alreadyBid || !canBid ? 'border-gray-100 opacity-75' : 'border-gray-100 hover:border-brand-orange/30 hover:shadow-md cursor-pointer'}`}
+                          onClick={() => { if (!alreadyBid && canBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
                         >
                           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                             <div className="flex-1">
@@ -233,11 +290,11 @@ export default function FirmDashboard() {
                               </div>
                             </div>
                             <button
-                              onClick={(e) => { e.stopPropagation(); if (!alreadyBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
-                              disabled={alreadyBid}
+                              onClick={(e) => { e.stopPropagation(); if (!alreadyBid && canBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
+                              disabled={alreadyBid || !canBid}
                               className="text-sm py-2 px-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-orange-50 text-brand-orange hover:bg-orange-100 shrink-0"
                             >
-                              {alreadyBid ? 'Već ste poslali ponudu' : expandedJob === job.id ? 'Zatvori' : 'Pošalji ponudu'}
+                              {alreadyBid ? 'Već ste poslali ponudu' : !canBid ? 'Limit ponuda dostignut' : expandedJob === job.id ? 'Zatvori' : 'Pošalji ponudu'}
                             </button>
                           </div>
 
@@ -272,11 +329,11 @@ export default function FirmDashboard() {
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => submitBid(job.id)}
-                                  disabled={submitting && submitJobId === job.id}
+                                  disabled={(submitting && submitJobId === job.id) || !canBid}
                                   className="btn-primary text-sm py-2 px-4 inline-flex items-center gap-2 disabled:opacity-50"
                                 >
                                   <Send className="w-4 h-4" />
-                                  {submitting && submitJobId === job.id ? 'Slanje...' : 'Pošalji ponudu'}
+                                  {submitting && submitJobId === job.id ? 'Slanje...' : !canBid ? 'Limit dostignut' : 'Pošalji ponudu'}
                                 </button>
                                 <button
                                   onClick={() => setExpandedJob(null)}

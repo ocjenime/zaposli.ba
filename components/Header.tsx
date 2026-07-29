@@ -9,7 +9,7 @@ import { useAuth } from '@/lib/auth-context';
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user, role, signOut } = useAuth();
+  const { user, role, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -42,6 +42,14 @@ export default function Header() {
                 >
                   Moj profil
                 </Link>
+                {isAdmin && (
+                  <Link
+                    href="/admin/"
+                    className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <button
                   onClick={signOut}
                   className="px-4 py-2 rounded-xl text-sm font-medium text-gray-500 hover:text-red-600 hover:bg-red-50/60 transition-all duration-200"
@@ -93,6 +101,15 @@ export default function Header() {
                 >
                   Moj profil
                 </Link>
+                {isAdmin && (
+                  <Link
+                    href="/admin/"
+                    className="block text-center px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 font-medium"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                )}
                 <button
                   onClick={() => { setMobileMenuOpen(false); signOut(); }}
                   className="block w-full text-center px-4 py-3 rounded-xl text-gray-600 hover:bg-red-50 hover:text-red-600 font-medium transition-colors"

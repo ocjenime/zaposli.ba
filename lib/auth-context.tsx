@@ -8,6 +8,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   role: string | null;
+  isAdmin: boolean;
   signOut: () => Promise<void>;
 }
 
@@ -15,12 +16,14 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   role: null,
+  isAdmin: false,
   signOut: async () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +38,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const u = session?.user ?? null;
       setUser(u);
       if (u) await fetchRole(u.id);
-      else setRole(null);
+      else {
+        setRole(null);
+        setIsAdmin(false);
+      }
     });
 
     return () => listener?.subscription.unsubscribe();
@@ -44,20 +50,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function fetchRole(userId: string) {
     const { data } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, is_admin')
       .eq('id', userId)
       .single();
     setRole(data?.role ?? null);
+    setIsAdmin(data?.is_admin ?? false);
   }
 
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
     setRole(null);
+    setIsAdmin(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, role, signOut }}>
+    <AuthContext.Provider value={{ user, loading, role, isAdmin, signOut }}>
       {children}
     </AuthContext.Provider>
   );
