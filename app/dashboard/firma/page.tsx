@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -55,9 +55,10 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long' });
 }
 
-export default function FirmDashboard() {
+function FirmDashboardContent() {
   const { user, loading, role } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [firmId, setFirmId] = useState<string | null>(null);
   const [openJobs, setOpenJobs] = useState<Job[]>([]);
   const [myBids, setMyBids] = useState<Bid[]>([]);
@@ -82,6 +83,11 @@ export default function FirmDashboard() {
       else if (role !== 'firm') router.push('/dashboard/');
     }
   }, [user, role, loading, router]);
+
+  useEffect(() => {
+    const expandId = searchParams.get('expandJobId');
+    if (expandId) setExpandedJob(expandId);
+  }, [searchParams]);
 
   useEffect(() => {
     if (user && role === 'firm') fetchFirm();
@@ -402,5 +408,23 @@ export default function FirmDashboard() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function FirmDashboard() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col bg-cloud">
+          <Header />
+          <main className="flex-grow flex items-center justify-center">
+            <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <FirmDashboardContent />
+    </Suspense>
   );
 }
