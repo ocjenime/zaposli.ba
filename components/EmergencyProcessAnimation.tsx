@@ -120,26 +120,28 @@ export function EmergencyProcessAnimation() {
             <circle cx="390" cy="72" r="6" fill={RED} />
           </g>
 
-          {/* Servisno vozilo */}
+          {/* Servisni kombi */}
           <g className="anim-drive-subtle" transform="translate(0, 0)">
-            {/* Auto body */}
-            <rect x="432" y="124" width="72" height="32" rx="10" fill={INK} stroke={INK} strokeWidth="2" />
-            <path d="M432 140 L504 140" stroke={INK} strokeWidth="2" />
-            <path d="M476 124 L476 140" stroke={INK} strokeWidth="2" />
-            <rect x="440" y="130" width="28" height="14" rx="3" fill={WHITE} opacity="0.95" />
-            <rect x="478" y="128" width="20" height="16" rx="3" fill={WHITE} opacity="0.95" />
-            {/* Sirena na krovu */}
-            <rect x="462" y="116" width="12" height="8" rx="3" fill={RED} />
-            <path d="M468 116 L468 108" stroke={RED} strokeWidth="2" strokeLinecap="round" />
-            <circle cx="468" cy="108" r="4" fill={RED} className="anim-siren-pulse" />
-            {/* Tockovi */}
-            <circle cx="446" cy="156" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
-            <circle cx="446" cy="156" r="4" fill={INK} />
-            <circle cx="490" cy="156" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
-            <circle cx="490" cy="156" r="4" fill={INK} />
+            {/* Kombi body: duži, kutiji dio sa strane + kabina */}
+            <rect x="420" y="118" width="96" height="44" rx="8" fill={INK} stroke={INK} strokeWidth="2" />
+            {/* Kabina / prozor vozača */}
+            <path d="M500 118 L500 146 L516 146 L516 132 C516 124 510 118 500 118Z" fill={WHITE} opacity="0.95" stroke={INK} strokeWidth="1.5" />
+            {/* Bočni prozor/kutija karakteristika */}
+            <rect x="430" y="128" width="56" height="22" rx="3" fill={WHITE} opacity="0.95" />
+            {/* Linija na karoseriji */}
+            <path d="M420 140 L516 140" stroke={INK} strokeWidth="1.5" />
+            {/* Sirena / rotacija svjetlo na krovu */}
+            <rect x="468" y="110" width="14" height="8" rx="4" fill={RED} />
+            <path d="M475 110 L475 102" stroke={RED} strokeWidth="2" strokeLinecap="round" />
+            <circle cx="475" cy="102" r="5" fill={RED} className="anim-siren-pulse" />
+            {/* Točkovi kombija (tri točna, duži radni kombi) */}
+            <circle cx="442" cy="162" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <circle cx="442" cy="162" r="4" fill={INK} />
+            <circle cx="490" cy="162" r="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <circle cx="490" cy="162" r="4" fill={INK} />
             {/* Brzinske linije */}
-            <path d="M410 144 L424 144" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line" />
-            <path d="M404 154 L418 154" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line anim-speed-line-delay" />
+            <path d="M392 146 L408 146" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line" />
+            <path d="M386 156 L402 156" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" className="anim-speed-line anim-speed-line-delay" />
           </g>
 
           {/* Profesionalac kao vozač */}
