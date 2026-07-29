@@ -60,8 +60,7 @@ export default function PostProjectPage() {
     setSubmitting(false);
 
     if (err) { setError(err.message); return; }
-    setSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    router.push('/dashboard/');
   };
 
   if (loading || !user) return (

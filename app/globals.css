@@ -16,6 +16,10 @@
     @apply bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all duration-200 active:scale-95 inline-block;
   }
 
+  .input-field {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 transition-all;
+  }
+
   .btn-secondary {
     @apply bg-white text-brand-orange border-2 border-brand-orange px-6 py-3 rounded-xl font-semibold hover:bg-primary-50 transition-all duration-200 active:scale-95 inline-block;
   }
