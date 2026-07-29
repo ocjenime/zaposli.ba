@@ -1,0 +1,183 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Bell, Check } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth-context';
+
+interface Notification {
+  id: string;
+  type: string;
+  title: string;
+  message: string;
+  read: boolean;
+  job_id: string | null;
+  created_at: string;
+}
+
+export default function NotificationBell() {
+  const { user } = useAuth();
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  async function loadNotifications() {
+    if (!user) return;
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(20);
+    if (!error) {
+      const list = (data as Notification[]) || [];
+      setNotifications(list);
+      setUnreadCount(list.filter((n) => !n.read).length);
+    }
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadNotifications();
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    const channel = supabase
+      .channel('notifications')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const n = payload.new as Notification;
+          setNotifications((prev) => [n, ...prev].slice(0, 20));
+          setUnreadCount((c) => c + 1);
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+        (payload) => {
+          const n = payload.new as Notification;
+          setNotifications((prev) => prev.map((item) => (item.id === n.id ? n : item)));
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  async function markAllRead() {
+    if (!user) return;
+    const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
+    if (unreadIds.length === 0) return;
+    await supabase.from('notifications').update({ read: true }).in('id', unreadIds);
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    setUnreadCount(0);
+  }
+
+  async function markRead(id: string) {
+    await supabase.from('notifications').update({ read: true }).eq('id', id);
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+    setUnreadCount((c) => Math.max(0, c - 1));
+  }
+
+  function formatTime(iso: string) {
+    return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short' });
+  }
+
+  if (!user) return null;
+
+  return (
+    <div className="relative" ref={containerRef}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="relative p-2 rounded-xl text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+        aria-label="Obavještenja"
+      >
+        <Bell className="w-5 h-5" />
+        {unreadCount > 0 && (
+          <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
+      </button>
+
+      {open && (
+        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+            <p className="font-semibold text-ink text-sm">Obavještenja</p>
+            {unreadCount > 0 && (
+              <button
+                onClick={markAllRead}
+                className="text-xs text-brand-orange hover:text-brand-orange-dark font-medium flex items-center gap-1"
+              >
+                <Check className="w-3.5 h-3.5" /> Označi sve pročitanim
+              </button>
+            )}
+          </div>
+          <div className="max-h-[60vh] overflow-y-auto">
+            {loading ? (
+              <p className="text-sm text-steel text-center py-6">Učitavanje...</p>
+            ) : notifications.length === 0 ? (
+              <p className="text-sm text-steel text-center py-6">Nema obavještenja.</p>
+            ) : (
+              notifications.map((n) => (
+                <div
+                  key={n.id}
+                  className={`px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors ${
+                    n.read ? 'bg-white' : 'bg-orange-50/50'
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      if (!n.read) markRead(n.id);
+                      if (n.job_id) {
+                        setOpen(false);
+                      }
+                    }}
+                    className="w-full text-left"
+                  >
+                    {n.job_id ? (
+                      <Link
+                        href={n.type === 'bid_accepted' ? `/dashboard/razgovor/?job_id=${n.job_id}` : `/dashboard/poslovi/?id=${n.job_id}`}
+                        onClick={() => setOpen(false)}
+                        className="block"
+                      >
+                        <p className="text-sm font-medium text-ink">{n.title}</p>
+                        <p className="text-xs text-steel mt-0.5">{n.message}</p>
+                        <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
+                      </Link>
+                    ) : (
+                      <>
+                        <p className="text-sm font-medium text-ink">{n.title}</p>
+                        <p className="text-xs text-steel mt-0.5">{n.message}</p>
+                        <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
+                      </>
+                    )}
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

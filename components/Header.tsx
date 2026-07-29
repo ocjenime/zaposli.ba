@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { useAuth } from '@/lib/auth-context';
+import NotificationBell from '@/components/NotificationBell';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,6 +37,7 @@ export default function Header() {
             </Link>
             {user ? (
               <>
+                <NotificationBell />
                 <Link
                   href={dashboardHref}
                   className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
@@ -94,6 +96,9 @@ export default function Header() {
             </Link>
             {user ? (
               <>
+                <div className="flex items-center justify-center px-4 py-2">
+                  <NotificationBell />
+                </div>
                 <Link
                   href={dashboardHref}
                   className="block text-center px-4 py-3 rounded-xl bg-orange-50 text-brand-orange font-semibold"
