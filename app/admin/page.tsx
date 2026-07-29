@@ -87,12 +87,8 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user || !isAdmin) {
-      router.push('/dashboard/');
-      return;
-    }
-    loadAll();
-  }, [authLoading, user, isAdmin, router]);
+    if (user && isAdmin) loadAll();
+  }, [authLoading, user, isAdmin]);
 
   async function loadAll() {
     setLoading(true);
@@ -265,12 +261,44 @@ export default function AdminPage() {
     return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  if (authLoading || (!user && !isAdmin)) {
+  if (authLoading) {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <Loader2 className="w-6 h-6 animate-spin text-steel" />
+        </main>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex flex-col bg-cloud">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-steel mb-4">Morate biti prijavljeni da biste pristupili admin panelu.</p>
+            <Link href="/prijava/" className="btn-primary inline-flex items-center gap-2">
+              Prijavite se
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex flex-col bg-cloud">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-steel mb-4">Nemate ovlaštenje za pristup admin panelu.</p>
+            <Link href="/dashboard/" className="btn-primary inline-flex items-center gap-2">
+              Nazad na dashboard
+            </Link>
+          </div>
         </main>
       </div>
     );

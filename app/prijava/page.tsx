@@ -30,11 +30,17 @@ export default function LoginPage() {
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, is_admin')
       .eq('id', authData.user.id)
       .single();
 
-    router.push(profile?.role === 'firm' ? '/dashboard/firma/' : '/dashboard/');
+    if (profile?.is_admin) {
+      router.push('/admin/');
+    } else if (profile?.role === 'firm') {
+      router.push('/dashboard/firma/');
+    } else {
+      router.push('/dashboard/');
+    }
   };
 
   return (
