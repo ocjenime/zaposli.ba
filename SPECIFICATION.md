@@ -1,4 +1,4 @@
-# Zaposli.ba - Detaljna Specifikacija Projekta
+﻿# Zaposli.ba - Detaljna Specifikacija Projekta
 
 ## 1. OSNOVNI OPIS PROJEKTA
 
@@ -6,12 +6,12 @@
 **Zaposli.ba**
 
 ### 1.2 Opis
-Platforma koja spaja kupce (vlasnike nekretnina, investitore) sa građevinskim firmama i zanatlijama u Bosni i Hercegovini. Model zasnovan na Werkspot.nl/Thumbtack pristupu.
+Platforma koja spaja kupce (vlasnike nekretnina, investitore) sa građevinskim firmama i majstorima u Bosni i Hercegovini. Model zasnovan na Werkspot.nl/Thumbtack pristupu.
 
 ### 1.3 Ciljno tržište
 - **Geografija**: Bosna i Hercegovina (Sarajevo, Banja Luka, Tuzla, Mostar, Zenica, itd.)
 - **Kupci**: Vlasnici kuća/stanova, investitori, firme koje traže izvođače
-- **Pružaoci usluga**: Građevinske firme, zanatlije, majstori svih profila
+- **Pružaoci usluga**: Građevinske firme, majstore, majstori svih profila
 
 ### 1.4 Web adresa
 - **Domen**: zaposli.ba

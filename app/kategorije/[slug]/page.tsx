@@ -43,59 +43,92 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/`, providerCount: cat.count })} />
 
         {/* Hero */}
-        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-5 mb-6">
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg shrink-0 ${
-                cat.featured
-                  ? 'bg-gradient-to-br from-red-600 to-red-700 shadow-red-600/25'
-                  : 'bg-gradient-to-br from-brand-orange to-brand-orange-dark shadow-brand-orange/25'
-              }`}>
-                <Icon className="w-8 h-8 text-white" />
-              </div>
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{cat.name}</h1>
-                  {cat.featured && (
-                    <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                      <Siren className="w-3.5 h-3.5" />
-                      24/7 · dostupno odmah
-                    </span>
-                  )}
+        <section className={`relative min-h-[80vh] flex items-center overflow-hidden ${cat.featured ? 'bg-gradient-to-br from-red-900 via-red-700 to-red-800' : 'bg-white'}`}>
+          <div className="absolute inset-0 overflow-hidden">
+            {cat.featured ? (
+              <>
+                {/* Animirano crveno svjetlo */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-red-500/25 blur-[140px] animate-pulse" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-red-400/30 blur-[100px] animate-pulse" style={{ animationDelay: '0.4s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-red-300/40 blur-[60px] animate-pulse" style={{ animationDelay: '0.8s' }} />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full bg-red-200/50 blur-[30px] animate-pulse" style={{ animationDelay: '1.2s' }} />
+                {/* Siren ring */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                  <span className="absolute inline-flex h-16 w-16 -ml-8 -mt-8 rounded-full bg-red-400 opacity-20 animate-ping" />
+                  <span className="absolute inline-flex h-10 w-10 -ml-5 -mt-5 rounded-full bg-red-300 opacity-40 animate-ping" style={{ animationDelay: '0.5s' }} />
                 </div>
-                <p className="text-steel mt-1">{cat.count} provjerenih firmi širom BiH</p>
-              </div>
+              </>
+            ) : (
+              <>
+                <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
+                <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
+              </>
+            )}
+            {/* Dotted pattern */}
+            <div className={`absolute inset-0 opacity-[0.12] ${cat.featured ? 'text-white' : 'text-gray-900'}`}>
+              <svg className="w-full h-full" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                <pattern id="catDots" width="32" height="32" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1.2" fill="currentColor" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#catDots)" />
+              </svg>
             </div>
-            <p className="text-lg text-steel max-w-2xl mb-6">{cat.description}.</p>
+          </div>
 
-            {/* Usluge u kategoriji */}
-            <div className="flex flex-wrap gap-2 mb-8">
-              {cat.services.map((s) => (
-                <span
-                  key={s}
-                  className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border ${
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 pt-28 w-full">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="max-w-xl">
+                {cat.featured && (
+                  <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-6">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-100" />
+                    </span>
+                    <span className="text-white/90 text-sm font-semibold">24/7 · dostupno odmah</span>
+                  </div>
+                )}
+                <h1 className={`text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] ${cat.featured ? 'text-white' : 'text-ink'}`}>
+                  {cat.name}
+                  {cat.featured && <span className="block text-red-200">24/7</span>}
+                </h1>
+                <p className={`text-lg md:text-xl mb-8 leading-relaxed ${cat.featured ? 'text-white/80' : 'text-steel'}`}>
+                  {cat.description}.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {cat.services.slice(0, 6).map((s) => (
+                    <span
+                      key={s}
+                      className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border ${
+                        cat.featured
+                          ? 'bg-white/10 border-white/20 text-white'
+                          : 'bg-white border-gray-100 text-ink/80'
+                      }`}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+                <Link
+                  href="/objavi-projekat/"
+                  className={`inline-flex items-center gap-2 text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
                     cat.featured
-                      ? 'bg-red-50 border-red-100 text-red-800'
-                      : 'bg-white border-gray-100 text-ink/80'
+                      ? 'bg-gradient-to-r from-red-500 to-red-600 hover:shadow-red-500/25'
+                      : 'bg-gradient-to-r from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
                   }`}
                 >
-                  {s}
-                </span>
-              ))}
+                  {cat.featured ? 'Objavi hitan posao besplatno' : 'Objavi posao besplatno'}
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </div>
+
+              <div className="hidden lg:flex items-center justify-center">
+                <div className={`relative w-72 h-72 md:w-96 md:h-96 rounded-full flex items-center justify-center ${cat.featured ? 'bg-red-500/20' : 'bg-brand-orange/10'}`}>
+                  <Icon className={`w-32 h-32 md:w-48 md:h-48 ${cat.featured ? 'text-white' : 'text-brand-orange'}`} />
+                  <div className={`absolute inset-0 rounded-full border-2 ${cat.featured ? 'border-red-300/30' : 'border-brand-orange/20'} animate-[spin_12s_linear_infinite]`} />
+                  <div className={`absolute inset-4 rounded-full border-2 ${cat.featured ? 'border-red-300/20' : 'border-brand-orange/10'} animate-[spin_18s_linear_infinite_reverse]`} />
+                </div>
+              </div>
             </div>
-            <Link
-              href="/objavi-projekat/"
-              className={`inline-flex items-center gap-2 bg-gradient-to-r text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
-                cat.featured
-                  ? 'from-red-600 to-red-700 hover:shadow-red-600/25'
-                  : 'from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
-              }`}
-            >
-              {cat.featured ? 'Objavi hitan posao besplatno' : 'Objavi posao besplatno'}
-              <ArrowRight className="w-5 h-5" />
-            </Link>
           </div>
         </section>
 

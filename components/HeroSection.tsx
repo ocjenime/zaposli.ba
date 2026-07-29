@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -39,16 +39,14 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-3">
-              <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
-              <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi i zanatlija</span>
-            </div>
-
             <Link
               href="/kategorije/hitne-intervencije/"
               className="inline-flex items-center gap-2 bg-red-50 border border-red-100 shadow-sm rounded-full px-4 py-2 mb-6 md:mb-8 hover:bg-red-100 transition-colors"
             >
-              <Siren className="w-4 h-4 text-red-600" />
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-600" />
+              </span>
               <span className="text-red-700 text-sm font-semibold">Hitne intervencije 24/7</span>
               <ArrowRight className="w-3.5 h-3.5 text-red-500" />
             </Link>
@@ -62,7 +60,7 @@ export default function HeroSection() {
             </h1>
 
             <p className="text-base md:text-xl text-steel mb-7 md:mb-10 leading-relaxed">
-              Besplatno objavite svoj posao i primite ponude od provjerenih građevinskih firmi i zanatlija širom Bosne i Hercegovine.
+              Besplatno objavite svoj posao i primite ponude od provjerenih građevinskih firmi i majstora širom Bosne i Hercegovine.
             </p>
 
             <form onSubmit={handleSearch} className="bg-white rounded-2xl shadow-float border border-gray-100 p-3 mb-6 md:mb-8">
@@ -77,6 +75,10 @@ export default function HeroSection() {
                     className="w-full h-48 object-cover object-[62%_35%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm border border-gray-100 shadow-sm rounded-full px-3 py-1.5">
+                    <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
+                    <span className="text-ink/80 text-xs font-medium">Više od 2,800+ verificiranih firmi i majstora</span>
+                  </div>
                 </div>
                 <div className="absolute top-10 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
@@ -151,6 +153,10 @@ export default function HeroSection() {
                 className="object-cover w-full h-[430px] object-[58%_40%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm border border-gray-100 shadow-sm rounded-full px-4 py-2">
+                <span className="w-2 h-2 bg-brand-orange rounded-full animate-pulse" />
+                <span className="text-ink/80 text-sm font-medium">Više od 2,800+ verificiranih firmi i majstora</span>
+              </div>
             </div>
 
             {/* Kartica: ocjena */}

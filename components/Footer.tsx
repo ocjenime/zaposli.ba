@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { categories, cities } from '@/lib/data';
@@ -38,7 +38,7 @@ export default function Footer() {
               <Logo variant="light" />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-4 max-w-xs">
-              Platforma koja spaja kupce sa građevinskim firmama i zanatlijama u Bosni i Hercegovini.
+              Platforma koja spaja kupce sa građevinskim firmama i majstorima u Bosni i Hercegovini.
             </p>
             <p className="text-brand-orange text-sm font-semibold italic">
               Majstor na pravom mjestu. Kad ti treba.

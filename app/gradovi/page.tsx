@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MapPin, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
@@ -22,7 +22,7 @@ export default function CitiesPage() {
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
         <PageHero
           title="Majstori po gradovima"
-          subtitle="Provjerene firme i zanatlije u 35 gradova širom Bosne i Hercegovine"
+          subtitle="Provjerene firme i majstore u 35 gradova širom Bosne i Hercegovine"
         />
 
         <section className="py-14 bg-white">

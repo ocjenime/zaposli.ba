@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import './globals.css';
 import { site } from '@/lib/site';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: '%s',
   },
   description: site.description,
-  keywords: 'građevinarstvo, majstori, zanatlije, Bosna, Hercegovina, renoviranje, gradnja, ponude, zaposli, vodoinstalater, električar, keramičar',
+  keywords: 'građevinarstvo, majstori, majstore, Bosna, Hercegovina, renoviranje, gradnja, ponude, zaposli, vodoinstalater, električar, keramičar',
   authors: [{ name: site.name }],
   alternates: { canonical: site.url },
   openGraph: {

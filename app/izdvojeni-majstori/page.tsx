@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Star, MapPin, ArrowRight, Shield, TrendingUp } from 'lucide-react';
 import Header from '@/components/Header';
@@ -117,7 +117,7 @@ export default function FeaturedWorkersPage() {
                   Želite ovakvog majstora za vaš posao?
                 </h2>
                 <p className="text-white/60 mb-8 max-w-xl mx-auto">
-                  Objavite posao besplatno i primite ponude od provjerenih firmi i zanatlija u roku od 24 sata.
+                  Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u roku od 24 sata.
                 </p>
                 <Link
                   href="/objavi-projekat/"

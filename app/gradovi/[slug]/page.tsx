@@ -50,7 +50,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Majstori <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
             </h1>
             <p className="text-lg text-steel max-w-2xl mb-4">
-              Provjerene građevinske firme i zanatlije u gradu {city.loc}: objavite posao besplatno i primite ponude u roku od 24 sata.
+              Provjerene građevinske firme i majstore u gradu {city.loc}: objavite posao besplatno i primite ponude u roku od 24 sata.
             </p>
             <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
               <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>

@@ -1,4 +1,4 @@
-# TOČKA 1 — STRATEŠKI OKVIR
+﻿# TOČKA 1 — STRATEŠKI OKVIR
 **zaposli.ba** · marketplace za građevinske usluge u BiH · v1.0
 
 > Status: odobreno od klijenta. Brend finalan. Backend: Firebase. Prioritet: demand strana (objavljeni projekti). Domena: github.io.
@@ -47,7 +47,7 @@
 | **Preporuka / "znam čovjeka"** | Povjerenje kroz poznanstvo | Nema izbora, nema referentne cijene, "zauzet do marta", nema garancije | Isti osjećaj sigurnosti + izbor + slobodan termin |
 | **Facebook grupe** ("Majstori BiH") | Brzina, puno odgovora | Nula verifikacije, haos u komentarima, prevare, nema recenzija | Strukturirane ponude + verifikacija + istorija rada |
 | **OLX.ba / pik.ba** | Velika publika | Anonimni oglasi, kupac zove jednog po jednog, nema ocjena | Jedna objava → više ponuda; kupac ne juri majstore |
-| **Regionalne platforme** | Fokus na zanatlije | Mrtve baze, slab UX, naplaćuju unaprijed, slab brend | Besplatno za kupce + živa baza + moderan proizvod |
+| **Regionalne platforme** | Fokus na majstore | Mrtve baze, slab UX, naplaćuju unaprijed, slab brend | Besplatno za kupce + živa baza + moderan proizvod |
 | **Google Maps direktno** | Recenzije postoje | Firme bez weba, zvanje jednog po jednog, nema usporedbe ponuda | Agregacija + standardizirana usporedba ponuda |
 
 ### Ključni strateški insight

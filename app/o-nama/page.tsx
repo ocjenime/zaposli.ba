@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+﻿import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -108,7 +108,7 @@ export default function ONamaPage() {
                 koji se ne pojave na dogovoreni termin i cijene koje se mijenjaju iz dana u dan.
               </p>
               <p>
-                Znali smo da problem nije u majstorima. BiH je puna vrhunskih zanatlija i
+                Znali smo da problem nije u majstorima. BiH je puna vrhunskih majstora i
                 građevinskih firmi koje rade kvalitetno i pošteno. Problem je bio u tome što ih je
                 bilo gotovo nemoguće pronaći, uporediti i provjeriti. Informacije su bile razbacane
                 po oglasima, društvenim mrežama i usmenim preporukama.

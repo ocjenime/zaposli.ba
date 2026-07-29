@@ -1,10 +1,10 @@
-# Zaposli.ba
+﻿# Zaposli.ba
 
-Platforma koja spaja kupce sa građevinskim firmama i zanatlijama u Bosni i Hercegovini.
+Platforma koja spaja kupce sa građevinskim firmama i majstorima u Bosni i Hercegovini.
 
 ## Opis
 
-**Zaposli.ba** je online marketplace inspirisan Werkspot.nl modelom, dizajniran specifično za tržište Bosne i Hercegovine. Platforma omogućava kupcima (vlasnicima nekretnina, investitorima) da objave građevinske projekte i prime ponude od provjerenih firmi i zanatlija.
+**Zaposli.ba** je online marketplace inspirisan Werkspot.nl modelom, dizajniran specifično za tržište Bosne i Hercegovine. Platforma omogućava kupcima (vlasnicima nekretnina, investitorima) da objave građevinske projekte i prime ponude od provjerenih firmi i majstora.
 
 ## Karakteristike
 
