@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { site } from '@/lib/site';
+import AuthWrapper from '@/components/AuthWrapper';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -38,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="bs">
       <body className="min-h-screen">
-        {children}
+        <AuthWrapper>{children}</AuthWrapper>
       </body>
     </html>
   );
