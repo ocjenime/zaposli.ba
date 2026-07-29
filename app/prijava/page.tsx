@@ -21,7 +21,7 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({ email, password });
     if (authError) {
       setError(authError.message === 'Invalid login credentials' ? 'Pogrešan email ili lozinka' : authError.message);
       setLoading(false);
@@ -31,7 +31,7 @@ export default function LoginPage() {
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
-      .eq('id', (await supabase.auth.getSession()).data.session?.user.id)
+      .eq('id', authData.user.id)
       .single();
 
     router.push(profile?.role === 'firm' ? '/dashboard/firma/' : '/dashboard/');
