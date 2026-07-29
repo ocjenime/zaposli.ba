@@ -9,7 +9,7 @@ import { useAuth } from '@/lib/auth-context';
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user, role } = useAuth();
+  const { user, role, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -35,12 +35,20 @@ export default function Header() {
               Za majstore
             </Link>
             {user ? (
-              <Link
-                href={dashboardHref}
-                className="px-4 py-2 rounded-lg text-sm font-medium text-brand-orange hover:text-brand-orange-dark hover:bg-orange-50 transition-all duration-200"
-              >
-                Moj profil
-              </Link>
+              <>
+                <Link
+                  href={dashboardHref}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-brand-orange hover:text-brand-orange-dark hover:bg-orange-50 transition-all duration-200"
+                >
+                  Moj profil
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200"
+                >
+                  Odjavi se
+                </button>
+              </>
             ) : (
               <Link
                 href="/prijava/"
@@ -77,13 +85,21 @@ export default function Header() {
               Objavi posao
             </Link>
             {user ? (
-              <Link
-                href={dashboardHref}
-                className="block text-center px-4 py-3 rounded-xl text-brand-orange font-medium"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Moj profil
-              </Link>
+              <>
+                <Link
+                  href={dashboardHref}
+                  className="block text-center px-4 py-3 rounded-xl text-brand-orange font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Moj profil
+                </Link>
+                <button
+                  onClick={() => { setMobileMenuOpen(false); signOut(); }}
+                  className="block w-full text-center px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 font-medium"
+                >
+                  Odjavi se
+                </button>
+              </>
             ) : (
               <Link
                 href="/prijava/"
