@@ -100,7 +100,7 @@ export default function FirmDashboard() {
             <button onClick={signOut} className="text-sm text-steel hover:text-ink underline">Odjavi se</button>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-2 gap-4 mb-10">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex items-center gap-3 mb-2">
                 <Briefcase className="w-6 h-6 text-brand-orange" />
@@ -120,6 +120,13 @@ export default function FirmDashboard() {
           {success && <p className="text-green-700 bg-green-50 rounded-lg px-4 py-2 mb-4 text-sm">{success}</p>}
 
           <h2 className="text-lg font-bold text-ink mb-4">Aktivni poslovi</h2>
+          {jobs.length === 0 ? (
+            <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 text-center">
+              <Briefcase className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+              <p className="text-steel text-sm">Trenutno nema otvorenih poslova.</p>
+              <p className="text-gray-400 text-xs mt-1">Čim neko objavi posao, pojaviće se ovdje.</p>
+            </div>
+          ) : (
           <div className="space-y-3">
             {jobs.slice(0, 10).map((job) => (
               <div key={job.id} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
@@ -168,8 +175,8 @@ export default function FirmDashboard() {
                 )}
               </div>
             ))}
-            {jobs.length === 0 && <p className="text-steel text-sm">Trenutno nema otvorenih poslova.</p>}
           </div>
+          )}
         </div>
       </main>
       <Footer />

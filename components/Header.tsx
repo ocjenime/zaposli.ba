@@ -39,7 +39,7 @@ export default function Header() {
                 href={dashboardHref}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-brand-orange hover:text-brand-orange-dark hover:bg-orange-50 transition-all duration-200"
               >
-                Moj nalog
+                Moj profil
               </Link>
             ) : (
               <Link
@@ -82,7 +82,7 @@ export default function Header() {
                 className="block text-center px-4 py-3 rounded-xl text-brand-orange font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Moj nalog
+                Moj profil
               </Link>
             ) : (
               <Link
