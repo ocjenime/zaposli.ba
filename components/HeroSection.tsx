@@ -41,7 +41,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative md:min-h-[92vh] flex flex-col overflow-hidden bg-white">
+    <section className="relative md:min-h-[92vh] flex flex-col overflow-hidden bg-white pt-16 md:pt-20">
       {mounted && emergencyBannerVisible && (
         <div className="relative z-10 bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-white shadow-md">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
@@ -78,7 +78,7 @@ export default function HeroSection() {
         </svg>
       </div>
 
-      <div className="relative flex-grow flex items-center pt-16 md:pt-20">
+      <div className="relative flex-grow flex items-center">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 md:py-20 w-full">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
