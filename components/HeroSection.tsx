@@ -84,23 +84,23 @@ export default function HeroSection() {
                     className="w-full h-48 object-cover object-[62%_35%]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/15 via-transparent to-transparent" />
-                  <div className="absolute top-2 left-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                      <Shield className="w-3.5 h-3.5 text-white" />
+                  <div className="absolute top-2 left-2 bg-white/95 rounded-lg shadow-sm border border-gray-100/80 px-1.5 py-1 flex items-center gap-1 animate-float">
+                    <div className="w-5 h-5 rounded bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-sm shadow-brand-orange/20">
+                      <Shield className="w-2.5 h-2.5 text-white" />
                     </div>
                     <div>
-                      <div className="text-sm font-extrabold text-ink leading-none">2.800+</div>
-                      <div className="text-[9px] text-steel mt-0.5 font-medium">verificiranih majstora i firmi</div>
+                      <div className="text-[10px] font-extrabold text-ink leading-none">2.800+</div>
+                      <div className="text-[7px] text-steel leading-none">majstora i firmi</div>
                     </div>
                   </div>
                 </div>
-                <div className="absolute bottom-3 -right-2 bg-white rounded-2xl shadow-float border border-gray-100 px-3 py-2 flex items-center gap-2 animate-float">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                    <Star className="w-3.5 h-3.5 text-white fill-white" />
+                <div className="absolute bottom-2 right-2 bg-white/95 rounded-lg shadow-sm border border-gray-100/80 px-1.5 py-1 flex items-center gap-1 animate-float">
+                  <div className="w-5 h-5 rounded bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-sm shadow-brand-orange/20">
+                    <Star className="w-2.5 h-2.5 text-white fill-white" />
                   </div>
                   <div>
-                    <div className="text-sm font-extrabold text-ink leading-none">4.8</div>
-                    <div className="text-[9px] text-steel mt-0.5 font-medium">prosječna ocjena</div>
+                    <div className="text-[10px] font-extrabold text-ink leading-none">4.8</div>
+                    <div className="text-[7px] text-steel leading-none">prosječna ocjena</div>
                   </div>
                 </div>
               </div>
@@ -167,30 +167,30 @@ export default function HeroSection() {
                 className="object-cover w-full h-[430px] object-[58%_40%]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
-              <div className="absolute top-3 left-3 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
-                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                  <Shield className="w-4 h-4 text-white" />
+              <div className="absolute top-3 left-3 bg-white rounded-xl shadow-float border border-gray-100 px-3 py-2.5 flex items-center gap-2 animate-float">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-sm shadow-brand-orange/25">
+                  <Shield className="w-3.5 h-3.5 text-white" />
                 </div>
                 <div>
-                  <div className="text-lg font-extrabold text-ink leading-none">2.800+</div>
-                  <div className="text-[10px] text-steel mt-0.5 font-medium">verificiranih majstora i firmi</div>
+                  <div className="text-base font-extrabold text-ink leading-none">2.800+</div>
+                  <div className="text-[10px] text-steel mt-0.5 font-medium leading-none">verificiranih majstora i firmi</div>
                 </div>
               </div>
             </div>
 
             {/* Kartica: ocjena */}
-            <div className="absolute bottom-12 -right-5 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 flex items-center gap-2.5 animate-float">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-md shadow-brand-orange/25">
-                <Star className="w-4 h-4 text-white fill-white" />
+            <div className="absolute bottom-12 -right-5 bg-white rounded-xl shadow-float border border-gray-100 px-3 py-2.5 flex items-center gap-2 animate-float">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center shadow-sm shadow-brand-orange/25">
+                <Star className="w-3.5 h-3.5 text-white fill-white" />
               </div>
               <div>
-                <div className="text-lg font-extrabold text-ink leading-none">4.8</div>
-                <div className="text-[10px] text-steel mt-0.5 font-medium">prosječna ocjena</div>
+                <div className="text-base font-extrabold text-ink leading-none">4.8</div>
+                <div className="text-[10px] text-steel mt-0.5 font-medium leading-none">prosječna ocjena</div>
               </div>
             </div>
 
             {/* Kartica: posao/ponude */}
-            <div className="absolute bottom-24 -left-8 bg-white rounded-2xl shadow-float border border-gray-100 px-4 py-3 animate-float" style={{ animationDelay: '1.2s' }}>
+            <div className="absolute bottom-24 -left-8 bg-white rounded-xl shadow-float border border-gray-100 px-3 py-2.5 animate-float" style={{ animationDelay: '1.2s' }}>
               <div className="text-[10px] text-steel mb-0.5">Adaptacija kupatila</div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-ink text-sm">8 ponuda</span>
@@ -202,31 +202,29 @@ export default function HeroSection() {
       </div>
     </section>
 
-    {/* Sticky hitne intervencije banner — zakačen za dno ekrana, ne skrola se, može se ukloniti */}
+    {/* Sticky hitne intervencije banner — zakačen za hero, kompaktna plutajuća kartica */}
     {mounted && emergencyBannerVisible && (
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-white shadow-[0_-4px_20px_rgba(220,38,38,0.25)]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4">
-          <Link
-            href="/kategorije/hitne-intervencije/"
-            className="flex items-center gap-3 min-w-0 hover:opacity-90 transition-opacity"
-          >
-            <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-100" />
-            </span>
-            <Siren className="w-4 h-4 shrink-0" />
-            <span className="text-sm font-semibold truncate">Hitne intervencije 24/7 — majstori dostupni odmah</span>
-            <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
-          </Link>
-          <button
-            type="button"
-            onClick={dismissEmergencyBanner}
-            className="p-1.5 hover:bg-white/10 rounded-lg transition-colors shrink-0"
-            aria-label="Zatvori"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+      <div className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-40 animate-float">
+        <Link
+          href="/kategorije/hitne-intervencije/"
+          className="flex items-center gap-2 bg-gradient-to-r from-red-700 to-red-600 text-white pl-2.5 pr-3 py-2 rounded-full shadow-lg shadow-red-600/25 hover:shadow-red-600/40 transition-all text-xs font-semibold"
+        >
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-100" />
+          </span>
+          <Siren className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">Hitne intervencije 24/7</span>
+          <span className="sm:hidden">Hitno</span>
+        </Link>
+        <button
+          type="button"
+          onClick={dismissEmergencyBanner}
+          className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-white text-red-600 rounded-full shadow-md flex items-center justify-center hover:bg-red-50 transition-colors"
+          aria-label="Zatvori"
+        >
+          <X className="w-3 h-3" />
+        </button>
       </div>
     )}
     </>
