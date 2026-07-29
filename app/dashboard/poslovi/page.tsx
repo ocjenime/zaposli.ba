@@ -183,7 +183,7 @@ function JobDetail() {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
-        <main className="flex-grow py-10 px-4">
+        <main className="flex-grow pt-24 pb-10 px-4">
           <div className="max-w-3xl mx-auto">
             <p className="text-steel">ID posla nije naveden.</p>
             <Link href="/dashboard/" className="btn-primary mt-4 inline-block">Nazad na dashboard</Link>
@@ -197,7 +197,7 @@ function JobDetail() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow py-10 px-4">
+      <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/dashboard/" className="inline-flex items-center text-sm text-steel hover:text-ink mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na poslove

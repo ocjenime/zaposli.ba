@@ -170,7 +170,7 @@ export default function FirmDashboard() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow py-10 px-4">
+      <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>

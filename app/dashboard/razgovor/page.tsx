@@ -216,8 +216,8 @@ function Conversation() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow py-10 px-4">
-        <div className="max-w-3xl mx-auto h-[calc(100vh-8rem)] sm:h-[calc(100vh-9rem)] flex flex-col">
+      <main className="flex-grow pt-24 pb-10 px-4">
+        <div className="max-w-3xl mx-auto h-[calc(100vh-14rem)] sm:h-[calc(100vh-15rem)] flex flex-col">
           <Link href={role === 'firm' ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-ink mb-3">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad
           </Link>
