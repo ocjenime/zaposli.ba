@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 
 export default function LoginPage() {
@@ -36,7 +37,7 @@ export default function LoginPage() {
 
     if (profile?.is_admin) {
       router.push('/admin/');
-    } else if (profile?.role === 'firm') {
+    } else if (isFirmRole(profile?.role ?? null)) {
       router.push('/dashboard/firma/');
     } else {
       router.push('/dashboard/');

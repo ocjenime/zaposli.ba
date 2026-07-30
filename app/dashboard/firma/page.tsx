@@ -6,12 +6,15 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import {
   getPlanAndUsage,
   Subscription,
   remainingBidsText,
+  getResetCountdownText,
+  formatDateTime,
 } from '@/lib/subscriptions';
 import {
   MapPin, Tag, Loader2, Send, MessageSquare, CheckCircle, XCircle, Clock,
@@ -80,7 +83,7 @@ function FirmDashboardContent() {
   useEffect(() => {
     if (!loading) {
       if (!user) router.push('/prijava/');
-      else if (role !== 'firm') router.push('/dashboard/');
+      else if (!isFirmRole(role)) router.push('/dashboard/');
     }
   }, [user, role, loading, router]);
 
@@ -90,7 +93,7 @@ function FirmDashboardContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (user && role === 'firm') fetchFirm();
+    if (user && isFirmRole(role)) fetchFirm();
   }, [user, role]);
 
   async function fetchFirm() {
@@ -235,12 +238,16 @@ function FirmDashboardContent() {
 
           {firmId && !loadingPlan && (
             <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 rounded-xl border px-4 py-3 text-sm ${canBid ? 'bg-white border-gray-100' : 'bg-orange-50 border-orange-100'}`}>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Crown className={`w-4 h-4 ${subscription?.plans?.featured ? 'text-brand-orange' : 'text-steel'}`} />
                 <span className="font-medium text-gray-900">
                   {subscription?.plans?.name || 'Besplatno'}
                 </span>
                 <span className="text-steel">· {remainingBidsText(bidsUsed, bidsLimit)}</span>
+                <span className="text-steel">· {getResetCountdownText()}</span>
+                {subscription?.ends_at && (
+                  <span className="text-steel">· Aktivna do {formatDateTime(subscription.ends_at)}</span>
+                )}
               </div>
               {!canBid && (
                 <div className="flex items-center gap-2 text-brand-orange-dark">

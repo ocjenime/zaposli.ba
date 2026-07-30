@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { Plus, MapPin, ClipboardList, Loader2 } from 'lucide-react';
 
@@ -45,7 +46,7 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!loading) {
       if (!user) router.push('/prijava/');
-      else if (role === 'firm') router.push('/dashboard/firma/');
+      else if (isFirmRole(role)) router.push('/dashboard/firma/');
     }
   }, [user, role, loading, router]);
 

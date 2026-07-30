@@ -4,10 +4,12 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
 
+import type { UserRole } from './roles';
+
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  role: string | null;
+  role: UserRole | null;
   isAdmin: boolean;
   signOut: () => Promise<void>;
 }
@@ -22,7 +24,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+  const [role, setRole] = useState<UserRole | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { ArrowLeft, MapPin, Send, Loader2 } from 'lucide-react';
 
@@ -125,7 +126,7 @@ function Conversation() {
           .single();
         partnerId = firmData?.owner_id ?? null;
       }
-    } else if (role === 'firm') {
+    } else if (isFirmRole(role)) {
       const { data: firmData } = await supabase.from('firms').select('id').eq('owner_id', user.id).single();
       if (firmData) {
         const { data: bidData } = await supabase
@@ -218,7 +219,7 @@ function Conversation() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto h-[calc(100vh-14rem)] sm:h-[calc(100vh-15rem)] flex flex-col">
-          <Link href={role === 'firm' ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
+          <Link href={isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad
           </Link>
 

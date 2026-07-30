@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { roleLabel, roleInputOptions, type UserRole } from '@/lib/roles';
 import {
   X, Loader2, Crown, AlertCircle, Check, KeyRound, Mail, Phone, User,
 } from 'lucide-react';
@@ -11,7 +12,7 @@ export interface AdminProfile {
   email: string;
   full_name: string | null;
   phone: string | null;
-  role: 'client' | 'firm';
+  role: UserRole;
   is_admin: boolean;
   created_at: string;
 }
@@ -31,7 +32,7 @@ export default function ProfileEditModal({
 }: ProfileEditModalProps) {
   const [fullName, setFullName] = useState(profile?.full_name || '');
   const [phone, setPhone] = useState(profile?.phone || '');
-  const [role, setRole] = useState(profile?.role || 'client');
+  const [role, setRole] = useState<UserRole>(profile?.role || 'client');
   const [isAdmin, setIsAdmin] = useState(profile?.is_admin || false);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
@@ -160,11 +161,12 @@ export default function ProfileEditModal({
                 <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Uloga</label>
                 <select
                   value={role}
-                  onChange={(e) => setRole(e.target.value as 'client' | 'firm')}
+                  onChange={(e) => setRole(e.target.value as UserRole)}
                   className="w-full bg-cloud dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                 >
-                  <option value="client">Klijent</option>
-                  <option value="firm">Firma</option>
+                  {roleInputOptions().map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
                 </select>
               </div>
               <div>

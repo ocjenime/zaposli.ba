@@ -17,6 +17,9 @@ import {
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
+import SubscriptionEditModal from './SubscriptionEditModal';
+import { roleLabel, isFirmRole } from '@/lib/roles';
+import { formatDateTime, getResetCountdownText } from '@/lib/subscriptions';
 
 interface AdminRequest {
   id: string;
@@ -57,13 +60,14 @@ export default function AdminPage() {
   const [success, setSuccess] = useState('');
   const [search, setSearch] = useState('');
 
-  const [savingSubscription, setSavingSubscription] = useState<string | null>(null);
   const [savingVerified, setSavingVerified] = useState<string | null>(null);
   const [savingAdmin, setSavingAdmin] = useState<string | null>(null);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(false);
 
   const [editingProfile, setEditingProfile] = useState<AdminProfile | null>(null);
   const [editingFirm, setEditingFirm] = useState<AdminFirm | null>(null);
+  const [editingSubscription, setEditingSubscription] = useState<FirmPlan | null>(null);
+  const [promoCount, setPromoCount] = useState(0);
 
   useEffect(() => {
     if (authLoading) return;
@@ -130,45 +134,23 @@ export default function AdminPage() {
     setLoadingSubscriptions(false);
   }
 
+  async function loadPromoCount() {
+    const { data, error } = await supabase
+      .from('admin_settings')
+      .select('value')
+      .eq('key', 'promo_free_premium_count')
+      .single();
+    if (!error && data) {
+      setPromoCount(parseInt(data.value) || 0);
+    }
+  }
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
+      loadPromoCount();
     }
   }, [activeTab, firms]);
-
-  async function assignPlan(firmId: string, planId: string) {
-    setSavingSubscription(firmId);
-    setError('');
-    setSuccess('');
-
-    // Expire any existing active/cancelled subscriptions for this firm
-    const { error: expireErr } = await supabase
-      .from('subscriptions')
-      .update({ status: 'expired', updated_at: new Date().toISOString() })
-      .eq('firm_id', firmId)
-      .in('status', ['active', 'cancelled']);
-
-    if (expireErr) {
-      setSavingSubscription(null);
-      setError(expireErr.message);
-      return;
-    }
-
-    const { error: err } = await supabase.from('subscriptions').insert({
-      firm_id: firmId,
-      plan_id: planId,
-      status: 'active',
-      starts_at: new Date().toISOString(),
-    });
-
-    setSavingSubscription(null);
-    if (err) {
-      setError(err.message);
-      return;
-    }
-    await loadFirmPlans();
-    setSuccess('Pretplata je uspješno ažurirana.');
-  }
 
   async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);
@@ -369,7 +351,7 @@ export default function AdminPage() {
                           <p className="font-medium text-gray-900">{profile.full_name || profile.email}</p>
                           <p className="text-sm text-steel">{profile.email} · {profile.phone || '—'}</p>
                           <p className="text-xs text-steel mt-1">
-                            {profile.role === 'firm' ? 'Firma' : 'Klijent'} · {formatDate(profile.created_at)}
+                            {roleLabel(profile.role)} · {formatDate(profile.created_at)}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
@@ -457,59 +439,86 @@ export default function AdminPage() {
               )}
 
               {activeTab === 'subscriptions' && (
-                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <p className="text-sm text-steel">Dodijeli ili promijeni paket za firmu</p>
-                    <button
-                      onClick={loadFirmPlans}
-                      disabled={loadingSubscriptions}
-                      className="text-sm text-brand-orange hover:text-brand-orange-dark font-medium disabled:opacity-50"
-                    >
-                      {loadingSubscriptions ? 'Učitavanje...' : 'Osvježi'}
-                    </button>
-                  </div>
-                  {loadingSubscriptions ? (
-                    <div className="flex items-center justify-center py-12 text-steel">
-                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje pretplata...
+                <div className="space-y-4">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4">
+                      <p className="text-xs text-steel dark:text-gray-400">Aktivnih pretplata</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {firmPlans.filter(({ subscription }) => subscription?.status === 'active').length}
+                      </p>
                     </div>
-                  ) : (
-                  <div className="divide-y divide-gray-100">
-                    {firmPlans.map(({ firm, subscription }) => (
-                      <div key={firm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div>
-                          <p className="font-medium text-gray-900">{firm.name}</p>
-                          <p className="text-sm text-steel">
-                            Trenutni paket:{' '}
-                            <span className="font-medium text-gray-900">
-                              {subscription?.plans?.name || 'Besplatno'}
-                            </span>
-                            {subscription?.plans?.featured && (
-                              <Star className="w-3.5 h-3.5 inline text-brand-orange ml-1" />
-                            )}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {plans.map((plan) => (
-                            <button
-                              key={plan.id}
-                              onClick={() => assignPlan(firm.id, plan.id)}
-                              disabled={savingSubscription === firm.id || subscription?.plan_id === plan.id}
-                              className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
-                                subscription?.plan_id === plan.id
-                                  ? 'bg-brand-orange text-[#ffffff]'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                              }`}
-                            >
-                              {savingSubscription === firm.id && subscription?.plan_id !== plan.id
-                                ? '...'
-                                : plan.name}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
+                    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4">
+                      <p className="text-xs text-steel dark:text-gray-400">Promo iskorišteno</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {promoCount} <span className="text-sm font-normal text-steel">/ 1000</span>
+                      </p>
+                    </div>
+                    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-4">
+                      <p className="text-xs text-steel dark:text-gray-400">Mjesečni reset ponuda</p>
+                      <p className="text-lg font-bold text-gray-900 dark:text-white">{getResetCountdownText()}</p>
+                    </div>
                   </div>
-                )}
+
+                  <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+                    <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <p className="text-sm text-steel dark:text-gray-400">Upravljanje pretplatama po firmama</p>
+                      <button
+                        onClick={() => { loadFirmPlans(); loadPromoCount(); }}
+                        disabled={loadingSubscriptions}
+                        className="text-sm text-brand-orange hover:text-brand-orange-dark font-medium disabled:opacity-50"
+                      >
+                        {loadingSubscriptions ? 'Učitavanje...' : 'Osvježi'}
+                      </button>
+                    </div>
+                    {loadingSubscriptions ? (
+                      <div className="flex items-center justify-center py-12 text-steel dark:text-gray-400">
+                        <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje pretplata...
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                        {firmPlans.map(({ firm, subscription }) => {
+                          const isExpired = subscription?.ends_at && new Date(subscription.ends_at) < new Date();
+                          return (
+                            <div key={firm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                              <div>
+                                <p className="font-medium text-gray-900 dark:text-white">{firm.name}</p>
+                                <p className="text-sm text-steel dark:text-gray-400">
+                                  Paket:{' '}
+                                  <span className="font-medium text-gray-900 dark:text-white">
+                                    {subscription?.plans?.name || 'Besplatno'}
+                                  </span>
+                                  {subscription?.plans?.featured && (
+                                    <Star className="w-3.5 h-3.5 inline text-brand-orange ml-1" />
+                                  )}
+                                  {subscription?.is_promo && (
+                                    <span className="ml-2 text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">PROMO</span>
+                                  )}
+                                </p>
+                                <p className="text-xs text-steel dark:text-gray-500 mt-1">
+                                  {subscription?.status === 'active' && !isExpired
+                                    ? `Aktivna do ${formatDateTime(subscription.ends_at || '')}`
+                                    : isExpired
+                                    ? 'Pretplata istekla'
+                                    : subscription?.status
+                                    ? `Status: ${subscription.status}`
+                                    : 'Bez pretplate'}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => setEditingSubscription({ firm, subscription })}
+                                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                  Uredi
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -618,6 +627,21 @@ export default function AdminPage() {
                 loadFirms();
                 loadFirmPlans();
                 setSuccess('Profil firme ažuriran.');
+              }}
+            />
+          )}
+
+          {editingSubscription && (
+            <SubscriptionEditModal
+              firmId={editingSubscription.firm.id}
+              firmName={editingSubscription.firm.name}
+              subscription={editingSubscription.subscription}
+              plans={plans}
+              onClose={() => setEditingSubscription(null)}
+              onSaved={() => {
+                loadFirmPlans();
+                loadPromoCount();
+                setSuccess('Pretplata ažurirana.');
               }}
             />
           )}

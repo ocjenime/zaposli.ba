@@ -17,9 +17,11 @@ export interface Subscription {
   id: string;
   firm_id: string;
   plan_id: string;
-  status: 'active' | 'cancelled' | 'expired';
+  status: 'active' | 'cancelled' | 'expired' | 'paused';
   starts_at: string;
   ends_at: string | null;
+  is_promo: boolean;
+  notes: string | null;
   created_at: string;
   plans: Plan | null;
 }
@@ -89,4 +91,31 @@ export function remainingBidsText(bidsUsed: number, bidsLimit: number) {
   if (bidsLimit === 9999) return 'Neograničene ponude';
   const remaining = Math.max(0, bidsLimit - bidsUsed);
   return `${bidsUsed}/${bidsLimit} iskorišteno · ${remaining} preostalo`;
+}
+
+export function addMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  result.setMonth(result.getMonth() + months);
+  return result;
+}
+
+export function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleDateString('bs-BA', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+export function getNextResetDate() {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth() + 1, 1);
+}
+
+export function getResetCountdownText() {
+  const next = getNextResetDate();
+  const now = new Date();
+  const diff = next.getTime() - now.getTime();
+  const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
+  return `Reset za ${days} dan${days === 1 ? '' : 'a'}`;
 }

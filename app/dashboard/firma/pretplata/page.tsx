@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import {
   getPlans,
@@ -34,7 +35,7 @@ export default function FirmSubscriptionPage() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user || role !== 'firm') {
+    if (!user || !isFirmRole(role)) {
       router.push('/prijava/');
       return;
     }
@@ -104,7 +105,7 @@ export default function FirmSubscriptionPage() {
 
   const isCurrent = (planId: string) => subscription?.plan_id === planId;
 
-  if (authLoading || (!user && role !== 'firm')) {
+  if (authLoading || (!user && !isFirmRole(role))) {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
         <Header />

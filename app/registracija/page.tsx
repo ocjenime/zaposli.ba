@@ -7,10 +7,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { User, Mail, Lock, Phone, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { isFirmRole, type UserRole } from '@/lib/roles';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [userType, setUserType] = useState<'client' | 'firm'>('client');
+  const [userType, setUserType] = useState<UserRole>('client');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -52,7 +53,7 @@ export default function RegisterPage() {
       return;
     }
 
-    if (userType === 'firm') {
+    if (isFirmRole(userType)) {
       await supabase.from('firms').insert({
         owner_id: authData.user.id,
         name: formData.name,
@@ -62,7 +63,7 @@ export default function RegisterPage() {
       });
     }
 
-    router.push(userType === 'firm' ? '/dashboard/firma/' : '/dashboard/');
+    router.push(isFirmRole(userType) ? '/dashboard/firma/' : '/dashboard/');
   };
 
   return (
@@ -76,19 +77,23 @@ export default function RegisterPage() {
               <p className="text-gray-600 mt-2">Registrujte se besplatno</p>
             </div>
 
-            <div className="flex gap-4 mb-6">
-              {(['client', 'firm'] as const).map((type) => (
+            <div className="grid grid-cols-3 gap-3 mb-6">
+              {([
+                { value: 'client', label: 'Klijent' },
+                { value: 'firm', label: 'Firma' },
+                { value: 'majstor', label: 'Majstor' },
+              ] as const).map((type) => (
                 <button
-                  key={type}
+                  key={type.value}
                   type="button"
-                  onClick={() => setUserType(type)}
-                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
-                    userType === type
+                  onClick={() => setUserType(type.value)}
+                  className={`py-3 px-2 rounded-lg font-medium text-sm transition-colors ${
+                    userType === type.value
                       ? 'bg-primary-600 text-[#ffffff]'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {type === 'client' ? 'Klijent' : 'Firma/Majstor'}
+                  {type.label}
                 </button>
               ))}
             </div>
@@ -96,7 +101,7 @@ export default function RegisterPage() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {userType === 'client' ? 'Ime i prezime' : 'Naziv firme'}
+                  {userType === 'firm' ? 'Naziv firme' : 'Ime i prezime'}
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -104,7 +109,7 @@ export default function RegisterPage() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder={userType === 'client' ? 'Vaše ime' : 'Naziv firme'}
+                    placeholder={userType === 'firm' ? 'Naziv firme' : 'Vaše ime'}
                     className="input-field pl-10"
                     required
                   />

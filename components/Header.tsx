@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const dashboardHref = role === 'firm' ? '/dashboard/firma/' : '/dashboard/';
+  const dashboardHref = isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 dark:bg-ink-900/90 backdrop-blur-xl border-b border-gray-100/80 dark:border-ink-800/80 ${scrolled ? 'shadow-sm dark:shadow-ink-900/50' : ''}`}>

@@ -9,6 +9,7 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 
@@ -59,7 +60,7 @@ export default function ProjectsPage() {
       router.push('/registracija/');
       return;
     }
-    if (role !== 'firm') {
+    if (!isFirmRole(role)) {
       router.push('/dashboard/');
       return;
     }
@@ -126,7 +127,7 @@ export default function ProjectsPage() {
                           className="inline-flex items-center gap-1.5 text-sm py-2 px-3 rounded-xl font-medium bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors"
                         >
                           <Send className="w-4 h-4" />
-                          {!mounted ? 'Pošalji ponudu' : user ? (role === 'firm' ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
+                          {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
                         </button>
                       </div>
                     </div>
