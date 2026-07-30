@@ -11,35 +11,12 @@ import {
   getPlans, getCurrentSubscription, Plan, Subscription, formatPrice,
 } from '@/lib/subscriptions';
 import {
-  LayoutDashboard, Users, Building2, CreditCard, FileText,   Bell,
+  LayoutDashboard, Users, Building2, CreditCard, FileText, Bell,
   Loader2, Check, Crown, AlertCircle, Search,
-  Star, CheckCircle, XCircle,
+  Star, CheckCircle, XCircle, Pencil,
 } from 'lucide-react';
-
-interface Profile {
-  id: string;
-  email: string;
-  full_name: string | null;
-  phone: string | null;
-  role: 'client' | 'firm';
-  is_admin: boolean;
-  created_at: string;
-}
-
-interface Firm {
-  id: string;
-  owner_id: string;
-  name: string;
-  slug: string;
-  email: string | null;
-  phone: string | null;
-  city: string | null;
-  verified: boolean;
-  average_rating: number;
-  review_count: number;
-  created_at: string;
-  owner?: Profile;
-}
+import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
+import FirmEditModal, { AdminFirm } from './FirmEditModal';
 
 interface AdminRequest {
   id: string;
@@ -48,11 +25,11 @@ interface AdminRequest {
   metadata: Record<string, unknown>;
   read: boolean;
   created_at: string;
-  firms?: Firm;
+  firms?: AdminFirm;
 }
 
 interface FirmPlan {
-  firm: Firm;
+  firm: AdminFirm;
   subscription: Subscription | null;
 }
 
@@ -70,8 +47,8 @@ export default function AdminPage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const [profiles, setProfiles] = useState<Profile[]>([]);
-  const [firms, setFirms] = useState<Firm[]>([]);
+  const [profiles, setProfiles] = useState<AdminProfile[]>([]);
+  const [firms, setFirms] = useState<AdminFirm[]>([]);
   const [plans, setPlans] = useState<Plan[]>([]);
   const [firmPlans, setFirmPlans] = useState<FirmPlan[]>([]);
   const [requests, setRequests] = useState<AdminRequest[]>([]);
@@ -84,6 +61,9 @@ export default function AdminPage() {
   const [savingVerified, setSavingVerified] = useState<string | null>(null);
   const [savingAdmin, setSavingAdmin] = useState<string | null>(null);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(false);
+
+  const [editingProfile, setEditingProfile] = useState<AdminProfile | null>(null);
+  const [editingFirm, setEditingFirm] = useState<AdminFirm | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -113,7 +93,7 @@ export default function AdminPage() {
       .select('*')
       .order('created_at', { ascending: false });
     if (err) throw err;
-    setProfiles((data as Profile[]) || []);
+    setProfiles((data as AdminProfile[]) || []);
   }
 
   async function loadFirms() {
@@ -122,7 +102,7 @@ export default function AdminPage() {
       .select('*')
       .order('created_at', { ascending: false });
     if (err) throw err;
-    setFirms((data as Firm[]) || []);
+    setFirms((data as AdminFirm[]) || []);
   }
 
   async function loadPlans() {
@@ -190,7 +170,7 @@ export default function AdminPage() {
     setSuccess('Pretplata je uspješno ažurirana.');
   }
 
-  async function toggleVerified(firm: Firm) {
+  async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);
     setError('');
     setSuccess('');
@@ -208,7 +188,7 @@ export default function AdminPage() {
     setSuccess('Verifikacija firme ažurirana.');
   }
 
-  async function toggleAdmin(profile: Profile) {
+  async function toggleAdmin(profile: AdminProfile) {
     setSavingAdmin(profile.id);
     setError('');
     setSuccess('');
@@ -223,6 +203,14 @@ export default function AdminPage() {
     }
     await loadProfiles();
     setSuccess('Admin status ažuriran.');
+  }
+
+  async function resetPassword(email: string) {
+    const redirectTo = `${window.location.origin}/zaposli.ba/nova-lozinka/`;
+    const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    });
+    if (err) throw err;
   }
 
   async function markRequestRead(id: string) {
@@ -384,7 +372,14 @@ export default function AdminPage() {
                             {profile.role === 'firm' ? 'Firma' : 'Klijent'} · {formatDate(profile.created_at)}
                           </p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => setEditingProfile(profile)}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                            Uredi
+                          </button>
                           <button
                             onClick={() => toggleAdmin(profile)}
                             disabled={savingAdmin === profile.id}
@@ -436,6 +431,13 @@ export default function AdminPage() {
                           >
                             Profil
                           </Link>
+                          <button
+                            onClick={() => setEditingFirm(firm)}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                            Uredi
+                          </button>
                           <button
                             onClick={() => toggleVerified(firm)}
                             disabled={savingVerified === firm.id}
@@ -591,6 +593,33 @@ export default function AdminPage() {
                 </div>
               )}
             </>
+          )}
+
+          {editingProfile && (
+            <ProfileEditModal
+              profile={editingProfile}
+              onClose={() => setEditingProfile(null)}
+              onSaved={() => {
+                loadProfiles();
+                setSuccess('Korisnički profil ažuriran.');
+              }}
+              onResetPassword={async (email) => {
+                await resetPassword(email);
+                setSuccess(`Email za reset lozinke poslat na ${email}.`);
+              }}
+            />
+          )}
+
+          {editingFirm && (
+            <FirmEditModal
+              firm={editingFirm}
+              onClose={() => setEditingFirm(null)}
+              onSaved={() => {
+                loadFirms();
+                loadFirmPlans();
+                setSuccess('Profil firme ažuriran.');
+              }}
+            />
           )}
         </div>
       </main>
