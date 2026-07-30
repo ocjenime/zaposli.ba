@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="bs" suppressHydrationWarning>
       <body className="min-h-screen">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange={false}>
           <AuthWrapper>{children}</AuthWrapper>
         </ThemeProvider>
       </body>
