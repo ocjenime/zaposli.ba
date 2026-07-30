@@ -44,7 +44,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">2. Zašto prikupljamo podatke</h2>
             <p className="text-steel leading-relaxed mb-4">
               Podatke koristimo isključivo radi pružanja usluge Platforme: objave i pokretanja
-              poslova, dostavljanja ponuda firmama, omogućavanja komunikacije između kupaca i
+              poslova, dostavljanja ponuda firmama, omogućavanja komunikacije između klijenata i
               firmi, prikazivanja profila i recenzija, te poboljšanja funkcionalnosti Platforme.
               Podatke ne koristimo za profilisanje niti ih prodajemo trećim stranama.
             </p>

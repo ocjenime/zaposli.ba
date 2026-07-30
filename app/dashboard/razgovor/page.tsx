@@ -239,7 +239,7 @@ function Conversation() {
                   {partner?.full_name && (
                     <>
                       <span className="w-1 h-1 bg-steel rounded-full" />
-                      <span>{role === 'client' ? 'Firma' : 'Kupac'}: {partner.full_name}</span>
+                      <span>{role === 'client' ? 'Firma' : 'klijent'}: {partner.full_name}</span>
                     </>
                   )}
                 </div>
@@ -265,7 +265,7 @@ function Conversation() {
                               }`}
                             >
                               <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-white/80' : 'text-steel'}`}>
-                                {isMe ? 'Vi' : role === 'client' ? 'Firma' : 'Kupac'}
+                                {isMe ? 'Vi' : role === 'client' ? 'Firma' : 'klijent'}
                               </p>
                               <p>{msg.content}</p>
                               <p className={`text-[10px] mt-1 ${isMe ? 'text-white/80' : 'text-steel'}`}>

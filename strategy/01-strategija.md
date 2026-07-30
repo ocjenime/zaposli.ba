@@ -1,4 +1,4 @@
-﻿# TOČKA 1 — STRATEŠKI OKVIR
+# TOČKA 1 — STRATEŠKI OKVIR
 **zaposli.ba** · marketplace za građevinske usluge u BiH · v1.0
 
 > Status: odobreno od klijenta. Brend finalan. Backend: Firebase. Prioritet: demand strana (objavljeni projekti). Domena: github.io.
@@ -30,29 +30,29 @@
 
 ## 1.1 Pozicioniranje i value proposition
 
-**Za kupca:**
-> Zaposli.ba je najbrži i najsigurniji način da nađete provjerenog majstora u BiH — besplatno objavite projekat i birajte između ponuda firmi čije su kvalitet i cijene potvrdili stvarni kupci, ne sreća.
+**Za klijenta:**
+> Zaposli.ba je najbrži i najsigurniji način da nađete provjerenog majstora u BiH — besplatno objavite projekat i birajte između ponuda firmi čije su kvalitet i cijene potvrdili stvarni klijenti, ne sreća.
 
 **Za firmu:**
 > Zaposli.ba vam dovodi ozbiljne projekte s definisanim budžetom — bez ulaganja u marketing, bez hladnih poziva; plaćate samo kada rastete.
 
-**Zašto ovako:** Kupac i firma su dvije različite publikacije s suprotnim strahovima — kupac se boji prevare, firma se boji bacanja novca. Jedna poruka ne može riješiti oba straha; zato dvije rečenice, dva funnel-a, dvije stranice. Glavni konkurent nije druga platforma nego **preporuka ("znam čovjeka")** — platforma pobjeđuje samo ako reproducira osjećaj sigurnosti preporuke, a dodaje izbor i transparentnost koje preporuka nema.
+**Zašto ovako:** klijent i firma su dvije različite publikacije s suprotnim strahovima — klijent se boji prevare, firma se boji bacanja novca. Jedna poruka ne može riješiti oba straha; zato dvije rečenice, dva funnel-a, dvije stranice. Glavni konkurent nije druga platforma nego **preporuka ("znam čovjeka")** — platforma pobjeđuje samo ako reproducira osjećaj sigurnosti preporuke, a dodaje izbor i transparentnost koje preporuka nema.
 
 ---
 
-## 1.2 Konkurentske alternative (što kupac STVARNO radi danas)
+## 1.2 Konkurentske alternative (što klijent STVARNO radi danas)
 
 | Alternativa | Što rade dobro | Gdje gube | Naša prilika |
 |---|---|---|---|
 | **Preporuka / "znam čovjeka"** | Povjerenje kroz poznanstvo | Nema izbora, nema referentne cijene, "zauzet do marta", nema garancije | Isti osjećaj sigurnosti + izbor + slobodan termin |
 | **Facebook grupe** ("Majstori BiH") | Brzina, puno odgovora | Nula verifikacije, haos u komentarima, prevare, nema recenzija | Strukturirane ponude + verifikacija + istorija rada |
-| **OLX.ba / pik.ba** | Velika publika | Anonimni oglasi, kupac zove jednog po jednog, nema ocjena | Jedna objava → više ponuda; kupac ne juri majstore |
-| **Regionalne platforme** | Fokus na majstore | Mrtve baze, slab UX, naplaćuju unaprijed, slab brend | Besplatno za kupce + živa baza + moderan proizvod |
+| **OLX.ba / pik.ba** | Velika publika | Anonimni oglasi, klijent zove jednog po jednog, nema ocjena | Jedna objava → više ponuda; klijent ne juri majstore |
+| **Regionalne platforme** | Fokus na majstore | Mrtve baze, slab UX, naplaćuju unaprijed, slab brend | Besplatno za klijente + živa baza + moderan proizvod |
 | **Google Maps direktno** | Recenzije postoje | Firme bez weba, zvanje jednog po jednog, nema usporedbe ponuda | Agregacija + standardizirana usporedba ponuda |
 
 ### Ključni strateški insight
 
-Niko na tržištu ne odgovara na pitanje koje kupca najviše muči: **"Koliko bi ovo trebalo koštati?"** Strah od prevare je u osnovi strah od nepoznavanja fer cijene. Naša platforma **već prikazuje budžete u KM na karticama projekata** — to nije samo podatak, to je diferencijacija. Podižemo je na nivo brenda: **"Kod nas znaš koliko košta prije nego iko pokuca na vrata."**
+Niko na tržištu ne odgovara na pitanje koje klijenta najviše muči: **"Koliko bi ovo trebalo koštati?"** Strah od prevare je u osnovi strah od nepoznavanja fer cijene. Naša platforma **već prikazuje budžete u KM na karticama projekata** — to nije samo podatak, to je diferencijacija. Podižemo je na nivo brenda: **"Kod nas znaš koliko košta prije nego iko pokuca na vrata."**
 
 ---
 
@@ -76,15 +76,15 @@ Niko na tržištu ne odgovara na pitanje koje kupca najviše muči: **"Koliko bi
 ### P3 — Senad, 47, Tuzla · vlasnik firme (4 radnika), vodoinstalacije + keramika
 - **JTBD:** "Hoću kontinuitet poslova bez reklama koje ne rade."
 - **Ciljevi:** redovni projekti, reputacija, minimum administracije.
-- **Frustracije:** sezonske rupe, nelikvidni kupci, "internet stvarima ne vjeruje" — ali vidi da konkurencija raste online.
+- **Frustracije:** sezonske rupe, nelikvidni klijenti, "internet stvarima ne vjeruje" — ali vidi da konkurencija raste online.
 - **Ponašanje:** mobitel na gradilištu, ne čita duge tekstove, Viber/WhatsApp logika.
 - **Što ga uvjerava:** besplatan start, odmah vidi projekte u svojoj kategoriji i gradu, jednostavna ponuda u 3 klika.
 
 ---
 
-## 1.4 User journey — kupac (primarni, jer je demand prioritet)
+## 1.4 User journey — klijent (primarni, jer je demand prioritet)
 
-| Faza | Što kupac osjeća/želi | Što mu platforma mora dati | Trenje (friction) | Kako ga dizajn uklanja | Metrika |
+| Faza | Što klijent osjeća/želi | Što mu platforma mora dati | Trenje (friction) | Kako ga dizajn uklanja | Metrika |
 |---|---|---|---|---|---|
 | **Problem** | "Cijuri cijev, treba mi neko HITNO" | — | — | — | — |
 | **Dolazak** | "Je li ovo za mene?" | Odgovor u 5 sekundi (vidi 1.5) | Generičan hero, nejasna ponuda | Hero: šta je + besplatno + provjereno, odmah | Bounce |

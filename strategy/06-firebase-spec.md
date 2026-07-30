@@ -54,9 +54,9 @@ Firebase pobjeđuje jer marketplace treba realtime (nove ponude), auth za obje u
   rok: Timestamp | null;
   hitno: boolean;
   fotografije: string[];       // Storage URL-ovi
-  kupacId: string;             // uid
+  klijentId: string;             // uid
   kontaktIme: string;
-  kontaktTelefon: string;      // vidljiv samo firmi koju kupac odobere
+  kontaktTelefon: string;      // vidljiv samo firmi koju klijent odobere
   status: 'aktivan' | 'dodijeljen' | 'zavrsen' | 'zatvoren';
   brojPonuda: number;          // denormalizirano
   objavljen: Timestamp;
@@ -80,7 +80,7 @@ Firebase pobjeđuje jer marketplace treba realtime (nove ponude), auth za obje u
 {
   firmaId: string;
   projekatId: string;
-  kupacId: string;
+  klijentId: string;
   ocjena: 1 | 2 | 3 | 4 | 5;
   tekst: string;
   fotografije: string[];
@@ -92,7 +92,7 @@ Firebase pobjeđuje jer marketplace treba realtime (nove ponude), auth za obje u
 ### `users/{uid}`
 ```ts
 {
-  uloga: 'kupac' | 'firma' | 'admin';
+  uloga: 'klijent' | 'firma' | 'admin';
   ime: string;
   email: string;
   firmaId: string | null;      // ako je uloga = 'firma'
@@ -108,9 +108,9 @@ Firebase pobjeđuje jer marketplace treba realtime (nove ponude), auth za obje u
 
 ```
 firme:     read = svi javni podaci; write = vlasnik (firmaId) ili admin
-projekti:  read = svi (bez kontakt polja); create = auth kupac; update = vlasnik projekta
+projekti:  read = svi (bez kontakt polja); create = auth klijent; update = vlasnik projekta
 ponude:    read = vlasnik projekta + autor ponude; create = auth firma (limit po paketu)
-recenzije: read = svi; create = kupac vezan uz završen projekat; update odgovora = firma
+recenzije: read = svi; create = klijent vezan uz završen projekat; update odgovora = firma
 kontakt:   vidljiv samo firmi čija je ponuda prihvaćena (custom claims + rules)
 ```
 
@@ -127,7 +127,7 @@ kontakt:   vidljiv samo firmi čija je ponuda prihvaćena (custom claims + rules
 
 ## 6.5 Notifikacije (faza 2)
 
-- Cloud Functions: nova ponuda → email kupcu (SendGrid/Resend); novi projekat u kategoriji+gradu → email/push firmi.
+- Cloud Functions: nova ponuda → email klijentu (SendGrid/Resend); novi projekat u kategoriji+gradu → email/push firmi.
 - Firestore trigger `onCreate(ponude)` i `onCreate(projekti)`.
 
 ---

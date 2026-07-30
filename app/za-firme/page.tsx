@@ -11,8 +11,8 @@ const benefits = [
   },
   {
     icon: Users,
-    title: 'Hiljade kupaca',
-    description: 'Pristupite bazi od preko 12,000 zadovoljnih kupaca koji traže majstore.',
+    title: 'Hiljade klijenata',
+    description: 'Pristupite bazi od preko 12,000 zadovoljnih klijenata koji traže majstore.',
   },
   {
     icon: Star,
@@ -36,7 +36,7 @@ const pricingPlans = [
       'Profil firme',
       'Do 5 odgovora mjesečno',
       'Osnovni portfolio',
-      'Kontakt sa kupcima',
+      'Kontakt sa klijentima',
     ],
     cta: 'Počnite besplatno',
     popular: false,
@@ -179,7 +179,7 @@ export default function ForCompaniesPage() {
                   4
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Dobijte posao</h3>
-                <p className="text-sm text-gray-600">Ako vas kupac odabere, započinjete saradnju</p>
+                <p className="text-sm text-gray-600">Ako vas klijent odabere, započinjete saradnju</p>
               </div>
             </div>
           </div>

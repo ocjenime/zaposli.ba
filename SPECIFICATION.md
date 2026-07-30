@@ -1,4 +1,4 @@
-﻿# Zaposli.ba - Detaljna Specifikacija Projekta
+# Zaposli.ba - Detaljna Specifikacija Projekta
 
 ## 1. OSNOVNI OPIS PROJEKTA
 
@@ -6,11 +6,11 @@
 **Zaposli.ba**
 
 ### 1.2 Opis
-Platforma koja spaja kupce (vlasnike nekretnina, investitore) sa građevinskim firmama i majstorima u Bosni i Hercegovini. Model zasnovan na Werkspot.nl/Thumbtack pristupu.
+Platforma koja spaja klijente (vlasnike nekretnina, investitore) sa građevinskim firmama i majstorima u Bosni i Hercegovini. Model zasnovan na Werkspot.nl/Thumbtack pristupu.
 
 ### 1.3 Ciljno tržište
 - **Geografija**: Bosna i Hercegovina (Sarajevo, Banja Luka, Tuzla, Mostar, Zenica, itd.)
-- **Kupci**: Vlasnici kuća/stanova, investitori, firme koje traže izvođače
+- **klijenti**: Vlasnici kuća/stanova, investitori, firme koje traže izvođače
 - **Pružaoci usluga**: Građevinske firme, majstore, majstori svih profila
 
 ### 1.4 Web adresa
@@ -34,9 +34,9 @@ Platforma koja spaja kupce (vlasnike nekretnina, investitore) sa građevinskim f
 ### 2.1 Monetizacija
 
 #### A) Lead Generation Model (primarni)
-- Firmu plaća po kontaktu sa kupcem
+- Firmu plaća po kontaktu sa klijentom
 - Cijena po lead-u: 5-25 KM (ovisno o veličini projekta)
-- Kupac: BESPLATNO
+- klijent: BESPLATNO
 
 #### B) Premium Članstvo
 - **Basic**: Besplatno - osnovni profil, ograničen broj odgovora
@@ -59,7 +59,7 @@ Platforma koja spaja kupce (vlasnike nekretnina, investitore) sa građevinskim f
 
 ## 3. FUNKCIONALNOSTI
 
-### 3.1 Za Kupce (Korisnike)
+### 3.1 Za klijente (Korisnike)
 
 #### A) Registracija/Prijava
 - Email registracija
@@ -235,7 +235,7 @@ CREATE TABLE categories (
   parent_id INTEGER REFERENCES categories(id)
 );
 
--- Projekti (Kupci objavljuju)
+-- Projekti (klijenti objavljuju)
 CREATE TABLE projects (
   id UUID PRIMARY KEY,
   user_id UUID REFERENCES users(id),
@@ -371,7 +371,7 @@ CREATE TABLE locations (
 - Upload slika
 - Pregled prije objave
 
-#### Dashboard (Kupac)
+#### Dashboard (klijent)
 - Aktivni projekti
 - Primljene ponude
 - Poruke
@@ -457,7 +457,7 @@ CREATE TABLE locations (
 ### Faza 2: Core Features (2-3 mjeseca)
 - [ ] Chat sistem
 - [ ] Napredne recenzije sa slikama
-- [ ] Dashboard za kupce
+- [ ] Dashboard za klijente
 - [ ] Dashboard za firme
 - [ ] Email notifikacije
 - [ ] Mobilna optimizacija

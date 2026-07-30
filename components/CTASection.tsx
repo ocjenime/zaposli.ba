@@ -32,7 +32,7 @@ export default function CTASection() {
             </p>
 
             <ul className="space-y-4 mb-10">
-              {['Potpuno besplatno', 'Više ponuda za usporedbu', 'Ocjene i recenzije drugih kupaca'].map((item) => (
+              {['Potpuno besplatno', 'Više ponuda za usporedbu', 'Ocjene i recenzije drugih klijenata'].map((item) => (
                 <li key={item} className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0" />
                   <span className="text-white/80">{item}</span>

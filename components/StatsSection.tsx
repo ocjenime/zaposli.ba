@@ -5,7 +5,7 @@ const stats = [
   {
     icon: Users,
     value: '12,500+',
-    label: 'Zadovoljnih kupaca',
+    label: 'Zadovoljnih klijenata',
   },
   {
     icon: Building2,
@@ -32,13 +32,13 @@ const trustCards = [
   },
   {
     icon: CreditCard,
-    title: 'Besplatno za kupce',
+    title: 'Besplatno za klijente',
     description: 'Objavljivanje poslova i primanje ponuda je potpuno besplatno.',
   },
   {
     icon: MessageSquare,
     title: 'Ocjene i recenzije',
-    description: 'Pročitajte iskustva drugih kupaca prije nego što odaberete firmu.',
+    description: 'Pročitajte iskustva drugih klijenata prije nego što odaberete firmu.',
   },
 ];
 
@@ -56,7 +56,7 @@ export default function StatsSection() {
             Zašto Zaposli.ba?
           </h2>
           <p className="text-lg text-gray-500">
-            Platforma kojoj vjeruju hiljade kupaca i firmi širom Bosne i Hercegovine
+            Platforma kojoj vjeruju hiljade klijenata i firmi širom Bosne i Hercegovine
           </p>
         </div>
 
