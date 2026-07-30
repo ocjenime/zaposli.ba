@@ -244,7 +244,7 @@ export default function FirmProfileContent() {
                   </>
                 )}
 
-                <h2 className="text-xl font-bold text-ink mb-4">Recenzije kupaca</h2>
+                <h2 className="text-xl font-bold text-ink mb-4">Recenzije klijenata</h2>
                 {reviews.length === 0 ? (
                   <div className="bg-cloud rounded-2xl p-6 text-center border border-gray-100">
                     <p className="text-steel">Još nema recenzija za ovu firmu.</p>

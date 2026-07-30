@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -152,7 +152,7 @@ export default function HeroSection() {
               <span className="hidden sm:block w-1 h-1 bg-mist rounded-full" />
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-4 h-4 text-brand-orange" />
-                <span>Besplatno za kupce</span>
+                <span>Besplatno za klijente</span>
               </div>
               <span className="hidden sm:block w-1 h-1 bg-mist rounded-full" />
               <div className="flex items-center gap-2">

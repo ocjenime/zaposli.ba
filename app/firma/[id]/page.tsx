@@ -94,7 +94,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                   ))}
                 </div>
 
-                <h2 className="text-2xl font-bold text-ink mb-6">Recenzije kupaca</h2>
+                <h2 className="text-2xl font-bold text-ink mb-6">Recenzije klijenata</h2>
                 <div className="space-y-5">
                   {w.reviewList.map((r) => (
                     <div key={r.author} className="bg-cloud rounded-2xl p-6">

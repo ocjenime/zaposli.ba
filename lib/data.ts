@@ -408,8 +408,8 @@ export interface FaqItem {
 
 export const faqs: FaqItem[] = [
   {
-    question: 'Koliko košta korištenje Zaposli.ba za kupce?',
-    answer: 'Za kupce je korištenje platforme potpuno besplatno: objava posla, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
+    question: 'Koliko košta korištenje Zaposli.ba za klijente?',
+    answer: 'Za klijente je korištenje platforme potpuno besplatno: objava posla, primanje ponuda i kontakt sa firmama ne plaćaju se. Platformu financiraju premium paketi za firme.',
   },
   {
     question: 'Kako funkcioniše verifikacija firmi?',
@@ -425,11 +425,11 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Šta ako nisam zadovoljan izvedenim radovima?',
-    answer: 'Preporučujemo da prije početka radova s firmom dogovorite sve detalje pisanim putem kroz platformu. U slučaju spora, naš tim pomaže u posredovanju, a vaša recenzija štiti druge kupce.',
+    answer: 'Preporučujemo da prije početka radova s firmom dogovorite sve detalje pisanim putem kroz platformu. U slučaju spora, naš tim pomaže u posredovanju, a vaša recenzija štiti druge klijente.',
   },
   {
     question: 'Kako firma dobija oznaku dobre reputacije?',
-    answer: 'Ocjena se računa isključivo od recenzija stvarnih kupaca kojima je firma radila posao preko platforme. Ocjene se ne mogu kupiti niti ukloniti na zahtjev firme.',
+    answer: 'Ocjena se računa isključivo od recenzija stvarnih klijenata kojima je firma radila posao preko platforme. Ocjene se ne mogu kupiti niti ukloniti na zahtjev firme.',
   },
   {
     question: 'Mogu li objaviti hitan posao?',

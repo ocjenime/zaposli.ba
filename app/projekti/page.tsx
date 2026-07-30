@@ -73,7 +73,7 @@ export default function ProjectsPage() {
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
         <PageHero
           title="Aktivni poslovi"
-          subtitle="Stvarni poslovi kupaca širom BiH: registrujte firmu i pošaljite ponudu"
+          subtitle="Stvarni poslovi klijenata širom BiH: registrujte firmu i pošaljite ponudu"
         />
 
         <section className="py-14 bg-cloud">

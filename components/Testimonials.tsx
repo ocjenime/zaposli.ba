@@ -49,7 +49,7 @@ export default function Testimonials() {
             Šta kažu naši korisnici?
           </h2>
           <p className="text-lg text-gray-500">
-            Hiljade zadovoljnih kupaca i firmi koriste Zaposli.ba svaki dan
+            Hiljade zadovoljnih klijenata i firmi koriste Zaposli.ba svaki dan
           </p>
         </div>
 

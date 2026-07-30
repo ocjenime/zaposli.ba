@@ -61,7 +61,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
     },
     {
       question: `Kako znam da je firma iz vašeg grada pouzdana?`,
-      answer: `Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih kupaca iz vašeg grada i okoline.`,
+      answer: `Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih klijenata iz vašeg grada i okoline.`,
     },
   ];
 
@@ -113,7 +113,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
             <h2 className="text-2xl font-bold text-ink mb-2">
               {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori: ${cat.name.toLowerCase()}`}
             </h2>
-            <p className="text-steel mb-8">Ocjene i recenzije stvarnih kupaca</p>
+            <p className="text-steel mb-8">Ocjene i recenzije stvarnih klijenata</p>
             {shownWorkers.length > 0 ? (
               <div className="grid md:grid-cols-3 gap-5">
                 {shownWorkers.map((w) => (

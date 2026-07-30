@@ -23,7 +23,7 @@ export default function FaqPage() {
         <Breadcrumbs items={[{ name: 'Česta pitanja' }]} />
         <PageHero
           title="Česta pitanja"
-          subtitle="Odgovori na pitanja koja nam kupci i firme najčešće postavljaju"
+          subtitle="Odgovori na pitanja koja nam klijenti i firme najčešće postavljaju"
         />
         <JsonLd data={faqSchema(faqs)} />
 
