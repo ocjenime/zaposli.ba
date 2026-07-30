@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -17,12 +17,17 @@ import {
 } from '@/lib/subscriptions';
 import {
   ArrowLeft, Check, Crown, Loader2, AlertCircle,
-  Star, HeadphonesIcon, Briefcase,
+  Star, HeadphonesIcon, Briefcase, CreditCard,
+  Calendar, Building2,
 } from 'lucide-react';
+import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-export default function FirmSubscriptionPage() {
+type BillingInterval = 'monthly' | 'yearly';
+
+function FirmSubscriptionContent() {
   const { user, loading: authLoading, role } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [firmId, setFirmId] = useState<string | null>(null);
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -32,6 +37,8 @@ export default function FirmSubscriptionPage() {
   const [requestedPlanId, setRequestedPlanId] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [interval, setInterval] = useState<BillingInterval>('monthly');
+  const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -41,6 +48,16 @@ export default function FirmSubscriptionPage() {
     }
     loadData();
   }, [authLoading, user, role, router]);
+
+  useEffect(() => {
+    const status = searchParams.get('payment');
+    if (status === 'success') {
+      setSuccess('Hvala na uplati. Vaša pretplata će biti aktivirana nakon potvrde plaćanja.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (status === 'cancel') {
+      setError('Plaćanje je otkazano. Možete pokušati ponovo.');
+    }
+  }, [searchParams]);
 
   async function loadData() {
     if (!user) return;
@@ -66,7 +83,14 @@ export default function FirmSubscriptionPage() {
         getPlans(),
         getCurrentSubscription(firm.id),
       ]);
-      setPlans(plansData);
+      // Put free plan first, then sort by sort_order/price
+      const sorted = [...plansData].sort((a, b) => {
+        if ((a.sort_order ?? 999) !== (b.sort_order ?? 999)) {
+          return (a.sort_order ?? 999) - (b.sort_order ?? 999);
+        }
+        return a.price_monthly - b.price_monthly;
+      });
+      setPlans(sorted);
       setSubscription(subData);
     } catch (err) {
       setError('Greška prilikom učitavanja podataka o pretplati.');
@@ -82,11 +106,14 @@ export default function FirmSubscriptionPage() {
     setError('');
     setSuccess('');
 
+    const plan = plans.find((p) => p.id === planId);
     const { error: err } = await supabase.from('admin_requests').insert({
       type: 'subscription_request',
       firm_id: firmId,
       metadata: {
         requested_plan_id: planId,
+        requested_interval: interval,
+        requested_price: interval === 'yearly' ? plan?.price_yearly : plan?.price_monthly,
         requested_at: new Date().toISOString(),
       },
     });
@@ -101,6 +128,59 @@ export default function FirmSubscriptionPage() {
 
     setSuccess('Zahtjev za nadogradnju je poslan. Admin tim će vas kontaktirati.');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function startStripeCheckout(plan: Plan) {
+    if (!firmId || !plan.payment_link_url) return;
+    setProcessingPlanId(plan.id);
+    setError('');
+    setSuccess('');
+
+    try {
+      const amount = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
+      // Record pending payment before redirect
+      await supabase.from('payments').insert({
+        firm_id: firmId,
+        plan_id: plan.id,
+        provider: 'stripe',
+        amount,
+        currency: 'BAM',
+        interval,
+        status: 'pending',
+      });
+
+      const returnUrl = encodeURIComponent(`${window.location.origin}/zaposli.ba/dashboard/firma/pretplata/?payment=success`);
+      const stripeUrl = new URL(plan.payment_link_url);
+      stripeUrl.searchParams.set('client_reference_id', firmId);
+      stripeUrl.searchParams.set('success_url', returnUrl);
+      stripeUrl.searchParams.set('cancel_url', encodeURIComponent(`${window.location.origin}/zaposli.ba/dashboard/firma/pretplata/?payment=cancel`));
+      window.location.href = stripeUrl.toString();
+    } catch (err) {
+      setProcessingPlanId(null);
+      setError('Greška prilikom pokretanja plaćanja.');
+    }
+  }
+
+  async function handlePayPalApprove(plan: Plan, orderId: string) {
+    if (!firmId) return;
+    const amount = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
+    try {
+      await supabase.from('payments').insert({
+        firm_id: firmId,
+        plan_id: plan.id,
+        provider: 'paypal',
+        provider_session_id: orderId,
+        amount,
+        currency: 'BAM',
+        interval,
+        status: 'completed',
+        paid_at: new Date().toISOString(),
+      });
+      setSuccess('Plaćanje je uspješno. Vaša pretplata će biti aktivirana u najkraćem roku.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      setError('Plaćanje je obavljeno, ali došlo je do greške prilikom zapisivanja. Kontaktirajte podršku.');
+    }
   }
 
   const isCurrent = (planId: string) => subscription?.plan_id === planId;
@@ -158,98 +238,211 @@ export default function FirmSubscriptionPage() {
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje paketa...
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {plans.map((plan) => (
-                <div
-                  key={plan.id}
-                  className={`relative bg-white rounded-2xl border p-5 flex flex-col transition-all hover:shadow-md ${
-                    isCurrent(plan.id)
-                      ? 'border-brand-orange shadow-md'
-                      : 'border-gray-100'
-                  }`}
-                >
-                  {isCurrent(plan.id) && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
-                      <Crown className="w-3 h-3" /> Aktivno
-                    </div>
-                  )}
-
-                  <div className="mb-4">
-                    <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
-                    <p className="text-sm text-steel mt-1">{plan.description}</p>
-                  </div>
-
-                  <div className="mb-4">
-                    <p className="text-3xl font-bold text-gray-900">
-                      {formatPrice(plan.price_monthly)}
-                      <span className="text-sm font-normal text-steel"> KM/mj</span>
-                    </p>
-                    {plan.price_yearly > 0 && (
-                      <p className="text-xs text-steel">
-                        ili {formatPrice(plan.price_yearly)} KM/godišnje
-                      </p>
-                    )}
-                  </div>
-
-                  <ul className="space-y-2.5 mb-6 text-sm text-gray-900 flex-1">
-                    <li className="flex items-start gap-2">
-                      <Briefcase className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                      <span>
-                        {plan.bids_per_month === 9999
-                          ? 'Neograničene ponude mjesečno'
-                          : `${plan.bids_per_month} ponuda mjesečno`}
-                      </span>
-                    </li>
-                    {plan.verified_badge && (
-                      <li className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                        <span>Verifikacija profila</span>
-                      </li>
-                    )}
-                    {plan.featured && (
-                      <li className="flex items-start gap-2">
-                        <Star className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                        <span>Istaknut profil</span>
-                      </li>
-                    )}
-                    {plan.priority_support && (
-                      <li className="flex items-start gap-2">
-                        <HeadphonesIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                        <span>Prioritetna podrška</span>
-                      </li>
-                    )}
-                  </ul>
-
-                  {isCurrent(plan.id) ? (
-                    <button
-                      disabled
-                      className="w-full py-2.5 rounded-xl text-sm font-semibold bg-orange-50 text-brand-orange cursor-default"
-                    >
-                      Aktivni paket
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => requestUpgrade(plan.id)}
-                      disabled={requesting && requestedPlanId === plan.id}
-                      className="w-full btn-primary text-sm py-2.5 disabled:opacity-50"
-                    >
-                      {requesting && requestedPlanId === plan.id ? 'Slanje...' : 'Odaberi paket'}
-                    </button>
-                  )}
+            <>
+              <div className="flex items-center justify-center mb-6">
+                <div className="bg-white rounded-xl border border-gray-100 p-1 inline-flex">
+                  <button
+                    onClick={() => setInterval('monthly')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      interval === 'monthly'
+                        ? 'bg-brand-orange text-[#ffffff]'
+                        : 'text-steel hover:text-gray-900'
+                    }`}
+                  >
+                    <Calendar className="w-4 h-4 inline mr-1.5" />
+                    Mjesečno
+                  </button>
+                  <button
+                    onClick={() => setInterval('yearly')}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      interval === 'yearly'
+                        ? 'bg-brand-orange text-[#ffffff]'
+                        : 'text-steel hover:text-gray-900'
+                    }`}
+                  >
+                    <Building2 className="w-4 h-4 inline mr-1.5" />
+                    Godišnje
+                  </button>
                 </div>
-              ))}
-            </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {plans.map((plan) => {
+                  const price = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
+                  const hasStripe = Boolean(plan.payment_link_url);
+                  const hasPayPal = Boolean(plan.paypal_plan_id);
+                  const isProcessing = processingPlanId === plan.id;
+                  return (
+                    <div
+                      key={plan.id}
+                      className={`relative bg-white rounded-2xl border p-5 flex flex-col transition-all hover:shadow-md ${
+                        isCurrent(plan.id)
+                          ? 'border-brand-orange shadow-md'
+                          : 'border-gray-100'
+                      }`}
+                    >
+                      {isCurrent(plan.id) && (
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                          <Crown className="w-3 h-3" /> Aktivno
+                        </div>
+                      )}
+
+                      <div className="mb-4">
+                        <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
+                        <p className="text-sm text-steel mt-1">{plan.description}</p>
+                      </div>
+
+                      <div className="mb-4">
+                        <p className="text-3xl font-bold text-gray-900">
+                          {formatPrice(price)}
+                          <span className="text-sm font-normal text-steel">
+                            {' '}
+                            KM/{interval === 'yearly' ? 'god' : 'mj'}
+                          </span>
+                        </p>
+                        {interval === 'yearly' && plan.price_monthly > 0 && (
+                          <p className="text-xs text-steel">
+                            Umjesto {formatPrice(plan.price_monthly * 12)} KM mjesečno
+                          </p>
+                        )}
+                        {interval === 'monthly' && plan.price_yearly > 0 && (
+                          <p className="text-xs text-steel">
+                            ili {formatPrice(plan.price_yearly)} KM/godišnje
+                          </p>
+                        )}
+                      </div>
+
+                      <ul className="space-y-2.5 mb-6 text-sm text-gray-900 flex-1">
+                        <li className="flex items-start gap-2">
+                          <Briefcase className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                          <span>
+                            {plan.bids_per_month === 9999
+                              ? 'Neograničene ponude mjesečno'
+                              : `${plan.bids_per_month} ponuda mjesečno`}
+                          </span>
+                        </li>
+                        {plan.verified_badge && (
+                          <li className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                            <span>Verifikacija profila</span>
+                          </li>
+                        )}
+                        {plan.featured && (
+                          <li className="flex items-start gap-2">
+                            <Star className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                            <span>Istaknut profil</span>
+                          </li>
+                        )}
+                        {plan.priority_support && (
+                          <li className="flex items-start gap-2">
+                            <HeadphonesIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
+                            <span>Prioritetna podrška</span>
+                          </li>
+                        )}
+                      </ul>
+
+                      {isCurrent(plan.id) ? (
+                        <button
+                          disabled
+                          className="w-full py-2.5 rounded-xl text-sm font-semibold bg-orange-50 text-brand-orange cursor-default"
+                        >
+                          Aktivni paket
+                        </button>
+                      ) : plan.slug === 'besplatno' ? (
+                        <span className="w-full py-2.5 rounded-xl text-sm font-semibold bg-green-50 text-green-700 text-center block">
+                          Aktivno po registraciji
+                        </span>
+                      ) : (
+                        <div className="space-y-2">
+                          {hasStripe && (
+                            <button
+                              onClick={() => startStripeCheckout(plan)}
+                              disabled={isProcessing}
+                              className="w-full py-2.5 rounded-xl text-sm font-semibold bg-gray-900 text-[#ffffff] hover:bg-gray-800 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                            >
+                              <CreditCard className="w-4 h-4" />
+                              {isProcessing ? 'Učitavanje...' : 'Plati karticom'}
+                            </button>
+                          )}
+                          {hasPayPal && (
+                            <div className="min-h-[45px]">
+                              <PayPalScriptProvider
+                                options={{
+                                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
+                                  currency: 'BAM',
+                                }}
+                              >
+                                <PayPalButtons
+                                  style={{ layout: 'vertical', height: 40, color: 'gold' }}
+                                  createOrder={(_, actions) => {
+                                    return actions.order.create({
+                                      intent: 'CAPTURE',
+                                      purchase_units: [
+                                        {
+                                          amount: {
+                                            currency_code: 'BAM',
+                                            value: price.toFixed(2),
+                                          },
+                                          description: `${plan.name} - ${interval === 'yearly' ? 'Godišnja' : 'Mjesečna'} pretplata`,
+                                        },
+                                      ],
+                                    });
+                                  }}
+                                  onApprove={async (_, actions) => {
+                                    const order = await actions.order?.capture();
+                                    if (order?.id) {
+                                      await handlePayPalApprove(plan, order.id);
+                                    }
+                                  }}
+                                  onError={() => setError('PayPal plaćanje nije uspjelo. Pokušajte ponovo.')}
+                                />
+                              </PayPalScriptProvider>
+                            </div>
+                          )}
+                          <button
+                            onClick={() => requestUpgrade(plan.id)}
+                            disabled={requesting && requestedPlanId === plan.id}
+                            className="w-full py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                          >
+                            {requesting && requestedPlanId === plan.id ? 'Slanje...' : 'Platni nalog / uplatnica'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )}
 
           <div className="mt-8 bg-white rounded-xl border border-gray-100 p-5 text-sm text-steel">
             <p>
-              Napomena: Naplata se vrši ručno putem admin tima. Kada odaberete paket, admin će
-              provjeriti uplatu i aktivirati pretplatu u najkraćem roku.
+              Napomena: Plaćanje karticom odvija se sigurno putem Stripe-a. PayPal i platni nalog
+              obrađuju se ručno. Nakon potvrde uplate, admin tim aktivira pretplatu u najkraćem
+              roku.
             </p>
           </div>
         </div>
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function FirmSubscriptionPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col bg-cloud">
+          <Header />
+          <main className="flex-grow flex items-center justify-center">
+            <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <FirmSubscriptionContent />
+    </Suspense>
   );
 }

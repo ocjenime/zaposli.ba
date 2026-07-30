@@ -14,6 +14,7 @@ import {
   LayoutDashboard, Users, Building2, CreditCard, FileText, Bell,
   Loader2, Check, Crown, AlertCircle, Search,
   Star, CheckCircle, XCircle, Pencil,
+  MessageSquare, Briefcase, TrendingUp, DollarSign,
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
@@ -36,11 +37,47 @@ interface FirmPlan {
   subscription: Subscription | null;
 }
 
+interface PaymentRow {
+  id: string;
+  firm_id: string;
+  plan_id: string;
+  provider: string;
+  provider_session_id: string | null;
+  amount: number;
+  currency: string;
+  interval: string;
+  status: string;
+  paid_at: string | null;
+  created_at: string;
+  firms: { name: string } | null;
+  plans: { name: string } | null;
+}
+
+interface AdminStats {
+  users: number;
+  clients: number;
+  firms: number;
+  majstors: number;
+  jobs: number;
+  openJobs: number;
+  inProgressJobs: number;
+  completedJobs: number;
+  bids: number;
+  reviews: number;
+  messages: number;
+  revenue: number;
+  pendingPayments: number;
+  completedPayments: number;
+  recentJobs: { title: string; city: string; created_at: string }[];
+  recentBids: { amount: number; firm_name: string; created_at: string }[];
+}
+
 const tabs = [
   { id: 'overview', label: 'Pregled', icon: LayoutDashboard },
   { id: 'users', label: 'Korisnici', icon: Users },
   { id: 'firms', label: 'Firme', icon: Building2 },
   { id: 'subscriptions', label: 'Pretplate', icon: CreditCard },
+  { id: 'payments', label: 'Plaćanja', icon: DollarSign },
   { id: 'plans', label: 'Paketi', icon: FileText },
   { id: 'requests', label: 'Zahtjevi', icon: Bell },
 ];
@@ -55,6 +92,8 @@ export default function AdminPage() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [firmPlans, setFirmPlans] = useState<FirmPlan[]>([]);
   const [requests, setRequests] = useState<AdminRequest[]>([]);
+  const [payments, setPayments] = useState<PaymentRow[]>([]);
+  const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -83,6 +122,7 @@ export default function AdminPage() {
         loadFirms(),
         loadPlans(),
         loadRequests(),
+        loadStats(),
       ]);
     } catch (err) {
       setError('Greška prilikom učitavanja admin podataka.');
@@ -123,6 +163,16 @@ export default function AdminPage() {
     setRequests((data as AdminRequest[]) || []);
   }
 
+  async function loadPayments() {
+    const { data, error: err } = await supabase
+      .from('payments')
+      .select('*, firms(name), plans(name)')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (err) throw err;
+    setPayments((data as unknown as PaymentRow[]) || []);
+  }
+
   async function loadFirmPlans() {
     setLoadingSubscriptions(true);
     const combined: FirmPlan[] = [];
@@ -145,10 +195,63 @@ export default function AdminPage() {
     }
   }
 
+  async function loadStats() {
+    const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+    const { count: clients } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'client');
+    const { count: firmsCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'firm');
+    const { count: majstors } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'majstor');
+    const { count: jobs } = await supabase.from('jobs').select('*', { count: 'exact', head: true });
+    const { count: openJobs } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'open');
+    const { count: inProgressJobs } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'in_progress');
+    const { count: completedJobs } = await supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed');
+    const { count: bids } = await supabase.from('bids').select('*', { count: 'exact', head: true });
+    const { count: reviews } = await supabase.from('reviews').select('*', { count: 'exact', head: true });
+    const { count: messages } = await supabase.from('messages').select('*', { count: 'exact', head: true });
+    const { count: pendingPayments } = await supabase.from('payments').select('*', { count: 'exact', head: true }).eq('status', 'pending');
+    const { count: completedPayments } = await supabase.from('payments').select('*', { count: 'exact', head: true }).eq('status', 'completed');
+    const { data: revenueData } = await supabase.from('payments').select('amount').eq('status', 'completed');
+
+    const { data: recentJobs } = await supabase
+      .from('jobs')
+      .select('title, city, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const { data: recentBids } = await supabase
+      .from('bids')
+      .select('amount, created_at, firms(name)')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    const revenue = (revenueData || []).reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+
+    setStats({
+      users: users || 0,
+      clients: clients || 0,
+      firms: firmsCount || 0,
+      majstors: majstors || 0,
+      jobs: jobs || 0,
+      openJobs: openJobs || 0,
+      inProgressJobs: inProgressJobs || 0,
+      completedJobs: completedJobs || 0,
+      bids: bids || 0,
+      reviews: reviews || 0,
+      messages: messages || 0,
+      revenue,
+      pendingPayments: pendingPayments || 0,
+      completedPayments: completedPayments || 0,
+      recentJobs: (recentJobs as AdminStats['recentJobs']) || [],
+      recentBids: (recentBids as unknown as AdminStats['recentBids']) || [],
+    });
+  }
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
       loadPromoCount();
+    }
+    if (activeTab === 'payments') {
+      loadPayments();
     }
   }, [activeTab, firms]);
 
@@ -322,11 +425,75 @@ export default function AdminPage() {
           ) : (
             <>
               {activeTab === 'overview' && (
-                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <StatCard label="Korisnici" value={profiles.length} icon={Users} />
-                  <StatCard label="Firme" value={firms.length} icon={Building2} />
-                  <StatCard label="Paketi" value={plans.length} icon={FileText} />
-                  <StatCard label="Zahtjevi" value={requests.filter((n) => !n.read).length} icon={Bell} />
+                <div className="space-y-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <StatCard label="Korisnici" value={stats?.users ?? profiles.length} icon={Users} />
+                    <StatCard label="Firme / Majstori" value={stats ? stats.firms + stats.majstors : firms.length} icon={Building2} />
+                    <StatCard label="Poslovi" value={stats?.jobs ?? 0} icon={Briefcase} />
+                    <StatCard label="Ponude" value={stats?.bids ?? 0} icon={TrendingUp} />
+                    <StatCard label="Recenzije" value={stats?.reviews ?? 0} icon={Star} />
+                    <StatCard label="Poruke" value={stats?.messages ?? 0} icon={MessageSquare} />
+                    <StatCard label="Prihod (KM)" value={stats?.revenue ?? 0} icon={DollarSign} isCurrency />
+                    <StatCard label="Nepročitani zahtjevi" value={requests.filter((n) => !n.read).length} icon={Bell} />
+                  </div>
+
+                  {stats && (
+                    <div className="grid lg:grid-cols-2 gap-4">
+                      <div className="bg-white rounded-xl border border-gray-100 p-5">
+                        <h3 className="font-semibold text-gray-900 mb-4">Status poslova</h3>
+                        <div className="space-y-3">
+                          <StatusBar label="Otvoreni" value={stats.openJobs} total={stats.jobs} color="bg-blue-500" />
+                          <StatusBar label="U toku" value={stats.inProgressJobs} total={stats.jobs} color="bg-yellow-500" />
+                          <StatusBar label="Završeni" value={stats.completedJobs} total={stats.jobs} color="bg-green-500" />
+                        </div>
+                      </div>
+
+                      <div className="bg-white rounded-xl border border-gray-100 p-5">
+                        <h3 className="font-semibold text-gray-900 mb-4">Korisnici po ulogama</h3>
+                        <div className="space-y-3">
+                          <StatusBar label="Klijenti" value={stats.clients} total={stats.users} color="bg-brand-orange" />
+                          <StatusBar label="Firme" value={stats.firms} total={stats.users} color="bg-blue-500" />
+                          <StatusBar label="Majstori" value={stats.majstors} total={stats.users} color="bg-green-500" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {stats && (
+                    <div className="grid lg:grid-cols-2 gap-4">
+                      <div className="bg-white rounded-xl border border-gray-100 p-5">
+                        <h3 className="font-semibold text-gray-900 mb-4">Nedavni poslovi</h3>
+                        {stats.recentJobs.length === 0 ? (
+                          <p className="text-sm text-steel">Nema nedavnih poslova.</p>
+                        ) : (
+                          <ul className="space-y-3">
+                            {stats.recentJobs.map((job, i) => (
+                              <li key={i} className="flex items-center justify-between text-sm">
+                                <span className="text-gray-900 font-medium truncate max-w-[60%]">{job.title}</span>
+                                <span className="text-steel">{job.city}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      <div className="bg-white rounded-xl border border-gray-100 p-5">
+                        <h3 className="font-semibold text-gray-900 mb-4">Nedavne ponude</h3>
+                        {stats.recentBids.length === 0 ? (
+                          <p className="text-sm text-steel">Nema nedavnih ponuda.</p>
+                        ) : (
+                          <ul className="space-y-3">
+                            {stats.recentBids.map((bid, i) => (
+                              <li key={i} className="flex items-center justify-between text-sm">
+                                <span className="text-gray-900 font-medium">{bid.firm_name}</span>
+                                <span className="text-brand-orange font-semibold">{bid.amount} KM</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -522,6 +689,52 @@ export default function AdminPage() {
                 </div>
               )}
 
+              {activeTab === 'payments' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-steel">Pregled svih uplata</p>
+                    <button
+                      onClick={loadPayments}
+                      className="text-sm text-brand-orange hover:text-brand-orange-dark font-medium"
+                    >
+                      Osvježi
+                    </button>
+                  </div>
+                  <div className="divide-y divide-gray-100">
+                    {payments.length === 0 ? (
+                      <p className="p-6 text-sm text-steel text-center">Nema uplata.</p>
+                    ) : (
+                      payments.map((p) => (
+                        <div key={p.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium text-gray-900">
+                                {p.firms?.name || 'Firma'} · {p.plans?.name || 'Paket'}
+                              </p>
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                  p.status === 'completed'
+                                    ? 'bg-green-100 text-green-700'
+                                    : p.status === 'pending'
+                                    ? 'bg-yellow-100 text-yellow-700'
+                                    : 'bg-gray-100 text-gray-600'
+                                }`}
+                              >
+                                {p.status === 'completed' ? 'Završeno' : p.status === 'pending' ? 'Na čekanju' : p.status}
+                              </span>
+                            </div>
+                            <p className="text-sm text-steel">
+                              {p.provider.toUpperCase()} · {p.amount.toFixed(2)} {p.currency} · {p.interval === 'yearly' ? 'Godišnje' : 'Mjesečno'}
+                            </p>
+                            <p className="text-xs text-steel mt-1">{formatDate(p.created_at)}</p>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+
               {activeTab === 'plans' && (
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
                   <div className="p-4 border-b border-gray-100">
@@ -656,10 +869,12 @@ function StatCard({
   label,
   value,
   icon: Icon,
+  isCurrency,
 }: {
   label: string;
   value: number;
   icon: React.ComponentType<{ className?: string }>;
+  isCurrency?: boolean;
 }) {
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-5 flex items-center gap-4">
@@ -667,8 +882,37 @@ function StatCard({
         <Icon className="w-6 h-6 text-brand-orange" />
       </div>
       <div>
-        <p className="text-2xl font-bold text-gray-900">{value}</p>
+        <p className="text-2xl font-bold text-gray-900">
+          {isCurrency ? `${value.toLocaleString('bs-BA')} KM` : value.toLocaleString('bs-BA')}
+        </p>
         <p className="text-sm text-steel">{label}</p>
+      </div>
+    </div>
+  );
+}
+
+function StatusBar({
+  label,
+  value,
+  total,
+  color,
+}: {
+  label: string;
+  value: number;
+  total: number;
+  color: string;
+}) {
+  const pct = total > 0 ? Math.round((value / total) * 100) : 0;
+  return (
+    <div>
+      <div className="flex items-center justify-between text-sm mb-1">
+        <span className="text-gray-700">{label}</span>
+        <span className="font-medium text-gray-900">
+          {value} <span className="text-steel">({pct}%)</span>
+        </span>
+      </div>
+      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+        <div className={`h-full ${color} rounded-full transition-all`} style={{ width: `${pct}%` }} />
       </div>
     </div>
   );

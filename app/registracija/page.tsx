@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { User, Mail, Lock, Phone, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 
@@ -17,8 +17,23 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const validate = () => {
+    if (!formData.name.trim()) return 'Unesite ime i prezime ili naziv firme.';
+    if (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      return 'Unesite ispravnu email adresu.';
+    }
+    if (!formData.phone.trim()) return 'Unesite broj telefona.';
+    if (formData.password.length < 6) return 'Lozinka mora imati najmanje 6 znakova.';
+    return '';
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validationError = validate();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
     setError('');
     setLoading(true);
 
@@ -170,27 +185,31 @@ export default function RegisterPage() {
               </div>
 
               {error && (
-                <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2">{error}</p>
+                <div className="flex items-start gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </div>
               )}
 
               <div className="flex items-start">
                 <input type="checkbox" id="terms" className="w-4 h-4 mt-1 text-primary-600 border-gray-300 rounded focus:ring-primary-500" required />
                 <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                   Prihvaćam{' '}
-                  <Link href="/uslovi-koristenja" className="text-primary-600 hover:text-primary-700">Uslove korištenja</Link>{' '}
+                  <Link href="/uslovi-koristenja/" className="text-primary-600 hover:text-primary-700">Uslove korištenja</Link>{' '}
                   i{' '}
-                  <Link href="/privacy" className="text-primary-600 hover:text-primary-700">Privacy policy</Link>
+                  <Link href="/privacy/" className="text-primary-600 hover:text-primary-700">Privacy policy</Link>
                 </label>
               </div>
 
-              <button type="submit" disabled={loading} className="w-full btn-primary disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full btn-primary disabled:opacity-50 inline-flex items-center justify-center gap-2">
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 {loading ? 'Registracija...' : 'Registrujte se'}
               </button>
             </form>
 
             <p className="mt-8 text-center text-sm text-gray-600">
               Već imate nalog?{' '}
-              <Link href="/prijava" className="text-primary-600 font-medium hover:text-primary-700">Prijavite se</Link>
+              <Link href="/prijava/" className="text-primary-600 font-medium hover:text-primary-700">Prijavite se</Link>
             </p>
           </div>
         </div>

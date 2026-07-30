@@ -11,6 +11,12 @@ export interface Plan {
   featured: boolean;
   verified_badge: boolean;
   priority_support: boolean;
+  payment_provider?: string | null;
+  stripe_price_id?: string | null;
+  stripe_product_id?: string | null;
+  payment_link_url?: string | null;
+  paypal_plan_id?: string | null;
+  sort_order?: number;
 }
 
 export interface Subscription {

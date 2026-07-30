@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
+import NotificationBell from '@/components/NotificationBell';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 
@@ -38,6 +39,9 @@ export default function Header() {
             </Link>
             {user ? (
               <>
+                <div className="relative">
+                  <NotificationBell />
+                </div>
                 <Link
                   href={dashboardHref}
                   className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
@@ -79,6 +83,9 @@ export default function Header() {
           </div>
 
           <div className="flex items-center md:hidden">
+            <div className="mr-1">
+              <NotificationBell />
+            </div>
             <div className="mr-2">
               <ThemeToggle />
             </div>

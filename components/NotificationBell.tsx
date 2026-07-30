@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Bell, Check } from 'lucide-react';
+import { Bell, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 
@@ -57,28 +57,37 @@ export default function NotificationBell() {
 
   useEffect(() => {
     if (!mounted || !user) return;
-    const channel = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
-        (payload) => {
-          const n = payload.new as Notification;
-          setNotifications((prev) => [n, ...prev].slice(0, 20));
-          setUnreadCount((c) => c + 1);
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
-        (payload) => {
-          const n = payload.new as Notification;
-          setNotifications((prev) => prev.map((item) => (item.id === n.id ? n : item)));
-        }
-      )
-      .subscribe();
+    let channel: ReturnType<typeof supabase.channel> | null = null;
+    try {
+      channel = supabase
+        .channel('notifications')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const n = payload.new as Notification;
+            setNotifications((prev) => [n, ...prev].slice(0, 20));
+            setUnreadCount((c) => c + 1);
+          }
+        )
+        .on(
+          'postgres_changes',
+          { event: 'UPDATE', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+          (payload) => {
+            const n = payload.new as Notification;
+            setNotifications((prev) => prev.map((item) => (item.id === n.id ? n : item)));
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'CHANNEL_ERROR') {
+            console.warn('Notification realtime channel error');
+          }
+        });
+    } catch (err) {
+      console.warn('Notification realtime setup failed:', err);
+    }
     return () => {
-      supabase.removeChannel(channel);
+      if (channel) supabase.removeChannel(channel);
     };
   }, [mounted, user]);
 
@@ -138,17 +147,26 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-            <p className="font-semibold text-gray-900 text-sm">Obavještenja</p>
-            {unreadCount > 0 && (
+        <div className="fixed inset-x-0 top-16 mx-2 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:mx-0 sm:w-96 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+            <p className="font-semibold text-gray-900 dark:text-white text-sm">Obavještenja</p>
+            <div className="flex items-center gap-2">
+              {unreadCount > 0 && (
+                <button
+                  onClick={markAllRead}
+                  className="text-xs text-brand-orange hover:text-brand-orange-dark font-medium flex items-center gap-1"
+                >
+                  <Check className="w-3.5 h-3.5" /> Označi sve
+                </button>
+              )}
               <button
-                onClick={markAllRead}
-                className="text-xs text-brand-orange hover:text-brand-orange-dark font-medium flex items-center gap-1"
+                onClick={() => setOpen(false)}
+                className="sm:hidden p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                aria-label="Zatvori"
               >
-                <Check className="w-3.5 h-3.5" /> Označi sve pročitanim
+                <X className="w-4 h-4" />
               </button>
-            )}
+            </div>
           </div>
           <div className="max-h-[60vh] overflow-y-auto">
             {loading ? (
