@@ -1,14 +1,14 @@
-# Zaposli.ba
+﻿# Zaposli.ba
 
-Platforma koja spaja klijente sa građevinskim firmama i majstorima u Bosni i Hercegovini.
+Platforma koja spaja kupce sa građevinskim firmama i majstorima u Bosni i Hercegovini.
 
 ## Opis
 
-**Zaposli.ba** je online marketplace inspirisan Werkspot.nl modelom, dizajniran specifično za tržište Bosne i Hercegovine. Platforma omogućava klijentima (vlasnicima nekretnina, investitorima) da objave građevinske projekte i prime ponude od provjerenih firmi i majstora.
+**Zaposli.ba** je online marketplace inspirisan Werkspot.nl modelom, dizajniran specifično za tržište Bosne i Hercegovine. Platforma omogućava kupcima (vlasnicima nekretnina, investitorima) da objave građevinske projekte i prime ponude od provjerenih firmi i majstora.
 
 ## Karakteristike
 
-### Za klijente
+### Za Kupce
 - Besplatno objavljivanje projekata
 - Primanje ponuda od više firmi
 - Upoređivanje cijena i uslova
@@ -95,7 +95,7 @@ zaposli-ba/
 
 ## Monetizacija
 
-1. **Lead Generation**: Firmu plaća po kontaktu sa klijentom (5-25 KM)
+1. **Lead Generation**: Firmu plaća po kontaktu sa kupcem (5-25 KM)
 2. **Premium članstvo**: 49-99 KM/mjesečno za dodatne funkcije
 3. **Oglašavanje**: Banneri i istaknuti listingi
 

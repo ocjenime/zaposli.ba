@@ -381,7 +381,7 @@ export default function AdminPage() {
                           <p className="font-medium text-ink">{profile.full_name || profile.email}</p>
                           <p className="text-sm text-steel">{profile.email} · {profile.phone || '—'}</p>
                           <p className="text-xs text-steel mt-1">
-                            {profile.role === 'firm' ? 'Firma' : 'klijent'} · {formatDate(profile.created_at)}
+                            {profile.role === 'firm' ? 'Firma' : 'Kupac'} · {formatDate(profile.created_at)}
                           </p>
                         </div>
                         <div className="flex items-center gap-3">

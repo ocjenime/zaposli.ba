@@ -25,7 +25,7 @@ export function StepOneIllustration() {
         <text x="69" y="112" textAnchor="middle" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="7" fontWeight="800" fill="#fff">KM</text>
       </g>
 
-      {/* klijent: osoba */}
+      {/* Kupac: osoba */}
       <g className="anim-float-soft">
         {/* Glava */}
         <circle cx="138" cy="56" r="12" fill={SKIN} />
@@ -111,7 +111,7 @@ export function StepThreeIllustration() {
     <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
       <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
-      {/* klijent (lijevo) */}
+      {/* Kupac (lijevo) */}
       <g className="anim-float-soft" style={{ animationDelay: '0.5s' }}>
         <circle cx="58" cy="70" r="11" fill={SKIN} />
         <path d="M47 67a11 11 0 0 1 22 0Z" fill={INK} />

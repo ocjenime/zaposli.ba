@@ -26,7 +26,7 @@ async function signUpAndCreateProfile(email, password, role, firmName) {
   await userSupabase.from('profiles').insert({
     id: user.id,
     email,
-    full_name: role === 'client' ? 'Test klijent' : firmName,
+    full_name: role === 'client' ? 'Test Kupac' : firmName,
     role,
   });
 

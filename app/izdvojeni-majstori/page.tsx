@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Star, MapPin, ArrowRight, Shield, TrendingUp } from 'lucide-react';
 import Header from '@/components/Header';
@@ -23,7 +23,7 @@ export default function FeaturedWorkersPage() {
         <Breadcrumbs items={[{ name: 'Izdvojeni majstori' }]} />
         <PageHero
           title="Izdvojeni majstori"
-          subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata na našoj platformi"
+          subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih kupaca na našoj platformi"
         />
 
         {/* Trust traka */}
@@ -36,7 +36,7 @@ export default function FeaturedWorkersPage() {
               </span>
               <span className="flex items-center gap-2">
                 <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                Ocjene isključivo od stvarnih klijenata
+                Ocjene isključivo od stvarnih kupaca
               </span>
               <span className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-brand-orange" />

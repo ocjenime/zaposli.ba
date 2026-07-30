@@ -97,7 +97,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           <section className="py-14 bg-cloud">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <h2 className="text-2xl font-bold text-ink mb-2">Provjereni majstori u gradu {city.loc}</h2>
-              <p className="text-steel mb-8">Ocjene i recenzije stvarnih klijenata</p>
+              <p className="text-steel mb-8">Ocjene i recenzije stvarnih kupaca</p>
               <div className="grid md:grid-cols-3 gap-5">
                 {localWorkers.map((w) => (
                   <Link

@@ -23,7 +23,7 @@ export default function HowItWorksPage() {
         {/* Steps for Customers */}
         <section className="py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Za klijente</h2>
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Za kupce</h2>
             
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
@@ -105,7 +105,7 @@ export default function HowItWorksPage() {
                 <div className="text-sm font-bold text-brand-orange mb-2">KORAK 3</div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Pošaljite ponudu</h3>
                 <p className="text-gray-600">
-                  Pošaljite svoju ponudu sa cijenom i rokovima. Ako vas klijent odabere, dobijate posao!
+                  Pošaljite svoju ponudu sa cijenom i rokovima. Ako vas kupac odabere, dobijate posao!
                 </p>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function HowItWorksPage() {
                   <Star className="w-6 h-6 text-primary-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Ocjene i recenzije</h3>
-                <p className="text-sm text-gray-600">Pročitajte iskustva drugih klijenata prije nego što odaberete firmu.</p>
+                <p className="text-sm text-gray-600">Pročitajte iskustva drugih kupaca prije nego što odaberete firmu.</p>
               </div>
 
               <div className="card text-center">

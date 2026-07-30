@@ -394,7 +394,7 @@ function FirmDashboardContent() {
                             href={`/dashboard/razgovor/?job_id=${bid.jobs.id}`}
                             className="mt-3 btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2"
                           >
-                            <MessageSquare className="w-4 h-4" /> Razgovor sa klijentom
+                            <MessageSquare className="w-4 h-4" /> Razgovor sa kupcem
                           </Link>
                         )}
                       </div>

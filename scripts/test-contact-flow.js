@@ -26,7 +26,7 @@ async function signUpAndCreateProfile(email, password, role, firmName) {
   const { error: profileError } = await userSupabase.from('profiles').insert({
     id: user.id,
     email,
-    full_name: role === 'client' ? 'Test klijent' : firmName,
+    full_name: role === 'client' ? 'Test Kupac' : firmName,
     role,
   });
   if (profileError) throw new Error(`Profile insert failed for ${email}: ${profileError.message}`);

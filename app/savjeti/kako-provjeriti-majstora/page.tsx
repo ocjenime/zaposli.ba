@@ -40,7 +40,7 @@ export default function KakoProvjeritiMajstoraPage() {
             <p className="text-steel leading-relaxed mb-4">
               Većina loših iskustava sa majstorima ne počinje lošim radom: počinje avansom
               predanom pogrešnoj osobi. Dobra vijest je da se uz pola sata provjere većina rizika
-              može otkloniti. Evo kontrolne liste koju preporučujemo svakom klijentu prije uplate
+              može otkloniti. Evo kontrolne liste koju preporučujemo svakom kupcu prije uplate
               bilo kakvog avansa.
             </p>
 
@@ -55,10 +55,10 @@ export default function KakoProvjeritiMajstoraPage() {
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">2. Čitajte recenzije, ali pravilno</h2>
             <p className="text-steel leading-relaxed mb-4">
               Ne gledajte samo prosječnu ocjenu. Čitajte tekstove recenzija i obratite pažnju na
-              konkretne detalje: da li klijenti spominju poštovanje rokova, čistoću na gradilištu,
+              konkretne detalje: da li kupci spominju poštovanje rokova, čistoću na gradilištu,
               drže li se dogovorene cijene. Sumnjiv znak je niz petica bez ikakvog teksta ili sve
               recenzije objavljene u kratkom periodu. Na Zaposli.ba ocjene mogu ostaviti isključivo
-              klijenti kojima je firma stvarno radila posao preko platforme.
+              kupci kojima je firma stvarno radila posao preko platforme.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">3. Zatražite fotografije ranijih radova</h2>
@@ -66,7 +66,7 @@ export default function KakoProvjeritiMajstoraPage() {
               Ozbiljan majstor ima telefon pun fotografija svojih poslova. Zatražite slike
               radova <strong className="text-ink">sličnih vašem</strong>: ako adaptirate kupatilo,
               nije dovoljno da vam pokaže fasadu. Još bolje: pitajte možete li kontaktirati jednog
-              ili dva ranija klijenta. Majstor koji odbija bilo kakvu referencu vjerovatno ima razlog.
+              ili dva ranija kupca. Majstor koji odbija bilo kakvu referencu vjerovatno ima razlog.
             </p>
 
             <h2 className="text-2xl font-bold text-ink mt-10 mb-4">4. Potpišite ugovor, makar i jednostavan</h2>

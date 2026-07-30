@@ -1,4 +1,4 @@
-import Header from '@/components/Header';
+﻿import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -9,13 +9,13 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'O nama. Zaposli.ba',
   description:
-    'Zaposli.ba je platforma koja spaja klijente i provjerene građevinske firme u BiH. Saznajte kako je sve počelo i koje vrijednosti nas vode.',
+    'Zaposli.ba je platforma koja spaja kupce i provjerene građevinske firme u BiH. Saznajte kako je sve počelo i koje vrijednosti nas vode.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/o-nama/' },
 };
 
 const stats = [
   { value: '2.800+', label: 'verificiranih firmi' },
-  { value: '12.500+', label: 'registrovanih klijenata' },
+  { value: '12.500+', label: 'registrovanih kupaca' },
   { value: '4,8', label: 'prosječna ocjena firmi' },
   { value: '25.000+', label: 'realiziranih poslova' },
 ];
@@ -37,7 +37,7 @@ const values = [
     icon: ThumbsUp,
     title: 'Preporučeno',
     description:
-      'Ocjene i recenzije pišu isključivo stvarni klijenti kojima je firma radila posao preko platforme.',
+      'Ocjene i recenzije pišu isključivo stvarni kupci kojima je firma radila posao preko platforme.',
   },
   {
     icon: MessageSquare,
@@ -61,7 +61,7 @@ export default function ONamaPage() {
         <Breadcrumbs items={[{ name: 'O nama' }]} />
         <PageHero
           title="O nama"
-          subtitle="Platforma koja spaja klijente i provjerene građevinske firme u Bosni i Hercegovini"
+          subtitle="Platforma koja spaja kupce i provjerene građevinske firme u Bosni i Hercegovini"
         />
 
         {/* Misija */}
@@ -70,7 +70,7 @@ export default function ONamaPage() {
             <h2 className="text-3xl font-bold text-ink mb-6">Naša misija</h2>
             <p className="text-lg text-steel leading-relaxed">
               Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
-              klijente i provjerene građevinske firme u BiH na jednom mjestu: klijent besplatno objavi
+              kupce i provjerene građevinske firme u BiH na jednom mjestu: kupac besplatno objavi
               posao, a provjerene firme se javljaju sa svojim ponudama. Transparentno, brzo i
               bez posrednika koji uzimaju procenat.
             </p>
@@ -114,8 +114,8 @@ export default function ONamaPage() {
                 po oglasima, društvenim mrežama i usmenim preporukama.
               </p>
               <p>
-                Tako je rođena ideja: jedna platforma na kojoj klijent opiše šta mu treba, a
-                provjerene firme se jave sa ponudama. Danas Zaposli.ba koriste hiljade klijenata
+                Tako je rođena ideja: jedna platforma na kojoj kupac opiše šta mu treba, a
+                provjerene firme se jave sa ponudama. Danas Zaposli.ba koriste hiljade kupaca
                 širom Bosne i Hercegovine, a naš cilj ostaje isti: da svaki posao, od zamjene
                 slavine do kompletne adaptacije, počne sa pravim majstorom.
               </p>

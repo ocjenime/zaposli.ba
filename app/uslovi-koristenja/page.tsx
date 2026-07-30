@@ -15,43 +15,43 @@ const sections = [
   {
     title: '1. Opšte odredbe',
     paragraphs: [
-      'Ovi Uslovi korištenja (u daljem tekstu: "Uslovi") uređuju odnos između platforme Zaposli.ba (u daljem tekstu: "Platforma") i svih korisnika koji pristupaju ili koriste Platformu, bilo kao klijenti koji objavljuju poslove, bilo kao firme i majstori koji šalju ponude. Korištenjem Platforme smatra se da ste pročitali, razumjeli i u cijelosti prihvatili ove Uslove.',
+      'Ovi Uslovi korištenja (u daljem tekstu: "Uslovi") uređuju odnos između platforme Zaposli.ba (u daljem tekstu: "Platforma") i svih korisnika koji pristupaju ili koriste Platformu, bilo kao kupci koji objavljuju poslove, bilo kao firme i majstori koji šalju ponude. Korištenjem Platforme smatra se da ste pročitali, razumjeli i u cijelosti prihvatili ove Uslove.',
       'Platforma zadržava pravo da odbije registraciju ili ukloni korisnički račun koji krši ove Uslove, važeće propise Bosne i Hercegovine ili dobre poslovne običaje, uz prethodnu najavu kada je to moguće.',
     ],
   },
   {
     title: '2. Opis usluge',
     paragraphs: [
-      'Zaposli.ba je onlajn tržište koje klijentima omogućava besplatnu objavu građevinskih i zanatskih poslova, a registrovanim firmama i majstorima omogućava slanje ponuda za te poslove. Platforma pruža alate za komunikaciju, upoređivanje ponuda, pregled profila firmi, ocjena i recenzija.',
-      'Platforma nije izvođač radova, ne zapošljava firme niti majstore i nije strana u ugovoru koji klijent i firma eventualno zaključe. Uloga Platforme je isključivo posrednička: povezivanje ponude i potražnje.',
+      'Zaposli.ba je onlajn tržište koje kupcima omogućava besplatnu objavu građevinskih i zanatskih poslova, a registrovanim firmama i majstorima omogućava slanje ponuda za te poslove. Platforma pruža alate za komunikaciju, upoređivanje ponuda, pregled profila firmi, ocjena i recenzija.',
+      'Platforma nije izvođač radova, ne zapošljava firme niti majstore i nije strana u ugovoru koji kupac i firma eventualno zaključe. Uloga Platforme je isključivo posrednička: povezivanje ponude i potražnje.',
     ],
   },
   {
-    title: '3. Obaveze korisnika (klijenata)',
+    title: '3. Obaveze korisnika (kupaca)',
     paragraphs: [
-      'klijent se obavezuje da prilikom objave posla navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje poslove čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava posla je neobavezujuća: klijent nije dužan odabrati nijednu ponudu.',
-      'klijent snosi isključivu odgovornost za provjeru referenci, licence i stručnosti firme prije zaključenja ugovora o izvođenju radova, kao i za sadržaj sporazuma koji sa firmom sklopi. Preporučujemo da svi dogovori budu sačinjeni u pisanoj formi.',
+      'Kupac se obavezuje da prilikom objave posla navodi tačne i istinite podatke o obimu radova, lokaciji i budžetu, te da ne objavljuje poslove čija je svrha protuzakonita, obmanjujuća ili u suprotnosti sa ovim Uslovima. Objava posla je neobavezujuća: kupac nije dužan odabrati nijednu ponudu.',
+      'Kupac snosi isključivu odgovornost za provjeru referenci, licence i stručnosti firme prije zaključenja ugovora o izvođenju radova, kao i za sadržaj sporazuma koji sa firmom sklopi. Preporučujemo da svi dogovori budu sačinjeni u pisanoj formi.',
     ],
   },
   {
     title: '4. Obaveze firmi',
     paragraphs: [
       'Firme i majstori obavezuju se da su podaci o registraciji, djelatnosti, referencama i portfoliju istiniti i ažurni. Firma mora posjedovati sve dozvole i registracije propisane zakonodavstvom Bosne i Hercegovine za djelatnost koju obavlja. Ponude moraju biti jasne, sa naznačenim obimom radova, cijenom i rokom izvođenja.',
-      'Zabranjeno je kontaktirati klijente izvan Platforme u cilju zaobilaženja pravila Platforme, slati neistinite ili obmanjujuće ponude, te objavljivati tuđe fotografije radova. Kršenje ovih pravila može rezultirati trajnim uklanjanjem profila.',
+      'Zabranjeno je kontaktirati kupce izvan Platforme u cilju zaobilaženja pravila Platforme, slati neistinite ili obmanjujuće ponude, te objavljivati tuđe fotografije radova. Kršenje ovih pravila može rezultirati trajnim uklanjanjem profila.',
     ],
   },
   {
     title: '5. Plaćanje i premium paketi',
     paragraphs: [
-      'Korištenje Platforme je za klijente potpuno besplatno. Firmama je dostupan besplatni osnovni paket, dok premium paketi (istaknuti profil, neograničeni odgovori, prioritetan prikaz) podliježu plaćanju prema cjenovniku objavljenom na Platformi. Cijene su izražene u konvertibilnim markama (KM) i uključuju PDV, osim ako nije drugačije naznačeno.',
+      'Korištenje Platforme je za kupce potpuno besplatno. Firmama je dostupan besplatni osnovni paket, dok premium paketi (istaknuti profil, neograničeni odgovori, prioritetan prikaz) podliježu plaćanju prema cjenovniku objavljenom na Platformi. Cijene su izražene u konvertibilnim markama (KM) i uključuju PDV, osim ako nije drugačije naznačeno.',
       'Premium pretplata se obnavlja automatski na mjesečnom nivou i može se otkazati u svakom trenutku, s dejstvom od kraja tekućeg obračunskog perioda. Iznosi plaćeni za započeti obračunski period ne refundiraju se, osim u slučajevima propisanim zakonom.',
     ],
   },
   {
     title: '6. Odgovornost platforme',
     paragraphs: [
-      'Platforma djeluje isključivo kao posrednik između klijenata i firmi te ne odgovara za kvalitet, rokove, cijene ili izvođenje radova, niti za štetu nastalu iz ugovornog odnosa klijenta i firme. Verifikacija firmi na Platformi predstavlja provjeru dostavljenih dokumenata u trenutku registracije i ne predstavlja garanciju kvaliteta usluga.',
-      'Platforma ne odgovara za privremenu nedostupnost usluge zbog tehničkih razloga, održavanja ili okolnosti na koje ne može uticati. U slučaju spora između klijenta i firme, tim Platforme može poželjno posredovati, ali nema ovlaštenje niti obavezu rješavanja spora.',
+      'Platforma djeluje isključivo kao posrednik između kupaca i firmi te ne odgovara za kvalitet, rokove, cijene ili izvođenje radova, niti za štetu nastalu iz ugovornog odnosa kupca i firme. Verifikacija firmi na Platformi predstavlja provjeru dostavljenih dokumenata u trenutku registracije i ne predstavlja garanciju kvaliteta usluga.',
+      'Platforma ne odgovara za privremenu nedostupnost usluge zbog tehničkih razloga, održavanja ili okolnosti na koje ne može uticati. U slučaju spora između kupca i firme, tim Platforme može poželjno posredovati, ali nema ovlaštenje niti obavezu rješavanja spora.',
     ],
   },
   {
@@ -92,7 +92,7 @@ export default function UsloviKoristenjaPage() {
         <Breadcrumbs items={[{ name: 'Uslovi korištenja' }]} />
         <PageHero
           title="Uslovi korištenja"
-          subtitle="Pravila korištenja platforme Zaposli.ba za klijente i firme"
+          subtitle="Pravila korištenja platforme Zaposli.ba za kupce i firme"
         />
 
         <section className="py-16">

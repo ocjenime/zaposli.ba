@@ -88,7 +88,7 @@ export default function RegisterPage() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {type === 'client' ? 'klijent' : 'Firma/Majstor'}
+                  {type === 'client' ? 'Kupac' : 'Firma/Majstor'}
                 </button>
               ))}
             </div>
