@@ -109,7 +109,7 @@ export default function ProjectsPage() {
                         <span className="text-xs text-steel">{formatDate(job.created_at)}</span>
                       </div>
 
-                      <h3 className="text-lg font-bold text-ink mb-2">{job.title}</h3>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">{job.title}</h3>
                       <p className="text-steel text-sm mb-4 line-clamp-2">{job.description}</p>
 
                       <div className="flex flex-wrap gap-4 text-xs text-steel mb-4">
@@ -139,13 +139,13 @@ export default function ProjectsPage() {
             <div className="bg-ink rounded-3xl p-10 text-center relative overflow-hidden">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">Želite slati ponude na ove poslove?</h2>
-                <p className="text-white/60 mb-8 max-w-xl mx-auto">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">Želite slati ponude na ove poslove?</h2>
+                <p className="text-[#ffffff]/60 mb-8 max-w-xl mx-auto">
                   Registrujte firmu besplatno, pregledajte poslove u vašoj kategoriji i pošaljite prvu ponudu već danas.
                 </p>
                 <Link
                   href="/registracija/"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
                 >
                   Registrujte firmu besplatno
                   <ArrowRight className="w-5 h-5" />

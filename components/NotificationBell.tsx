@@ -126,12 +126,12 @@ export default function NotificationBell() {
     <div className="relative" ref={containerRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 rounded-xl text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+        className="relative p-2 rounded-xl text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 transition-all duration-200"
         aria-label="Obavještenja"
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white ring-2 ring-white">
+          <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-[#ffffff] ring-2 ring-[#ffffff]">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -140,7 +140,7 @@ export default function NotificationBell() {
       {open && (
         <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-            <p className="font-semibold text-ink text-sm">Obavještenja</p>
+            <p className="font-semibold text-gray-900 text-sm">Obavještenja</p>
             {unreadCount > 0 && (
               <button
                 onClick={markAllRead}
@@ -165,7 +165,7 @@ export default function NotificationBell() {
 
                 const content = (
                   <div className="px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50">
-                    <p className="text-sm font-medium text-ink">{n.title}</p>
+                    <p className="text-sm font-medium text-gray-900">{n.title}</p>
                     <p className="text-xs text-steel mt-0.5">{n.message}</p>
                     <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
                   </div>

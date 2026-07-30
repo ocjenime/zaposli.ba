@@ -2,6 +2,7 @@
 import './globals.css';
 import { site } from '@/lib/site';
 import AuthWrapper from '@/components/AuthWrapper';
+import ThemeProvider from '@/components/ThemeProvider';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -37,9 +38,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="bs">
+    <html lang="bs" suppressHydrationWarning>
       <body className="min-h-screen">
-        <AuthWrapper>{children}</AuthWrapper>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange={false}>
+          <AuthWrapper>{children}</AuthWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

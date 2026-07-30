@@ -53,13 +53,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   ? 'bg-gradient-to-br from-red-600 to-red-700 shadow-red-600/25'
                   : 'bg-gradient-to-br from-brand-orange to-brand-orange-dark shadow-brand-orange/25'
               }`}>
-                <Icon className="w-8 h-8 text-white" />
+                <Icon className="w-8 h-8 text-[#ffffff]" />
               </div>
               <div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{cat.name}</h1>
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{cat.name}</h1>
                   {cat.featured && (
-                    <span className="inline-flex items-center gap-1.5 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1.5 bg-red-600 text-[#ffffff] text-xs font-bold px-3 py-1 rounded-full">
                       <Siren className="w-3.5 h-3.5" />
                       24/7 · dostupno odmah
                     </span>
@@ -78,7 +78,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border ${
                     cat.featured
                       ? 'bg-red-50 border-red-100 text-red-800'
-                      : 'bg-white border-gray-100 text-ink/80'
+                      : 'bg-white border-gray-100 text-gray-900/80'
                   }`}
                 >
                   {s}
@@ -87,7 +87,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
             <Link
               href="/objavi-projekat/"
-              className={`inline-flex items-center gap-2 bg-gradient-to-r text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
+              className={`inline-flex items-center gap-2 bg-gradient-to-r text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
                 cat.featured
                   ? 'from-red-600 to-red-700 hover:shadow-red-600/25'
                   : 'from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
@@ -104,7 +104,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         <section className="py-12 md:py-16 bg-white border-b border-gray-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-ink mb-3">Kako funkcioniše hitna intervencija?</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Kako funkcioniše hitna intervencija?</h2>
               <p className="text-steel">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
             </div>
 
@@ -120,7 +120,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               ].map((step) => (
                 <div key={step.n} className="bg-red-50/60 border border-red-100 rounded-2xl p-6 text-center">
                   <div className="text-red-600 text-sm font-extrabold mb-2">{step.n}</div>
-                  <h3 className="font-bold text-ink mb-1.5">{step.title}</h3>
+                  <h3 className="font-bold text-gray-900 mb-1.5">{step.title}</h3>
                   <p className="text-steel text-sm leading-relaxed">{step.text}</p>
                 </div>
               ))}
@@ -137,7 +137,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               <div className="bg-cloud rounded-2xl p-8">
                 <div className="flex items-center gap-3 mb-3">
                   <MapPin className="w-6 h-6 text-brand-orange" />
-                  <h2 className="text-xl font-bold text-ink">Po gradovima</h2>
+                  <h2 className="text-xl font-bold text-gray-900">Po gradovima</h2>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {cities.slice(0, 10).map((city) => (
@@ -157,7 +157,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Majstori */}
             {catWorkers.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Provjereni majstori Â· {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Provjereni majstori Â· {cat.name.toLowerCase()}</h2>
                 <div className="grid md:grid-cols-3 gap-5 mb-14">
                   {catWorkers.map((w) => (
                     <Link
@@ -170,13 +170,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                           {w.initial}
                         </div>
                         <div>
-                          <h3 className="font-bold text-ink group-hover:text-brand-orange transition-colors">{w.name}</h3>
+                          <h3 className="font-bold text-gray-900 group-hover:text-brand-orange transition-colors">{w.name}</h3>
                           <p className="text-xs text-steel">{w.specialty} · {w.location}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 mb-3">
                         <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                        <span className="font-bold text-ink text-sm">{w.rating}</span>
+                        <span className="font-bold text-gray-900 text-sm">{w.rating}</span>
                         <span className="text-xs text-steel">({w.reviews} recenzija)</span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -192,7 +192,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Poslovi */}
             {catProjects.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-ink mb-6">Aktivni poslovi Â· {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Aktivni poslovi Â· {cat.name.toLowerCase()}</h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   {catProjects.map((p) => (
                     <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all">
@@ -202,7 +202,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                         </span>
                         <span className="text-xs text-steel">{p.timeAgo}</span>
                       </div>
-                      <h3 className="text-lg font-bold text-ink mb-2">{p.title}</h3>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">{p.title}</h3>
                       <p className="text-steel text-sm mb-4 line-clamp-2">{p.description}</p>
                       <div className="flex flex-wrap gap-4 text-xs text-steel mb-4">
                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{p.location}</span>
@@ -225,7 +225,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* CTA */}
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-bold text-ink mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
             <p className="text-steel mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
             <Link href="/objavi-projekat/" className="btn-primary">Objavi posao besplatno</Link>
           </div>

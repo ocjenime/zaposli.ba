@@ -103,7 +103,7 @@ export default function UsloviKoristenjaPage() {
             <div className="space-y-10">
               {sections.map((section) => (
                 <div key={section.title}>
-                  <h2 className="text-2xl font-bold text-ink mb-4">{section.title}</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">{section.title}</h2>
                   {section.paragraphs.map((p, i) => (
                     <p key={i} className="text-steel leading-relaxed mb-4 last:mb-0">
                       {p}

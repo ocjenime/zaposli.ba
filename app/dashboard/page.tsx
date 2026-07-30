@@ -122,7 +122,7 @@ export default function DashboardPage() {
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-ink">Moji poslovi</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Moji poslovi</h1>
               <p className="text-steel text-sm">{user.email}</p>
             </div>
             <Link href="/objavi-projekat/" className="btn-primary text-sm py-2.5 px-4 inline-flex items-center gap-2">
@@ -139,7 +139,7 @@ export default function DashboardPage() {
           ) : jobs.length === 0 ? (
             <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
               <ClipboardList className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-              <h3 className="font-bold text-ink mb-1">Nemate objavljenih poslova</h3>
+              <h3 className="font-bold text-gray-900 mb-1">Nemate objavljenih poslova</h3>
               <p className="text-steel text-sm mb-4">Objavite prvi posao i primite ponude od provjerenih firmi.</p>
               <Link href="/objavi-projekat/" className="btn-primary text-sm py-2.5 px-4">Objavi posao</Link>
             </div>
@@ -149,7 +149,7 @@ export default function DashboardPage() {
                 <div key={job.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
                     <div>
-                      <h3 className="font-bold text-ink">{job.title}</h3>
+                      <h3 className="font-bold text-gray-900">{job.title}</h3>
                       <div className="flex items-center gap-2 text-sm text-steel mt-1">
                         <MapPin className="w-4 h-4" /> {job.city}
                         <span className="w-1 h-1 bg-steel rounded-full" />

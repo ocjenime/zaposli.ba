@@ -218,7 +218,7 @@ function Conversation() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto h-[calc(100vh-14rem)] sm:h-[calc(100vh-15rem)] flex flex-col">
-          <Link href={role === 'firm' ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-ink mb-3">
+          <Link href={role === 'firm' ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad
           </Link>
 
@@ -233,7 +233,7 @@ function Conversation() {
           ) : (
             <>
               <div className="bg-white rounded-xl border border-gray-100 p-4 mb-3 shadow-sm">
-                <h1 className="font-bold text-ink">{job.title}</h1>
+                <h1 className="font-bold text-gray-900">{job.title}</h1>
                 <div className="flex items-center gap-2 text-sm text-steel mt-1">
                   <MapPin className="w-4 h-4" /> {job.city}
                   {partner?.full_name && (
@@ -261,14 +261,14 @@ function Conversation() {
                           <div className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                             <div
                               className={`max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 py-2 text-sm ${
-                                isMe ? 'bg-brand-orange text-white rounded-br-none' : 'bg-cloud text-ink rounded-bl-none'
+                                isMe ? 'bg-brand-orange text-[#ffffff] rounded-br-none' : 'bg-cloud text-gray-900 rounded-bl-none'
                               }`}
                             >
-                              <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-white/80' : 'text-steel'}`}>
+                              <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
                                 {isMe ? 'Vi' : role === 'client' ? 'Firma' : 'Klijent'}
                               </p>
                               <p>{msg.content}</p>
-                              <p className={`text-[10px] mt-1 ${isMe ? 'text-white/80' : 'text-steel'}`}>
+                              <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
                                 {formatTime(msg.created_at)}
                               </p>
                             </div>

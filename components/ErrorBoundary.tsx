@@ -20,7 +20,7 @@ export default class ErrorBoundary extends Component<Props, State> {
           <pre className="text-sm text-steel max-w-md text-center">{this.state.error.message}</pre>
           <button
             onClick={() => { this.setState({ error: null }); window.location.reload(); }}
-            className="mt-4 px-4 py-2 bg-brand-orange text-white rounded-lg"
+            className="mt-4 px-4 py-2 bg-brand-orange text-[#ffffff] rounded-lg"
           >
             Pokušaj ponovo
           </button>

@@ -29,7 +29,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
                 {item.name}
               </Link>
             ) : (
-              <span className="text-ink font-medium" aria-current="page">{item.name}</span>
+              <span className="text-gray-900 font-medium" aria-current="page">{item.name}</span>
             )}
           </li>
         ))}

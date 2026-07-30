@@ -33,12 +33,12 @@ export default function FeaturedWorkers() {
                 {worker.initial}
               </div>
 
-              <h3 className="font-bold text-ink text-sm mb-0.5">{worker.name}</h3>
+              <h3 className="font-bold text-gray-900 text-sm mb-0.5">{worker.name}</h3>
               <p className="text-xs text-steel mb-3">{worker.specialty}</p>
 
               <div className="flex items-center justify-center gap-1 mb-2">
                 <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
-                <span className="text-sm font-bold text-ink">{worker.rating}</span>
+                <span className="text-sm font-bold text-gray-900">{worker.rating}</span>
                 <span className="text-xs text-steel">({worker.reviews})</span>
               </div>
 

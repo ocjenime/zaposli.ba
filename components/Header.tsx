@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/Logo';
+import ThemeToggle from '@/components/ThemeToggle';
 import { useAuth } from '@/lib/auth-context';
 
 export default function Header() {
@@ -20,7 +21,7 @@ export default function Header() {
   const dashboardHref = role === 'firm' ? '/dashboard/firma/' : '/dashboard/';
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 backdrop-blur-xl border-b border-gray-100/80 ${scrolled ? 'shadow-sm' : ''}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 dark:bg-ink-900/90 backdrop-blur-xl border-b border-gray-100/80 dark:border-ink-800/80 ${scrolled ? 'shadow-sm dark:shadow-ink-900/50' : ''}`}>
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 md:h-20 items-center justify-between">
           <Link href="/" className="flex items-center group hover:opacity-80 transition-opacity duration-200">
@@ -30,7 +31,7 @@ export default function Header() {
           <div className="hidden md:flex items-center gap-1">
             <Link
               href="/za-firme/"
-              className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+              className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 transition-all duration-200"
             >
               Za majstore
             </Link>
@@ -45,7 +46,7 @@ export default function Header() {
                 {isAdmin && (
                   <Link
                     href="/admin/"
-                    className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+                    className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 transition-all duration-200"
                   >
                     Admin
                   </Link>
@@ -60,23 +61,29 @@ export default function Header() {
             ) : (
               <Link
                 href="/prijava/"
-                className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-ink hover:bg-gray-50/80 transition-all duration-200"
+                className="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50/80 transition-all duration-200"
               >
                 Prijava
               </Link>
             )}
             <Link
               href="/objavi-projekat/"
-              className="ml-3 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
+              className="ml-3 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
             >
               Objavi posao
             </Link>
+            <div className="ml-3">
+              <ThemeToggle />
+            </div>
           </div>
 
           <div className="flex items-center md:hidden">
+            <div className="mr-2">
+              <ThemeToggle />
+            </div>
             <button
               type="button"
-              className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50"
+              className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Meni"
             >
@@ -86,10 +93,10 @@ export default function Header() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl mt-2 p-4 mb-4 border border-gray-100">
+          <div className="md:hidden bg-[#ffffff]/95 dark:bg-ink/95 backdrop-blur-xl rounded-2xl shadow-xl mt-2 p-4 mb-4 border border-gray-100 dark:border-ink-700">
             <Link
               href="/objavi-projekat/"
-              className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-semibold mb-2"
+              className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] font-semibold mb-2"
               onClick={() => setMobileMenuOpen(false)}
             >
               Objavi posao

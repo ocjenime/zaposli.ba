@@ -268,7 +268,7 @@ export default function AdminPage() {
         <main className="flex-grow flex items-center justify-center px-4">
           <div className="text-center max-w-sm">
             <Crown className="w-12 h-12 text-brand-orange mx-auto mb-4" />
-            <h1 className="text-xl font-bold text-ink mb-2">Admin panel</h1>
+            <h1 className="text-xl font-bold text-gray-900 mb-2">Admin panel</h1>
             <p className="text-steel mb-6">Morate biti prijavljeni sa administratorskim nalogom da biste nastavili.</p>
             <Link href="/prijava/" className="btn-primary inline-flex items-center gap-2">
               Prijavite se
@@ -286,7 +286,7 @@ export default function AdminPage() {
         <main className="flex-grow flex items-center justify-center px-4">
           <div className="text-center max-w-sm">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h1 className="text-xl font-bold text-ink mb-2">Pristup odbijen</h1>
+            <h1 className="text-xl font-bold text-gray-900 mb-2">Pristup odbijen</h1>
             <p className="text-steel mb-6">Nemate ovlaštenje za pristup admin panelu.</p>
             <Link href="/dashboard/" className="btn-primary inline-flex items-center gap-2">
               Nazad na dashboard
@@ -304,7 +304,7 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-ink">Admin panel</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Admin panel</h1>
               <p className="text-steel text-sm">Upravljanje korisnicima, firmama i pretplatama</p>
             </div>
             <Link href="/dashboard/" className="btn-secondary text-sm py-2.5 px-4 inline-flex items-center gap-2">
@@ -334,7 +334,7 @@ export default function AdminPage() {
                   onClick={() => setActiveTab(tab.id)}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
                     activeTab === tab.id
-                      ? 'bg-brand-orange text-white'
+                      ? 'bg-brand-orange text-[#ffffff]'
                       : 'text-steel hover:bg-gray-100'
                   }`}
                 >
@@ -370,7 +370,7 @@ export default function AdminPage() {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Pretraži korisnike..."
-                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm text-ink placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -378,7 +378,7 @@ export default function AdminPage() {
                     {filteredProfiles().map((profile) => (
                       <div key={profile.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
-                          <p className="font-medium text-ink">{profile.full_name || profile.email}</p>
+                          <p className="font-medium text-gray-900">{profile.full_name || profile.email}</p>
                           <p className="text-sm text-steel">{profile.email} · {profile.phone || '—'}</p>
                           <p className="text-xs text-steel mt-1">
                             {profile.role === 'firm' ? 'Firma' : 'Klijent'} · {formatDate(profile.created_at)}
@@ -390,7 +390,7 @@ export default function AdminPage() {
                             disabled={savingAdmin === profile.id}
                             className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
                               profile.is_admin
-                                ? 'bg-brand-orange text-white hover:bg-brand-orange-dark'
+                                ? 'bg-brand-orange text-[#ffffff] hover:bg-brand-orange-dark'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                             }`}
                           >
@@ -414,7 +414,7 @@ export default function AdminPage() {
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Pretraži firme..."
-                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm text-ink placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-9 pr-4 py-2 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -423,7 +423,7 @@ export default function AdminPage() {
                       <div key={firm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <p className="font-medium text-ink">{firm.name}</p>
+                            <p className="font-medium text-gray-900">{firm.name}</p>
                             {firm.verified && <CheckCircle className="w-4 h-4 text-green-600" />}
                           </div>
                           <p className="text-sm text-steel">{firm.email} · {firm.city || '—'} · {firm.review_count} recenzija</p>
@@ -475,10 +475,10 @@ export default function AdminPage() {
                     {firmPlans.map(({ firm, subscription }) => (
                       <div key={firm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
-                          <p className="font-medium text-ink">{firm.name}</p>
+                          <p className="font-medium text-gray-900">{firm.name}</p>
                           <p className="text-sm text-steel">
                             Trenutni paket:{' '}
-                            <span className="font-medium text-ink">
+                            <span className="font-medium text-gray-900">
                               {subscription?.plans?.name || 'Besplatno'}
                             </span>
                             {subscription?.plans?.featured && (
@@ -494,7 +494,7 @@ export default function AdminPage() {
                               disabled={savingSubscription === firm.id || subscription?.plan_id === plan.id}
                               className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
                                 subscription?.plan_id === plan.id
-                                  ? 'bg-brand-orange text-white'
+                                  ? 'bg-brand-orange text-[#ffffff]'
                                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                               }`}
                             >
@@ -521,7 +521,7 @@ export default function AdminPage() {
                       <div key={plan.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <p className="font-medium text-ink">{plan.name}</p>
+                            <p className="font-medium text-gray-900">{plan.name}</p>
                             {plan.featured && <Star className="w-4 h-4 text-brand-orange" />}
                           </div>
                           <p className="text-sm text-steel">{plan.description}</p>
@@ -533,7 +533,7 @@ export default function AdminPage() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-ink">{formatPrice(plan.price_monthly)} KM/mj</p>
+                          <p className="font-bold text-gray-900">{formatPrice(plan.price_monthly)} KM/mj</p>
                           <p className="text-xs text-steel">{formatPrice(plan.price_yearly)} KM/god</p>
                         </div>
                       </div>
@@ -558,7 +558,7 @@ export default function AdminPage() {
                         >
                           <div>
                             <div className="flex items-center gap-2">
-                              <p className="font-medium text-ink">
+                              <p className="font-medium text-gray-900">
                                 {n.type === 'subscription_request' ? 'Zahtjev za nadogradnju' : n.type}
                               </p>
                               {!n.read && (
@@ -614,7 +614,7 @@ function StatCard({
         <Icon className="w-6 h-6 text-brand-orange" />
       </div>
       <div>
-        <p className="text-2xl font-bold text-ink">{value}</p>
+        <p className="text-2xl font-bold text-gray-900">{value}</p>
         <p className="text-sm text-steel">{label}</p>
       </div>
     </div>

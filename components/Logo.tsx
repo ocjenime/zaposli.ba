@@ -16,8 +16,8 @@ export function LogoMark({ className = 'h-9 w-auto' }: { className?: string }) {
 }
 
 export default function Logo({ variant = 'dark', className = '' }: LogoProps) {
-  const textColor = variant === 'light' ? 'text-white' : 'text-ink';
-  const sloganColor = variant === 'light' ? 'text-white/70' : 'text-steel';
+  const textColor = variant === 'light' ? 'text-[#ffffff]' : 'text-gray-900';
+  const sloganColor = variant === 'light' ? 'text-[#ffffff]/70' : 'text-steel';
   return (
     <span className={`flex items-center gap-2.5 ${className}`}>
       <LogoMark className="h-8 md:h-9 w-auto shrink-0" />

@@ -53,7 +53,7 @@ export default function PopularCategories() {
               }`} />
 
               {category.featured && (
-                <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                <span className="absolute top-2.5 right-2.5 inline-flex items-center gap-1 bg-red-600 text-[#ffffff] text-[10px] font-bold px-2 py-0.5 rounded-full">
                   <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
                   24/7
                 </span>
@@ -64,11 +64,11 @@ export default function PopularCategories() {
                   ? 'bg-red-50 group-hover:bg-gradient-to-br group-hover:from-red-600 group-hover:to-red-700'
                   : 'bg-primary-50 group-hover:bg-gradient-to-br group-hover:from-brand-orange group-hover:to-brand-orange-dark'
               }`}>
-                <category.icon className={`w-7 h-7 group-hover:text-white transition-colors duration-300 ${
+                <category.icon className={`w-7 h-7 group-hover:text-[#ffffff] transition-colors duration-300 ${
                   category.featured ? 'text-red-600' : 'text-brand-orange'
                 }`} />
               </div>
-              <h3 className="font-semibold text-ink mb-1 text-sm">{category.name}</h3>
+              <h3 className="font-semibold text-gray-900 mb-1 text-sm">{category.name}</h3>
               <p className="text-xs text-steel">{category.count} firmi</p>
             </Link>
           ))}

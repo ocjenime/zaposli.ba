@@ -43,7 +43,7 @@ export default function HeroSection() {
   return (
     <section className="relative md:min-h-[92vh] flex flex-col overflow-hidden bg-white pt-16 md:pt-20">
       {mounted && emergencyBannerVisible && (
-        <div className="relative z-10 bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-white shadow-md">
+        <div className="relative z-10 bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-[#ffffff] shadow-md">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
             <Link
               href="/kategorije/hitne-intervencije/"
@@ -57,7 +57,7 @@ export default function HeroSection() {
             <button
               type="button"
               onClick={dismissEmergencyBanner}
-              className="p-1 hover:bg-white/10 rounded-lg transition-colors shrink-0"
+              className="p-1 hover:bg-[#ffffff]/10 rounded-lg transition-colors shrink-0"
               aria-label="Zatvori"
             >
               <X className="w-4 h-4" />
@@ -84,7 +84,7 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
           {/* Lijevo: sadržaj */}
           <div className="max-w-xl">
-            <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-ink mb-4 md:mb-6 leading-[1.1] tracking-tight">
+            <h1 className="text-[2rem] sm:text-5xl md:text-[3.5rem] lg:text-6xl font-extrabold text-gray-900 mb-4 md:mb-6 leading-[1.1] tracking-tight">
               Pronađite majstora
               <br />
               <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">
@@ -118,7 +118,7 @@ export default function HeroSection() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Šta vam je potrebno?"
-                    className="w-full pl-12 pr-4 py-4 bg-cloud rounded-xl border-0 focus:ring-2 focus:ring-brand-orange/30 outline-none text-ink placeholder:text-steel/70 text-sm"
+                    className="w-full pl-12 pr-4 py-4 bg-cloud rounded-xl border-0 focus:ring-2 focus:ring-brand-orange/30 outline-none text-gray-900 placeholder:text-steel/70 text-sm"
                   />
                 </div>
                 <div className="relative md:w-44">
@@ -126,7 +126,7 @@ export default function HeroSection() {
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
-                    className="w-full pl-12 pr-8 py-4 bg-cloud rounded-xl border-0 focus:ring-2 focus:ring-brand-orange/30 outline-none text-ink appearance-none text-sm"
+                    className="w-full pl-12 pr-8 py-4 bg-cloud rounded-xl border-0 focus:ring-2 focus:ring-brand-orange/30 outline-none text-gray-900 appearance-none text-sm"
                   >
                     <option value="">Svi gradovi</option>
                     {cities.map((city) => (
@@ -137,7 +137,7 @@ export default function HeroSection() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold text-sm whitespace-nowrap hover:shadow-lg hover:shadow-brand-orange/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
+                  className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold text-sm whitespace-nowrap hover:shadow-lg hover:shadow-brand-orange/30 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2"
                 >
                   Objavi besplatno
                   <ArrowRight className="w-4 h-4" />

@@ -66,7 +66,7 @@ export default function SavjetiPage() {
                   <span className="inline-block self-start text-xs font-semibold text-brand-orange bg-primary-50 px-3 py-1 rounded-full mb-4">
                     {article.category}
                   </span>
-                  <h2 className="text-xl font-bold text-ink mb-3 group-hover:text-brand-orange transition-colors">
+                  <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-brand-orange transition-colors">
                     {article.title}
                   </h2>
                   <p className="text-sm text-steel leading-relaxed mb-6 flex-grow">
@@ -97,10 +97,10 @@ export default function SavjetiPage() {
             <div className="bg-gradient-hero rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-3">
                   Imate posao na umu?
                 </h2>
-                <p className="text-white/60 mb-8 max-w-lg mx-auto">
+                <p className="text-[#ffffff]/60 mb-8 max-w-lg mx-auto">
                   Objavite ga besplatno i primite ponude od provjerenih firmi iz vašeg grada.
                 </p>
                 <Link href="/objavi-projekat/" className="btn-primary text-lg">

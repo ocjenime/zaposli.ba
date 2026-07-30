@@ -172,14 +172,14 @@ function PostProjectContent() {
         <main className="flex-grow flex items-center justify-center py-20 px-4">
           <div className="w-full max-w-lg text-center">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-orange/25">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10 text-[#ffffff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-3xl font-extrabold text-ink mb-3">Posao je objavljen!</h1>
+            <h1 className="text-3xl font-extrabold text-gray-900 mb-3">Posao je objavljen!</h1>
             <p className="text-steel mb-8 leading-relaxed">
-              Vaš posao <b className="text-ink">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
-              Prve ponude obično stižu u roku od <b className="text-ink">24 sata</b>.
+              Vaš posao <b className="text-gray-900">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
+              Prve ponude obično stižu u roku od <b className="text-gray-900">24 sata</b>.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
@@ -206,7 +206,7 @@ function PostProjectContent() {
             <div className="flex items-center justify-between">
               {[1, 2, 3].map((s) => (
                 <div key={s} className="flex items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step >= s ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-500'}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step >= s ? 'bg-primary-600 text-[#ffffff]' : 'bg-gray-200 text-gray-500'}`}>
                     {s}
                   </div>
                   {s < 3 && <div className={`hidden sm:block w-24 h-1 mx-2 ${step > s ? 'bg-primary-600' : 'bg-gray-200'}`} />}
@@ -227,13 +227,13 @@ function PostProjectContent() {
             {targetProvider && (
               <div className="mb-6 p-3 bg-gradient-to-r from-brand-orange/10 to-brand-orange/5 border border-brand-orange/20 rounded-xl text-sm">
                 <p className="text-steel">Zahtjev za ponudu od:</p>
-                <p className="font-bold text-ink text-lg">{targetProvider.name}</p>
+                <p className="font-bold text-gray-900 text-lg">{targetProvider.name}</p>
               </div>
             )}
             {(prefill.service || prefill.city) && (
               <div className="mb-6 p-3 bg-orange-50 border border-orange-100 rounded-xl text-sm">
                 <p className="text-steel">Preuzeto iz pretrage:</p>
-                <p className="font-medium text-ink">
+                <p className="font-medium text-gray-900">
                   {prefill.service && <span className="text-brand-orange">{prefill.service}</span>}
                   {prefill.service && prefill.city && <span className="text-steel mx-1">·</span>}
                   {prefill.city && <span className="inline-flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {prefill.city}</span>}

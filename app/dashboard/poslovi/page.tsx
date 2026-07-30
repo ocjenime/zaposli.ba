@@ -199,7 +199,7 @@ function JobDetail() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
-          <Link href="/dashboard/" className="inline-flex items-center text-sm text-steel hover:text-ink mb-4">
+          <Link href="/dashboard/" className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na poslove
           </Link>
 
@@ -215,7 +215,7 @@ function JobDetail() {
             <>
               <div className="bg-white rounded-xl border border-gray-100 p-5 mb-4 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
-                  <h1 className="text-xl font-bold text-ink">{job.title}</h1>
+                  <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
                   <span className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusColors[job.status]}`}>
                     {statusLabels[job.status]}
                   </span>
@@ -225,7 +225,7 @@ function JobDetail() {
                   <span className="w-1 h-1 bg-steel rounded-full" />
                   <span>Objavljen {formatDate(job.created_at)}</span>
                 </div>
-                <p className="text-ink text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
+                <p className="text-gray-900 text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
 
                 {job.status === 'in_progress' && (
                   <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
@@ -256,7 +256,7 @@ function JobDetail() {
               </div>
 
               <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
-                <h2 className="text-lg font-bold text-ink mb-4">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
                   Ponude {bids.length > 0 && <span className="text-steel font-normal text-sm">({bids.length})</span>}
                 </h2>
 
@@ -271,7 +271,7 @@ function JobDetail() {
                       <div key={bid.id} className="py-4 first:pt-0 last:pb-0">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                           <div>
-                            <h3 className="font-bold text-ink">{bid.firms?.name || 'Firma'}</h3>
+                            <h3 className="font-bold text-gray-900">{bid.firms?.name || 'Firma'}</h3>
                             <p className="text-xs text-steel">{bid.firms?.city}</p>
                           </div>
                           <div className="text-right">
@@ -284,7 +284,7 @@ function JobDetail() {
                           </div>
                         </div>
                         {bid.message && (
-                          <p className="text-sm text-ink mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>
+                          <p className="text-sm text-gray-900 mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>
                         )}
                         <p className="text-xs text-steel mt-2">Poslato {formatDate(bid.created_at)}</p>
 

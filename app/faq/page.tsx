@@ -37,11 +37,11 @@ export default function FaqPage() {
                   className="group bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden"
                 >
                   <summary className="flex items-center justify-between gap-4 cursor-pointer list-none px-6 py-5 hover:bg-cloud/60 transition-colors [&::-webkit-details-marker]:hidden">
-                    <span className="font-semibold text-ink text-base md:text-lg">
+                    <span className="font-semibold text-gray-900 text-base md:text-lg">
                       {faq.question}
                     </span>
                     <span className="shrink-0 w-8 h-8 rounded-full bg-primary-50 flex items-center justify-center group-open:bg-brand-orange transition-colors">
-                      <ChevronDown className="w-4 h-4 text-brand-orange group-open:text-white group-open:rotate-180 transition-all" />
+                      <ChevronDown className="w-4 h-4 text-brand-orange group-open:text-[#ffffff] group-open:rotate-180 transition-all" />
                     </span>
                   </summary>
                   <div className="px-6 pb-6 pt-1">
@@ -62,10 +62,10 @@ export default function FaqPage() {
                 <div className="w-14 h-14 bg-brand-orange/20 rounded-full flex items-center justify-center mx-auto mb-5">
                   <MessageCircleQuestion className="w-7 h-7 text-brand-orange" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-3">
                   Niste pronašli odgovor?
                 </h2>
-                <p className="text-white/60 mb-8 max-w-md mx-auto">
+                <p className="text-[#ffffff]/60 mb-8 max-w-md mx-auto">
                   Naš tim vam stoji na raspolaganju: pošaljite nam poruku i odgovorit ćemo u najkraćem mogućem roku.
                 </p>
                 <Link href="/kontakt/" className="btn-primary text-lg">

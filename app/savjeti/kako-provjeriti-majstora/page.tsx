@@ -44,7 +44,7 @@ export default function KakoProvjeritiMajstoraPage() {
               bilo kakvog avansa.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">1. Provjerite registraciju firme</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">1. Provjerite registraciju firme</h2>
             <p className="text-steel leading-relaxed mb-4">
               Tražite ID broj firme i provjerite ga u javnom registru: svaka legalno registrovana
               firma u BiH mora imati jedinstveni identifikacioni broj. Rad „na crno" ne znači samo
@@ -52,7 +52,7 @@ export default function KakoProvjeritiMajstoraPage() {
               po zlu. Firma koja izbjegava dati ID broj je crvena zastava.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">2. Čitajte recenzije, ali pravilno</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">2. Čitajte recenzije, ali pravilno</h2>
             <p className="text-steel leading-relaxed mb-4">
               Ne gledajte samo prosječnu ocjenu. Čitajte tekstove recenzija i obratite pažnju na
               konkretne detalje: da li klijenti spominju poštovanje rokova, čistoću na gradilištu,
@@ -61,15 +61,15 @@ export default function KakoProvjeritiMajstoraPage() {
               klijenti kojima je firma stvarno radila posao preko platforme.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">3. Zatražite fotografije ranijih radova</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">3. Zatražite fotografije ranijih radova</h2>
             <p className="text-steel leading-relaxed mb-4">
               Ozbiljan majstor ima telefon pun fotografija svojih poslova. Zatražite slike
-              radova <strong className="text-ink">sličnih vašem</strong>: ako adaptirate kupatilo,
+              radova <strong className="text-gray-900">sličnih vašem</strong>: ako adaptirate kupatilo,
               nije dovoljno da vam pokaže fasadu. Još bolje: pitajte možete li kontaktirati jednog
               ili dva ranija klijenta. Majstor koji odbija bilo kakvu referencu vjerovatno ima razlog.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">4. Potpišite ugovor, makar i jednostavan</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">4. Potpišite ugovor, makar i jednostavan</h2>
             <p className="text-steel leading-relaxed mb-4">
               Ugovor ne mora biti komplikovan, ali mora pisano definisati: obim radova, ukupnu
               cijenu ili cijenu po jedinici mjere, rok početka i završetka, dinamiku plaćanja i šta
@@ -77,15 +77,15 @@ export default function KakoProvjeritiMajstoraPage() {
               Ako firma ima obrazac ugovora: odličan znak profesionalnosti.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">5. Avans: maksimalno 30%</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">5. Avans: maksimalno 30%</h2>
             <p className="text-steel leading-relaxed mb-4">
               Uobičajena i razumna praksa je avans od 10 do 30% ukupne cijene, najčešće za nabavku
-              materijala. <strong className="text-ink">Nikada ne plaćajte više od 30% unaprijed</strong>,
+              materijala. <strong className="text-gray-900">Nikada ne plaćajte više od 30% unaprijed</strong>,
               a za avans uvijek tražite potvrdu o uplati ili fiskalni isječak. Majstor koji traži
               50% ili više prije početka radova preuzima vaš rizik na sebe: odnosno, na vas.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">6. Plaćajte po fazama, ne unaprijed</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">6. Plaćajte po fazama, ne unaprijed</h2>
             <p className="text-steel leading-relaxed mb-4">
               Najsigurniji model je plaćanje po završenim fazama: npr. 30% avans, 40% po završenim
               instalacijama, 30% po završetku svih radova i primopredaji. Tako obje strane imaju
@@ -96,7 +96,7 @@ export default function KakoProvjeritiMajstoraPage() {
             <div className="bg-cloud rounded-2xl border border-gray-100 p-6 mt-10 flex gap-4">
               <ShieldCheck className="w-8 h-8 text-brand-orange shrink-0" />
               <p className="text-sm text-steel leading-relaxed">
-                <strong className="text-ink">Savjet:</strong> firme sa oznakom „Provjerena firma" na
+                <strong className="text-gray-900">Savjet:</strong> firme sa oznakom „Provjerena firma" na
                 Zaposli.ba prošle su provjeru registracije, identiteta i referenci, što ne znači da
                 preskačete ugovor, ali znači da je prva stavka sa liste već odrađena za vas.
               </p>
@@ -106,8 +106,8 @@ export default function KakoProvjeritiMajstoraPage() {
             <div className="bg-gradient-hero rounded-2xl p-8 mt-12 text-center relative overflow-hidden">
               <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
-                <p className="text-white/60 mb-6">
+                <h2 className="text-2xl font-bold text-[#ffffff] mb-3">Trebate majstora?</h2>
+                <p className="text-[#ffffff]/60 mb-6">
                   Objavite posao besplatno i birajte između ponuda provjerenih firmi sa stvarnim
                   recenzijama.
                 </p>

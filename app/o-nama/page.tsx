@@ -67,7 +67,7 @@ export default function ONamaPage() {
         {/* Misija */}
         <section className="py-16">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-ink mb-6">Naša misija</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Naša misija</h2>
             <p className="text-lg text-steel leading-relaxed">
               Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
               klijente i provjerene građevinske firme u BiH na jednom mjestu: klijent besplatno objavi
@@ -99,7 +99,7 @@ export default function ONamaPage() {
         {/* Kako je sve počelo */}
         <section className="py-16 bg-cloud">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-ink mb-8 text-center">Kako je sve počelo</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Kako je sve počelo</h2>
             <div className="space-y-5 text-steel leading-relaxed">
               <p>
                 Zaposli.ba je nastao u Sarajevu 2023. godine, iz sasvim lične frustracije. Naš
@@ -126,7 +126,7 @@ export default function ONamaPage() {
         {/* Vrijednosti */}
         <section className="py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-ink mb-12 text-center">Vrijednosti koje nas vode</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Vrijednosti koje nas vode</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5">
               {values.map((value) => (
                 <div
@@ -136,7 +136,7 @@ export default function ONamaPage() {
                   <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center mx-auto mb-4">
                     <value.icon className="w-6 h-6 text-brand-orange" />
                   </div>
-                  <h3 className="font-bold text-ink mb-2">{value.title}</h3>
+                  <h3 className="font-bold text-gray-900 mb-2">{value.title}</h3>
                   <p className="text-sm text-steel leading-relaxed">{value.description}</p>
                 </div>
               ))}
@@ -150,10 +150,10 @@ export default function ONamaPage() {
             <div className="bg-gradient-hero rounded-2xl p-8 md:p-12 text-center relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-3">
                   Spremni za vaš sljedeći posao?
                 </h2>
-                <p className="text-white/60 mb-8 max-w-lg mx-auto">
+                <p className="text-[#ffffff]/60 mb-8 max-w-lg mx-auto">
                   Objavite posao besplatno i primite ponude od provjerenih firmi: obično u roku
                   od 24 sata.
                 </p>

@@ -31,7 +31,7 @@ export default function HowItWorks() {
           <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-3">
             Jednostavno &amp; brzo
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-3 tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
             Kako funkcioniše?
           </h2>
           <p className="text-steel max-w-xl mx-auto">
@@ -51,11 +51,11 @@ export default function HowItWorks() {
               >
                 <div className="relative h-32 md:h-36 mb-3">
                   <step.illustration />
-                  <span className="absolute top-1 left-1 w-7 h-7 rounded-full bg-ink text-white text-xs font-extrabold flex items-center justify-center ring-2 ring-white shadow-md">
+                  <span className="absolute top-1 left-1 w-7 h-7 rounded-full bg-ink text-[#ffffff] text-xs font-extrabold flex items-center justify-center ring-2 ring-[#ffffff] shadow-md">
                     {step.number}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold text-ink mb-1.5 text-center">{step.title}</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-1.5 text-center">{step.title}</h3>
                 <p className="text-steel text-sm leading-relaxed text-center">{step.description}</p>
               </div>
             ))}
@@ -65,7 +65,7 @@ export default function HowItWorks() {
         <div className="text-center mt-8 md:mt-10">
           <Link
             href="/objavi-projekat/"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
           >
             Objavite posao besplatno
             <ArrowRight className="w-5 h-5" />

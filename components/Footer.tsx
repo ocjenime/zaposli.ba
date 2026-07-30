@@ -29,7 +29,7 @@ export default function Footer() {
   const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
 
   return (
-    <footer className="bg-ink text-white">
+    <footer className="bg-ink text-[#ffffff]">
       {/* Glavni footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
@@ -51,7 +51,7 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="text-gray-400 hover:text-white text-sm transition-colors inline-flex items-center gap-1 group">
+                    <Link href={link.href} className="text-gray-400 hover:text-[#ffffff] text-sm transition-colors inline-flex items-center gap-1 group">
                       {link.name}
                       <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </Link>
@@ -64,7 +64,7 @@ export default function Footer() {
       </div>
 
       {/* Direktorij: kategorije + gradovi (werkspot obrazac) */}
-      <div className="border-t border-white/5">
+      <div className="border-t border-[#ffffff]/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
           <div className="grid md:grid-cols-2 gap-10">
             <div>
@@ -100,7 +100,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5">
+      <div className="border-t border-[#ffffff]/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-500">

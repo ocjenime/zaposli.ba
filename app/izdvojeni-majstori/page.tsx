@@ -67,7 +67,7 @@ export default function FeaturedWorkersPage() {
                       <VerifiedBadge size="sm" />
                     </div>
 
-                    <h2 className="text-xl font-extrabold text-ink group-hover:text-brand-orange transition-colors mb-1">
+                    <h2 className="text-xl font-extrabold text-gray-900 group-hover:text-brand-orange transition-colors mb-1">
                       {w.name}
                     </h2>
                     <p className="text-sm text-steel mb-4">
@@ -89,7 +89,7 @@ export default function FeaturedWorkersPage() {
                           />
                         ))}
                       </div>
-                      <span className="font-extrabold text-ink">{w.rating}</span>
+                      <span className="font-extrabold text-gray-900">{w.rating}</span>
                       <span className="text-xs text-steel">({w.reviews} recenzija)</span>
                     </div>
 
@@ -100,7 +100,7 @@ export default function FeaturedWorkersPage() {
                         <MapPin className="w-3.5 h-3.5" />
                         {w.location}
                       </span>
-                      <span className="text-xs font-semibold text-ink bg-cloud px-2.5 py-1 rounded-lg">
+                      <span className="text-xs font-semibold text-gray-900 bg-cloud px-2.5 py-1 rounded-lg">
                         {w.projects} poslova
                       </span>
                     </div>
@@ -113,15 +113,15 @@ export default function FeaturedWorkersPage() {
             <div className="mt-14 bg-ink rounded-3xl p-10 text-center relative overflow-hidden">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">
                   Želite ovakvog majstora za vaš posao?
                 </h2>
-                <p className="text-white/60 mb-8 max-w-xl mx-auto">
+                <p className="text-[#ffffff]/60 mb-8 max-w-xl mx-auto">
                   Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u roku od 24 sata.
                 </p>
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
                 >
                   Objavi posao besplatno
                   <ArrowRight className="w-5 h-5" />

@@ -53,14 +53,14 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
               </div>
               <div className="flex-1">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">{w.name}</h1>
+                  <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{w.name}</h1>
                   <VerifiedBadge />
                 </div>
                 <p className="text-steel text-lg mb-3">{w.specialty}</p>
                 <div className="flex flex-wrap items-center gap-5 text-sm text-steel">
                   <span className="flex items-center gap-1.5">
                     <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                    <b className="text-ink">{w.rating}</b> ({w.reviews} recenzija)
+                    <b className="text-gray-900">{w.rating}</b> ({w.reviews} recenzija)
                   </span>
                   <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4" />{w.location}</span>
                   <span className="flex items-center gap-1.5"><CheckCircle className="w-4 h-4 text-brand-orange" />{w.projects} završenih poslova</span>
@@ -69,7 +69,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
             </div>
             <Link
               href={`/objavi-projekat/?worker_id=${w.id}`}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
               Zatraži ponudu
               <ArrowRight className="w-5 h-5" />
@@ -82,19 +82,19 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
             <div className="grid lg:grid-cols-3 gap-10">
               {/* Lijevo: o firmi + usluge */}
               <div className="lg:col-span-2">
-                <h2 className="text-2xl font-bold text-ink mb-4">O firmi</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">O firmi</h2>
                 <p className="text-steel leading-relaxed mb-10">{w.about}</p>
 
-                <h2 className="text-2xl font-bold text-ink mb-4">Usluge</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Usluge</h2>
                 <div className="flex flex-wrap gap-2 mb-10">
                   {w.services.map((s) => (
-                    <span key={s} className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-ink border border-gray-100">
+                    <span key={s} className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-gray-900 border border-gray-100">
                       {s}
                     </span>
                   ))}
                 </div>
 
-                <h2 className="text-2xl font-bold text-ink mb-6">Recenzije klijenata</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Recenzije klijenata</h2>
                 <div className="space-y-5">
                   {w.reviewList.map((r) => (
                     <div key={r.author} className="bg-cloud rounded-2xl p-6">
@@ -104,7 +104,7 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                             {r.author.charAt(0)}
                           </div>
                           <div>
-                            <div className="font-semibold text-ink text-sm">{r.author}</div>
+                            <div className="font-semibold text-gray-900 text-sm">{r.author}</div>
                             <div className="text-xs text-steel">{r.date}</div>
                           </div>
                         </div>
@@ -125,37 +125,37 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
 
               {/* Desno: statistika kartica */}
               <div>
-                <div className="bg-ink rounded-3xl p-8 text-white sticky top-28">
+                <div className="bg-ink rounded-3xl p-8 text-[#ffffff] sticky top-28">
                   <h3 className="text-lg font-bold mb-6">Ukratko</h3>
                   <div className="space-y-5">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Ocjena</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Ocjena</span>
                       <span className="font-extrabold text-brand-orange text-xl">{w.rating}</span>
                     </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Recenzija</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Recenzija</span>
                       <span className="font-bold">{w.reviews}</span>
                     </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Poslova</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Poslova</span>
                       <span className="font-bold">{w.projects}</span>
                     </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Lokacija</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Lokacija</span>
                       <span className="font-bold">{w.location}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-white/60 text-sm">Status</span>
+                      <span className="text-[#ffffff]/60 text-sm">Status</span>
                       <VerifiedBadge size="sm" />
                     </div>
                   </div>
                   <Link
                     href={`/objavi-projekat/?worker_id=${w.id}`}
-                    className="block w-full text-center mt-8 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                    className="block w-full text-center mt-8 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
                   >
                     Zatraži ponudu
                   </Link>
-                  <p className="text-white/40 text-xs text-center mt-3">Besplatno i neobavezujuće</p>
+                  <p className="text-[#ffffff]/40 text-xs text-center mt-3">Besplatno i neobavezujuće</p>
                 </div>
               </div>
             </div>

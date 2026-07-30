@@ -122,17 +122,17 @@ export default function FirmSubscriptionPage() {
         <div className="max-w-5xl mx-auto">
           <Link
             href="/dashboard/firma/"
-            className="inline-flex items-center gap-2 text-sm text-steel hover:text-ink mb-4"
+            className="inline-flex items-center gap-2 text-sm text-steel hover:text-gray-900 mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Nazad na dashboard firme
           </Link>
 
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-ink">Pretplata</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Pretplata</h1>
             <p className="text-steel text-sm">
               Trenutni paket:{' '}
-              <span className="font-medium text-ink">
+              <span className="font-medium text-gray-900">
                 {subscription?.plans?.name || 'Besplatno'}
               </span>
             </p>
@@ -168,18 +168,18 @@ export default function FirmSubscriptionPage() {
                   }`}
                 >
                   {isCurrent(plan.id) && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
                       <Crown className="w-3 h-3" /> Aktivno
                     </div>
                   )}
 
                   <div className="mb-4">
-                    <h3 className="text-lg font-bold text-ink">{plan.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
                     <p className="text-sm text-steel mt-1">{plan.description}</p>
                   </div>
 
                   <div className="mb-4">
-                    <p className="text-3xl font-bold text-ink">
+                    <p className="text-3xl font-bold text-gray-900">
                       {formatPrice(plan.price_monthly)}
                       <span className="text-sm font-normal text-steel"> KM/mj</span>
                     </p>
@@ -190,7 +190,7 @@ export default function FirmSubscriptionPage() {
                     )}
                   </div>
 
-                  <ul className="space-y-2.5 mb-6 text-sm text-ink flex-1">
+                  <ul className="space-y-2.5 mb-6 text-sm text-gray-900 flex-1">
                     <li className="flex items-start gap-2">
                       <Briefcase className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
                       <span>

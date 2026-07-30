@@ -240,14 +240,14 @@ function ReviewPage() {
         <div className="max-w-2xl mx-auto">
           <Link
             href="/dashboard/"
-            className="inline-flex items-center gap-2 text-sm text-steel hover:text-ink mb-4"
+            className="inline-flex items-center gap-2 text-sm text-steel hover:text-gray-900 mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Nazad na dashboard
           </Link>
 
           <div className="bg-white rounded-2xl shadow-card border border-gray-100 p-6 sm:p-8">
-            <h1 className="text-2xl font-bold text-ink mb-2">Ostavite recenziju</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Ostavite recenziju</h1>
             <p className="text-steel mb-6">
               {loading ? 'Učitavanje podataka...' : job?.title}
             </p>
@@ -261,13 +261,13 @@ function ReviewPage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-50 mb-4">
                   <AlertCircle className="w-8 h-8 text-red-500" />
                 </div>
-                <h2 className="text-lg font-bold text-ink mb-2">Recenzija nije dostupna</h2>
+                <h2 className="text-lg font-bold text-gray-900 mb-2">Recenzija nije dostupna</h2>
                 <p className="text-steel">{error}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-ink mb-3">
+                  <label className="block text-sm font-medium text-gray-900 mb-3">
                     Vaša ocjena za {bid?.firms?.name}
                   </label>
                   <div className="flex items-center gap-2">
@@ -290,14 +290,14 @@ function ReviewPage() {
                         />
                       </button>
                     ))}
-                    <span className="ml-2 text-sm font-medium text-ink">
+                    <span className="ml-2 text-sm font-medium text-gray-900">
                       {rating > 0 ? `${rating} od 5` : 'Odaberite ocjenu'}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="comment" className="block text-sm font-medium text-ink mb-2">
+                  <label htmlFor="comment" className="block text-sm font-medium text-gray-900 mb-2">
                     Komentar
                   </label>
                   <textarea
@@ -306,7 +306,7 @@ function ReviewPage() {
                     onChange={(e) => setComment(e.target.value)}
                     rows={5}
                     placeholder="Opišite svoje iskustvo..."
-                    className="w-full bg-cloud border border-gray-200 rounded-xl px-4 py-3 text-sm text-ink placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+                    className="w-full bg-cloud border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
                     maxLength={1000}
                     required
                   />
@@ -316,7 +316,7 @@ function ReviewPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-ink mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Slika (opcionalno)
                   </label>
                   <p className="text-xs text-steel mb-3">
@@ -333,7 +333,7 @@ function ReviewPage() {
                       <button
                         type="button"
                         onClick={removeImage}
-                        className="absolute top-2 right-2 p-1 bg-white/90 rounded-full text-steel hover:text-red-500 shadow-sm"
+                        className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-steel hover:text-red-500 shadow-sm"
                         aria-label="Ukloni sliku"
                       >
                         <X className="w-4 h-4" />
@@ -343,7 +343,7 @@ function ReviewPage() {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 rounded-xl text-sm text-steel hover:text-ink hover:border-brand-orange transition-colors"
+                      className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors"
                     >
                       <Upload className="w-4 h-4" />
                       Dodaj sliku
@@ -370,13 +370,13 @@ function ReviewPage() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {submitting ? 'Spremanje...' : 'Pošalji recenziju'}
                   </button>
                   <Link
                     href="/dashboard/"
-                    className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-medium text-steel hover:text-ink hover:bg-cloud transition-colors"
+                    className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-medium text-steel hover:text-gray-900 hover:bg-cloud transition-colors"
                   >
                     Odustani
                   </Link>

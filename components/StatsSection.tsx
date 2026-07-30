@@ -66,7 +66,7 @@ export default function StatsSection() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
                 <stat.icon className="w-7 h-7 text-brand-orange" />
               </div>
-              <div className="text-3xl md:text-4xl font-extrabold text-ink mb-1">
+              <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
                 <Counter value={stat.value} />
               </div>
               <div className="text-sm text-steel">{stat.label}</div>
@@ -82,7 +82,7 @@ export default function StatsSection() {
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-5">
                 <card.icon className="w-7 h-7 text-brand-orange" />
               </div>
-              <h3 className="font-bold text-ink mb-2 text-lg">{card.title}</h3>
+              <h3 className="font-bold text-gray-900 mb-2 text-lg">{card.title}</h3>
               <p className="text-sm text-steel leading-relaxed">{card.description}</p>
             </div>
           ))}

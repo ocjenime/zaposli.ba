@@ -84,7 +84,7 @@ export default function RegisterPage() {
                   onClick={() => setUserType(type)}
                   className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
                     userType === type
-                      ? 'bg-primary-600 text-white'
+                      ? 'bg-primary-600 text-[#ffffff]'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >

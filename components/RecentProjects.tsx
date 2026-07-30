@@ -62,7 +62,7 @@ export default function RecentProjects() {
               <TrendingUp className="w-4 h-4 inline mr-1" />
               Najnoviji poslovi
             </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
               Nedavno objavljeni poslovi
             </h2>
           </div>
@@ -85,7 +85,7 @@ export default function RecentProjects() {
                 <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">{project.timeAgo}</span>
               </div>
 
-              <h3 className="text-lg font-bold text-ink mb-2 group-hover:text-brand-orange transition-colors">
+              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
                 {project.title}
               </h3>
 

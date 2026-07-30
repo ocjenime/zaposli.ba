@@ -1,4 +1,4 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 import { MapPin, ArrowRight } from 'lucide-react';
 import Header from '@/components/Header';
@@ -37,7 +37,7 @@ export default function CitiesPage() {
                   <div className="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                     <MapPin className="w-5 h-5 text-brand-orange" />
                   </div>
-                  <span className="font-semibold text-ink group-hover:text-brand-orange transition-colors text-sm">
+                  <span className="font-semibold text-gray-900 group-hover:text-brand-orange transition-colors text-sm">
                     {city.name}
                   </span>
                 </Link>
@@ -46,7 +46,7 @@ export default function CitiesPage() {
 
             <div className="text-center mt-12">
               <p className="text-steel mb-6">Koji god grad da ste: objavite posao i firme iz vašeg kraja će se javiti s ponudama.</p>
-              <Link href="/objavi-projekat/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95">
+              <Link href="/objavi-projekat/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95">
                 Objavi posao besplatno
                 <ArrowRight className="w-5 h-5" />
               </Link>

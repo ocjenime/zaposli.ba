@@ -218,7 +218,7 @@ function FirmDashboardContent() {
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-ink">Dashboard firme</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Dashboard firme</h1>
               <p className="text-steel text-sm">{user.email}</p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -237,7 +237,7 @@ function FirmDashboardContent() {
             <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 rounded-xl border px-4 py-3 text-sm ${canBid ? 'bg-white border-gray-100' : 'bg-orange-50 border-orange-100'}`}>
               <div className="flex items-center gap-2">
                 <Crown className={`w-4 h-4 ${subscription?.plans?.featured ? 'text-brand-orange' : 'text-steel'}`} />
-                <span className="font-medium text-ink">
+                <span className="font-medium text-gray-900">
                   {subscription?.plans?.name || 'Besplatno'}
                 </span>
                 <span className="text-steel">· {remainingBidsText(bidsUsed, bidsLimit)}</span>
@@ -263,7 +263,7 @@ function FirmDashboardContent() {
           ) : (
             <>
               <section className="mb-8">
-                <h2 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
+                <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Briefcase className="w-5 h-5 text-brand-orange" /> Otvoreni poslovi
                 </h2>
                 {loadingJobs ? (
@@ -285,7 +285,7 @@ function FirmDashboardContent() {
                         >
                           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                             <div className="flex-1">
-                              <h3 className="font-bold text-ink">{job.title}</h3>
+                              <h3 className="font-bold text-gray-900">{job.title}</h3>
                               <div className="flex flex-wrap items-center gap-2 text-sm text-steel mt-1">
                                 <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {job.city}</span>
                                 {category && (
@@ -306,7 +306,7 @@ function FirmDashboardContent() {
 
                           {expandedJob === job.id && !alreadyBid && (
                             <div className="mt-4 pt-4 border-t border-gray-100">
-                              <p className="text-sm text-ink mb-3 leading-relaxed">{job.description}</p>
+                              <p className="text-sm text-gray-900 mb-3 leading-relaxed">{job.description}</p>
                               <div className="grid sm:grid-cols-2 gap-3 mb-3">
                                 <div>
                                   <label className="block text-xs font-medium text-steel mb-1">Iznos ponude (KM) *</label>
@@ -343,7 +343,7 @@ function FirmDashboardContent() {
                                 </button>
                                 <button
                                   onClick={() => setExpandedJob(null)}
-                                  className="text-sm text-steel hover:text-ink px-3 py-2"
+                                  className="text-sm text-steel hover:text-gray-900 px-3 py-2"
                                 >
                                   Odustani
                                 </button>
@@ -358,7 +358,7 @@ function FirmDashboardContent() {
               </section>
 
               <section>
-                <h2 className="text-lg font-bold text-ink mb-3 flex items-center gap-2">
+                <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
                   <Send className="w-5 h-5 text-brand-orange" /> Moje ponude
                 </h2>
                 {loadingBids ? (
@@ -373,7 +373,7 @@ function FirmDashboardContent() {
                       <div key={bid.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                           <div>
-                            <h3 className="font-bold text-ink">{bid.jobs?.title || 'Posao'}</h3>
+                            <h3 className="font-bold text-gray-900">{bid.jobs?.title || 'Posao'}</h3>
                             <div className="flex items-center gap-2 text-sm text-steel mt-1">
                               <MapPin className="w-4 h-4" /> {bid.jobs?.city}
                               <span className="w-1 h-1 bg-steel rounded-full" />
@@ -388,7 +388,7 @@ function FirmDashboardContent() {
                             </div>
                           </div>
                         </div>
-                        {bid.message && <p className="text-sm text-ink mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>}
+                        {bid.message && <p className="text-sm text-gray-900 mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>}
                         {bid.status === 'accepted' && bid.jobs?.id && (
                           <Link
                             href={`/dashboard/razgovor/?job_id=${bid.jobs.id}`}

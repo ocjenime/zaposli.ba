@@ -9,7 +9,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 
 const inputClass =
-  'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none text-ink text-sm';
+  'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none text-gray-900 text-sm';
 
 const contactInfo = [
   {
@@ -74,7 +74,7 @@ export default function KontaktPage() {
             <div className="grid lg:grid-cols-2 gap-10">
               {/* Kontakt informacije */}
               <div>
-                <h2 className="text-2xl font-bold text-ink mb-6">Kako nas možete kontaktirati</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Kako nas možete kontaktirati</h2>
                 <div className="grid sm:grid-cols-2 gap-5">
                   {contactInfo.map((item) => (
                     <div
@@ -84,14 +84,14 @@ export default function KontaktPage() {
                       <div className="w-11 h-11 bg-primary-50 rounded-xl flex items-center justify-center mb-4">
                         <item.icon className="w-5 h-5 text-brand-orange" />
                       </div>
-                      <h3 className="font-semibold text-ink mb-1">{item.title}</h3>
-                      <p className="text-sm font-medium text-ink">{item.value}</p>
+                      <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                      <p className="text-sm font-medium text-gray-900">{item.value}</p>
                       <p className="text-xs text-steel mt-1">{item.note}</p>
                     </div>
                   ))}
                 </div>
                 <div className="mt-8 bg-white rounded-2xl border border-gray-100 p-6 shadow-card">
-                  <h3 className="font-semibold text-ink mb-2">Prije nego što nam pišete</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2">Prije nego što nam pišete</h3>
                   <p className="text-sm text-steel leading-relaxed">
                     Možda je odgovor već na stranici{' '}
                     <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
@@ -108,10 +108,10 @@ export default function KontaktPage() {
 
               {/* Kontakt forma */}
               <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card">
-                <h2 className="text-2xl font-bold text-ink mb-6">Pošaljite nam poruku</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Pošaljite nam poruku</h2>
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label htmlFor="ime" className="block text-sm font-medium text-ink mb-1.5">
+                    <label htmlFor="ime" className="block text-sm font-medium text-gray-900 mb-1.5">
                       Ime i prezime <span className="text-brand-orange">*</span>
                     </label>
                     <input
@@ -127,7 +127,7 @@ export default function KontaktPage() {
                   </div>
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-ink mb-1.5">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1.5">
                         Email <span className="text-brand-orange">*</span>
                       </label>
                       <input
@@ -142,7 +142,7 @@ export default function KontaktPage() {
                       />
                     </div>
                     <div>
-                      <label htmlFor="telefon" className="block text-sm font-medium text-ink mb-1.5">
+                      <label htmlFor="telefon" className="block text-sm font-medium text-gray-900 mb-1.5">
                         Telefon <span className="text-steel font-normal">(opcionalno)</span>
                       </label>
                       <input
@@ -157,7 +157,7 @@ export default function KontaktPage() {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="poruka" className="block text-sm font-medium text-ink mb-1.5">
+                    <label htmlFor="poruka" className="block text-sm font-medium text-gray-900 mb-1.5">
                       Poruka <span className="text-brand-orange">*</span>
                     </label>
                     <textarea

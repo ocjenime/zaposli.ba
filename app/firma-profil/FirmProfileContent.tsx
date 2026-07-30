@@ -140,11 +140,11 @@ export default function FirmProfileContent() {
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-50 mb-4">
               <AlertCircle className="w-8 h-8 text-red-500" />
             </div>
-            <h1 className="text-2xl font-bold text-ink mb-2">Profil nije pronađen</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Profil nije pronađen</h1>
             <p className="text-steel mb-6">{error || 'Tražena firma ne postoji.'}</p>
             <Link
               href="/projekti/"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold"
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-semibold"
             >
               Pogledaj poslove
               <ArrowRight className="w-4 h-4" />
@@ -177,7 +177,7 @@ export default function FirmProfileContent() {
               )}
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-2xl md:text-4xl font-extrabold text-ink tracking-tight">
+                  <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
                     {firm.name}
                   </h1>
                   {firm.verified && <VerifiedBadge />}
@@ -188,7 +188,7 @@ export default function FirmProfileContent() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-steel">
                   <span className="flex items-center gap-1.5">
                     <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                    <b className="text-ink">{rating.toFixed(1)}</b> ({reviewCount} recenzija)
+                    <b className="text-gray-900">{rating.toFixed(1)}</b> ({reviewCount} recenzija)
                   </span>
                   {firm.city && (
                     <span className="flex items-center gap-1.5">
@@ -203,7 +203,7 @@ export default function FirmProfileContent() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 href={`/objavi-projekat/?firm_id=${firm.id}`}
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
               >
                 Zatraži ponudu
                 <ArrowRight className="w-4 h-4" />
@@ -223,19 +223,19 @@ export default function FirmProfileContent() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <h2 className="text-xl font-bold text-ink mb-4">O firmi</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">O firmi</h2>
                 <p className="text-steel leading-relaxed mb-8">
                   {firm.description || 'Firma još nije dodala opis.'}
                 </p>
 
                 {categoryNames.length > 0 && (
                   <>
-                    <h2 className="text-xl font-bold text-ink mb-4">Kategorije</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-4">Kategorije</h2>
                     <div className="flex flex-wrap gap-2 mb-8">
                       {categoryNames.map((name) => (
                         <span
                           key={name}
-                          className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-ink border border-gray-100"
+                          className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-gray-900 border border-gray-100"
                         >
                           {name}
                         </span>
@@ -244,7 +244,7 @@ export default function FirmProfileContent() {
                   </>
                 )}
 
-                <h2 className="text-xl font-bold text-ink mb-4">Recenzije klijenata</h2>
+                <h2 className="text-xl font-bold text-gray-900 mb-4">Recenzije klijenata</h2>
                 {reviews.length === 0 ? (
                   <div className="bg-cloud rounded-2xl p-6 text-center border border-gray-100">
                     <p className="text-steel">Još nema recenzija za ovu firmu.</p>
@@ -259,7 +259,7 @@ export default function FirmProfileContent() {
                               {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}
                             </div>
                             <div>
-                              <div className="font-semibold text-ink text-sm">
+                              <div className="font-semibold text-gray-900 text-sm">
                                 {review.profiles?.full_name || 'Klijent'}
                               </div>
                               <div className="text-xs text-steel">{formatDate(review.created_at)}</div>
@@ -302,53 +302,53 @@ export default function FirmProfileContent() {
               </div>
 
               <div>
-                <div className="bg-ink rounded-3xl p-6 text-white sticky top-28">
+                <div className="bg-ink rounded-3xl p-6 text-[#ffffff] sticky top-28">
                   <h3 className="text-lg font-bold mb-5">Ukratko</h3>
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Ocjena</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Ocjena</span>
                       <span className="font-extrabold text-brand-orange text-xl">
                         {rating.toFixed(1)}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <span className="text-white/60 text-sm">Recenzija</span>
+                    <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                      <span className="text-[#ffffff]/60 text-sm">Recenzija</span>
                       <span className="font-bold">{reviewCount}</span>
                     </div>
                     {firm.city && (
-                      <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                        <span className="text-white/60 text-sm">Lokacija</span>
+                      <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                        <span className="text-[#ffffff]/60 text-sm">Lokacija</span>
                         <span className="font-bold">{firm.city}</span>
                       </div>
                     )}
                     {firm.phone && (
-                      <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                        <span className="text-white/60 text-sm">Telefon</span>
+                      <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                        <span className="text-[#ffffff]/60 text-sm">Telefon</span>
                         <span className="font-bold text-sm">{firm.phone}</span>
                       </div>
                     )}
                     {firm.email && (
-                      <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                        <span className="text-white/60 text-sm">Email</span>
+                      <div className="flex justify-between items-center pb-4 border-b border-[#ffffff]/10">
+                        <span className="text-[#ffffff]/60 text-sm">Email</span>
                         <span className="font-bold text-sm break-all">{firm.email}</span>
                       </div>
                     )}
                     <div className="flex justify-between items-center">
-                      <span className="text-white/60 text-sm">Status</span>
+                      <span className="text-[#ffffff]/60 text-sm">Status</span>
                       {firm.verified ? (
                         <VerifiedBadge size="sm" />
                       ) : (
-                        <span className="text-sm text-white/70">U provjeri</span>
+                        <span className="text-sm text-[#ffffff]/70">U provjeri</span>
                       )}
                     </div>
                   </div>
                   <Link
                     href={`/objavi-projekat/?firm_id=${firm.id}`}
-                    className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                    className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
                   >
                     Zatraži ponudu
                   </Link>
-                  <p className="text-white/40 text-xs text-center mt-3">Besplatno i neobavezujuće</p>
+                  <p className="text-[#ffffff]/40 text-xs text-center mt-3">Besplatno i neobavezujuće</p>
                 </div>
               </div>
             </div>

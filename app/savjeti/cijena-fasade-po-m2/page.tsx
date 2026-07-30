@@ -47,29 +47,29 @@ export default function CijenaFasadePoM2Page() {
             <p className="text-steel leading-relaxed mb-4">
               Termo fasada je jedna od najisplativijih investicija u kuću: smanjuje račune za
               grijanje i do 40% i štiti zidove od vlage. U 2026. godini kompletna demit fasada u BiH
-              košta između <strong className="text-ink">35 i 80 KM po kvadratnom metru</strong>, sa
+              košta između <strong className="text-gray-900">35 i 80 KM po kvadratnom metru</strong>, sa
               materijalom i radom, zavisno od izabranog sistema. Evo detaljnog pregleda.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Stiropor ili kamena vuna?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Stiropor ili kamena vuna?</h2>
             <p className="text-steel leading-relaxed mb-4">
-              <strong className="text-ink">Stiropor (EPS)</strong> je najčešći izbor: jeftiniji je,
+              <strong className="text-gray-900">Stiropor (EPS)</strong> je najčešći izbor: jeftiniji je,
               lakše se obrađuje i daje odličnu toplotnu izolaciju. Za većinu porodičnih kuća u BiH
               debljina od 10 cm je danas standard: ušteda u grijanju lako pokrije malu razliku u
               cijeni prema 5 cm.
             </p>
             <p className="text-steel leading-relaxed mb-4">
-              <strong className="text-ink">Kamena vuna</strong> košta 40-60% više, ali ima dvije
+              <strong className="text-gray-900">Kamena vuna</strong> košta 40-60% više, ali ima dvije
               velike prednosti: ne gori (klasa A1 protupožarne zaštite) i propušta paru, pa je bolji
               izbor za višespratnice, stare vlažne zidove i objekte uz prometne saobraćajnice jer
               odlično prigušuje buku.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Cijene po sistemu (materijal + rad)</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Cijene po sistemu (materijal + rad)</h2>
             <div className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden mb-8">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-ink text-white">
+                  <tr className="bg-ink text-[#ffffff]">
                     <th className="text-left px-5 py-3.5 font-semibold">Sistem fasade</th>
                     <th className="text-right px-5 py-3.5 font-semibold">Cijena (KM/m²)</th>
                   </tr>
@@ -77,7 +77,7 @@ export default function CijenaFasadePoM2Page() {
                 <tbody>
                   {priceRows.map((row, i) => (
                     <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-cloud/50'}>
-                      <td className="px-5 py-3 text-ink">{row.system}</td>
+                      <td className="px-5 py-3 text-gray-900">{row.system}</td>
                       <td className="px-5 py-3 text-right font-semibold text-brand-orange-dark whitespace-nowrap">
                         {row.range}
                       </td>
@@ -91,7 +91,7 @@ export default function CijenaFasadePoM2Page() {
               a kamena vuna 8.200-12.000 KM: uključujući materijal, rad i osnovnu završnicu.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Šta mora ući u cijenu</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Šta mora ući u cijenu</h2>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-2">
               <li>Priprema podloge (čišćenje, grundiranje)</li>
               <li>Lijepljenje ploča i tiplovi (klinovi za učvršćenje)</li>
@@ -104,33 +104,33 @@ export default function CijenaFasadePoM2Page() {
              : to su najčešće „zaboravljene" stavke koje se kasnije dodaju na fakturu.
             </p>
 
-            <h2 className="text-2xl font-bold text-ink mt-10 mb-4">Greške koje poskupljuju fasadu</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Greške koje poskupljuju fasadu</h2>
             <ul className="list-disc marker:text-brand-orange ml-5 mb-4 text-steel leading-relaxed space-y-2">
               <li>
-                <strong className="text-ink">Preskakanje grunda</strong>: štedi 1-2 KM/m², a
+                <strong className="text-gray-900">Preskakanje grunda</strong>: štedi 1-2 KM/m², a
                 povećava rizik od odvajanja cijelog sistema.
               </li>
               <li>
-                <strong className="text-ink">Premalo tiplova</strong>: propisano je 4-6 tiplova po
+                <strong className="text-gray-900">Premalo tiplova</strong>: propisano je 4-6 tiplova po
                 m², a na uglovima i više; štednja tu znači ploče koje „puštaju" nakon par zima.
               </li>
               <li>
-                <strong className="text-ink">Jeftina završna malta</strong>: akrilna malta je
+                <strong className="text-gray-900">Jeftina završna malta</strong>: akrilna malta je
                 najjeftinija, ali na sunčanim južnim stranama brzo puca i skuplja prašinu;
                 silikonska košta više, ali traje duplo duže.
               </li>
               <li>
-                <strong className="text-ink">Rad po vlažnom ili prehladnom vremenu</strong>: radovi
+                <strong className="text-gray-900">Rad po vlažnom ili prehladnom vremenu</strong>: radovi
                 ispod +5°C ili po kiši zahtijevaju presvlačenje i dvostruko koštaju.
               </li>
               <li>
-                <strong className="text-ink">Zaboravljena skela</strong>: ako firma nema vlastitu,
+                <strong className="text-gray-900">Zaboravljena skela</strong>: ako firma nema vlastitu,
                 iznajmljivanje dodaje 5-10 KM/m²; provjerite je li uključena u ponudu.
               </li>
             </ul>
 
             <p className="text-steel leading-relaxed mb-4">
-              Zadnji savjet: fasadu uvijek ugovarajte s cjenikom <strong className="text-ink">po
+              Zadnji savjet: fasadu uvijek ugovarajte s cjenikom <strong className="text-gray-900">po
               kvadratu sa jasno navedenim sistemom</strong>, a ne „za cijelu kuću": razlike u
               obračunu otvora i uglova znaju iznositi i do 15% ukupne cijene.
             </p>
@@ -139,8 +139,8 @@ export default function CijenaFasadePoM2Page() {
             <div className="bg-gradient-hero rounded-2xl p-8 mt-12 text-center relative overflow-hidden">
               <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <h2 className="text-2xl font-bold text-white mb-3">Trebate majstora?</h2>
-                <p className="text-white/60 mb-6">
+                <h2 className="text-2xl font-bold text-[#ffffff] mb-3">Trebate majstora?</h2>
+                <p className="text-[#ffffff]/60 mb-6">
                   Objavite posao besplatno i primite ponude od provjerenih fasadera iz vašeg
                   grada.
                 </p>

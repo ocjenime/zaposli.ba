@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,10 +9,34 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Brand primary — Zaposli.ba Orange (#F97316)
+        // Semantic color scale — CSS variables swap between light and dark mode
+        white: 'rgb(var(--white) / <alpha-value>)',
+        black: 'rgb(var(--black) / <alpha-value>)',
+        gray: {
+          50: 'rgb(var(--gray-50) / <alpha-value>)',
+          100: 'rgb(var(--gray-100) / <alpha-value>)',
+          200: 'rgb(var(--gray-200) / <alpha-value>)',
+          300: 'rgb(var(--gray-300) / <alpha-value>)',
+          400: 'rgb(var(--gray-400) / <alpha-value>)',
+          500: 'rgb(var(--gray-500) / <alpha-value>)',
+          600: 'rgb(var(--gray-600) / <alpha-value>)',
+          700: 'rgb(var(--gray-700) / <alpha-value>)',
+          800: 'rgb(var(--gray-800) / <alpha-value>)',
+          900: 'rgb(var(--gray-900) / <alpha-value>)',
+          950: 'rgb(var(--gray-950) / <alpha-value>)',
+        },
+        red: {
+          50: 'rgb(var(--red-50) / <alpha-value>)',
+          100: 'rgb(var(--red-100) / <alpha-value>)',
+          200: 'rgb(var(--red-200) / <alpha-value>)',
+        },
+        orange: {
+          50: 'rgb(var(--orange-50) / <alpha-value>)',
+          100: 'rgb(var(--orange-100) / <alpha-value>)',
+        },
         primary: {
-          50: '#fff7ed',
-          100: '#ffedd5',
+          50: 'rgb(var(--primary-50) / <alpha-value>)',
+          100: 'rgb(var(--primary-100) / <alpha-value>)',
           200: '#fed7aa',
           300: '#fdba74',
           400: '#fb923c',
@@ -21,6 +46,34 @@ module.exports = {
           800: '#9a3412',
           900: '#7c2d12',
         },
+        cloud: 'rgb(var(--cloud) / <alpha-value>)',
+        steel: 'rgb(var(--steel) / <alpha-value>)',
+        mist: 'rgb(var(--mist) / <alpha-value>)',
+        accent: {
+          50: 'rgb(var(--accent-50) / <alpha-value>)',
+          100: 'rgb(var(--accent-100) / <alpha-value>)',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#f59e0b',
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+        success: {
+          50: 'rgb(var(--success-50) / <alpha-value>)',
+          100: 'rgb(var(--success-100) / <alpha-value>)',
+          200: '#bbf7d0',
+          300: '#86efac',
+          400: '#4ade80',
+          500: '#22c55e',
+          600: '#16a34a',
+          700: '#15803d',
+          800: '#166534',
+          900: '#14532d',
+        },
+        // Brand primary — Zaposli.ba Orange (#F97316)
         brand: {
           orange: '#f97316',
           'orange-dark': '#ea580c',
@@ -38,39 +91,6 @@ module.exports = {
           800: '#062630',
           700: '#0a3542',
           600: '#10485a',
-        },
-        // Brand grays (#687280 / #E5E7EB / #F0FAFC)
-        steel: {
-          DEFAULT: '#687280',
-          600: '#687280',
-          500: '#7d8794',
-          400: '#98a1ac',
-        },
-        mist: '#e5e7eb',
-        cloud: '#f0fafc',
-        accent: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b',
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
-        },
-        success: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
         },
         navy: {
           800: '#062630',

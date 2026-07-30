@@ -14,7 +14,7 @@ export default function VerifiedBadge({ size = 'md', className = '' }: VerifiedB
 
   return (
     <span
-      className={`inline-flex items-center rounded-full bg-white border border-gray-100 shadow-sm font-semibold text-ink ${sizes[size]} ${className}`}
+      className={`inline-flex items-center rounded-full bg-white border border-gray-100 shadow-sm font-semibold text-gray-900 ${sizes[size]} ${className}`}
     >
       <span className={`${circle[size]} rounded-full bg-brand-emerald flex items-center justify-center shrink-0`}>
         <svg className={check[size]} viewBox="0 0 24 24" fill="none">

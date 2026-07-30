@@ -87,14 +87,14 @@ export default function ForCompaniesPage() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-ink mb-6 tracking-tight">
+                <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
                   Proširite svoje poslovanje sa <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">Zaposli.ba</span>
                 </h1>
                 <p className="text-lg text-steel mb-8">
                   Pridružite se hiljadama firmi i majstora koji redovno dobijaju nove poslove 
                   preko naše platforme. Besplatna registracija, plaćate samo kada dobijete posao.
                 </p>
-                <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
+                <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
                   Registrujte firmu besplatno
                   <ArrowRight className="w-5 h-5" />
                 </Link>
@@ -151,7 +151,7 @@ export default function ForCompaniesPage() {
             
             <div className="grid md:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
                   1
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Registrujte se</h3>
@@ -159,7 +159,7 @@ export default function ForCompaniesPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
                   2
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Pregledajte poslove</h3>
@@ -167,7 +167,7 @@ export default function ForCompaniesPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
                   3
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Pošaljite ponudu</h3>
@@ -175,7 +175,7 @@ export default function ForCompaniesPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
+                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
                   4
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">Dobijte posao</h3>
@@ -193,7 +193,7 @@ export default function ForCompaniesPage() {
               <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-3">
                 Pretplate za firme
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-ink mb-3 tracking-tight">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">
                 Jednostavne cijene, bez iznenađenja
               </h2>
               <p className="text-steel max-w-xl mx-auto">
@@ -213,17 +213,17 @@ export default function ForCompaniesPage() {
                 >
                   {plan.popular && (
                     <div className="absolute -top-3.5 left-1/2 -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-xs font-bold px-5 py-1.5 rounded-full shadow-md shadow-brand-orange/25 tracking-wide">
+                      <span className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] text-xs font-bold px-5 py-1.5 rounded-full shadow-md shadow-brand-orange/25 tracking-wide">
                         NAJPOPULARNIJI
                       </span>
                     </div>
                   )}
 
                   <div className="text-center mb-7">
-                    <h3 className="text-lg font-bold text-ink mb-1">{plan.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">{plan.name}</h3>
                     <p className="text-sm text-steel mb-5">{plan.description}</p>
                     <div className="flex items-end justify-center gap-1.5">
-                      <span className="text-5xl font-extrabold text-ink leading-none">{plan.price}</span>
+                      <span className="text-5xl font-extrabold text-gray-900 leading-none">{plan.price}</span>
                       <span className="text-steel font-semibold mb-1">KM</span>
                     </div>
                     <p className="text-sm text-steel mt-1.5">{plan.period}</p>
@@ -233,7 +233,7 @@ export default function ForCompaniesPage() {
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <CheckCircle className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                        <span className="text-ink/80 text-sm">{feature}</span>
+                        <span className="text-gray-900/80 text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -242,8 +242,8 @@ export default function ForCompaniesPage() {
                     href="/registracija/"
                     className={`block text-center px-6 py-3.5 rounded-xl font-bold transition-all active:scale-95 ${
                       plan.popular
-                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white hover:shadow-lg hover:shadow-brand-orange/30'
-                        : 'border-2 border-ink/10 text-ink hover:border-brand-orange hover:text-brand-orange'
+                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] hover:shadow-lg hover:shadow-brand-orange/30'
+                        : 'border-2 border-ink/10 text-gray-900 hover:border-brand-orange hover:text-brand-orange'
                     }`}
                   >
                     {plan.cta}
@@ -264,13 +264,13 @@ export default function ForCompaniesPage() {
         <section className="relative py-16 bg-ink overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-3xl font-bold text-[#ffffff] mb-4">
               Spremni ste da rastete?
             </h2>
-            <p className="text-lg text-white/60 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-[#ffffff]/60 mb-8 max-w-2xl mx-auto">
               Registrujte firmu danas i počnite da primate nove poslove već sutra.
             </p>
-            <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
+            <Link href="/registracija/" className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all">
               Registrujte firmu besplatno
               <ArrowRight className="w-5 h-5" />
             </Link>
