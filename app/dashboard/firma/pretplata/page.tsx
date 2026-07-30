@@ -149,11 +149,8 @@ function FirmSubscriptionContent() {
         status: 'pending',
       });
 
-      const returnUrl = encodeURIComponent(`${window.location.origin}/zaposli.ba/dashboard/firma/pretplata/?payment=success`);
       const stripeUrl = new URL(plan.payment_link_url);
       stripeUrl.searchParams.set('client_reference_id', firmId);
-      stripeUrl.searchParams.set('success_url', returnUrl);
-      stripeUrl.searchParams.set('cancel_url', encodeURIComponent(`${window.location.origin}/zaposli.ba/dashboard/firma/pretplata/?payment=cancel`));
       window.location.href = stripeUrl.toString();
     } catch (err) {
       setProcessingPlanId(null);
