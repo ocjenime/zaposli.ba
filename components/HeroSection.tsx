@@ -50,7 +50,8 @@ export default function HeroSection() {
               className="flex items-center gap-2 text-sm font-semibold hover:opacity-90 transition-opacity min-w-0"
             >
               <Siren className="w-4 h-4 shrink-0" />
-              <span className="truncate">Hitne intervencije 24/7 — majstori dostupni odmah</span>
+              <span className="sm:hidden">Hitne intervencija 24/7</span>
+              <span className="hidden sm:inline truncate">Hitne intervencije 24/7 — majstori dostupni odmah</span>
               <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
             </Link>
             <button
