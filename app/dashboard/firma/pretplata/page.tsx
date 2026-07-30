@@ -131,15 +131,26 @@ function FirmSubscriptionContent() {
   }
 
   async function startStripeCheckout(plan: Plan) {
-    if (!firmId || !plan.payment_link_url) return;
+    if (!firmId) {
+      setError('Firma nije učitana. Osvježite stranicu.');
+      return;
+    }
+    if (!plan.payment_link_url) {
+      setError('Stripe link za ovaj paket još nije postavljen.');
+      return;
+    }
     setProcessingPlanId(plan.id);
     setError('');
     setSuccess('');
 
     try {
+      // Validate URL before using it
+      const stripeUrl = new URL(plan.payment_link_url);
+      stripeUrl.searchParams.set('client_reference_id', firmId);
+
+      // Try to record pending payment, but don't block redirect if it fails
       const amount = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-      // Record pending payment before redirect
-      await supabase.from('payments').insert({
+      const { error: paymentErr } = await supabase.from('payments').insert({
         firm_id: firmId,
         plan_id: plan.id,
         provider: 'stripe',
@@ -148,13 +159,15 @@ function FirmSubscriptionContent() {
         interval,
         status: 'pending',
       });
+      if (paymentErr) {
+        console.warn('Payment record failed (non-blocking):', paymentErr.message);
+      }
 
-      const stripeUrl = new URL(plan.payment_link_url);
-      stripeUrl.searchParams.set('client_reference_id', firmId);
       window.location.href = stripeUrl.toString();
-    } catch (err) {
+    } catch (err: unknown) {
       setProcessingPlanId(null);
-      setError('Greška prilikom pokretanja plaćanja.');
+      const message = err instanceof Error ? err.message : 'Nepoznata greška';
+      setError(`Greška prilikom pokretanja plaćanja: ${message}`);
     }
   }
 
