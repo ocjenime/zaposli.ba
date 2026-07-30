@@ -41,7 +41,7 @@ export async function getCurrentSubscription(firmId: string): Promise<Subscripti
     .from('subscriptions')
     .select('*, plans(*)')
     .eq('firm_id', firmId)
-    .in('status', ['active', 'cancelled'])
+    .in('status', ['active', 'cancelled', 'paused'])
     .order('created_at', { ascending: false })
     .limit(1)
     .single();
