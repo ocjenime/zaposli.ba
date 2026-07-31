@@ -18,7 +18,7 @@ import {
 import {
   ArrowLeft, Check, Crown, Loader2, AlertCircle,
   Star, HeadphonesIcon, Briefcase, CreditCard,
-  Calendar, Building2,
+  Calendar, Building2, Banknote, Wallet, Receipt,
 } from 'lucide-react';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
@@ -39,6 +39,7 @@ function FirmSubscriptionContent() {
   const [success, setSuccess] = useState('');
   const [interval, setInterval] = useState<BillingInterval>('monthly');
   const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
+  const [instructionsPlanId, setInstructionsPlanId] = useState<string | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -279,7 +280,13 @@ function FirmSubscriptionContent() {
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {plans.map((plan) => {
                   const price = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-                  const hasStripe = Boolean(plan.payment_link_url);
+                  const isRealStripeLink = Boolean(
+                    plan.payment_link_url &&
+                      (plan.payment_link_url.startsWith('https://buy.stripe.com/') ||
+                        plan.payment_link_url.startsWith('https://donate.stripe.com/')) &&
+                      !plan.payment_link_url.includes('tvoj_link')
+                  );
+                  const hasStripe = isRealStripeLink;
                   const hasPayPal = Boolean(plan.paypal_plan_id);
                   const isProcessing = processingPlanId === plan.id;
                   return (
@@ -364,16 +371,21 @@ function FirmSubscriptionContent() {
                         </span>
                       ) : (
                         <div className="space-y-2">
-                          {hasStripe && (
-                            <button
-                              onClick={() => startStripeCheckout(plan)}
-                              disabled={isProcessing}
-                              className="w-full py-2.5 rounded-xl text-sm font-semibold bg-gray-900 text-[#ffffff] hover:bg-gray-800 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
-                            >
-                              <CreditCard className="w-4 h-4" />
-                              {isProcessing ? 'Učitavanje...' : 'Plati karticom'}
-                            </button>
-                          )}
+                          <button
+                            onClick={() => requestUpgrade(plan.id)}
+                            disabled={requesting && requestedPlanId === plan.id}
+                            className="w-full py-2.5 rounded-xl text-sm font-semibold bg-brand-orange text-[#ffffff] hover:bg-brand-orange-dark transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                          >
+                            <Receipt className="w-4 h-4" />
+                            {requesting && requestedPlanId === plan.id ? 'Slanje...' : 'Platni nalog / uplatnica'}
+                          </button>
+                          <button
+                            onClick={() => setInstructionsPlanId(instructionsPlanId === plan.id ? null : plan.id)}
+                            className="w-full py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+                          >
+                            <Banknote className="w-4 h-4" />
+                            {instructionsPlanId === plan.id ? 'Sakrij uplate' : 'Keš / kartica na licu mjesta'}
+                          </button>
                           {hasPayPal && (
                             <div className="min-h-[45px]">
                               <PayPalScriptProvider
@@ -409,13 +421,27 @@ function FirmSubscriptionContent() {
                               </PayPalScriptProvider>
                             </div>
                           )}
-                          <button
-                            onClick={() => requestUpgrade(plan.id)}
-                            disabled={requesting && requestedPlanId === plan.id}
-                            className="w-full py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
-                          >
-                            {requesting && requestedPlanId === plan.id ? 'Slanje...' : 'Platni nalog / uplatnica'}
-                          </button>
+                          {hasStripe && (
+                            <button
+                              onClick={() => startStripeCheckout(plan)}
+                              disabled={isProcessing}
+                              className="w-full py-2.5 rounded-xl text-sm font-semibold bg-gray-900 text-[#ffffff] hover:bg-gray-800 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
+                            >
+                              <CreditCard className="w-4 h-4" />
+                              {isProcessing ? 'Učitavanje...' : 'Plati karticom (Stripe)'}
+                            </button>
+                          )}
+                          {instructionsPlanId === plan.id && (
+                            <div className="mt-3 p-3 bg-cloud rounded-xl text-xs text-steel border border-gray-100">
+                              <p className="font-medium text-gray-900 mb-1">Uplate u BiH:</p>
+                              <ul className="space-y-1 list-disc list-inside">
+                                <li>Platni nalog / uplatnica na žiro račun</li>
+                                <li>Keš prilikom susreta</li>
+                                <li>Kartica na licu mjesta (POS terminal)</li>
+                              </ul>
+                              <p className="mt-2">Nakon slanja zahtjeva, admin tim će vas kontaktirati s uplatnim podacima.</p>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -426,10 +452,18 @@ function FirmSubscriptionContent() {
           )}
 
           <div className="mt-8 bg-white rounded-xl border border-gray-100 p-5 text-sm text-steel">
-            <p>
-              Napomena: Plaćanje karticom odvija se sigurno putem Stripe-a. PayPal i platni nalog
-              obrađuju se ručno. Nakon potvrde uplate, admin tim aktivira pretplatu u najkraćem
-              roku.
+            <p className="mb-2">
+              <strong>Plaćanje u Bosni i Hercegovini:</strong>
+            </p>
+            <ul className="space-y-1 list-disc list-inside">
+              <li>Platni nalog / uplatnica na žiro račun (preporučeno)</li>
+              <li>Keš ili kartica prilikom susreta (POS terminal)</li>
+              <li>PayPal (ako je konfigurisan)</li>
+              <li>Stripe kartično plaćanje — dostupno samo ako postoji pravi Stripe Payment Link</li>
+            </ul>
+            <p className="mt-3">
+              Nakon slanja zahtjeva, admin tim će vas kontaktirati s uplatnim podacima i aktivirati
+              pretplatu nakon potvrde uplate.
             </p>
           </div>
         </div>
