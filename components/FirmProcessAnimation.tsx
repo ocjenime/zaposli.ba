@@ -64,15 +64,12 @@ function Majstor(props: {
         )}
       </g>
 
-      {/* Zaštitni šlem */}
+      {/* Kratka muška frizura */}
       <g transform={t(0, 0)}>
-        {/* Kruna šlema */}
-        <path d="M-16 -16 C-16 -34 16 -34 16 -16" fill={HAT_YELLOW} stroke={INK} strokeWidth="2" />
-        {/* Greben na sredini šlema */}
-        <path d="M-2 -30 L-2 -18" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-        <path d="M2 -30 L2 -18" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-        {/* Obod / šilt */}
-        <rect x="-18" y="-16" width="36" height="6" rx="3" fill={HAT_YELLOW} stroke={INK} strokeWidth="2" />
+        <path d="M-16 -10 C-16 -26 16 -26 16 -10 L16 -4 C16 2 12 6 0 6 C-12 6 -16 2 -16 -4 Z" fill={INK} stroke={INK} strokeWidth="2" />
+        <path d="M-14 -16 C-14 -24 14 -24 14 -16 C14 -10 10 -8 0 -8 C-10 -8 -14 -10 -14 -16" fill={INK} />
+        {/* Kratka šiška / tekstura kose */}
+        <path d="M-10 -18 L-6 -12 L-2 -18 L2 -12 L6 -18 L10 -12" stroke={INK} strokeWidth="2" strokeLinecap="round" fill="none" />
       </g>
 
       {/* Tool belt */}
