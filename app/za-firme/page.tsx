@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
 import PricingCTA from '@/components/PricingCTA';
 import {
@@ -185,45 +186,76 @@ export default function ForCompaniesPage() {
         <section className="relative overflow-hidden bg-gradient-hero pt-32 pb-20 md:pt-40 md:pb-28">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
-                <Sparkles className="h-4 w-4 text-brand-orange" />
-                #1 bh. marketplace za majstore i firme
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
+                  <Sparkles className="h-4 w-4 text-brand-orange" />
+                  #1 bh. marketplace za majstore i firme
+                </div>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 text-balance">
+                  Novi poslovi, direktno u vaš inbox
+                </h1>
+                <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-xl">
+                  Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i Hercegovini.
+                  Dobijajte upite, šaljite ponude i rastite bez velikih početnih ulaganja.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                  <PricingCTA
+                    popular
+                    className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
+                  >
+                    Registrujte firmu besplatno
+                  </PricingCTA>
+                  <Link
+                    href="#cijene"
+                    className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
+                  >
+                    Pogledajte pakete
+                  </Link>
+                </div>
+                <div className="flex flex-wrap items-center gap-5 text-sm text-white/70">
+                  <span className="inline-flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-brand-orange" />
+                    Bez ugovorne obaveze
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-brand-orange" />
+                    5 besplatnih ponuda mjesečno
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-brand-orange" />
+                    Podrška na bosanskom
+                  </span>
+                </div>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 text-balance">
-                Novi poslovi, direktno u vaš inbox
-              </h1>
-              <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-2xl">
-                Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i Hercegovini. 
-                Dobijajte upite, šaljite ponude i rastite bez velikih početnih ulaganja.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <PricingCTA
-                  popular
-                  className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
-                >
-                  Registrujte firmu besplatno
-                </PricingCTA>
-                <Link
-                  href="#cijene"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
-                >
-                  Pogledajte pakete
-                </Link>
-              </div>
-              <div className="flex flex-wrap items-center gap-5 text-sm text-white/70">
-                <span className="inline-flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-brand-orange" />
-                  Bez ugovorne obaveze
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-brand-orange" />
-                  5 besplatnih ponuda mjesečno
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <CheckCircle className="h-4 w-4 text-brand-orange" />
-                  Podrška na bosanskom
-                </span>
+
+              <div className="relative hidden lg:block">
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
+                  <Image
+                    src="/zaposli.ba/images/majstor-cekic.jpg"
+                    alt="Majstor sa čekićem tokom renovacije"
+                    width={600}
+                    height={450}
+                    className="w-full h-auto object-cover"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+                </div>
+                {/* Floating badge */}
+                <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                    <BadgeCheck className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-gray-900">Verifikovani profili</div>
+                    <div className="text-xs text-steel">Povjerenje klijenata</div>
+                  </div>
+                </div>
+                {/* Floating stat */}
+                <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 text-center">
+                  <div className="text-2xl font-extrabold text-brand-orange">25.000+</div>
+                  <div className="text-xs text-steel">objavljenih poslova</div>
+                </div>
               </div>
             </div>
           </div>
@@ -298,16 +330,99 @@ export default function ForCompaniesPage() {
           </div>
         </section>
 
+        {/* Real project showcase */}
+        <section className="py-20 md:py-24 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+                <Building2 className="h-4 w-4" /> Stvarni poslovi
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+                Pronađite projekte u svojoj oblasti
+              </h2>
+              <p className="text-steel text-lg">
+                Od adaptacija stanova do kuhinja, kupatila, farbanja i završnih radova. Klijenti svakodnevno objavljuju nove poslove.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
+                <Image
+                  src="/zaposli.ba/images/farbanje-zid.jpg"
+                  alt="Majstor farba zid profesionalnom opremom"
+                  width={400}
+                  height={300}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="p-5">
+                  <h3 className="font-bold text-gray-900 mb-1">Malterski i bojadžijski radovi</h3>
+                  <p className="text-sm text-steel">Molerski radovi, gletovanje, krečenje i bojenje enterijera.</p>
+                </div>
+              </div>
+              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
+                <Image
+                  src="/zaposli.ba/images/kuhinja-renovacija.jpg"
+                  alt="Kuhinja u toku renovacije"
+                  width={400}
+                  height={300}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="p-5">
+                  <h3 className="font-bold text-gray-900 mb-1">Renovacija kuhinja i stanova</h3>
+                  <p className="text-sm text-steel">Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.</p>
+                </div>
+              </div>
+              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
+                <Image
+                  src="/zaposli.ba/images/majstor-cekic.jpg"
+                  alt="Majstor sa čekićem na gradilištu"
+                  width={400}
+                  height={300}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="p-5">
+                  <h3 className="font-bold text-gray-900 mb-1">Završni i građevinski radovi</h3>
+                  <p className="text-sm text-steel">Keramika, parket, instalacije, elektrika i vodoinstalateri.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Trust signals */}
         <section className="py-20 md:py-24 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
+              <div className="relative order-2 md:order-1">
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
+                  <Image
+                    src="/zaposli.ba/images/renovacija-enterijer.jpg"
+                    alt="Renovacija enterijera u toku"
+                    width={600}
+                    height={450}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 max-w-[200px]">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex -space-x-2">
+                      <div className="w-7 h-7 rounded-full bg-brand-orange text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">M</div>
+                      <div className="w-7 h-7 rounded-full bg-ink text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">A</div>
+                      <div className="w-7 h-7 rounded-full bg-steel text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">S</div>
+                    </div>
+                    <span className="text-xs font-bold text-gray-900">+2.800 kolega</span>
+                  </div>
+                  <p className="text-xs text-steel">Pridružite se mreži provjerenih majstora i firmi.</p>
+                </div>
+              </div>
+              <div className="order-1 md:order-2">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+                  <Shield className="h-4 w-4" /> Sigurnost i transparentnost
+                </span>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                   Izgradite povjerenje klijenata
                 </h2>
                 <p className="text-steel text-lg mb-8">
-                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima transparentan model rasta. 
+                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima transparentan model rasta.
                   Bez skrivenih troškova, bez provizija, bez komplikacija.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-6">
@@ -322,33 +437,6 @@ export default function ForCompaniesPage() {
                       </div>
                     </div>
                   ))}
-                </div>
-              </div>
-              <div className="relative bg-gradient-to-br from-orange-50 to-white rounded-3xl p-8 md:p-10 border border-orange-100">
-                <div className="absolute -top-3 left-8">
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
-                    <Shield className="w-3 h-3" /> Garancija
-                  </span>
-                </div>
-                <div className="mt-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white border border-orange-100 flex items-center justify-center mb-6">
-                    <BadgeCheck className="w-8 h-8 text-brand-orange" />
-                  </div>
-                  <blockquote className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-                    "Plaćate fiksno. Zaradite koliko želite."
-                  </blockquote>
-                  <p className="text-steel leading-relaxed mb-6">
-                    Ne naplaćujemo proviziju po poslu. Nakon registracije, plaćate samo izabrani mjesečni paket. 
-                    Sve iznad toga je vaša zarada.
-                  </p>
-                  <div className="flex items-center gap-3 text-sm text-gray-900 font-medium">
-                    <div className="flex -space-x-2">
-                      <div className="w-8 h-8 rounded-full bg-brand-orange text-white flex items-center justify-center text-xs font-bold border-2 border-white">M</div>
-                      <div className="w-8 h-8 rounded-full bg-ink text-white flex items-center justify-center text-xs font-bold border-2 border-white">A</div>
-                      <div className="w-8 h-8 rounded-full bg-steel text-white flex items-center justify-center text-xs font-bold border-2 border-white">S</div>
-                    </div>
-                    <span>Pridružite se +2.800 kolega</span>
-                  </div>
                 </div>
               </div>
             </div>
