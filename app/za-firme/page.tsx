@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
+import PricingCTA from '@/components/PricingCTA';
 import {
   CheckCircle,
   TrendingUp,
@@ -197,13 +198,12 @@ export default function ForCompaniesPage() {
                 Dobijajte upite, šaljite ponude i rastite bez velikih početnih ulaganja.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link
-                  href="/registracija/"
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30 transition-all duration-200"
+                <PricingCTA
+                  popular
+                  className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
                 >
                   Registrujte firmu besplatno
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
+                </PricingCTA>
                 <Link
                   href="#cijene"
                   className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
@@ -424,16 +424,9 @@ export default function ForCompaniesPage() {
                     ))}
                   </ul>
 
-                  <Link
-                    href="/registracija/"
-                    className={`block text-center px-6 py-3.5 rounded-xl font-bold transition-all duration-200 ${
-                      plan.popular
-                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-md shadow-brand-orange/20 hover:shadow-lg hover:shadow-brand-orange/30'
-                        : 'border-2 border-gray-200 text-gray-900 hover:border-brand-orange hover:text-brand-orange hover:bg-orange-50/50'
-                    }`}
-                  >
+                  <PricingCTA popular={plan.popular} className="w-full">
                     {plan.cta}
-                  </Link>
+                  </PricingCTA>
                 </div>
               ))}
             </div>
@@ -502,13 +495,12 @@ export default function ForCompaniesPage() {
               Bez rizika, bez ugovorne obaveze.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                href="/registracija/"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-semibold shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30 transition-all duration-200"
+              <PricingCTA
+                popular
+                className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
               >
                 Registrujte firmu besplatno
-                <ArrowRight className="h-5 w-5" />
-              </Link>
+              </PricingCTA>
               <Link
                 href="/faq/"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
