@@ -36,52 +36,68 @@ const benefits = [
 
 const pricingPlans = [
   {
-    name: 'Basic',
+    name: 'Besplatno',
     price: '0',
     period: 'besplatno',
     description: 'Idealno za početak',
     emblem: 'Start',
     features: [
-      'Profil firme',
-      'Do 5 odgovora mjesečno',
-      'Osnovni portfolio',
+      'Profil firme / majstora',
+      '5 ponuda mjesečno',
       'Kontakt sa klijentima',
+      'Osnovni portfolio',
     ],
     cta: 'Počnite besplatno',
     popular: false,
   },
   {
-    name: 'Premium',
-    price: '49',
+    name: 'Start',
+    price: '29',
     period: 'KM/mjesečno',
-    description: 'Za aktivne firme',
-    emblem: 'Najpopularniji',
+    description: 'Za početnike koji žele više',
+    emblem: 'Rast',
     features: [
-      'Neograničeni odgovori',
-      'Istaknuti profil',
-      'Napredni portfolio',
-      'Prioritetni prikaz',
-      'Statistika posjeta',
+      '10 ponuda mjesečno',
+      'Verifikacija profila',
+      'Istaknuti kontakt',
+      'Prioritet u listi',
       'Email podrška',
     ],
-    cta: 'Odaberite Premium',
-    popular: true,
+    cta: 'Odaberite Start',
+    popular: false,
   },
   {
     name: 'Pro',
-    price: '99',
+    price: '79',
     period: 'KM/mjesečno',
-    description: 'Za najveće firme',
-    emblem: 'Profesionalac',
+    description: 'Za aktivne firme i majstore',
+    emblem: 'Najpopularniji',
     features: [
-      'Sve iz Premium paketa',
-      'Vlastiti logotip na profilu',
-      'Napredna analitika',
+      '30 ponuda mjesečno',
+      'Istaknuti profil',
+      'Verifikacija profila',
+      'Prioritetna podrška',
+      'Statistika posjeta',
       'Promovirani listingi',
-      'Dedicated support',
-      'API pristup',
     ],
     cta: 'Odaberite Pro',
+    popular: true,
+  },
+  {
+    name: 'Premium',
+    price: '149',
+    period: 'KM/mjesečno',
+    description: 'Za najveće i najzahtjevnije',
+    emblem: 'Premium',
+    features: [
+      'Neograničene ponude',
+      'Premium istaknutost',
+      'Verifikacija profila',
+      '24/7 podrška',
+      'Napredna analitika',
+      'Vlastiti logotip na profilu',
+    ],
+    cta: 'Odaberite Premium',
     popular: false,
   },
 ];
@@ -207,15 +223,18 @@ export default function ForCompaniesPage() {
               <p className="text-steel max-w-xl mx-auto">
                 Počnite besplatno. Nadogradite kada vidite da vam platforma donosi poslove.
               </p>
+              <p className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-green-700 bg-green-50 px-4 py-2 rounded-full">
+                <Sparkles className="w-4 h-4" /> Godišnje plaćanje: 10% popusta
+              </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto items-stretch">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto items-stretch">
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
                   className={`group relative bg-white rounded-3xl p-8 flex flex-col transition-all duration-300 hover:-translate-y-2 ${
                     plan.popular
-                      ? 'ring-2 ring-brand-orange shadow-2xl shadow-brand-orange/15 md:-my-3 md:py-11 z-10 hover:shadow-brand-orange/25'
+                      ? 'ring-2 ring-brand-orange shadow-2xl shadow-brand-orange/15 z-10 hover:shadow-brand-orange/25'
                       : 'border border-gray-100 hover:shadow-2xl hover:border-brand-orange/20 hover:ring-1 hover:ring-brand-orange/10'
                   }`}
                 >
