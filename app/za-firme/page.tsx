@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
 import { CheckCircle, TrendingUp, Users, Star, ArrowRight } from 'lucide-react';
 
 const benefits = [
@@ -148,40 +149,7 @@ export default function ForCompaniesPage() {
         <section className="py-16 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="section-title text-center mb-12">Kako funkcioniše?</h2>
-            
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
-                  1
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Registrujte se</h3>
-                <p className="text-sm text-gray-600">Napravite profil firme za 5 minuta</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
-                  2
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Pregledajte poslove</h3>
-                <p className="text-sm text-gray-600">Pronađite poslove koji vam odgovaraju</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
-                  3
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Pošaljite ponudu</h3>
-                <p className="text-sm text-gray-600">Opišite svoju ponudu i cijenu</p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-primary-600 rounded-full flex items-center justify-center text-[#ffffff] font-bold text-xl mx-auto mb-4">
-                  4
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Dobijte posao</h3>
-                <p className="text-sm text-gray-600">Ako vas klijent odabere, započinjete saradnju</p>
-              </div>
-            </div>
+            <FirmProcessAnimation />
           </div>
         </section>
 
