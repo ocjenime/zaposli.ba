@@ -287,8 +287,7 @@ function FirmSubscriptionContent() {
                       !plan.payment_link_url.includes('tvoj_link')
                   );
                   const hasStripe = isRealStripeLink;
-                  const payPalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-                  const hasPayPal = Boolean(payPalClientId && payPalClientId !== 'test');
+                  const hasPayPal = false; // PayPal hidden until explicitly enabled
                   const isProcessing = processingPlanId === plan.id;
                   return (
                     <div
@@ -319,13 +318,13 @@ function FirmSubscriptionContent() {
                           </span>
                         </p>
                         {interval === 'yearly' && plan.price_monthly > 0 && (
-                          <p className="text-xs text-steel">
-                            Umjesto {formatPrice(plan.price_monthly * 12)} KM mjesečno
+                          <p className="text-xs text-green-700 font-medium">
+                            Uštedite 10% · umjesto {formatPrice(plan.price_monthly * 12)} KM
                           </p>
                         )}
                         {interval === 'monthly' && plan.price_yearly > 0 && (
-                          <p className="text-xs text-steel">
-                            ili {formatPrice(plan.price_yearly)} KM/godišnje
+                          <p className="text-xs text-green-700 font-medium">
+                            Godišnje {formatPrice(plan.price_yearly)} KM (ušteda 10%)
                           </p>
                         )}
                       </div>
