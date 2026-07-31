@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ShieldCheck, MapPin, ThumbsUp, MessageSquare, Lock } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -62,18 +63,35 @@ export default function ONamaPage() {
         <PageHero
           title="O nama"
           subtitle="Platforma koja spaja klijente i provjerene građevinske firme u Bosni i Hercegovini"
+          image="/zaposli.ba/images/renovacija-enterijer.jpg"
         />
 
         {/* Misija */}
         <section className="py-16">
-          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Naša misija</h2>
-            <p className="text-lg text-steel leading-relaxed">
-              Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
-              klijente i provjerene građevinske firme u BiH na jednom mjestu: klijent besplatno objavi
-              posao, a provjerene firme se javljaju sa svojim ponudama. Transparentno, brzo i
-              bez posrednika koji uzimaju procenat.
-            </p>
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 order-2 md:order-1">
+                <Image
+                  src="/zaposli.ba/images/majstor-hero.jpg"
+                  alt="Provjereni majstor u domu"
+                  width={600}
+                  height={450}
+                  className="w-full h-auto object-cover"
+                />
+              </div>
+              <div className="order-1 md:order-2">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 tracking-tight">Naša misija</h2>
+                <p className="text-lg text-steel leading-relaxed mb-6">
+                  Vjerujemo da pronalaženje pouzdanog majstora ne smije biti lutrija. Zaposli.ba spaja
+                  klijente i provjerene građevinske firme u BiH na jednom mjestu: klijent besplatno objavi
+                  posao, a provjerene firme se javljaju sa svojim ponudama.
+                </p>
+                <p className="text-lg text-steel leading-relaxed">
+                  Transparentno, brzo i bez posrednika koji uzimaju procenat. Naš cilj je da svaki posao,
+                  od zamjene slavine do kompletne adaptacije, počne sa pravim majstorom.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
