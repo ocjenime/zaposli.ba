@@ -287,7 +287,8 @@ function FirmSubscriptionContent() {
                       !plan.payment_link_url.includes('tvoj_link')
                   );
                   const hasStripe = isRealStripeLink;
-                  const hasPayPal = Boolean(plan.paypal_plan_id);
+                  const payPalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+                  const hasPayPal = Boolean(payPalClientId && payPalClientId !== 'test');
                   const isProcessing = processingPlanId === plan.id;
                   return (
                     <div
