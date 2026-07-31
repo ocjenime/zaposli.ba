@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import HowItWorks from '@/components/HowItWorks';
 import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
+import ServicesShowcase from '@/components/ServicesShowcase';
 import RecentProjects from '@/components/RecentProjects';
 import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
@@ -20,6 +21,7 @@ export default function Home() {
         <HowItWorks />
         <PopularCategories />
         <StatsSection />
+        <ServicesShowcase />
         <RecentProjects />
         <Testimonials />
         <CTASection />

@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ClipboardList, Users, CheckCircle, Star, Shield, Clock, MessageSquare } from 'lucide-react';
 
 export default function HowItWorksPage() {
@@ -9,12 +10,20 @@ export default function HowItWorksPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative bg-cloud py-16 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative py-20 md:py-28 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/zaposli.ba/images/renovacija-enterijer.jpg"
+              alt="Renovacija enterijera"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-ink/70" />
+          </div>
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Kako funkcioniše Zaposli.ba?</h1>
-            <p className="text-lg text-steel max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Kako funkcioniše Zaposli.ba?</h1>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
               Jednostavan proces u 3 koraka do idealnog majstora za vaš posao
             </p>
           </div>
@@ -114,6 +123,59 @@ export default function HowItWorksPage() {
               <Link href="/registracija-firme" className="btn-primary text-lg">
                 Registrujte firmu besplatno
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Real project gallery */}
+        <section className="py-16 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">Stvarni majstori, stvarni poslovi</h2>
+              <p className="text-steel text-lg">
+                Na platformi svakodnevno pronalazite profesionalce za sve vrste radova u domu i poslovnom prostoru.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
+                <Image
+                  src="/zaposli.ba/images/vodoinstalater.jpg"
+                  alt="Vodoinstalater na poslu"
+                  width={400}
+                  height={280}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/80 to-transparent p-5">
+                  <h3 className="text-white font-bold">Vodoinstalateri</h3>
+                  <p className="text-white/80 text-sm">Popravke, cijevi, kupatila, bojleri</p>
+                </div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
+                <Image
+                  src="/zaposli.ba/images/elektricar.jpg"
+                  alt="Električar na poslu"
+                  width={400}
+                  height={280}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/80 to-transparent p-5">
+                  <h3 className="text-white font-bold">Električari</h3>
+                  <p className="text-white/80 text-sm">Instalacije, osigurači, rasvjeta</p>
+                </div>
+              </div>
+              <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
+                <Image
+                  src="/zaposli.ba/images/ciscenje.jpg"
+                  alt="Čišćenje prostora"
+                  width={400}
+                  height={280}
+                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-ink/80 to-transparent p-5">
+                  <h3 className="text-white font-bold">Čišćenje</h3>
+                  <p className="text-white/80 text-sm">Stanovi, kuće, poslovni prostori</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

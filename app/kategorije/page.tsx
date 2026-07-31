@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { ArrowRight, Siren } from 'lucide-react';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -53,12 +54,20 @@ export default function CategoriesPage() {
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
         {/* Hero */}
-        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
+        <section className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/zaposli.ba/images/farbanje-zid.jpg"
+              alt="Majstor farba zid"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-ink/65" />
+          </div>
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-4 tracking-tight">Kategorije usluga</h1>
-            <p className="text-lg text-steel max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Kategorije usluga</h1>
+            <p className="text-lg text-white/80 max-w-2xl mx-auto">
               Pronađite majstore za sve: od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7
             </p>
           </div>
