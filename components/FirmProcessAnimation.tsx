@@ -9,13 +9,122 @@ const WHITE = '#FFFFFF';
 const GREEN = '#22C55E';
 const YELLOW = '#FACC15';
 const SKIN = '#E8B89A';
-const BLUE = '#38BDF8';
+const BLUE = '#2563EB';
+const HAT_YELLOW = '#FACC15';
+
+function Majstor(props: {
+  x: number;
+  y: number;
+  scale?: number;
+  arm?: 'clipboard' | 'phone' | 'document' | 'wallet';
+  face?: 'smile' | 'neutral';
+  toolBelt?: boolean;
+}) {
+  const { x, y, scale = 1, arm = 'clipboard', face = 'smile', toolBelt = true } = props;
+  const s = scale;
+  const t = (tx: number, ty: number) => `translate(${x + tx * s} ${y + ty * s}) scale(${s})`;
+
+  return (
+    <g className="anim-float-subtle">
+      {/* Noge / cipele */}
+      <g transform={t(0, 0)}>
+        <rect x="-16" y="54" width="14" height="14" rx="4" fill="#1E293B" stroke={INK} strokeWidth="2" />
+        <rect x="2" y="54" width="14" height="14" rx="4" fill="#1E293B" stroke={INK} strokeWidth="2" />
+      </g>
+
+      {/* Telo — radno odjelo / kombinezon */}
+      <g transform={t(0, 0)}>
+        <rect x="-20" y="12" width="40" height="48" rx="12" fill={BLUE} stroke={INK} strokeWidth="2" />
+        {/* Reflektirajuća traka */}
+        <rect x="-20" y="34" width="40" height="6" rx="1" fill={YELLOW} opacity="0.9" />
+        <rect x="-20" y="44" width="40" height="6" rx="1" fill={YELLOW} opacity="0.9" />
+        {/* Džepovi na kombinezonu */}
+        <rect x="-16" y="22" width="10" height="12" rx="2" fill="#1E3A8A" stroke={INK} strokeWidth="1.5" />
+        <rect x="6" y="22" width="10" height="12" rx="2" fill="#1E3A8A" stroke={INK} strokeWidth="1.5" />
+        {/* Kopča / sredina */}
+        <rect x="-2" y="14" width="4" height="30" rx="2" fill="#1E3A8A" />
+      </g>
+
+      {/* Vrat */}
+      <g transform={t(0, 0)}>
+        <rect x="-5" y="2" width="10" height="14" rx="3" fill={SKIN} />
+      </g>
+
+      {/* Glava */}
+      <g transform={t(0, 0)}>
+        <circle cx="0" cy="-8" r="15" fill={SKIN} stroke={INK} strokeWidth="2" />
+        {/* Oči */}
+        <circle cx="-5" cy="-9" r="2" fill={INK} />
+        <circle cx="5" cy="-9" r="2" fill={INK} />
+        {/* Osmiјeh ili neutral */}
+        {face === 'smile' ? (
+          <path d="M-5 -2 Q0 2 5 -2" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+        ) : (
+          <line x1="-4" y1="-2" x2="4" y2="-2" stroke={INK} strokeWidth="1.5" strokeLinecap="round" />
+        )}
+      </g>
+
+      {/* Zaštitni šlem */}
+      <g transform={t(0, 0)}>
+        {/* Kruna šlema */}
+        <path d="M-16 -16 C-16 -34 16 -34 16 -16" fill={HAT_YELLOW} stroke={INK} strokeWidth="2" />
+        {/* Greben na sredini šlema */}
+        <path d="M-2 -30 L-2 -18" stroke={INK} strokeWidth="2" strokeLinecap="round" />
+        <path d="M2 -30 L2 -18" stroke={INK} strokeWidth="2" strokeLinecap="round" />
+        {/* Obod / šilt */}
+        <rect x="-18" y="-16" width="36" height="6" rx="3" fill={HAT_YELLOW} stroke={INK} strokeWidth="2" />
+      </g>
+
+      {/* Tool belt */}
+      {toolBelt && (
+        <g transform={t(0, 0)}>
+          <rect x="-22" y="38" width="44" height="8" rx="2" fill="#3E2723" stroke={INK} strokeWidth="1.5" />
+          {/* Džep na pojasu */}
+          <rect x="12" y="36" width="10" height="14" rx="2" fill="#3E2723" stroke={INK} strokeWidth="1.5" />
+          {/* Ključ viri */}
+          <g transform="rotate(-25 16 38)">
+            <rect x="14" y="28" width="4" height="16" rx="1" fill={STEEL} stroke={INK} strokeWidth="1.5" />
+            <circle cx="16" cy="26" r="5" fill={STEEL} stroke={INK} strokeWidth="1.5" />
+            <circle cx="16" cy="26" r="2" fill="#3E2723" />
+          </g>
+        </g>
+      )}
+
+      {/* Lijeva ruka (obično dole) */}
+      <g transform={t(0, 0)}>
+        <rect x="-32" y="18" width="10" height="20" rx="5" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+      </g>
+
+      {/* Desna ruka s objektom */}
+      {arm === 'clipboard' && (
+        <g transform={t(0, 0)}>
+          <rect x="22" y="10" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+        </g>
+      )}
+      {arm === 'phone' && (
+        <g transform={t(0, 0)}>
+          <rect x="20" y="6" width="8" height="22" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" transform="rotate(-10 24 17)" />
+        </g>
+      )}
+      {arm === 'document' && (
+        <g transform={t(0, 0)}>
+          <rect x="22" y="8" width="8" height="20" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+        </g>
+      )}
+      {arm === 'wallet' && (
+        <g transform={t(0, 0)}>
+          <rect x="20" y="12" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" transform="rotate(-15 24 21)" />
+        </g>
+      )}
+    </g>
+  );
+}
 
 export function FirmProcessAnimation() {
   return (
     <div className="w-full max-w-6xl mx-auto">
       <svg
-        viewBox="0 0 1100 260"
+        viewBox="0 0 1100 280"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="w-full h-auto"
@@ -28,74 +137,49 @@ export function FirmProcessAnimation() {
         </title>
 
         {/* Pozadinski okruženje za svaki korak */}
-        <circle cx="150" cy="120" r="108" fill={CLOUD} opacity="0.9" />
-        <circle cx="390" cy="120" r="108" fill={CLOUD} opacity="0.9" />
-        <circle cx="630" cy="120" r="108" fill={CLOUD} opacity="0.9" />
-        <circle cx="870" cy="120" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="150" cy="130" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="390" cy="130" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="630" cy="130" r="108" fill={CLOUD} opacity="0.9" />
+        <circle cx="870" cy="130" r="108" fill={CLOUD} opacity="0.9" />
 
         {/* Dekorativni akcenti */}
-        <circle cx="100" cy="90" r="8" fill={ORANGE_LIGHT} />
-        <circle cx="1020" cy="80" r="10" fill={ORANGE_LIGHT} />
-        <rect x="350" y="72" width="24" height="24" rx="6" fill={ORANGE_LIGHT} transform="rotate(12 362 84)" />
-        <rect x="590" y="78" width="20" height="20" rx="5" fill={ORANGE_LIGHT} transform="rotate(-8 600 88)" />
+        <circle cx="100" cy="100" r="8" fill={ORANGE_LIGHT} />
+        <circle cx="1020" cy="90" r="10" fill={ORANGE_LIGHT} />
+        <rect x="350" y="82" width="24" height="24" rx="6" fill={ORANGE_LIGHT} transform="rotate(12 362 94)" />
+        <rect x="590" y="88" width="20" height="20" rx="5" fill={ORANGE_LIGHT} transform="rotate(-8 600 98)" />
 
         {/* Linija vremenske ose */}
-        <line x1="220" y1="120" x2="320" y2="120" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
-        <line x1="460" y1="120" x2="560" y2="120" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
-        <line x1="700" y1="120" x2="800" y2="120" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
+        <line x1="220" y1="130" x2="320" y2="130" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
+        <line x1="460" y1="130" x2="560" y2="130" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
+        <line x1="700" y1="130" x2="800" y2="130" stroke="#E2E8F0" strokeWidth="2" strokeLinecap="round" strokeDasharray="6 6" />
 
         {/* Pokretni markeri */}
         <g className="anim-timeline-dot">
-          <circle cx="270" cy="120" r="5" fill={ORANGE} opacity="0.85" />
+          <circle cx="270" cy="130" r="5" fill={ORANGE} opacity="0.85" />
         </g>
         <g className="anim-timeline-dot anim-timeline-dot-delay">
-          <circle cx="510" cy="120" r="5" fill={ORANGE} opacity="0.85" />
+          <circle cx="510" cy="130" r="5" fill={ORANGE} opacity="0.85" />
         </g>
         <g className="anim-timeline-dot anim-timeline-dot-delay-2">
-          <circle cx="750" cy="120" r="5" fill={ORANGE} opacity="0.85" />
+          <circle cx="750" cy="130" r="5" fill={ORANGE} opacity="0.85" />
         </g>
 
         {/* Strelica 1 */}
-        <path d="M308 120 L320 120" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M314 115 L320 120 L314 125" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M308 130 L320 130" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M314 125 L320 130 L314 135" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {/* Strelica 2 */}
-        <path d="M548 120 L560 120" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M554 115 L560 120 L554 125" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M548 130 L560 130" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M554 125 L560 130 L554 135" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
         {/* Strelica 3 */}
-        <path d="M788 120 L800 120" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M794 115 L800 120 L794 125" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M788 130 L800 130" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M794 125 L800 130 L794 135" stroke="#CBD5E1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
 
         {/* ========== KORAK 1: REGISTRUJ SE ========== */}
         <g>
-          {/* Majstor sa šlemom i kliještima */}
-          <g className="anim-float-subtle">
-            {/* Telo — radna odjeća */}
-            <rect x="116" y="116" width="42" height="54" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
-            {/* Pregrada na kombinezonu */}
-            <rect x="116" y="140" width="42" height="6" rx="1" fill={INK} opacity="0.15" />
-            {/* Vrat */}
-            <rect x="133" y="106" width="8" height="12" rx="3" fill={SKIN} />
-            {/* Glava */}
-            <circle cx="137" cy="96" r="16" fill={SKIN} stroke={INK} strokeWidth="2" />
-            {/* Šlem */}
-            <path d="M117 88 C117 72 138 68 157 78 C153 66 135 62 123 70 C111 78 113 88 117 88" fill={INK} />
-            <rect x="118" y="86" width="38" height="6" rx="3" fill={STEEL} />
-            {/* Oči */}
-            <circle cx="132" cy="96" r="2" fill={INK} />
-            <circle cx="144" cy="96" r="2" fill={INK} />
-            {/* Osmiјeh */}
-            <path d="M132 106 Q138 110 144 106" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            {/* Ruka */}
-            <rect x="100" y="128" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
-            {/* Kliješta u ruci */}
-            <g transform="rotate(-25 98 148)">
-              <rect x="94" y="140" width="5" height="22" rx="2" fill={STEEL} stroke={INK} strokeWidth="1.5" />
-              <circle cx="96.5" cy="138" r="4" fill={STEEL} stroke={INK} strokeWidth="1.5" />
-            </g>
-          </g>
+          <Majstor x={126} y={138} scale={1} arm="clipboard" face="smile" />
 
           {/* Clipboard sa profilom */}
-          <g transform="translate(170, 94)">
+          <g transform="translate(172, 102)">
             <rect x="0" y="0" width="52" height="72" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
             <rect x="-6" y="-8" width="64" height="12" rx="4" fill={ORANGE} stroke={INK} strokeWidth="2" />
             {/* Profilna slika */}
@@ -112,175 +196,168 @@ export function FirmProcessAnimation() {
             <rect x="48" y="58" width="6" height="28" rx="2" fill="#94A3B8" stroke={INK} strokeWidth="1.5" transform="rotate(-45 51 72)" />
           </g>
 
+          {/* Kliješta u desnoj ruci */}
+          <g transform="translate(150, 150) rotate(-25)">
+            <rect x="0" y="0" width="5" height="22" rx="2" fill={STEEL} stroke={INK} strokeWidth="1.5" />
+            <circle cx="2.5" cy="-2" r="4" fill={STEEL} stroke={INK} strokeWidth="1.5" />
+          </g>
+
           {/* Badge sa brojem 1 */}
           <g>
-            <circle cx="106" cy="78" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
-            <text x="106" y="83" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>1</text>
+            <circle cx="106" cy="88" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
+            <text x="106" y="93" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>1</text>
           </g>
         </g>
 
-        <text x="150" y="222" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">REGISTRUJ SE</text>
-        <text x="150" y="240" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Profil firme/majstora</text>
+        <text x="150" y="232" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">REGISTRUJ SE</text>
+        <text x="150" y="250" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Profil firme/majstora</text>
 
         {/* ========== KORAK 2: PRONAĐI POSAO ========== */}
         <g>
-          {/* Telefon sa notifikacijama i oglasom */}
-          <g className="anim-float-subtle">
-            <rect x="342" y="72" width="40" height="72" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
-            <rect x="346" y="82" width="32" height="52" rx="4" fill={CLOUD} />
-            {/* Header oglasa */}
-            <rect x="348" y="88" width="28" height="10" rx="3" fill={INK} />
-            <rect x="350" y="90" width="8" height="6" rx="1" fill={WHITE} opacity="0.3" />
-            {/* Notifikacija na telefonu */}
-            <rect x="348" y="104" width="28" height="32" rx="6" fill={ORANGE_LIGHT} stroke={ORANGE} strokeWidth="1.5" />
-            <circle cx="362" cy="114" r="5" fill={ORANGE} />
-            <path d="M359 114 L361 116 L365 112" stroke={WHITE} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <rect x="353" y="124" width="18" height="3" rx="1.5" fill={STEEL} />
-            <rect x="353" y="130" width="12" height="3" rx="1.5" fill={STEEL} />
-            {/* Ping */}
-            <circle cx="362" cy="72" r="8" fill={ORANGE} className="anim-ping-ring" />
-            <circle cx="362" cy="72" r="6" fill={ORANGE} />
-          </g>
+          <Majstor x={366} y={138} scale={1} arm="phone" face="neutral" />
 
-          {/* Majstor gleda telefon */}
-          <g className="anim-float-subtle">
-            <rect x="300" y="132" width="22" height="34" rx="8" fill={ORANGE} stroke={INK} strokeWidth="2" />
-            <rect x="307" y="124" width="8" height="10" rx="3" fill={SKIN} />
-            <circle cx="311" cy="116" r="10" fill={SKIN} stroke={INK} strokeWidth="2" />
-            <path d="M299 110 C299 98 312 96 323 102 C321 94 309 92 302 98 C295 104 297 112 299 110" fill={INK} />
-            <circle cx="308" cy="116" r="1.5" fill={INK} />
-            <circle cx="316" cy="116" r="1.5" fill={INK} />
-            <path d="M308 122 Q312 125 316 122" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            <rect x="282" y="138" width="6" height="14" rx="3" fill={SKIN} stroke={INK} strokeWidth="1.5" />
+          {/* Telefon u ruci */}
+          <g transform="translate(386, 132) rotate(-10)">
+            <rect x="0" y="0" width="22" height="40" rx="5" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <rect x="2" y="4" width="18" height="32" rx="3" fill={CLOUD} />
+            {/* Notifikacija */}
+            <rect x="4" y="10" width="14" height="20" rx="4" fill={ORANGE_LIGHT} stroke={ORANGE} strokeWidth="1.5" />
+            <circle cx="11" cy="16" r="4" fill={ORANGE} />
+            <path d="M8 16 L10 18 L14 14" stroke={WHITE} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <rect x="6" y="24" width="10" height="2" rx="1" fill={STEEL} />
+            <rect x="6" y="28" width="6" height="2" rx="1" fill={STEEL} />
+            {/* Ping */}
+            <circle cx="11" cy="0" r="6" fill={ORANGE} className="anim-ping-ring" />
+            <circle cx="11" cy="0" r="4" fill={ORANGE} />
           </g>
 
           {/* Kartica oglasa pored */}
-          <g className="anim-float-subtle" transform="translate(0, 0)">
-            <rect x="400" y="92" width="56" height="64" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
-            <rect x="406" y="100" width="16" height="16" rx="4" fill={ORANGE_LIGHT} />
-            <rect x="426" y="102" width="24" height="4" rx="2" fill={INK} />
-            <rect x="426" y="110" width="18" height="4" rx="2" fill={STEEL} />
-            <rect x="406" y="124" width="44" height="4" rx="2" fill={ORANGE_LIGHT} />
-            <rect x="406" y="132" width="36" height="4" rx="2" fill={ORANGE_LIGHT} />
-            <rect x="406" y="144" width="28" height="10" rx="5" fill={ORANGE} />
-            <text x="420" y="152" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="7" fontWeight="700" fill={WHITE}>NOVO</text>
+          <g className="anim-float-subtle">
+            <rect x="420" y="100" width="56" height="64" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <rect x="426" y="108" width="16" height="16" rx="4" fill={ORANGE_LIGHT} />
+            <rect x="446" y="110" width="24" height="4" rx="2" fill={INK} />
+            <rect x="446" y="118" width="18" height="4" rx="2" fill={STEEL} />
+            <rect x="426" y="132" width="44" height="4" rx="2" fill={ORANGE_LIGHT} />
+            <rect x="426" y="140" width="36" height="4" rx="2" fill={ORANGE_LIGHT} />
+            <rect x="426" y="152" width="28" height="10" rx="5" fill={ORANGE} />
+            <text x="440" y="160" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="7" fontWeight="700" fill={WHITE}>NOVO</text>
+          </g>
+
+          {/* Radni kombi / vozilo u pozadini */}
+          <g className="anim-drive-subtle">
+            <rect x="286" y="152" width="54" height="26" rx="6" fill={INK} stroke={INK} strokeWidth="1.5" />
+            <rect x="326" y="152" width="12" height="20" rx="2" fill={WHITE} opacity="0.9" stroke={INK} strokeWidth="1.5" />
+            <rect x="294" y="158" width="28" height="12" rx="2" fill={WHITE} opacity="0.9" />
+            <circle cx="302" cy="178" r="5" fill={WHITE} stroke={INK} strokeWidth="1.5" />
+            <circle cx="302" cy="178" r="2.5" fill={INK} />
+            <circle cx="326" cy="178" r="5" fill={WHITE} stroke={INK} strokeWidth="1.5" />
+            <circle cx="326" cy="178" r="2.5" fill={INK} />
+            <rect x="308" y="148" width="8" height="6" rx="3" fill={YELLOW} />
+            <rect x="284" y="158" width="6" height="2" rx="1" fill="#CBD5E1" className="anim-speed-line" />
+            <rect x="280" y="164" width="6" height="2" rx="1" fill="#CBD5E1" className="anim-speed-line anim-speed-line-delay" />
           </g>
 
           {/* Badge sa brojem 2 */}
           <g>
-            <circle cx="334" cy="78" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
-            <text x="334" y="83" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>2</text>
+            <circle cx="346" cy="88" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
+            <text x="346" y="93" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>2</text>
           </g>
         </g>
 
-        <text x="390" y="222" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">PRONAĐI POSAO</text>
-        <text x="390" y="240" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Dobijaj notifikacije</text>
+        <text x="390" y="232" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">PRONAĐI POSAO</text>
+        <text x="390" y="250" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Dobijaj notifikacije</text>
 
         {/* ========== KORAK 3: POŠALJI PONUDU ========== */}
         <g>
-          {/* Majstor sa ponudom */}
-          <g className="anim-float-subtle">
-            <rect x="574" y="112" width="42" height="54" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
-            <rect x="591" y="102" width="8" height="12" rx="3" fill={SKIN} />
-            <circle cx="595" cy="94" r="16" fill={SKIN} stroke={INK} strokeWidth="2" />
-            <path d="M575 86 C575 70 596 66 615 76 C611 64 593 60 581 68 C569 76 571 86 575 86" fill={INK} />
-            <rect x="576" y="84" width="38" height="6" rx="3" fill={STEEL} />
-            <circle cx="590" cy="94" r="2" fill={INK} />
-            <circle cx="602" cy="94" r="2" fill={INK} />
-            <path d="M590 104 Q596 108 602 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            <rect x="558" y="126" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
-          </g>
+          <Majstor x={606} y={138} scale={1} arm="document" face="smile" />
 
           {/* Dokument / ponuda */}
           <g className="anim-float-subtle">
-            <rect x="622" y="86" width="60" height="72" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
-            <rect x="628" y="96" width="48" height="6" rx="2" fill={INK} />
-            <rect x="628" y="108" width="36" height="4" rx="2" fill={STEEL} />
-            <rect x="628" y="116" width="40" height="4" rx="2" fill={STEEL} />
-            <rect x="628" y="128" width="24" height="4" rx="2" fill={ORANGE_LIGHT} />
-            <rect x="628" y="136" width="30" height="4" rx="2" fill={ORANGE_LIGHT} />
+            <rect x="636" y="96" width="60" height="72" rx="8" fill={WHITE} stroke={INK} strokeWidth="2" />
+            <rect x="642" y="106" width="48" height="6" rx="2" fill={INK} />
+            <rect x="642" y="118" width="36" height="4" rx="2" fill={STEEL} />
+            <rect x="642" y="126" width="40" height="4" rx="2" fill={STEEL} />
+            <rect x="642" y="138" width="24" height="4" rx="2" fill={ORANGE_LIGHT} />
+            <rect x="642" y="146" width="30" height="4" rx="2" fill={ORANGE_LIGHT} />
             {/* Iznos */}
-            <rect x="628" y="146" width="48" height="12" rx="4" fill={ORANGE} />
-            <text x="652" y="155" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="8" fontWeight="800" fill={WHITE}>500 KM</text>
+            <rect x="642" y="156" width="48" height="12" rx="4" fill={ORANGE} />
+            <text x="666" y="165" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="8" fontWeight="800" fill={WHITE}>500 KM</text>
             {/* Pečat */}
-            <circle cx="664" cy="102" r="10" fill={GREEN} stroke={WHITE} strokeWidth="2" />
-            <path d="M658 102 L662 107 L670 98" stroke={WHITE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="678" cy="112" r="10" fill={GREEN} stroke={WHITE} strokeWidth="2" />
+            <path d="M672 112 L676 117 L684 109" stroke={WHITE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </g>
 
           {/* Badge sa brojem 3 */}
           <g>
-            <circle cx="574" cy="78" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
-            <text x="574" y="83" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>3</text>
+            <circle cx="586" cy="88" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
+            <text x="586" y="93" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>3</text>
           </g>
         </g>
 
-        <text x="630" y="222" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">POŠALJI PONUDU</text>
-        <text x="630" y="240" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Brzo i jednostavno</text>
+        <text x="630" y="232" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">POŠALJI PONUDU</text>
+        <text x="630" y="250" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Brzo i jednostavno</text>
 
         {/* ========== KORAK 4: ZARADI ========== */}
         <g>
-          {/* Majstor sa novčanikom i kešom */}
-          <g className="anim-float-subtle">
-            <rect x="814" y="112" width="42" height="54" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
-            <rect x="831" y="102" width="8" height="12" rx="3" fill={SKIN} />
-            <circle cx="835" cy="94" r="16" fill={SKIN} stroke={INK} strokeWidth="2" />
-            <path d="M815 86 C815 70 836 66 855 76 C851 64 833 60 821 68 C809 76 811 86 815 86" fill={INK} />
-            <rect x="816" y="84" width="38" height="6" rx="3" fill={STEEL} />
-            <circle cx="830" cy="94" r="2" fill={INK} />
-            <circle cx="842" cy="94" r="2" fill={INK} />
-            <path d="M830 104 Q836 108 842 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
-            <rect x="798" y="126" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
-            <rect x="800" y="138" width="14" height="20" rx="4" fill={WHITE} stroke={INK} strokeWidth="2" transform="rotate(-15 807 148)" />
-            <rect x="802" y="142" width="10" height="10" rx="2" fill={GREEN} transform="rotate(-15 807 148)" />
-          </g>
+          <Majstor x={846} y={138} scale={1} arm="wallet" face="smile" />
 
-          {/* Novčanik */}
-          <g className="anim-float-subtle">
-            <rect x="860" y="98" width="66" height="44" rx="10" fill={INK} stroke={INK} strokeWidth="2" />
-            <rect x="864" y="106" width="58" height="28" rx="6" fill={WHITE} />
-            <circle cx="912" cy="120" r="6" fill={INK} />
-            <rect x="872" y="114" width="34" height="6" rx="2" fill={ORANGE} />
-            <rect x="872" y="124" width="22" height="5" rx="2" fill={ORANGE_LIGHT} />
-            <text x="890" y="122" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="8" fontWeight="700" fill={WHITE}>KM</text>
+          {/* Novčanik u ruci */}
+          <g transform="translate(866, 140) rotate(-15)">
+            <rect x="0" y="0" width="44" height="28" rx="6" fill={INK} stroke={INK} strokeWidth="2" />
+            <rect x="4" y="4" width="36" height="20" rx="4" fill={WHITE} />
+            <circle cx="36" cy="14" r="4" fill={INK} />
+            <rect x="10" y="10" width="20" height="6" rx="2" fill={ORANGE} />
+            <text x="20" y="16" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="5" fontWeight="700" fill={WHITE}>KM</text>
           </g>
 
           {/* Keš novčanice */}
           <g className="anim-cash-float">
-            <rect x="942" y="96" width="28" height="16" rx="3" fill={GREEN} stroke={INK} strokeWidth="1.5" />
-            <circle cx="956" cy="104" r="4" fill={WHITE} opacity="0.4" />
-            <text x="956" y="108" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="8" fontWeight="700" fill={WHITE}>KM</text>
+            <rect x="920" y="100" width="28" height="16" rx="3" fill={GREEN} stroke={INK} strokeWidth="1.5" />
+            <circle cx="934" cy="108" r="4" fill={WHITE} opacity="0.4" />
+            <text x="934" y="112" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="8" fontWeight="700" fill={WHITE}>KM</text>
           </g>
           <g className="anim-cash-float anim-cash-float-delay">
-            <rect x="930" y="124" width="24" height="14" rx="3" fill={YELLOW} stroke={INK} strokeWidth="1.5" />
-            <circle cx="942" cy="131" r="3" fill={INK} opacity="0.2" />
+            <rect x="908" y="126" width="24" height="14" rx="3" fill={YELLOW} stroke={INK} strokeWidth="1.5" />
+            <circle cx="920" cy="133" r="3" fill={INK} opacity="0.2" />
+            <text x="920" y="137" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="6" fontWeight="700" fill={INK}>KM</text>
           </g>
           <g className="anim-cash-float anim-cash-float-delay-2">
-            <rect x="948" y="142" width="26" height="14" rx="3" fill={GREEN} stroke={INK} strokeWidth="1.5" />
-            <circle cx="961" cy="149" r="3" fill={WHITE} opacity="0.4" />
-            <text x="961" y="152" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="6" fontWeight="700" fill={WHITE}>KM</text>
+            <rect x="926" y="142" width="26" height="14" rx="3" fill={GREEN} stroke={INK} strokeWidth="1.5" />
+            <circle cx="939" cy="149" r="3" fill={WHITE} opacity="0.4" />
+            <text x="939" y="153" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="6" fontWeight="700" fill={WHITE}>KM</text>
+          </g>
+
+          {/* Kovanice */}
+          <g className="anim-cash-float anim-cash-float-delay">
+            <circle cx="900" cy="102" r="8" fill={YELLOW} stroke={INK} strokeWidth="1.5" />
+            <text x="900" y="106" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="7" fontWeight="700" fill={INK}>2</text>
+          </g>
+          <g className="anim-cash-float anim-cash-float-delay-2">
+            <circle cx="940" cy="82" r="8" fill={YELLOW} stroke={INK} strokeWidth="1.5" />
+            <text x="940" y="86" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="7" fontWeight="700" fill={INK}>5</text>
           </g>
 
           {/* Zvjezdica / ocjena */}
           <g className="anim-check-pop">
-            <circle cx="958" cy="80" r="14" fill={YELLOW} stroke={INK} strokeWidth="2" />
-            <path d="M958 70 L961 80 L972 80 L963 86 L966 96 L958 90 L950 96 L953 86 L944 80 L955 80 Z" fill={INK} />
+            <circle cx="950" cy="92" r="14" fill={YELLOW} stroke={INK} strokeWidth="2" />
+            <path d="M950 82 L953 92 L964 92 L955 98 L958 108 L950 102 L942 108 L945 98 L936 92 L947 92 Z" fill={INK} />
           </g>
 
           {/* Check badge */}
           <g className="anim-check-pop">
-            <circle cx="800" cy="112" r="12" fill={GREEN} stroke={WHITE} strokeWidth="2.5" />
-            <path d="M795 112 L798 116 L805 109" stroke={WHITE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            <circle cx="786" cy="122" r="12" fill={GREEN} stroke={WHITE} strokeWidth="2.5" />
+            <path d="M780 122 L784 127 L792 119" stroke={WHITE} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
           </g>
 
           {/* Badge sa brojem 4 */}
           <g>
-            <circle cx="814" cy="78" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
-            <text x="814" y="83" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>4</text>
+            <circle cx="826" cy="88" r="14" fill={ORANGE} stroke={WHITE} strokeWidth="2" />
+            <text x="826" y="93" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="800" fill={WHITE}>4</text>
           </g>
         </g>
 
-        <text x="870" y="222" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">ZARADI</text>
-        <text x="870" y="240" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Keš + ocjene</text>
+        <text x="870" y="232" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="12" fontWeight="700" fill={INK} letterSpacing="0.05em">ZARADI</text>
+        <text x="870" y="250" textAnchor="middle" fontFamily="'Plus Jakarta Sans', system-ui, sans-serif" fontSize="10" fill={STEEL}>Keš + ocjene</text>
       </svg>
     </div>
   );
