@@ -295,6 +295,25 @@ textarea:focus-visible {
 .anim-timeline-dot-delay {
   animation-delay: 0.7s;
 }
+.anim-timeline-dot-delay-2 {
+  animation-delay: 1.4s;
+}
+
+@keyframes cashFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(3deg); }
+}
+.anim-cash-float {
+  animation: cashFloat 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.anim-cash-float-delay {
+  animation-delay: 0.5s;
+}
+.anim-cash-float-delay-2 {
+  animation-delay: 1s;
+}
 
 ::-webkit-scrollbar {
   width: 8px;
