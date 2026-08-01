@@ -5,6 +5,6 @@ export const site = {
   description:
     'Platforma koja spaja klijente sa građevinskim firmama i majstorima u Bosni i Hercegovini. Besplatno objavite posao i primite ponude od provjerenih izvođača.',
   email: 'info@zaposli.ba',
-  phone: '', // TODO: dodaj stvarni broj telefona
+  phone: '+387 61 770 707',
   city: 'Sarajevo, Bosna i Hercegovina',
 };
