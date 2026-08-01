@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, BadgeCheck, Star, Siren } from 'lucide-react';
+import { MapPin, ArrowRight, BadgeCheck, Star, Siren, CheckCircle2 } from 'lucide-react';
 import { EmergencyProcessAnimation } from '@/components/EmergencyProcessAnimation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -74,18 +74,19 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <p className="text-lg text-steel max-w-2xl mb-6">{cat.description}.</p>
 
             {/* Usluge u kategoriji */}
-            <div className="flex flex-wrap gap-2 mb-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-8">
               {cat.services.map((s) => (
-                <span
+                <div
                   key={s}
-                  className={`px-3.5 py-1.5 rounded-lg text-sm font-medium border ${
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium border ${
                     cat.featured
-                      ? 'bg-red-50 border-red-100 text-red-800'
-                      : 'bg-white border-gray-100 text-gray-900/80'
+                      ? 'bg-red-50/50 border-red-100 text-red-900'
+                      : 'bg-white border-gray-100 text-gray-900'
                   }`}
                 >
+                  <CheckCircle2 className={`w-4 h-4 shrink-0 ${cat.featured ? 'text-red-500' : 'text-brand-orange'}`} />
                   {s}
-                </span>
+                </div>
               ))}
             </div>
             <Link
@@ -132,30 +133,31 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </section>
         )}
 
-        {/* Gradovi */}
-        <section className="py-14 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {!cat.noSeo && (
-            <div className="mb-14">
-              <div className="bg-cloud rounded-2xl p-8">
-                <div className="flex items-center gap-3 mb-3">
-                  <MapPin className="w-6 h-6 text-brand-orange" />
-                  <h2 className="text-xl font-bold text-gray-900">Po gradovima</h2>
+            {/* Gradovi */}
+            <section className="py-14 bg-white">
+              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                {!cat.noSeo && (
+                <div className="mb-14">
+                  <div className="bg-cloud rounded-2xl p-6 md:p-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <MapPin className="w-6 h-6 text-brand-orange" />
+                      <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                      {cities.map((city) => (
+                        <Link
+                          key={city.slug}
+                          href={`/usluge/${cat.seoSlug}-${city.slug}/`}
+                          className="flex items-center justify-between px-3 py-2 bg-white rounded-lg text-sm text-steel hover:text-brand-orange hover:border-brand-orange/30 hover:shadow-sm transition-all border border-gray-100"
+                        >
+                          <span>{city.name}</span>
+                          <ArrowRight className="w-3 h-3 text-gray-300" />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {cities.slice(0, 10).map((city) => (
-                    <Link
-                      key={city.slug}
-                      href={`/usluge/${cat.seoSlug}-${city.slug}/`}
-                      className="px-3 py-1.5 bg-white rounded-lg text-sm text-steel hover:text-brand-orange hover:shadow-md transition-all border border-gray-100"
-                    >
-                      {city.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-            )}
+                )}
 
             {/* Majstori */}
             {catWorkers.length > 0 && (
