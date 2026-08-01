@@ -1,77 +1,84 @@
 import { UserPlus, ClipboardList, Bell, FileText, Briefcase, Wallet, Star } from 'lucide-react';
 
-const steps = [
+const phases = [
   {
-    icon: UserPlus,
-    title: 'Registruj se',
-    description: 'Kreiraj profil firme ili majstora.',
+    number: 1,
+    title: 'Pripremite profil',
+    description: 'Brza registracija i detalji koji izdvajaju vaš rad.',
+    accent: 'bg-orange-50 border-orange-100',
+    steps: [
+      { icon: UserPlus, title: 'Registruj se', description: 'Kreiraj profil firme ili majstora.' },
+      { icon: ClipboardList, title: 'Popuni profil', description: 'Dodaj usluge, gradove i reference.' },
+    ],
   },
   {
-    icon: ClipboardList,
-    title: 'Popuni profil',
-    description: 'Dodaj usluge, gradove i reference.',
+    number: 2,
+    title: 'Pronađite i odradite posao',
+    description: 'Dobijajte upite, šaljite ponude i naplatite rad.',
+    accent: 'bg-white border-gray-100',
+    steps: [
+      { icon: Bell, title: 'Dobijaj poslove', description: 'Primaj obavještenja za nove projekte.' },
+      { icon: FileText, title: 'Pošalji ponudu', description: 'Kontaktiraj klijenta i ponudi cijenu.' },
+      { icon: Briefcase, title: 'Odradi posao', description: 'Dogovori detalje i izvedi rad.' },
+      { icon: Wallet, title: 'Naplati', description: 'Direktno od klijenta, bez provizije.' },
+    ],
   },
   {
-    icon: Bell,
-    title: 'Dobijaj poslove',
-    description: 'Primaj obavještenja za nove projekte.',
-  },
-  {
-    icon: FileText,
-    title: 'Pošalji ponudu',
-    description: 'Kontaktiraj klijenta i ponudi cijenu.',
-  },
-  {
-    icon: Briefcase,
-    title: 'Odradi posao',
-    description: 'Dogovori detalje i izvedi rad.',
-  },
-  {
-    icon: Wallet,
-    title: 'Naplati',
-    description: 'Direktno od klijenta, bez provizije.',
-  },
-  {
-    icon: Star,
-    title: 'Skupljaj ocjene',
-    description: 'Građi reputaciju i dobijaj više posla.',
+    number: 3,
+    title: 'Gradite reputaciju',
+    description: 'Ocjene i recenzije donose vam nove klijente.',
+    accent: 'bg-orange-50 border-orange-100',
+    steps: [
+      { icon: Star, title: 'Skupljaj ocjene', description: 'Građi reputaciju i dobijaj više posla.' },
+    ],
   },
 ];
 
 export function FirmProcessAnimation() {
   return (
     <div className="relative">
-      {/* Desktop horizontal connector */}
-      <div className="hidden lg:block absolute top-5 left-[calc(100%/14)] right-[calc(100%/14)] h-0.5 bg-gray-200" />
+      {/* Desktop phase connector */}
+      <div className="hidden lg:block absolute top-10 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-gray-200 via-brand-orange/30 to-gray-200" />
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4 lg:gap-3">
-        {steps.map((step, index) => {
-          const Icon = step.icon;
-          const isLast = index === steps.length - 1;
-          return (
-            <div
-              key={step.title}
-              className="relative flex flex-col items-center text-center p-3 rounded-xl bg-white/60 border border-gray-100 lg:bg-transparent lg:border-0 lg:p-0"
-            >
-              <div className="relative z-10 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 shadow-sm flex items-center justify-center">
-                  <Icon className="w-5 h-5 text-brand-orange" strokeWidth={1.5} />
-                </div>
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-brand-orange text-white text-[10px] font-bold flex items-center justify-center border border-white">
-                  {index + 1}
-                </span>
-              </div>
-
-              <h3 className="text-sm font-bold text-gray-900 mb-0.5">{step.title}</h3>
-              <p className="text-xs text-steel leading-snug max-w-[140px]">{step.description}</p>
-
-              {/* Mobile vertical connector (except last) */}
-              {!isLast && (
-                <div className="md:hidden absolute top-5 left-full w-4 h-0.5 bg-gray-200 -translate-x-1/2" />
-              )}
+      <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+        {phases.map((phase) => (
+          <div
+            key={phase.title}
+            className={`relative rounded-2xl border p-5 ${phase.accent}`}
+          >
+            {/* Phase number */}
+            <div className="absolute -top-3 left-5">
+              <span className="w-7 h-7 rounded-full bg-brand-orange text-white text-sm font-bold flex items-center justify-center border-2 border-white shadow-sm">
+                {phase.number}
+              </span>
             </div>
-          );
-        })}
+
+            <div className="mb-4 pt-2">
+              <h3 className="text-lg font-bold text-gray-900">{phase.title}</h3>
+              <p className="text-sm text-steel mt-1">{phase.description}</p>
+            </div>
+
+            <div className="space-y-3">
+              {phase.steps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <div key={step.title} className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-brand-orange" strokeWidth={1.5} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-brand-orange">{index + 1}.</span>
+                        <h4 className="text-sm font-semibold text-gray-900">{step.title}</h4>
+                      </div>
+                      <p className="text-xs text-steel leading-snug mt-0.5">{step.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

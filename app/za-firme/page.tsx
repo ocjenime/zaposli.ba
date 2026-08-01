@@ -281,11 +281,11 @@ export default function ForCompaniesPage() {
                 <Building2 className="h-4 w-4" /> Kako radi
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
-                Od registracije do zarade u 4 koraka
+                Od registracije do zarade u 3 faze
               </h2>
               <p className="text-steel text-lg">
-                Besplatno se registrujte, pronađite poslove u vašoj oblasti i šaljite ponude
-                klijentima.
+                Besplatno se registrujte, pronađite poslove u vašoj oblasti, odradite ih i
+                gradite reputaciju.
               </p>
             </div>
             <FirmProcessAnimation />
