@@ -202,7 +202,7 @@ function PostProjectContent() {
   if (loading || !user) return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow flex items-center justify-center">
+      <main className="flex-grow flex items-center justify-center pt-24">
         <p className="text-steel">Učitavanje...</p>
       </main>
       <Footer />
@@ -213,7 +213,7 @@ function PostProjectContent() {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
-        <main className="flex-grow flex items-center justify-center py-20 px-4">
+        <main className="flex-grow flex items-center justify-center pt-28 pb-20 px-4">
           <div className="w-full max-w-lg text-center">
             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-orange/25">
               <svg className="w-10 h-10 text-[#ffffff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +244,7 @@ function PostProjectContent() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow py-12">
+      <main className="flex-grow pt-28 pb-12">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="flex items-center justify-between">
@@ -414,7 +414,7 @@ export default function PostProjectPage() {
       fallback={
         <div className="min-h-screen flex flex-col bg-cloud">
           <Header />
-          <main className="flex-grow flex items-center justify-center">
+          <main className="flex-grow flex items-center justify-center pt-24">
             <p className="text-steel">Učitavanje...</p>
           </main>
           <Footer />

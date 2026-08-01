@@ -84,7 +84,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow flex items-center justify-center py-12 px-4">
+      <main className="flex-grow flex items-center justify-center pt-24 pb-12 px-4">
         <div className="w-full max-w-md">
           <div className="bg-white rounded-xl shadow-md p-8">
             <div className="text-center mb-8">
