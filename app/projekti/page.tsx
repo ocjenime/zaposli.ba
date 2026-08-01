@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import {
   MapPin, Clock, BadgeCheck, ArrowRight, Loader2, Send, DollarSign,
   Calendar, ImageIcon, ChevronDown, ChevronUp, X, Search, SlidersHorizontal,
-  ArrowUpDown,
+  ArrowUpDown, ShieldCheck, LayoutGrid, Wallet,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -224,16 +224,19 @@ function ProjectsPageContent() {
             {/* Trust badges */}
             <div className="mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10">
               {[
-                { value: '24h', label: 'Prve ponude' },
-                { value: '0 KM', label: 'Bez provizije' },
-                { value: '20+', label: 'Kategorija' },
-                { value: '100%', label: 'Verifikacija' },
-              ].map((stat) => (
-                <div key={stat.label} className="bg-ink/90 backdrop-blur-sm px-6 py-5 text-center md:text-left">
-                  <p className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</p>
-                  <p className="text-sm text-white/50">{stat.label}</p>
-                </div>
-              ))}
+                { icon: Clock, label: 'Prve ponude u 24h' },
+                { icon: Wallet, label: 'Bez provizije' },
+                { icon: LayoutGrid, label: 'Sve kategorije' },
+                { icon: ShieldCheck, label: 'Verificirane firme' },
+              ].map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className="bg-ink/90 backdrop-blur-sm px-6 py-5 text-center md:text-left flex items-center justify-center md:justify-start gap-3">
+                    <Icon className="w-5 h-5 text-brand-orange shrink-0" />
+                    <p className="text-sm text-white/80 font-medium">{item.label}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
