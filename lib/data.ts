@@ -1,7 +1,8 @@
 import {
   BrickWall, Droplets, Zap, Paintbrush, Home, Hammer, TreePine,
   Shovel, Thermometer, Shield, Sparkles, Siren, Layers, KeySquare,
-  Wifi, Armchair, Truck, Car, HelpCircle, type LucideIcon,
+  Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
+  Waves, Flame, type LucideIcon,
 } from 'lucide-react';
 
 /* ---------------------------------- KATEGORIJE ---------------------------------- */
@@ -182,6 +183,49 @@ export const categories: Category[] = [
     count: 210, priceRange: '20-80 KM/h', priceNote: 'ili po usluzi',
     group: 'Auto usluge',
     services: ['Autoelektričar', 'Auto dijagnostika', 'Limarija i lakiranje', 'Vulkanizer', 'Auto detailing', 'Pranje vozila'],
+  },
+  // Specijalizovane instalacije
+  {
+    name: 'Solarne instalacije', slug: 'solarne-instalacije', seoSlug: 'solarne-instalacije',
+    profession: 'Solar instalater', icon: Sun,
+    description: 'Montaža solarnih panela, solarnih bojlera i fotovoltaik sistema',
+    count: 95, priceRange: 'po dogovoru', priceNote: 'zavisno od snage',
+    group: 'Instalacije',
+    services: ['Solarni paneli', 'Solarni bojleri', 'Fotovoltaik sistemi', 'Servis solarne opreme'],
+  },
+  {
+    name: 'Kamin i peći', slug: 'kamin-i-peci', seoSlug: 'kamin-i-peci',
+    profession: 'Majstor za kamine i peći', icon: Flame,
+    description: 'Montaža, servis i čišćenje kamina, peći i kotlova na drva i pelet',
+    count: 110, priceRange: '40-90 KM/h', priceNote: 'ili po poslu',
+    group: 'Instalacije',
+    services: ['Montaža kamina', 'Servis peći', 'Čišćenje dimnjaka', 'Peći na pelet'],
+  },
+  // Dvorište i okućnica
+  {
+    name: 'Bazeni i fontane', slug: 'bazeni-i-fontane', seoSlug: 'bazeni-i-fontane',
+    profession: 'Majstor za bazene', icon: Waves,
+    description: 'Izgradnja, održavanje i servis bazena, fontana i jezera',
+    count: 85, priceRange: 'po dogovoru', priceNote: 'zavisno od opsega',
+    group: 'Dvorište',
+    services: ['Izgradnja bazena', 'Održavanje bazena', 'Servis fontana', 'Hemija za bazene'],
+  },
+  // Projektovanje i dizajn
+  {
+    name: 'Projektovanje i arhitektura', slug: 'projektovanje-i-arhitektura', seoSlug: 'arhitekt',
+    profession: 'Arhitekta', icon: Ruler,
+    description: 'Idejna rješenja, projekti za dozvolu, 3D vizualizacije i nadzor',
+    count: 140, priceRange: 'po dogovoru', priceNote: 'po kvadraturi/projektu',
+    group: 'Projektovanje i dizajn',
+    services: ['Idejna rješenja', 'Projekti za dozvolu', '3D vizualizacije', 'Nadzor nad izvođenjem'],
+  },
+  {
+    name: 'Dizajn enterijera', slug: 'dizajn-enterijera', seoSlug: 'dizajner-enterijera',
+    profession: 'Dizajner enterijera', icon: Palette,
+    description: 'Uređenje interijera, izbor materijala, boja, namještaja i rasvjete',
+    count: 120, priceRange: 'po dogovoru', priceNote: 'po prostoru/satu',
+    group: 'Projektovanje i dizajn',
+    services: ['Dizajn interijera', 'Izbor materijala', 'Raspored namještaja', 'Savjetovanje o bojama'],
   },
   // Ostale usluge: free text, bez SEO stranica
   {
