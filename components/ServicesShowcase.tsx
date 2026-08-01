@@ -101,9 +101,9 @@ export default function ServicesShowcase() {
                 {content}
               </Link>
             ) : (
-              <div key={service.title}>
+              <Link key={service.title} href={`/kategorije/${service.slug}/`} className="block">
                 {content}
-              </div>
+              </Link>
             );
           })}
         </div>

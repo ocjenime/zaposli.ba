@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
-import { ArrowLeft, MapPin, Loader2, MessageSquare, CheckCircle, DollarSign, Calendar, ImageIcon } from 'lucide-react';
+import { ArrowLeft, MapPin, Loader2, MessageSquare, CheckCircle, DollarSign, Calendar, ImageIcon, X } from 'lucide-react';
 
 interface Firm {
   id: string;
@@ -372,21 +372,23 @@ function JobDetail() {
 
           {selectedImage && (
             <div
-              className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+              className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 sm:p-8"
               onClick={() => setSelectedImage(null)}
             >
-              <div className="relative max-w-4xl w-full max-h-[90vh]">
+              <button
+                onClick={() => setSelectedImage(null)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors"
+                aria-label="Zatvori"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
                 <img
                   src={selectedImage}
                   alt="Uvećana fotografija posla"
-                  className="w-full h-full object-contain rounded-lg"
+                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
                 />
-                <button
-                  onClick={() => setSelectedImage(null)}
-                  className="absolute -top-10 right-0 text-white text-sm hover:text-brand-orange"
-                >
-                  Zatvori
-                </button>
               </div>
             </div>
           )}
