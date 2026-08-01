@@ -226,8 +226,8 @@ export default function ForCompaniesPage() {
               <div className="relative flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
                   <Image
-                    src="/zaposli.ba/images/majstor-hero.jpg"
-                    alt="Majstor sa čekićem tokom renovacije"
+                    src="/zaposli.ba/images/ciscenje.jpg"
+                    alt="Profesionalni majstor s vrhunskom opremom na poslu"
                     width={560}
                     height={420}
                     className="w-full h-auto object-cover"
