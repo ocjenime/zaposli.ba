@@ -93,15 +93,15 @@ export default function NotificationBell() {
   }, [mounted, user]);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !open) return;
     function handleClickOutside(e: MouseEvent) {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [mounted]);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [mounted, open]);
 
   async function markAllRead() {
     if (!user) return;
