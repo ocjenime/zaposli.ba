@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { getCategory } from '@/lib/data';
-import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
+import { ArrowRight } from 'lucide-react';
 
 export default function CategoryCard({ slug }: { slug: string }) {
   const category = getCategory(slug);
@@ -12,22 +12,18 @@ export default function CategoryCard({ slug }: { slug: string }) {
   return (
     <Link
       href={`/kategorije/${category.slug}/`}
-      className="rounded-2xl p-6 border-2 bg-white text-gray-900 border-gray-100 hover:border-brand-orange/40 group transition-all duration-300 hover:shadow-xl"
+      className="group flex items-center gap-3 rounded-xl border border-gray-100 bg-white p-3 hover:border-brand-orange/30 hover:shadow-sm transition-all duration-200"
     >
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center group-hover:scale-110 transition-transform">
-          <Icon className="w-7 h-7 text-brand-orange" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-brand-orange transition-colors">
-            {category.name}
-          </h3>
-          <p className="text-sm text-steel mb-2">{category.description}</p>
-          <p className="text-sm font-medium text-brand-orange">
-            <LiveCategoryCount slug={category.slug} fallback={category.count} />
-          </p>
-        </div>
+      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-orange-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-colors">
+        <Icon className="w-5 h-5 text-brand-orange group-hover:text-white transition-colors" />
       </div>
+      <div className="flex-1 min-w-0">
+        <h3 className="text-sm font-semibold text-gray-900 group-hover:text-brand-orange transition-colors truncate">
+          {category.name}
+        </h3>
+        <p className="text-xs text-steel truncate">{category.description}</p>
+      </div>
+      <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
     </Link>
   );
 }
