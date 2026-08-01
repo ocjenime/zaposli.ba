@@ -22,7 +22,7 @@ export default function CitiesPage() {
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
         <PageHero
           title="Majstori po gradovima"
-          subtitle="Provjerene firme i majstore u 35 gradova širom Bosne i Hercegovine"
+          subtitle="Provjerene firme i majstori u 35 gradova širom Bosne i Hercegovine"
         />
 
         <section className="py-14 bg-white">
