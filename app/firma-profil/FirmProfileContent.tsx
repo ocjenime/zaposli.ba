@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import {
@@ -185,7 +186,13 @@ export default function FirmProfileContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow">
+        <Breadcrumbs
+          items={[
+            { name: 'Firme', href: '/projekti/' },
+            { name: firm.name },
+          ]}
+        />
         <section className="relative bg-cloud py-10 md:py-14 overflow-hidden">
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
