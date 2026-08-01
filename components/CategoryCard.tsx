@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import { getCategory } from '@/lib/data';
 import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
 
@@ -12,22 +13,25 @@ export default function CategoryCard({ slug }: { slug: string }) {
   return (
     <Link
       href={`/kategorije/${category.slug}/`}
-      className="rounded-2xl p-6 border-2 bg-white text-gray-900 border-gray-100 hover:border-brand-orange/40 group transition-all duration-300 hover:shadow-xl"
+      className="group relative flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-5 transition-all duration-300 hover:border-brand-orange/30 hover:shadow-card-hover md:p-6"
     >
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary-50 flex items-center justify-center group-hover:scale-110 transition-transform">
-          <Icon className="w-7 h-7 text-brand-orange" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900 mb-1 group-hover:text-brand-orange transition-colors">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary-50 transition-colors duration-300 group-hover:bg-brand-orange/10 md:h-14 md:w-14">
+        <Icon className="h-6 w-6 text-brand-orange transition-transform duration-300 group-hover:scale-110 md:h-7 md:w-7" />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold text-gray-900 transition-colors duration-300 group-hover:text-brand-orange md:text-lg">
             {category.name}
           </h3>
-          <p className="text-sm text-steel mb-2">{category.description}</p>
-          <p className="text-sm font-medium text-brand-orange">
-            <LiveCategoryCount slug={category.slug} fallback={category.count} />
-          </p>
         </div>
+        <p className="mt-0.5 line-clamp-2 text-sm text-steel">{category.description}</p>
+        <p className="mt-2 text-sm font-medium text-brand-orange">
+          <LiveCategoryCount slug={category.slug} fallback={category.count} />
+        </p>
       </div>
+
+      <ArrowRight className="h-5 w-5 shrink-0 text-gray-300 transition-all duration-300 group-hover:translate-x-1 group-hover:text-brand-orange" />
     </Link>
   );
 }
