@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
@@ -182,10 +181,62 @@ function ProjectsPageContent() {
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
-        <PageHero
-          title="Aktivni poslovi"
-          subtitle="Stvarni poslovi klijenata širom BiH: registrujte firmu i pošaljite ponudu"
-        />
+
+        {/* Premium banner — world-class editorial layout */}
+        <section className="relative overflow-hidden bg-ink">
+          {/* Ambient gradient layers */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-0 w-[600px] h-[400px] bg-[#2d2d3a] rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,125,0,0.12),transparent_40%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,18,0)_0%,rgba(13,13,18,0.85)_100%)]" />
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-32 pb-16 md:pt-40 md:pb-24">
+            <div className="max-w-3xl">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/60 text-xs font-medium tracking-wide uppercase mb-6">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+                Uživo objavljeni poslovi
+              </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] mb-6">
+                Pronađite posao <br className="hidden md:block" />
+                <span className="text-brand-orange">po vašoj mjeri.</span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed mb-8">
+                Stvarni klijenti širom Bosne i Hercegovine objavljuju poslove svaki dan. 
+                Filtrirajte, sortirajte i pošaljite ponudu za manje od minuta.
+              </p>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  href="/registracija/"
+                  className="inline-flex items-center gap-2 bg-white text-ink px-6 py-3.5 rounded-xl font-semibold hover:bg-white/90 transition-all active:scale-95"
+                >
+                  Registrujte firmu
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/za-firme/"
+                  className="inline-flex items-center gap-2 text-white/80 font-medium hover:text-white transition-colors"
+                >
+                  Kako funkcioniše
+                </Link>
+              </div>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-14 md:mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 rounded-2xl overflow-hidden border border-white/10">
+              {[
+                { value: '24h', label: 'Prve ponude' },
+                { value: '0 KM', label: 'Bez provizije' },
+                { value: '20+', label: 'Kategorija' },
+                { value: '100%', label: 'Verifikacija' },
+              ].map((stat) => (
+                <div key={stat.label} className="bg-ink/90 backdrop-blur-sm px-6 py-5 text-center md:text-left">
+                  <p className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</p>
+                  <p className="text-sm text-white/50">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
