@@ -87,7 +87,7 @@ CREATE POLICY "job_images_storage_insert_own"
   WITH CHECK (
     bucket_id = 'job-images'
     AND EXISTS (
-      SELECT 1 FROM jobs WHERE id::text = (storage.foldername(name))[1] AND client_id = auth.uid()
+      SELECT 1 FROM jobs WHERE id::text = split_part(name, '/', 1) AND client_id = auth.uid()
     )
   );
 
@@ -97,7 +97,7 @@ CREATE POLICY "job_images_storage_delete_own"
   USING (
     bucket_id = 'job-images'
     AND EXISTS (
-      SELECT 1 FROM jobs WHERE id::text = (storage.foldername(name))[1] AND client_id = auth.uid()
+      SELECT 1 FROM jobs WHERE id::text = split_part(name, '/', 1) AND client_id = auth.uid()
     )
   );
 
@@ -113,7 +113,7 @@ CREATE POLICY "portfolio_images_storage_insert_own"
   WITH CHECK (
     bucket_id = 'portfolio-images'
     AND EXISTS (
-      SELECT 1 FROM firms WHERE id::text = (storage.foldername(name))[1] AND owner_id = auth.uid()
+      SELECT 1 FROM firms WHERE id::text = split_part(name, '/', 1) AND owner_id = auth.uid()
     )
   );
 
@@ -123,6 +123,6 @@ CREATE POLICY "portfolio_images_storage_delete_own"
   USING (
     bucket_id = 'portfolio-images'
     AND EXISTS (
-      SELECT 1 FROM firms WHERE id::text = (storage.foldername(name))[1] AND owner_id = auth.uid()
+      SELECT 1 FROM firms WHERE id::text = split_part(name, '/', 1) AND owner_id = auth.uid()
     )
   );
