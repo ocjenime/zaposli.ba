@@ -7,7 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
-import { ArrowLeft, MapPin, Loader2, MessageSquare, CheckCircle } from 'lucide-react';
+import { ArrowLeft, MapPin, Loader2, MessageSquare, CheckCircle, DollarSign, Calendar, ImageIcon } from 'lucide-react';
 
 interface Firm {
   id: string;
@@ -33,6 +33,14 @@ interface Job {
   city: string;
   status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled';
   created_at: string;
+  budget_min: number | null;
+  budget_max: number | null;
+  deadline: string | null;
+}
+
+interface JobImage {
+  id: string;
+  image_url: string;
 }
 
 const statusLabels: Record<Job['status'], string> = {
@@ -62,9 +70,11 @@ function JobDetail() {
   const router = useRouter();
   const [job, setJob] = useState<Job | null>(null);
   const [bids, setBids] = useState<Bid[]>([]);
+  const [images, setImages] = useState<JobImage[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState('');
   const [actionId, setActionId] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) router.push('/prijava/');
@@ -93,17 +103,31 @@ function JobDetail() {
     }
     setJob(jobData as Job);
 
-    const { data: bidsData, error: bidsErr } = await supabase
-      .from('bids')
-      .select('*, firms(id,name,city,logo_url)')
-      .eq('job_id', id)
-      .order('created_at', { ascending: false });
+    const [{ data: bidsData, error: bidsErr }, { data: imagesData, error: imagesErr }] = await Promise.all([
+      supabase
+        .from('bids')
+        .select('*, firms(id,name,city,logo_url)')
+        .eq('job_id', id)
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('job_images')
+        .select('id, image_url')
+        .eq('job_id', id)
+        .order('created_at', { ascending: true }),
+    ]);
 
     if (bidsErr) {
       setError('Greška prilikom učitavanja ponuda.');
     } else {
       setBids((bidsData as Bid[]) || []);
     }
+
+    if (imagesErr) {
+      setError('Greška prilikom učitavanja fotografija.');
+    } else {
+      setImages((imagesData as JobImage[]) || []);
+    }
+
     setLoadingData(false);
   }
 
@@ -227,6 +251,40 @@ function JobDetail() {
                 </div>
                 <p className="text-gray-900 text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
 
+                <div className="flex flex-wrap gap-3 text-sm mt-4">
+                  {job.budget_min != null && job.budget_max != null && (
+                    <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
+                      <DollarSign className="w-4 h-4 text-brand-orange" />
+                      {job.budget_min} – {job.budget_max} KM
+                    </span>
+                  )}
+                  {job.deadline && (
+                    <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
+                      <Calendar className="w-4 h-4 text-brand-orange" />
+                      Rok: {formatDate(job.deadline)}
+                    </span>
+                  )}
+                </div>
+
+                {images.length > 0 && (
+                  <div className="mt-5">
+                    <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4" /> Fotografije posla
+                    </h3>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                      {images.map((img) => (
+                        <button
+                          key={img.id}
+                          onClick={() => setSelectedImage(img.image_url)}
+                          className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
+                        >
+                          <img src={img.image_url} alt="Fotografija posla" className="w-full h-full object-cover" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {job.status === 'in_progress' && (
                   <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
                     <Link
@@ -310,6 +368,27 @@ function JobDetail() {
                 )}
               </div>
             </>
+          )}
+
+          {selectedImage && (
+            <div
+              className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+              onClick={() => setSelectedImage(null)}
+            >
+              <div className="relative max-w-4xl w-full max-h-[90vh]">
+                <img
+                  src={selectedImage}
+                  alt="Uvećana fotografija posla"
+                  className="w-full h-full object-contain rounded-lg"
+                />
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute -top-10 right-0 text-white text-sm hover:text-brand-orange"
+                >
+                  Zatvori
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </main>

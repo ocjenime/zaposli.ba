@@ -18,7 +18,7 @@ import {
 } from '@/lib/subscriptions';
 import {
   MapPin, Tag, Loader2, Send, MessageSquare, CheckCircle, XCircle, Clock,
-  Briefcase, Crown, AlertTriangle,
+  Briefcase, Crown, AlertTriangle, DollarSign, Calendar, ImageIcon,
 } from 'lucide-react';
 
 interface Job {
@@ -29,6 +29,10 @@ interface Job {
   category_slug: string;
   status: string;
   created_at: string;
+  budget_min: number | null;
+  budget_max: number | null;
+  deadline: string | null;
+  image_count?: number;
 }
 
 interface Bid {
@@ -142,8 +146,22 @@ function FirmDashboardContent() {
       .order('created_at', { ascending: false });
     if (err) {
       setError('Greška prilikom učitavanja otvorenih poslova.');
+      setLoadingJobs(false);
+      return;
+    }
+    const jobs = (data as Job[]) || [];
+    if (jobs.length > 0) {
+      const { data: imagesData } = await supabase
+        .from('job_images')
+        .select('job_id')
+        .in('job_id', jobs.map((j) => j.id));
+      const counts: Record<string, number> = {};
+      (imagesData || []).forEach((row: { job_id: string }) => {
+        counts[row.job_id] = (counts[row.job_id] || 0) + 1;
+      });
+      setOpenJobs(jobs.map((j) => ({ ...j, image_count: counts[j.id] || 0 })));
     } else {
-      setOpenJobs((data as Job[]) || []);
+      setOpenJobs(jobs);
     }
     setLoadingJobs(false);
   }
@@ -300,6 +318,15 @@ function FirmDashboardContent() {
                                 )}
                                 <span className="w-1 h-1 bg-steel rounded-full" />
                                 <span>{formatDate(job.created_at)}</span>
+                                {job.budget_min != null && job.budget_max != null && (
+                                  <span className="flex items-center gap-1"><DollarSign className="w-4 h-4" /> {job.budget_min}–{job.budget_max} KM</span>
+                                )}
+                                {job.deadline && (
+                                  <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {formatDate(job.deadline)}</span>
+                                )}
+                                {job.image_count && job.image_count > 0 && (
+                                  <span className="flex items-center gap-1"><ImageIcon className="w-4 h-4" /> {job.image_count} {job.image_count === 1 ? 'foto' : 'foto'}</span>
+                                )}
                               </div>
                             </div>
                             <button

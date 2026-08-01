@@ -57,6 +57,8 @@ export default function FirmProfileContent() {
   const [firm, setFirm] = useState<FirmRow | null>(null);
   const [reviews, setReviews] = useState<ReviewRow[]>([]);
   const [firmCategories, setFirmCategories] = useState<FirmCategoryRow[]>([]);
+  const [portfolioImages, setPortfolioImages] = useState<string[]>([]);
+  const [selectedPortfolioImage, setSelectedPortfolioImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -98,6 +100,13 @@ export default function FirmProfileContent() {
         .eq('firm_id', typedFirm.id);
 
       setFirmCategories((catData as unknown as FirmCategoryRow[]) || []);
+
+      const { data: portfolioData } = await supabase
+        .from('portfolio_images')
+        .select('image_url')
+        .eq('firm_id', typedFirm.id)
+        .order('created_at', { ascending: true });
+      setPortfolioImages((portfolioData || []).map((row: { image_url: string }) => row.image_url));
     } catch (err) {
       setError('Došlo je do greške pri učitavanju profila.');
     } finally {
@@ -244,6 +253,27 @@ export default function FirmProfileContent() {
                   </>
                 )}
 
+                {portfolioImages.length > 0 && (
+                  <>
+                    <h2 className="text-xl font-bold text-gray-900 mb-4">Portfolio</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                      {portfolioImages.map((url, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setSelectedPortfolioImage(url)}
+                          className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
+                        >
+                          <img
+                            src={url}
+                            alt={`Portfolio ${index + 1}`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Recenzije klijenata</h2>
                 {reviews.length === 0 ? (
                   <div className="bg-cloud rounded-2xl p-6 text-center border border-gray-100">
@@ -354,6 +384,27 @@ export default function FirmProfileContent() {
             </div>
           </div>
         </section>
+
+        {selectedPortfolioImage && (
+          <div
+            className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+            onClick={() => setSelectedPortfolioImage(null)}
+          >
+            <div className="relative max-w-4xl w-full max-h-[90vh]">
+              <img
+                src={selectedPortfolioImage}
+                alt="Portfolio uvećano"
+                className="w-full h-full object-contain rounded-xl"
+              />
+              <button
+                onClick={() => setSelectedPortfolioImage(null)}
+                className="absolute -top-10 right-0 text-white text-sm hover:text-brand-orange"
+              >
+                Zatvori
+              </button>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </div>

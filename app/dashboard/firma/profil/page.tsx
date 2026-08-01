@@ -21,6 +21,8 @@ import {
   Mail,
   FileText,
   Globe,
+  ImageIcon,
+  Loader2,
 } from 'lucide-react';
 
 interface FirmRow {
@@ -72,6 +74,11 @@ export default function FirmProfileEditorPage() {
   const [success, setSuccess] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const portfolioInputRef = useRef<HTMLInputElement>(null);
+
+  const [portfolioImages, setPortfolioImages] = useState<{ id: string; image_url: string }[]>([]);
+  const [uploadingPortfolio, setUploadingPortfolio] = useState(false);
+  const [deletingPortfolioId, setDeletingPortfolioId] = useState<string | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -118,6 +125,13 @@ export default function FirmProfileEditorPage() {
 
       const slugs = (catData as unknown as FirmCategoryRow[] | null)?.map((c) => c.category_slug) || [];
       setSelectedCategories(slugs);
+
+      const { data: portfolioData } = await supabase
+        .from('portfolio_images')
+        .select('id, image_url')
+        .eq('firm_id', typedFirm.id)
+        .order('created_at', { ascending: true });
+      setPortfolioImages((portfolioData as { id: string; image_url: string }[]) || []);
     } catch (err) {
       setError('Došlo je do greške pri učitavanju profila.');
     } finally {
@@ -153,6 +167,59 @@ export default function FirmProfileEditorPage() {
     setLogoPreview(null);
     setLogoUrl(null);
     if (fileInputRef.current) fileInputRef.current.value = '';
+  }
+
+  async function handlePortfolioChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (!firm || !e.target.files) return;
+    const files = Array.from(e.target.files).slice(0, 10);
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    const maxSize = 2 * 1024 * 1024;
+
+    for (const file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        setError(`Dozvoljeni formati fotografija: JPG, PNG, WEBP. (${file.name})`);
+        return;
+      }
+      if (file.size > maxSize) {
+        setError(`Fotografija mora biti manja od 2MB. (${file.name})`);
+        return;
+      }
+    }
+
+    setUploadingPortfolio(true);
+    setError('');
+    for (const file of files) {
+      const ext = file.name.split('.').pop() || 'jpg';
+      const path = `${firm.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const { error: uploadError } = await supabase.storage.from('portfolio-images').upload(path, file);
+      if (uploadError) {
+        setError(`Greška pri uploadu ${file.name}.`);
+        continue;
+      }
+      const { data: publicUrl } = supabase.storage.from('portfolio-images').getPublicUrl(path);
+      const { data: inserted, error: insertError } = await supabase
+        .from('portfolio_images')
+        .insert({ firm_id: firm.id, image_url: publicUrl.publicUrl })
+        .select('id, image_url')
+        .single();
+      if (!insertError && inserted) {
+        setPortfolioImages((prev) => [...prev, inserted as { id: string; image_url: string }]);
+      }
+    }
+    setUploadingPortfolio(false);
+    if (portfolioInputRef.current) portfolioInputRef.current.value = '';
+  }
+
+  async function deletePortfolioImage(id: string) {
+    if (!firm) return;
+    setDeletingPortfolioId(id);
+    const { error: deleteError } = await supabase.from('portfolio_images').delete().eq('id', id);
+    if (!deleteError) {
+      setPortfolioImages((prev) => prev.filter((img) => img.id !== id));
+    } else {
+      setError('Greška pri brisanju fotografije.');
+    }
+    setDeletingPortfolioId(null);
   }
 
   function toggleCategory(slug: string) {
@@ -468,7 +535,61 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-3">Kategorije</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Portfolio fotografije</label>
+                  <p className="text-xs text-steel mb-3">Dodajte fotografije vaših radova. Maksimalno 2MB po fotografiji.</p>
+
+                  <input
+                    ref={portfolioInputRef}
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    onChange={handlePortfolioChange}
+                    className="hidden"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => portfolioInputRef.current?.click()}
+                    disabled={uploadingPortfolio}
+                    className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
+                  >
+                    {uploadingPortfolio ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" /> Upload...
+                      </>
+                    ) : (
+                      <>
+                        <ImageIcon className="w-4 h-4" /> Dodaj fotografije
+                      </>
+                    )}
+                  </button>
+
+                  {portfolioImages.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
+                      {portfolioImages.map((img) => (
+                        <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200">
+                          <img src={img.image_url} alt="Portfolio" className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => deletePortfolioImage(img.id)}
+                            disabled={deletingPortfolioId === img.id}
+                            className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-steel hover:text-red-500 shadow-sm disabled:opacity-50"
+                            aria-label="Ukloni fotografiju"
+                          >
+                            {deletingPortfolioId === img.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <X className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Kategorije</label>
                   <div className="flex flex-wrap gap-2">
                     {categories.map((category) => {
                       const selected = selectedCategories.includes(category.slug);

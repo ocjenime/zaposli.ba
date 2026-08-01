@@ -1,58 +1,91 @@
-import Link from 'next/link';
-import { MapPin, Clock, BadgeCheck, ArrowRight, TrendingUp } from 'lucide-react';
+'use client';
 
-const recentProjects = [
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { MapPin, Clock, ArrowRight, TrendingUp } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { categories } from '@/lib/data';
+
+interface Job {
+  id: string;
+  title: string;
+  category_slug: string;
+  description: string;
+  city: string;
+  deadline: string | null;
+  budget_min: number | null;
+  budget_max: number | null;
+  bids_count: number;
+  created_at: string;
+}
+
+function getCategoryName(slug: string) {
+  return categories.find((c) => c.slug === slug)?.name || slug;
+}
+
+function formatBudget(min: number | null, max: number | null) {
+  if (min && max) return `${min.toLocaleString('bs')}-${max.toLocaleString('bs')} KM`;
+  if (min) return `Od ${min.toLocaleString('bs')} KM`;
+  if (max) return `Do ${max.toLocaleString('bs')} KM`;
+  return 'Budžet po dogovoru';
+}
+
+function timeAgo(dateString: string) {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+
+  if (diffMins < 5) return 'Upravo sada';
+  if (diffHours < 1) return `Prije ${diffMins} min`;
+  if (diffHours < 24) return `Prije ${diffHours} sati`;
+  if (diffDays === 1) return 'Prije 1 dan';
+  return `Prije ${diffDays} dana`;
+}
+
+const fallbackProjects: Job[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Adaptacija kupatila: kompletan renovis',
-    category: 'Vodoinstalacije',
-    catColor: 'bg-primary-50 text-brand-orange',
-    location: 'Sarajevo, Centar',
-    budget: '2,000-3,500 KM',
-    deadline: 'Do 15.08.2026',
-    bids: 8,
-    description: 'Potrebna adaptacija kupatila u stanu od 60m2. Uključuje demontažu stare keramike, nove vodoinstalacije, postavljanje keramike i sanitarije.',
-    timeAgo: 'Prije 2 sata',
-  },
-  {
-    id: 2,
-    title: 'Postavljanje laminata u dnevnom boravku',
-    category: 'Keramičarski radovi',
-    catColor: 'bg-primary-50 text-brand-orange',
-    location: 'Banja Luka, Centar',
-    budget: '800-1,200 KM',
-    deadline: 'Do 20.08.2026',
-    bids: 5,
-    description: 'Postavljanje laminata u dnevnom boravku površine 45m2. Materijal imam, potreban majstor za postavljanje.',
-    timeAgo: 'Prije 5 sati',
-  },
-  {
-    id: 3,
-    title: 'Izrada fasade na kući',
-    category: 'Građevinarstvo',
-    catColor: 'bg-primary-50 text-brand-orange',
-    location: 'Mostar, Jug',
-    budget: '5,000-8,000 KM',
-    deadline: 'Do 01.09.2026',
-    bids: 12,
-    description: 'Potrebna izrada termo fasade na kući od 150m2. Stiropor 10cm, završni sloj po želji. Sve uključujući materijal i rad.',
-    timeAgo: 'Prije 1 dan',
-  },
-  {
-    id: 4,
-    title: 'Elektroinstalacije u novogradnji',
-    category: 'Elektroinstalacije',
-    catColor: 'bg-primary-50 text-brand-orange',
-    location: 'Tuzla, Centar',
-    budget: '3,000-4,500 KM',
-    deadline: 'Do 10.09.2026',
-    bids: 7,
-    description: 'Kompletne elektroinstalacije u kući od 120m2. Uključuje razvod struje, utičnice, prekidače i rasvjetu.',
-    timeAgo: 'Prije 2 dana',
+    category_slug: 'vodoinstalacije',
+    description: 'Potrebna adaptacija kupatila u stanu od 60m2.',
+    city: 'Sarajevo',
+    deadline: null,
+    budget_min: 2000,
+    budget_max: 3500,
+    bids_count: 8,
+    created_at: new Date(Date.now() - 2 * 3600000).toISOString(),
   },
 ];
 
 export default function RecentProjects() {
+  const [projects, setProjects] = useState<Job[]>(fallbackProjects);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const { data, error } = await supabase
+          .from('jobs')
+          .select('id, title, category_slug, description, city, deadline, budget_min, budget_max, bids_count, created_at')
+          .eq('status', 'open')
+          .order('created_at', { ascending: false })
+          .limit(4);
+
+        if (error || !data || data.length === 0) return;
+        setProjects(data as Job[]);
+      } catch {
+        // keep fallback
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProjects();
+  }, []);
+
   return (
     <section className="py-10 md:py-14 bg-cloud relative overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -67,7 +100,7 @@ export default function RecentProjects() {
             </h2>
           </div>
           <Link
-            href="/kategorije/"
+            href="/projekti/"
             className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group whitespace-nowrap"
           >
             Svi poslovi
@@ -76,13 +109,21 @@ export default function RecentProjects() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-          {recentProjects.map((project) => (
-            <Link key={project.id} href="/projekti/" className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block">
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              href={`/projekti/`}
+              className={`bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block ${
+                loading ? 'opacity-70' : ''
+              }`}
+            >
               <div className="flex justify-between items-start mb-3">
-                <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold ${project.catColor}`}>
-                  {project.category}
+                <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
+                  {getCategoryName(project.category_slug)}
                 </span>
-                <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">{project.timeAgo}</span>
+                <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+                  {timeAgo(project.created_at)}
+                </span>
               </div>
 
               <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
@@ -94,19 +135,20 @@ export default function RecentProjects() {
               <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-4">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5" />
-                  <span>{project.location}</span>
+                  <span>{project.city}</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5" />
-                  <span>{project.deadline}</span>
-                </div>
+                {project.deadline && (
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5" />
+                    <span>Do {new Date(project.deadline).toLocaleDateString('bs')}</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-bold text-brand-orange text-sm">{project.budget}</div>
+                <div className="font-bold text-brand-orange text-sm">{formatBudget(project.budget_min, project.budget_max)}</div>
                 <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
-                  <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-                  <span>{project.bids} ponuda</span>
+                  <span>{project.bids_count} ponuda</span>
                 </div>
               </div>
             </Link>

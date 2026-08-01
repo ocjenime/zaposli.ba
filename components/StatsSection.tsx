@@ -1,27 +1,21 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Users, Building2, Star, CheckCircle, Shield, CreditCard, MessageSquare } from 'lucide-react';
 import Counter from '@/components/ui/Counter';
+import { supabase } from '@/lib/supabase';
 
-const stats = [
-  {
-    icon: Users,
-    value: '12,500+',
-    label: 'Zadovoljnih klijenata',
-  },
-  {
-    icon: Building2,
-    value: '2,800+',
-    label: 'Prijavljenih firmi',
-  },
-  {
-    icon: Star,
-    value: '4.8',
-    label: 'Prosječna ocjena',
-  },
-  {
-    icon: CheckCircle,
-    value: '25,000+',
-    label: 'Završenih poslova',
-  },
+interface StatData {
+  value: string;
+  label: string;
+  icon: typeof Users;
+}
+
+const fallbackStats: StatData[] = [
+  { icon: Users, value: '12,500+', label: 'Zadovoljnih klijenata' },
+  { icon: Building2, value: '2,800+', label: 'Prijavljenih firmi' },
+  { icon: Star, value: '4.8', label: 'Prosječna ocjena' },
+  { icon: CheckCircle, value: '25,000+', label: 'Završenih poslova' },
 ];
 
 const trustCards = [
@@ -43,6 +37,53 @@ const trustCards = [
 ];
 
 export default function StatsSection() {
+  const [stats, setStats] = useState<StatData[]>(fallbackStats);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadStats() {
+      try {
+        const [
+          { count: clientsCount },
+          { count: firmsCount },
+          { data: reviewData },
+          { count: completedJobsCount },
+        ] = await Promise.all([
+          supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'client'),
+          supabase.from('firms').select('*', { count: 'exact', head: true }),
+          supabase.from('reviews').select('rating'),
+          supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+        ]);
+
+        const avgRating = reviewData?.length
+          ? (reviewData.reduce((sum, r) => sum + (r.rating || 0), 0) / reviewData.length).toFixed(1)
+          : '4.8';
+
+        const formatCount = (count: number | null | undefined) => {
+          if (count === null || count === undefined || count < 0) return null;
+          return count.toLocaleString('bs') + '+';
+        };
+
+        const clientDisplay = formatCount(clientsCount) ?? '12,500+';
+        const firmsDisplay = formatCount(firmsCount) ?? '2,800+';
+        const jobsDisplay = formatCount(completedJobsCount) ?? '25,000+';
+
+        setStats([
+          { icon: Users, value: clientDisplay, label: 'Zadovoljnih klijenata' },
+          { icon: Building2, value: firmsDisplay, label: 'Prijavljenih firmi' },
+          { icon: Star, value: avgRating, label: 'Prosječna ocjena' },
+          { icon: CheckCircle, value: jobsDisplay, label: 'Završenih poslova' },
+        ]);
+      } catch {
+        // keep fallback
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadStats();
+  }, []);
+
   return (
     <section className="py-10 md:py-14 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
@@ -61,13 +102,22 @@ export default function StatsSection() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center p-6 rounded-2xl bg-cloud hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100">
+          {stats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={`text-center p-6 rounded-2xl bg-cloud hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 ${
+                loading ? 'opacity-70' : ''
+              }`}
+            >
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
                 <stat.icon className="w-7 h-7 text-brand-orange" />
               </div>
               <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
-                <Counter value={stat.value} />
+                {loading && index === 0 ? (
+                  <span className="inline-block w-20 h-8 bg-gray-200 rounded animate-pulse" />
+                ) : (
+                  <Counter value={stat.value} />
+                )}
               </div>
               <div className="text-sm text-steel">{stat.label}</div>
             </div>

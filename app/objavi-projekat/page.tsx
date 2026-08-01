@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Upload, MapPin, Calendar, DollarSign, ChevronRight } from 'lucide-react';
+import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getWorker, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
@@ -43,6 +43,8 @@ function PostProjectContent() {
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [targetProvider, setTargetProvider] = useState<{ id: string; name: string; type: 'worker' | 'firm'; ownerId?: string } | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
     const serviceParam = searchParams.get('service');
@@ -114,6 +116,18 @@ function PostProjectContent() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const files = Array.from(e.target.files).slice(0, 5);
+    setImages(files);
+    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -123,6 +137,10 @@ function PostProjectContent() {
     if (!cat) { setError('Odaberite kategoriju'); return; }
 
     setSubmitting(true);
+    const budgetMin = formData.budgetMin ? parseFloat(formData.budgetMin) : null;
+    const budgetMax = formData.budgetMax ? parseFloat(formData.budgetMax) : null;
+    const deadline = formData.deadline || null;
+
     const { data: jobData, error: err } = await supabase
       .from('jobs')
       .insert({
@@ -132,12 +150,38 @@ function PostProjectContent() {
         description: formData.description,
         city: formData.city,
         status: 'open',
+        budget_min: budgetMin,
+        budget_max: budgetMax,
+        deadline: deadline,
       })
       .select('id')
       .single();
-    setSubmitting(false);
 
-    if (err || !jobData) { setError(err?.message || 'Došlo je do greške'); return; }
+    if (err || !jobData) {
+      setSubmitting(false);
+      setError(err?.message || 'Došlo je do greške');
+      return;
+    }
+
+    // Upload images
+    if (images.length > 0) {
+      for (const file of images) {
+        const ext = file.name.split('.').pop() || 'jpg';
+        const path = `${jobData.id}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+        const { error: uploadError } = await supabase.storage.from('job-images').upload(path, file);
+        if (!uploadError) {
+          const { data: urlData } = supabase.storage.from('job-images').getPublicUrl(path);
+          if (urlData?.publicUrl) {
+            await supabase.from('job_images').insert({
+              job_id: jobData.id,
+              image_url: urlData.publicUrl,
+            });
+          }
+        }
+      }
+    }
+
+    setSubmitting(false);
 
     // Obavijesti ciljanu firmu ako je posao zatražen s profila firme
     if (targetProvider?.type === 'firm' && targetProvider.ownerId) {
@@ -184,7 +228,7 @@ function PostProjectContent() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
               <button
-                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMin: '', budgetMax: '', deadline: '' }); }}
+                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
                 className="btn-primary"
               >
                 Objavite još jedan posao
@@ -294,6 +338,40 @@ function PostProjectContent() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja</label>
                     <input type="date" name="deadline" value={formData.deadline} onChange={handleInputChange} className="input-field" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2"><ImageIcon className="w-4 h-4 inline mr-1" />Fotografije posla (opcionalno)</label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition-colors">
+                      <input
+                        type="file"
+                        id="job-images"
+                        accept="image/*"
+                        multiple
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                      <label htmlFor="job-images" className="cursor-pointer inline-flex flex-col items-center gap-2">
+                        <Upload className="w-8 h-8 text-gray-400" />
+                        <span className="text-sm text-gray-600 font-medium">Kliknite za upload fotografija</span>
+                        <span className="text-xs text-gray-400">Do 5 fotografija (JPEG, PNG, WebP)</span>
+                      </label>
+                    </div>
+                    {imagePreviews.length > 0 && (
+                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
+                        {imagePreviews.map((preview, index) => (
+                          <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
+                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-red-600"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div className="flex gap-4">
                     <button type="button" onClick={() => setStep(1)} className="flex-1 btn-secondary">Nazad</button>
