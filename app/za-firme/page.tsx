@@ -226,7 +226,7 @@ export default function ForCompaniesPage() {
               <div className="relative flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
                   <Image
-                    src="/zaposli.ba/images/ciscenje.jpg"
+                    src="/zaposli.ba/images/ciscenje.webp"
                     alt="Profesionalni majstor s vrhunskom opremom na poslu"
                     width={560}
                     height={420}
@@ -309,7 +309,7 @@ export default function ForCompaniesPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
                 <Image
-                  src="/zaposli.ba/images/farbanje-zid.jpg"
+                  src="/zaposli.ba/images/farbanje-zid.webp"
                   alt="Majstor farba zid profesionalnom opremom"
                   width={400}
                   height={300}
@@ -324,7 +324,7 @@ export default function ForCompaniesPage() {
               </div>
               <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
                 <Image
-                  src="/zaposli.ba/images/kuhinja-renovacija.jpg"
+                  src="/zaposli.ba/images/kuhinja-renovacija.webp"
                   alt="Kuhinja u toku renovacije"
                   width={400}
                   height={300}
@@ -339,7 +339,7 @@ export default function ForCompaniesPage() {
               </div>
               <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
                 <Image
-                  src="/zaposli.ba/images/majstor-cekic.jpg"
+                  src="/zaposli.ba/images/majstor-cekic.webp"
                   alt="Majstor sa čekićem na gradilištu"
                   width={400}
                   height={300}
@@ -363,7 +363,7 @@ export default function ForCompaniesPage() {
               <div className="relative order-2 lg:order-1 flex justify-center lg:justify-start">
                 <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
                   <Image
-                    src="/zaposli.ba/images/renovacija-enterijer.jpg"
+                    src="/zaposli.ba/images/renovacija-enterijer.webp"
                     alt="Renovacija enterijera u toku"
                     width={500}
                     height={375}

@@ -88,7 +88,7 @@ export default function KontaktPage() {
         <PageHero
           title="Kontakt"
           subtitle="Imate pitanje ili prijedlog? Pišite nam: tu smo da pomognemo."
-          image="/zaposli.ba/images/majstor-hero.jpg"
+          image="/zaposli.ba/images/majstor-hero.webp"
         />
 
         <section className="py-16 bg-cloud">

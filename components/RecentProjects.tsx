@@ -96,13 +96,32 @@ export default function RecentProjects() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-5">
-          {projects.map((project) => (
+          {loading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="w-20 h-5 bg-gray-200 rounded-lg" />
+                  <div className="w-16 h-4 bg-gray-200 rounded" />
+                </div>
+                <div className="w-2/3 h-5 bg-gray-200 rounded mb-2" />
+                <div className="w-full h-4 bg-gray-200 rounded mb-1" />
+                <div className="w-3/4 h-4 bg-gray-200 rounded mb-4" />
+                <div className="flex flex-wrap gap-4 mb-4">
+                  <div className="w-20 h-4 bg-gray-200 rounded" />
+                  <div className="w-24 h-4 bg-gray-200 rounded" />
+                </div>
+                <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                  <div className="w-20 h-5 bg-gray-200 rounded" />
+                  <div className="w-16 h-6 bg-gray-200 rounded-lg" />
+                </div>
+              </div>
+            ))
+          ) : (
+            projects.map((project) => (
             <Link
               key={project.id}
               href={`/projekti/?expandId=${project.id}`}
-              className={`bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block ${
-                loading ? 'opacity-70' : ''
-              }`}
+              className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
             >
               <div className="flex justify-between items-start mb-3">
                 <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
@@ -139,7 +158,8 @@ export default function RecentProjects() {
                 </div>
               </div>
             </Link>
-          ))}
+          ))
+          )}
         </div>
       </div>
     </section>

@@ -57,7 +57,7 @@ export default function ONamaPage() {
         <PageHero
           title="O nama"
           subtitle="Platforma koja spaja klijente i provjerene građevinske firme u Bosni i Hercegovini"
-          image="/zaposli.ba/images/renovacija-enterijer.jpg"
+          image="/zaposli.ba/images/renovacija-enterijer.webp"
         />
 
         {/* Misija */}
@@ -66,7 +66,7 @@ export default function ONamaPage() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="relative rounded-3xl overflow-hidden shadow-xl border border-gray-100 order-2 md:order-1">
                 <Image
-                  src="/zaposli.ba/images/majstor-hero.jpg"
+                  src="/zaposli.ba/images/majstor-hero.webp"
                   alt="Provjereni majstor u domu"
                   width={600}
                   height={450}

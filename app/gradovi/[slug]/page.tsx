@@ -74,6 +74,27 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           </div>
         </section>
 
+        {/* Empty state for firms */}
+        <section className="py-14 bg-white border-t border-gray-100">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
+                <MapPin className="w-7 h-7 text-brand-orange" />
+              </div>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Tražite majstora u {city.loc}?</h2>
+              <p className="text-steel max-w-xl mx-auto mb-6">
+                Provjerene firme se aktivno registruju u vašem gradu. Objavite posao besplatno i prve ponude stižu u roku od 24 sata.
+              </p>
+              <Link
+                href="/objavi-projekat/"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+              >
+                Objavi posao besplatno
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="py-14 bg-ink relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />

@@ -13,7 +13,7 @@ export default function HowItWorksPage() {
         <section className="relative py-20 md:py-28 overflow-hidden">
           <div className="absolute inset-0">
             <Image
-              src="/zaposli.ba/images/renovacija-enterijer.jpg"
+              src="/zaposli.ba/images/renovacija-enterijer.webp"
               alt="Renovacija enterijera"
               fill
               className="object-cover"
@@ -139,7 +139,7 @@ export default function HowItWorksPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
                 <Image
-                  src="/zaposli.ba/images/vodoinstalater.jpg"
+                  src="/zaposli.ba/images/vodoinstalater.webp"
                   alt="Vodoinstalater na poslu"
                   width={400}
                   height={280}
@@ -152,7 +152,7 @@ export default function HowItWorksPage() {
               </div>
               <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
                 <Image
-                  src="/zaposli.ba/images/elektricar.jpg"
+                  src="/zaposli.ba/images/elektricar.webp"
                   alt="Električar na poslu"
                   width={400}
                   height={280}
@@ -165,7 +165,7 @@ export default function HowItWorksPage() {
               </div>
               <div className="relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm group">
                 <Image
-                  src="/zaposli.ba/images/ciscenje.jpg"
+                  src="/zaposli.ba/images/ciscenje.webp"
                   alt="Čišćenje prostora"
                   width={400}
                   height={280}

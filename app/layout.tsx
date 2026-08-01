@@ -21,13 +21,13 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
-    images: [{ url: 'images/og-cover.png', width: 1200, height: 630, alt: 'Zaposli.ba. Pronađite majstora za vaš posao' }],
+    images: [{ url: 'images/og-cover.webp', width: 1200, height: 630, alt: 'Zaposli.ba. Pronađite majstora za vaš posao' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Zaposli.ba. Pronađite majstore za vaš posao',
     description: site.description,
-    images: ['images/og-cover.png'],
+    images: ['images/og-cover.webp'],
   },
   robots: { index: true, follow: true },
 };

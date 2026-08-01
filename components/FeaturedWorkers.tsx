@@ -97,12 +97,26 @@ export default function FeaturedWorkers() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-          {firms.slice(0, 5).map((firm) => (
-            <Link
-              key={firm.id}
-              href={`/firma-profil/?slug=${firm.slug}`}
-              className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
-            >
+          {loading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse text-center">
+                <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4" />
+                <div className="w-24 h-4 bg-gray-200 rounded mx-auto mb-1" />
+                <div className="w-20 h-3 bg-gray-200 rounded mx-auto mb-3" />
+                <div className="flex items-center justify-center gap-1 mb-2">
+                  <div className="w-12 h-3 bg-gray-200 rounded" />
+                </div>
+                <div className="w-16 h-3 bg-gray-200 rounded mx-auto mb-3" />
+                <div className="w-20 h-5 bg-gray-200 rounded-lg mx-auto" />
+              </div>
+            ))
+          ) : (
+            firms.slice(0, 5).map((firm) => (
+              <Link
+                key={firm.id}
+                href={`/firma-profil/?slug=${firm.slug}`}
+                className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
+              >
               {firm.logo_url ? (
                 <img
                   src={firm.logo_url}
@@ -137,8 +151,9 @@ export default function FeaturedWorkers() {
                   <span className="font-medium">Verifikovana</span>
                 </div>
               )}
-            </Link>
-          ))}
+              </Link>
+            ))
+          )}
         </div>
 
         <div className="text-center mt-10">

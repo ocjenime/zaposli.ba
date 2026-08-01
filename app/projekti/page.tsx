@@ -347,8 +347,26 @@ function ProjectsPageContent() {
             </div>
 
             {loading ? (
-              <div className="flex items-center justify-center py-12 text-steel">
-                <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje poslova...
+              <div className="grid md:grid-cols-2 gap-5 mb-12">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="w-24 h-6 bg-gray-200 rounded-lg" />
+                      <div className="w-20 h-4 bg-gray-200 rounded" />
+                    </div>
+                    <div className="w-3/4 h-6 bg-gray-200 rounded mb-2" />
+                    <div className="w-full h-4 bg-gray-200 rounded mb-1" />
+                    <div className="w-2/3 h-4 bg-gray-200 rounded mb-4" />
+                    <div className="flex flex-wrap gap-3 mb-4">
+                      <div className="w-24 h-4 bg-gray-200 rounded" />
+                      <div className="w-28 h-4 bg-gray-200 rounded" />
+                    </div>
+                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                      <div className="w-28 h-6 bg-gray-200 rounded-lg" />
+                      <div className="w-24 h-4 bg-gray-200 rounded" />
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : error ? (
               <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 text-center">{error}</p>
