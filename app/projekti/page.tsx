@@ -256,10 +256,10 @@ function ProjectsPageContent() {
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none transition-all text-sm"
                   />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                   <button
                     onClick={() => setShowFilters((s) => !s)}
-                    className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-orange hover:text-brand-orange transition-colors"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-orange hover:text-brand-orange transition-colors w-full sm:w-auto"
                   >
                     <SlidersHorizontal className="w-4 h-4" />
                     Filteri
@@ -274,7 +274,7 @@ function ProjectsPageContent() {
                     <select
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                      className="pl-9 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none appearance-none bg-white min-w-[160px]"
+                      className="pl-9 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none appearance-none bg-white w-full sm:min-w-[160px]"
                     >
                       <option value="newest">Najnovije</option>
                       <option value="budget-asc">Budžet: rastući</option>
