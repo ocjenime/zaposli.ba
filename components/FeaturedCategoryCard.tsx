@@ -33,7 +33,7 @@ export default function FeaturedCategoryCard({ slug }: { slug: string }) {
               </div>
             </div>
             <div className="flex items-center gap-2 text-red-700 font-semibold text-sm shrink-0">
-              <LiveCategoryCount slug={category.slug} fallback={category.count} />
+              <LiveCategoryCount slug={category.slug} />
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </div>

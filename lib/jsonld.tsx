@@ -96,7 +96,7 @@ export function serviceSchema(service: {
   description: string;
   area: string;
   url: string;
-  providerCount: number;
+  providerCount?: number;
 }) {
   return {
     '@context': 'https://schema.org',

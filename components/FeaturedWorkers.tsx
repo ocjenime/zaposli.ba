@@ -1,9 +1,83 @@
-import { Star, MapPin, BadgeCheck } from 'lucide-react';
-import Link from 'next/link';
+'use client';
 
-import { workers } from '@/lib/data';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Star, MapPin, BadgeCheck } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { getCategory } from '@/lib/data';
+
+interface Firm {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  logo_url: string | null;
+  verified: boolean;
+  average_rating: number | null;
+  review_count: number | null;
+  description: string | null;
+}
+
+interface FirmCategory {
+  firm_id: string;
+  category_slug: string;
+}
+
+function getInitials(name: string) {
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+}
 
 export default function FeaturedWorkers() {
+  const [firms, setFirms] = useState<Firm[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFirms() {
+      try {
+        const { data: firmData } = await supabase
+          .from('firms')
+          .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
+          .order('review_count', { ascending: false })
+          .limit(10);
+
+        if (!firmData || firmData.length === 0) return;
+
+        const { data: catData } = await supabase
+          .from('firm_categories')
+          .select('firm_id, category_slug');
+
+        const categoryMap = (catData || []).reduce<Record<string, string[]>>((acc, row: unknown) => {
+          const fc = row as FirmCategory;
+          acc[fc.firm_id] = acc[fc.firm_id] || [];
+          acc[fc.firm_id].push(fc.category_slug);
+          return acc;
+        }, {});
+
+        const firmsWithCategory = (firmData as unknown as Firm[]).map((f) => {
+          const slugs = categoryMap[f.id] || [];
+          const primarySlug = slugs[0];
+          const category = primarySlug ? getCategory(primarySlug) : null;
+          return { ...f, specialty: category?.name || 'Razne usluge' };
+        });
+
+        setFirms(firmsWithCategory as any);
+      } catch {
+        // keep empty
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadFirms();
+  }, []);
+
+  if (!loading && firms.length === 0) return null;
+
   return (
     <section className="py-14 md:py-20 bg-white relative overflow-hidden">
       <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-50 rounded-full opacity-60 blur-2xl" />
@@ -23,41 +97,53 @@ export default function FeaturedWorkers() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-          {workers.map((worker) => (
+          {firms.slice(0, 5).map((firm) => (
             <Link
-              key={worker.name}
-              href={`/firma/${worker.id}/`}
+              key={firm.id}
+              href={`/firma-profil/?slug=${firm.slug}`}
               className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
             >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                {worker.initial}
-              </div>
+              {firm.logo_url ? (
+                <img
+                  src={firm.logo_url}
+                  alt={firm.name}
+                  className="w-16 h-16 rounded-2xl object-cover mx-auto mb-4 border border-gray-100"
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                  {getInitials(firm.name)}
+                </div>
+              )}
 
-              <h3 className="font-bold text-gray-900 text-sm mb-0.5">{worker.name}</h3>
-              <p className="text-xs text-steel mb-3">{worker.specialty}</p>
+              <h3 className="font-bold text-gray-900 text-sm mb-0.5">{firm.name}</h3>
+              <p className="text-xs text-steel mb-3">{(firm as any).specialty}</p>
 
               <div className="flex items-center justify-center gap-1 mb-2">
                 <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
-                <span className="text-sm font-bold text-gray-900">{worker.rating}</span>
-                <span className="text-xs text-steel">({worker.reviews})</span>
+                <span className="text-sm font-bold text-gray-900">
+                  {(firm.average_rating || 0).toFixed(1)}
+                </span>
+                <span className="text-xs text-steel">({firm.review_count || 0})</span>
               </div>
 
               <div className="flex items-center justify-center gap-1 text-xs text-steel mb-3">
                 <MapPin className="w-3 h-3" />
-                <span>{worker.location}</span>
+                <span>{firm.city || 'BiH'}</span>
               </div>
 
-              <div className="flex items-center justify-center gap-1 text-xs text-brand-orange bg-primary-50 rounded-lg px-2 py-1 mx-auto">
-                <BadgeCheck className="w-3 h-3" />
-                <span className="font-medium">{worker.projects} poslova</span>
-              </div>
+              {firm.verified && (
+                <div className="flex items-center justify-center gap-1 text-xs text-brand-orange bg-primary-50 rounded-lg px-2 py-1 mx-auto">
+                  <BadgeCheck className="w-3 h-3" />
+                  <span className="font-medium">Verifikovana</span>
+                </div>
+              )}
             </Link>
           ))}
         </div>
 
         <div className="text-center mt-10">
           <Link
-            href="/kategorije/"
+            href="/izdvojeni-majstori/"
             className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group"
           >
             Pogledajte sve majstore

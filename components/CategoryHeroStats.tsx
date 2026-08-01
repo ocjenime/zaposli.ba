@@ -4,11 +4,10 @@ import { useCategoryCount } from '@/hooks/useCategoryCounts';
 
 interface CategoryHeroStatsProps {
   slug: string;
-  fallback: number;
 }
 
-export default function CategoryHeroStats({ slug, fallback }: CategoryHeroStatsProps) {
+export default function CategoryHeroStats({ slug }: CategoryHeroStatsProps) {
   const count = useCategoryCount(slug);
-  const display = count ?? fallback;
-  return <>{display} provjerenih firmi širom BiH</>;
+  if (count === null) return <>Učitavanje firmi...</>;
+  return <>{count} provjerenih firmi širom BiH</>;
 }

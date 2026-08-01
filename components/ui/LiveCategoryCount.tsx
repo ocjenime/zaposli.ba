@@ -4,22 +4,20 @@ import { useCategoryCount } from '@/hooks/useCategoryCounts';
 
 interface LiveCategoryCountProps {
   slug: string;
-  fallback: number;
   suffix?: string;
   className?: string;
 }
 
 export default function LiveCategoryCount({
   slug,
-  fallback,
   suffix = 'firmi',
   className = '',
 }: LiveCategoryCountProps) {
   const count = useCategoryCount(slug);
-  const display = count ?? fallback;
+  if (count === null) return <span className={className}>...</span>;
   return (
     <span className={className}>
-      {display} {suffix}
+      {count} {suffix}
     </span>
   );
 }

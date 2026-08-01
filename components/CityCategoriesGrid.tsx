@@ -29,7 +29,7 @@ export default function CityCategoriesGrid({ slugs, citySlug }: CityCategoriesGr
               {cat.profession}
             </h3>
             <p className="text-xs text-steel">
-              <LiveCategoryCount slug={cat.slug} fallback={cat.count} />
+              <LiveCategoryCount slug={cat.slug} />
             </p>
           </Link>
         );

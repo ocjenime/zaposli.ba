@@ -1,15 +1,25 @@
 'use client';
 
-import { useLiveStats, formatCount, formatRating } from '@/hooks/useLiveStats';
+import { useLiveStats } from '@/hooks/useLiveStats';
+
+function formatRealCount(value: number | null): string {
+  if (value === null || value === undefined || value < 0) return '—';
+  return value.toLocaleString('bs');
+}
+
+function formatRealRating(value: number | null): string {
+  if (value === null || value === undefined) return '—';
+  return value.toFixed(1);
+}
 
 export default function LiveStatsSection() {
   const { firmsCount, clientsCount, completedJobsCount, averageRating, loading } = useLiveStats();
 
   const stats = [
-    { value: formatCount(firmsCount, '2.800+'), label: 'verificiranih firmi' },
-    { value: formatCount(clientsCount, '12.500+'), label: 'registrovanih klijenata' },
-    { value: formatRating(averageRating, '4,8'), label: 'prosječna ocjena firmi' },
-    { value: formatCount(completedJobsCount, '25.000+'), label: 'realiziranih poslova' },
+    { value: formatRealCount(firmsCount), label: 'registrovanih firmi' },
+    { value: formatRealCount(clientsCount), label: 'registrovanih klijenata' },
+    { value: formatRealRating(averageRating), label: 'prosječna ocjena firmi' },
+    { value: formatRealCount(completedJobsCount), label: 'završenih poslova' },
   ];
 
   return (
@@ -22,7 +32,7 @@ export default function LiveStatsSection() {
           }`}
         >
           <div className="text-3xl md:text-4xl font-extrabold text-brand-orange mb-2">
-            {stat.value}
+            {loading ? <span className="inline-block w-16 h-8 bg-gray-200 rounded animate-pulse" /> : stat.value}
           </div>
           <div className="text-sm text-steel">{stat.label}</div>
         </div>

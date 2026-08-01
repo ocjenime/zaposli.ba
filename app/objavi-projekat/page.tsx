@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon } from 'lucide-react';
-import { categories as allCategories, cities as allCities, getWorker, getCategory } from '@/lib/data';
+import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 
@@ -70,16 +70,29 @@ function PostProjectContent() {
     }
 
     if (workerId) {
-      const worker = getWorker(workerId);
-      if (worker) {
-        const cat = getCategory(worker.categorySlug);
-        setTargetProvider({ id: worker.id, name: worker.name, type: 'worker' });
-        setFormData((prev) => ({
-          ...prev,
-          category: cat?.name || prev.category,
-          title: prev.title || worker.specialty,
-        }));
-      }
+      (async () => {
+        const { data: firmData } = await supabase
+          .from('firms')
+          .select('id, name, owner_id')
+          .eq('id', workerId)
+          .single();
+        if (firmData) {
+          const typed = firmData as unknown as { id: string; name: string; owner_id: string };
+          const { data: catData } = await supabase
+            .from('firm_categories')
+            .select('category_slug')
+            .eq('firm_id', workerId)
+            .limit(1);
+          const catSlug = (catData as unknown as { category_slug: string }[])?.[0]?.category_slug;
+          const cat = catSlug ? getCategory(catSlug) : null;
+          setTargetProvider({ id: typed.id, name: typed.name, type: 'firm', ownerId: typed.owner_id });
+          setFormData((prev) => ({
+            ...prev,
+            category: cat?.name || prev.category,
+            title: prev.title || cat?.name || prev.title,
+          }));
+        }
+      })();
     } else if (firmId) {
       (async () => {
         const { data: firmData } = await supabase

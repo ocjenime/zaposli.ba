@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { categories, cities } from '@/lib/data';
+import { site } from '@/lib/site';
 
 const footerLinks = {
   'Za klijente': [
@@ -106,19 +107,21 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
-                <span>info@zaposli.ba</span>
+                <span>{site.email}</span>
               </div>
-              <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                <span>+387 61 123 456</span>
-              </div>
+              {site.phone && (
+                <>
+                  <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-4 h-4" />
+                    <span>{site.phone}</span>
+                  </div>
+                </>
+              )}
               <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4" />
-                <span>Bosna i Hercegovina</span>
-                <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
-                <span>Dio kompanije Luxari</span>
+                <span>{site.city}</span>
               </div>
             </div>
             <p className="text-gray-600 text-sm">

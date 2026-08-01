@@ -1,14 +1,13 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, BadgeCheck, Star, Siren, CheckCircle2 } from 'lucide-react';
+import { MapPin, ArrowRight, Siren, CheckCircle2 } from 'lucide-react';
 import { EmergencyProcessAnimation } from '@/components/EmergencyProcessAnimation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { JsonLd, breadcrumbSchema, serviceSchema } from '@/lib/jsonld';
-import { categories, getCategory, cities, workers, projects } from '@/lib/data';
+import { categories, getCategory, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 import CategoryHeroStats from '@/components/CategoryHeroStats';
 
@@ -21,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cat = getCategory(slug);
   if (!cat) return {};
   return {
-    title: `${cat.name}: ${cat.count} provjerenih firmi | Zaposli.ba`,
+    title: `${cat.name}: provjerene firme širom BiH | Zaposli.ba`,
     description: `${cat.description}. Pronađite ${cat.profession.toLowerCase()} širom BiH. Objavite posao besplatno i primite ponude.`,
     alternates: { canonical: `${site.url}/kategorije/${cat.slug}/` },
   };
@@ -32,8 +31,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const cat = getCategory(slug);
   if (!cat) notFound();
 
-  const catWorkers = workers.filter((w) => w.categorySlug === cat.slug);
-  const catProjects = projects.filter((p) => p.categorySlug === cat.slug);
   const Icon = cat.icon;
 
   return (
@@ -41,7 +38,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije', href: '/kategorije/' }, { name: cat.name }]} />
-        <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/`, providerCount: cat.count })} />
+        <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/` })} />
 
         {/* Hero */}
         <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
@@ -67,7 +64,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   )}
                 </div>
                 <p className="text-steel mt-1">
-                  <CategoryHeroStats slug={cat.slug} fallback={cat.count} />
+                  <CategoryHeroStats slug={cat.slug} />
                 </p>
               </div>
             </div>
@@ -159,71 +156,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 </div>
                 )}
 
-            {/* Majstori */}
-            {catWorkers.length > 0 && (
-              <>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Provjereni majstori · {cat.name}</h2>
-                <div className="grid md:grid-cols-3 gap-5 mb-14">
-                  {catWorkers.map((w) => (
-                    <Link
-                      key={w.id}
-                      href={`/firma/${w.id}/`}
-                      className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all"
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-lg shrink-0">
-                          {w.initial}
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-gray-900 group-hover:text-brand-orange transition-colors">{w.name}</h3>
-                          <p className="text-xs text-steel">{w.specialty} · {w.location}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                        <span className="font-bold text-gray-900 text-sm">{w.rating}</span>
-                        <span className="text-xs text-steel">({w.reviews} recenzija)</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <VerifiedBadge size="sm" />
-                        <span className="text-xs text-steel">{w.projects} poslova</span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </>
-            )}
-
-            {/* Poslovi */}
-            {catProjects.length > 0 && (
-              <>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Aktivni poslovi · {cat.name}</h2>
-                <div className="grid md:grid-cols-2 gap-5">
-                  {catProjects.map((p) => (
-                    <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all">
-                      <div className="flex justify-between items-start mb-3">
-                        <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
-                          {p.category}
-                        </span>
-                        <span className="text-xs text-steel">{p.timeAgo}</span>
-                      </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-2">{p.title}</h3>
-                      <p className="text-steel text-sm mb-4 line-clamp-2">{p.description}</p>
-                      <div className="flex flex-wrap gap-4 text-xs text-steel mb-4">
-                        <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{p.location}</span>
-                      </div>
-                      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                        <div className="font-bold text-brand-orange text-sm">{p.budget}</div>
-                        <div className="flex items-center gap-1.5 text-xs text-steel">
-                          <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-                          {p.bids} ponuda
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
           </div>
         </section>
 

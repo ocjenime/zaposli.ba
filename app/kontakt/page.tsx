@@ -6,7 +6,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import { site } from '@/lib/site';
+import { Mail, Phone, MapPin, Clock, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
 const inputClass =
   'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none text-gray-900 text-sm';
@@ -15,19 +17,23 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'info@zaposli.ba',
+    value: site.email,
     note: 'Odgovaramo u roku od 24 sata',
   },
-  {
-    icon: Phone,
-    title: 'Telefon',
-    value: '+387 61 123 456',
-    note: 'Poziv i poruka (Viber / WhatsApp)',
-  },
+  ...(site.phone
+    ? [
+        {
+          icon: Phone,
+          title: 'Telefon',
+          value: site.phone,
+          note: 'Poziv i poruka (Viber / WhatsApp)',
+        },
+      ]
+    : []),
   {
     icon: MapPin,
     title: 'Adresa',
-    value: 'Sarajevo, Bosna i Hercegovina',
+    value: site.city,
     note: 'Radimo u cijeloj BiH',
   },
   {
@@ -53,10 +59,25 @@ export default function KontaktPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert('Poruka je poslana! (Demo)');
-    setFormData({ ime: '', email: '', telefon: '', poruka: '' });
+    setStatus('loading');
+
+    const { error } = await supabase.from('contact_messages').insert({
+      name: formData.ime,
+      email: formData.email,
+      phone: formData.telefon || null,
+      message: formData.poruka,
+    });
+
+    if (error) {
+      setStatus('error');
+    } else {
+      setStatus('success');
+      setFormData({ ime: '', email: '', telefon: '', poruka: '' });
+    }
   };
 
   return (
@@ -172,10 +193,38 @@ export default function KontaktPage() {
                       className={`${inputClass} resize-none`}
                     />
                   </div>
-                  <button type="submit" className="btn-primary w-full flex items-center justify-center gap-2">
-                    <Send className="w-4 h-4" />
-                    Pošalji poruku
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  >
+                    {status === 'loading' ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Šaljem...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Pošalji poruku
+                      </>
+                    )}
                   </button>
+
+                  {status === 'success' && (
+                    <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
+                      <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                      <p className="text-sm text-green-800 font-medium">Hvala! Poruka je poslana. Odgovaramo u roku od 24 sata.</p>
+                    </div>
+                  )}
+
+                  {status === 'error' && (
+                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
+                      <AlertCircle className="w-5 h-5 text-red-600 mx-auto mb-1" />
+                      <p className="text-sm text-red-800 font-medium">Došlo je do greške. Molimo pokušajte ponovo ili pošaljite email direktno.</p>
+                    </div>
+                  )}
+
                   <p className="text-xs text-steel text-center">
                     Slanjem poruke prihvatate našu{' '}
                     <Link href="/privacy/" className="text-brand-orange hover:underline">

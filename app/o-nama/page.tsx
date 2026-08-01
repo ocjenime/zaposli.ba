@@ -115,8 +115,7 @@ export default function ONamaPage() {
               </p>
               <p>
                 Tako je rođena ideja: jedna platforma na kojoj klijent opiše šta mu treba, a
-                provjerene firme se jave sa ponudama. Danas Zaposli.ba koriste hiljade klijenata
-                širom Bosne i Hercegovine, a naš cilj ostaje isti: da svaki posao, od zamjene
+                provjerene firme se jave sa ponudama. Naš cilj ostaje isti: da svaki posao, od zamjene
                 slavine do kompletne adaptacije, počne sa pravim majstorom.
               </p>
             </div>

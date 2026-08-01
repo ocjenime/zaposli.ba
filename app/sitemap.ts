@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { categories, cities, workers } from '@/lib/data';
+import { categories, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 
 export const dynamic = 'force-static';
@@ -41,12 +41,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  const workerPages = workers.map((w) => ({
-    url: `${site.url}/firma/${w.id}/`,
-    lastModified: now,
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
-
-  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...workerPages];
+  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages];
 }

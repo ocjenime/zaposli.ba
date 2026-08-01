@@ -1,12 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, Star, Shield, Clock } from 'lucide-react';
+import { MapPin, ArrowRight, Shield, Clock, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
-import { cities, categories, workers } from '@/lib/data';
+import { cities, categories } from '@/lib/data';
 import { site } from '@/lib/site';
 import CityCategoriesGrid from '@/components/CityCategoriesGrid';
 
@@ -20,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!city) return {};
   return {
     title: `Majstori ${city.name}: sve kategorije | Zaposli.ba`,
-    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. 20 kategorija usluga, besplatna objava posla, ponude u roku od 24 sata.`,
+    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. Sve kategorije usluga, besplatna objava posla, ponude u roku od 24 sata.`,
     alternates: { canonical: `${site.url}/gradovi/${city.slug}/` },
   };
 }
@@ -29,8 +28,6 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const city = cities.find((c) => c.slug === slug);
   if (!city) notFound();
-
-  const localWorkers = workers.filter((w) => w.location === city.name);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -76,44 +73,6 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             <CityCategoriesGrid slugs={categories.filter((cat) => !cat.noSeo).map((cat) => cat.slug)} citySlug={city.slug} />
           </div>
         </section>
-
-        {/* Lokalni majstori */}
-        {localWorkers.length > 0 && (
-          <section className="py-14 bg-cloud">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Provjereni majstori u gradu {city.loc}</h2>
-              <p className="text-steel mb-8">Ocjene i recenzije stvarnih klijenata</p>
-              <div className="grid md:grid-cols-3 gap-5">
-                {localWorkers.map((w) => (
-                  <Link
-                    key={w.id}
-                    href={`/firma/${w.id}/`}
-                    className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all"
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-lg shrink-0">
-                        {w.initial}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900 group-hover:text-brand-orange transition-colors">{w.name}</h3>
-                        <p className="text-xs text-steel">{w.specialty} · {w.location}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                      <span className="font-bold text-gray-900 text-sm">{w.rating}</span>
-                      <span className="text-xs text-steel">({w.reviews} recenzija)</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <VerifiedBadge size="sm" />
-                      <span className="text-xs text-steel">{w.projects} poslova</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
         {/* CTA */}
         <section className="py-14 bg-ink relative overflow-hidden">

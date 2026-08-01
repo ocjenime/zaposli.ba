@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, Star, Shield, Clock, BadgeCheck } from 'lucide-react';
+import { MapPin, ArrowRight, Shield, Clock, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { JsonLd, serviceSchema, faqSchema } from '@/lib/jsonld';
-import { categories, cities, workers, projects, type Category, type City } from '@/lib/data';
+import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
 
 function parseSlug(slug: string): { cat: Category; city: City } | null {
@@ -34,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { cat, city } = parsed;
   return {
     title: `${cat.profession} ${city.name}: provjerene firme | Zaposli.ba`,
-    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? ${cat.count}+ provjerenih firmi. Objavite posao besplatno i uporedite ponude.`,
+    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? Pronađite provjerene firme. Objavite posao besplatno i uporedite ponude.`,
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
 }
@@ -45,10 +44,6 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
   if (!parsed) notFound();
   const { cat, city } = parsed;
   const Icon = cat.icon;
-
-  const localWorkers = workers.filter((w) => w.categorySlug === cat.slug && w.location === city.name);
-  const shownWorkers = localWorkers.length > 0 ? localWorkers : workers.filter((w) => w.categorySlug === cat.slug);
-  const localProjects = projects.filter((p) => p.categorySlug === cat.slug);
 
   const faqItems = [
     {
@@ -74,7 +69,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
           { name: cat.name, href: `/kategorije/${cat.slug}/` },
           { name: city.name },
         ]} />
-        <JsonLd data={serviceSchema({ name: `${cat.profession} ${city.name}`, description: cat.description, area: city.name, url: `/usluge/${slug}/`, providerCount: cat.count })} />
+        <JsonLd data={serviceSchema({ name: `${cat.profession} ${city.name}`, description: cat.description, area: city.name, url: `/usluge/${slug}/` })} />
         <JsonLd data={faqSchema(faqItems)} />
 
         {/* Hero */}
@@ -106,75 +101,6 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
             </Link>
           </div>
         </section>
-
-        {/* Majstori */}
-        <section className="py-14 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori: ${cat.name}`}
-            </h2>
-            <p className="text-steel mb-8">Ocjene i recenzije stvarnih klijenata</p>
-            {shownWorkers.length > 0 ? (
-              <div className="grid md:grid-cols-3 gap-5">
-                {shownWorkers.map((w) => (
-                  <Link
-                    key={w.id}
-                    href={`/firma/${w.id}/`}
-                    className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all"
-                  >
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-lg shrink-0">
-                        {w.initial}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-gray-900 group-hover:text-brand-orange transition-colors">{w.name}</h3>
-                        <p className="text-xs text-steel">{w.specialty} · {w.location}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                      <span className="font-bold text-gray-900 text-sm">{w.rating}</span>
-                      <span className="text-xs text-steel">({w.reviews} recenzija)</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <VerifiedBadge size="sm" />
-                      <span className="text-xs text-steel">{w.projects} poslova</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="bg-cloud rounded-2xl p-8 text-center">
-                <p className="text-steel mb-4">Firme iz kategorije {cat.name} se aktivno registruju u gradu {city.name}. Objavite posao i budite među prvima koji će primiti ponude.</p>
-                <Link href="/objavi-projekat/" className="btn-primary">Objavi posao</Link>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Poslovi */}
-        {localProjects.length > 0 && (
-        <section className="py-14 bg-cloud">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Primjeri poslova · {cat.name}</h2>
-            <div className="grid md:grid-cols-2 gap-5">
-              {localProjects.map((p) => (
-                <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{p.title}</h3>
-                  <p className="text-steel text-sm mb-4 line-clamp-2">{p.description}</p>
-                  <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                    <div className="font-bold text-brand-orange text-sm">{p.budget}</div>
-                    <div className="flex items-center gap-1.5 text-xs text-steel">
-                      <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-                      {p.bids} ponuda
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-        )}
 
         {/* FAQ */}
         <section className="py-14 bg-white">

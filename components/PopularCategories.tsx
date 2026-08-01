@@ -71,7 +71,7 @@ export default function PopularCategories() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-1 text-sm">{category.name}</h3>
               <p className="text-xs text-steel">
-                <LiveCategoryCount slug={category.slug} fallback={category.count} />
+                <LiveCategoryCount slug={category.slug} />
               </p>
             </Link>
           ))}
