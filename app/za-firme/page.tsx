@@ -30,10 +30,12 @@ import {
 
 function FloatingOpenJobsBadge() {
   const { openJobsCount, loading } = useLiveStats();
+  const value = formatCount(openJobsCount, '');
+  if (!value) return null;
   return (
     <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 text-center">
       <div className={`text-2xl font-extrabold text-brand-orange ${loading ? 'opacity-70' : ''}`}>
-        {formatCount(openJobsCount, '25.000+')}
+        {value}
       </div>
       <div className="text-xs text-steel">aktivnih poslova</div>
     </div>
@@ -41,18 +43,18 @@ function FloatingOpenJobsBadge() {
 }
 
 function StatsSection() {
-  const { firmsCount, completedJobsCount, averageRating, loading, error } = useLiveStats();
-  const positiveRate = 95; // fallback, možemo kasnije izračunati iz recenzija
+  const { firmsCount, completedJobsCount, averageRating, loading } = useLiveStats();
 
   const stats = [
-    { value: formatCount(firmsCount, '2,800+'), label: 'Registrovanih majstora' },
-    { value: formatCount(completedJobsCount, '25,000+'), label: 'Završenih poslova' },
-    { value: formatRating(averageRating, '4.8'), label: 'Prosječna ocjena' },
-    { value: `${loading && !error ? '...' : positiveRate}%`, label: 'Zadovoljnih klijenata' },
-  ];
+    { value: formatCount(firmsCount, ''), label: 'Registrovanih majstora' },
+    { value: formatCount(completedJobsCount, ''), label: 'Završenih poslova' },
+    { value: formatRating(averageRating, ''), label: 'Prosječna ocjena' },
+  ].filter((s) => s.value);
+
+  if (stats.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+    <div className={`grid gap-8 md:gap-4 ${stats.length === 3 ? 'grid-cols-3' : stats.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'}`}>
       {stats.map((stat) => (
         <div key={stat.label} className="text-center">
           <div className={`text-3xl md:text-4xl font-bold text-ink ${loading ? 'opacity-70' : ''}`}>
@@ -223,7 +225,7 @@ export default function ForCompaniesPage() {
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
                   <Sparkles className="h-4 w-4 text-brand-orange" />
-                  #1 bh. marketplace za majstore i firme
+                  Marketplace za majstore i firme u BiH
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 text-balance">
                   Novi poslovi, direktno u vaš inbox
@@ -446,12 +448,10 @@ export default function ForCompaniesPage() {
                 </div>
                 <div className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 max-w-[200px]">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="flex -space-x-2">
-                      <div className="w-7 h-7 rounded-full bg-brand-orange text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">M</div>
-                      <div className="w-7 h-7 rounded-full bg-ink text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">A</div>
-                      <div className="w-7 h-7 rounded-full bg-steel text-white flex items-center justify-center text-[10px] font-bold border-2 border-white">S</div>
+                    <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
+                      <BadgeCheck className="w-5 h-5" />
                     </div>
-                    <span className="text-xs font-bold text-gray-900">+2.800 kolega</span>
+                    <span className="text-sm font-bold text-gray-900">Provjereni profili</span>
                   </div>
                   <p className="text-xs text-steel">Pridružite se mreži provjerenih majstora i firmi.</p>
                 </div>
