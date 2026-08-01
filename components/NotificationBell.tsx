@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Bell, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 
 interface Notification {
   id: string;
@@ -17,7 +18,7 @@ interface Notification {
 }
 
 export default function NotificationBell() {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
@@ -175,11 +176,13 @@ export default function NotificationBell() {
               <p className="text-sm text-steel text-center py-6">Nema obavještenja.</p>
             ) : (
               notifications.map((n) => {
-                const href = n.job_id
-                  ? n.type === 'bid_accepted'
-                    ? `/dashboard/razgovor/?job_id=${n.job_id}`
-                    : `/dashboard/poslovi/?id=${n.job_id}`
-                  : undefined;
+                const getHref = () => {
+                  if (!n.job_id) return undefined;
+                  if (n.type === 'bid_accepted') return `/dashboard/razgovor/?job_id=${n.job_id}`;
+                  if (n.type === 'new_job' && isFirmRole(role)) return `/dashboard/firma/?expandJobId=${n.job_id}`;
+                  return `/dashboard/poslovi/?id=${n.job_id}`;
+                };
+                const href = getHref();
 
                 const content = (
                   <div className="px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50">

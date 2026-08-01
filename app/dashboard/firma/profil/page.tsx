@@ -40,6 +40,8 @@ interface FirmRow {
 
 interface FirmCategoryRow {
   category_slug: string;
+  notify_enabled: boolean;
+  email_enabled: boolean;
 }
 
 function slugify(value: string) {
@@ -64,6 +66,7 @@ export default function FirmProfileEditorPage() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [categoryPrefs, setCategoryPrefs] = useState<Record<string, { notify: boolean; email: boolean }>>({});
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
@@ -120,11 +123,20 @@ export default function FirmProfileEditorPage() {
 
       const { data: catData } = await supabase
         .from('firm_categories')
-        .select('category_slug')
+        .select('category_slug, notify_enabled, email_enabled')
         .eq('firm_id', typedFirm.id);
 
-      const slugs = (catData as unknown as FirmCategoryRow[] | null)?.map((c) => c.category_slug) || [];
-      setSelectedCategories(slugs);
+      const rows = (catData as unknown as FirmCategoryRow[] | null) || [];
+      setSelectedCategories(rows.map((c) => c.category_slug));
+      setCategoryPrefs(
+        rows.reduce((acc, c) => {
+          acc[c.category_slug] = {
+            notify: c.notify_enabled !== false,
+            email: c.email_enabled !== false,
+          };
+          return acc;
+        }, {} as Record<string, { notify: boolean; email: boolean }>)
+      );
 
       const { data: portfolioData } = await supabase
         .from('portfolio_images')
@@ -223,9 +235,32 @@ export default function FirmProfileEditorPage() {
   }
 
   function toggleCategory(slug: string) {
-    setSelectedCategories((prev) =>
-      prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
-    );
+    setSelectedCategories((prev) => {
+      const isSelected = prev.includes(slug);
+      if (isSelected) {
+        // Keep prefs in state even when deselected so re-select restores them.
+        return prev.filter((s) => s !== slug);
+      }
+      setCategoryPrefs((p) => ({
+        ...p,
+        [slug]: p[slug] || { notify: true, email: true },
+      }));
+      return [...prev, slug];
+    });
+  }
+
+  function setCategoryNotify(slug: string, notify: boolean) {
+    setCategoryPrefs((prev) => ({
+      ...prev,
+      [slug]: { ...(prev[slug] || { email: true }), notify },
+    }));
+  }
+
+  function setCategoryEmail(slug: string, email: boolean) {
+    setCategoryPrefs((prev) => ({
+      ...prev,
+      [slug]: { ...(prev[slug] || { notify: true }), email },
+    }));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -315,7 +350,15 @@ export default function FirmProfileEditorPage() {
       await supabase.from('firm_categories').delete().eq('firm_id', firm.id);
 
       if (selectedCategories.length > 0) {
-        const rows = selectedCategories.map((slug) => ({ firm_id: firm.id, category_slug: slug }));
+        const rows = selectedCategories.map((slug) => {
+          const prefs = categoryPrefs[slug] || { notify: true, email: true };
+          return {
+            firm_id: firm.id,
+            category_slug: slug,
+            notify_enabled: prefs.notify,
+            email_enabled: prefs.email,
+          };
+        });
         const { error: catError } = await supabase.from('firm_categories').insert(rows);
         if (catError) {
           setError('Profil je spremljen, ali kategorije nisu ažurirane.');
@@ -590,23 +633,61 @@ export default function FirmProfileEditorPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Kategorije</label>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-xs text-steel mb-3">Označite kategorije koje pokrivate i odaberite kako želite primati obavještenja.</p>
+                  <div className="grid sm:grid-cols-2 gap-3">
                     {categories.map((category) => {
                       const selected = selectedCategories.includes(category.slug);
+                      const prefs = categoryPrefs[category.slug] || { notify: true, email: true };
                       return (
-                        <button
+                        <div
                           key={category.slug}
-                          type="button"
-                          onClick={() => toggleCategory(category.slug)}
-                          className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm border transition-colors ${
+                          className={`rounded-xl border p-4 transition-colors ${
                             selected
-                              ? 'bg-brand-orange text-[#ffffff] border-brand-orange'
-                              : 'bg-white text-gray-900 border-gray-200 hover:border-brand-orange'
+                              ? 'bg-orange-50/50 border-brand-orange'
+                              : 'bg-white border-gray-200'
                           }`}
                         >
-                          {selected && <Check className="w-3.5 h-3.5" />}
-                          {category.name}
-                        </button>
+                          <button
+                            type="button"
+                            onClick={() => toggleCategory(category.slug)}
+                            className="flex items-center gap-3 w-full text-left"
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${
+                                selected
+                                  ? 'bg-brand-orange border-brand-orange'
+                                  : 'border-gray-300 bg-white'
+                              }`}
+                            >
+                              {selected && <Check className="w-3.5 h-3.5 text-white" />}
+                            </div>
+                            <span className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-600'}`}>
+                              {category.name}
+                            </span>
+                          </button>
+                          {selected && (
+                            <div className="mt-3 ml-8 space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                              <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={prefs.notify}
+                                  onChange={(e) => setCategoryNotify(category.slug, e.target.checked)}
+                                  className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
+                                />
+                                In-app obavještenja
+                              </label>
+                              <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={prefs.email}
+                                  onChange={(e) => setCategoryEmail(category.slug, e.target.checked)}
+                                  className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
+                                />
+                                Email obavještenja
+                              </label>
+                            </div>
+                          )}
+                        </div>
                       );
                     })}
                   </div>
