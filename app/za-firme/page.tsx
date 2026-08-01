@@ -224,7 +224,7 @@ export default function ForCompaniesPage() {
               </div>
 
               <div className="relative flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
+                <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
                   <Image
                     src="/zaposli.ba/images/majstor-hero.jpg"
                     alt="Majstor sa čekićem tokom renovacije"
@@ -361,13 +361,13 @@ export default function ForCompaniesPage() {
         <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative order-2 lg:order-1">
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
+              <div className="relative order-2 lg:order-1 flex justify-center lg:justify-start">
+                <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
                   <Image
                     src="/zaposli.ba/images/renovacija-enterijer.jpg"
                     alt="Renovacija enterijera u toku"
-                    width={600}
-                    height={450}
+                    width={500}
+                    height={375}
                     className="w-full h-auto object-cover"
                   />
                 </div>
