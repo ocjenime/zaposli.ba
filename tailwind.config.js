@@ -110,6 +110,7 @@ module.exports = {
         'gradient-warm': 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%)',
         'gradient-orange': 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
         'gradient-ink': 'linear-gradient(135deg, #062630 0%, #021117 100%)',
+        'gradient-radial': 'radial-gradient(circle, var(--tw-gradient-stops))',
       },
       boxShadow: {
         'glow': '0 0 30px rgba(249, 115, 22, 0.18)',
