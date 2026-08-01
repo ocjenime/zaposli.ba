@@ -532,7 +532,7 @@ function FirmDashboardContent() {
                                   if (!alreadyBid && canBid) setExpandedJob(isExpanded ? null : job.id);
                                 }}
                                 disabled={alreadyBid || !canBid}
-                                className={`shrink-0 inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                className={`inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto md:shrink-0 ${
                                   alreadyBid || !canBid
                                     ? 'bg-cloud dark:bg-ink-800 text-steel'
                                     : isExpanded

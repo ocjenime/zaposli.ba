@@ -161,22 +161,22 @@ export default function DashboardPage() {
                       {statusLabels[job.status]}
                     </span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Link href={`/dashboard/poslovi/?id=${job.id}`} className="btn-primary text-sm py-2 px-4">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Link href={`/dashboard/poslovi/?id=${job.id}`} className="btn-primary text-sm py-2 px-4 text-center w-full sm:w-auto">
                       Pogledaj ponude
                     </Link>
                     {job.status === 'in_progress' && (
                       <>
                         <Link
                           href={`/dashboard/razgovor/?job_id=${job.id}`}
-                          className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-1.5"
+                          className="btn-secondary text-sm py-2 px-4 inline-flex items-center justify-center gap-1.5 w-full sm:w-auto"
                         >
                           Razgovor
                         </Link>
                         <button
                           onClick={() => completeJob(job.id)}
                           disabled={actionId === job.id}
-                          className="btn-secondary text-sm py-2 px-4 disabled:opacity-50"
+                          className="btn-secondary text-sm py-2 px-4 disabled:opacity-50 w-full sm:w-auto"
                         >
                           {actionId === job.id ? 'Obrada...' : 'Označi završen'}
                         </button>
@@ -185,7 +185,7 @@ export default function DashboardPage() {
                     {job.status === 'completed' && (
                       <Link
                         href={`/dashboard/recenzija/?job_id=${job.id}`}
-                        className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-1.5"
+                        className="btn-secondary text-sm py-2 px-4 inline-flex items-center justify-center gap-1.5 w-full sm:w-auto"
                       >
                         Ostavi recenziju
                       </Link>
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                       <button
                         onClick={() => cancelJob(job.id)}
                         disabled={actionId === job.id}
-                        className="text-sm text-red-600 hover:bg-red-50 px-4 py-2 rounded-xl border border-red-100 transition-colors disabled:opacity-50"
+                        className="text-sm text-red-600 hover:bg-red-50 px-4 py-2 rounded-xl border border-red-100 transition-colors disabled:opacity-50 w-full sm:w-auto"
                       >
                         Otkaži
                       </button>
