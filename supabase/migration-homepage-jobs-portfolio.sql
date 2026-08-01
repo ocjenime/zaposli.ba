@@ -29,11 +29,16 @@ CREATE TABLE IF NOT EXISTS job_images (
 
 ALTER TABLE job_images ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "job_images_select_public" ON job_images FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "job_images_insert_own" ON job_images FOR INSERT WITH CHECK (
+DROP POLICY IF EXISTS "job_images_select_public" ON job_images;
+CREATE POLICY "job_images_select_public" ON job_images FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "job_images_insert_own" ON job_images;
+CREATE POLICY "job_images_insert_own" ON job_images FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM jobs WHERE id = job_id AND client_id = auth.uid())
 );
-CREATE POLICY IF NOT EXISTS "job_images_delete_own" ON job_images FOR DELETE USING (
+
+DROP POLICY IF EXISTS "job_images_delete_own" ON job_images;
+CREATE POLICY "job_images_delete_own" ON job_images FOR DELETE USING (
   EXISTS (SELECT 1 FROM jobs WHERE id = job_id AND client_id = auth.uid())
 );
 
@@ -48,11 +53,16 @@ CREATE TABLE IF NOT EXISTS portfolio_images (
 
 ALTER TABLE portfolio_images ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY IF NOT EXISTS "portfolio_images_select_public" ON portfolio_images FOR SELECT USING (true);
-CREATE POLICY IF NOT EXISTS "portfolio_images_insert_own" ON portfolio_images FOR INSERT WITH CHECK (
+DROP POLICY IF EXISTS "portfolio_images_select_public" ON portfolio_images;
+CREATE POLICY "portfolio_images_select_public" ON portfolio_images FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "portfolio_images_insert_own" ON portfolio_images;
+CREATE POLICY "portfolio_images_insert_own" ON portfolio_images FOR INSERT WITH CHECK (
   EXISTS (SELECT 1 FROM firms WHERE id = firm_id AND owner_id = auth.uid())
 );
-CREATE POLICY IF NOT EXISTS "portfolio_images_delete_own" ON portfolio_images FOR DELETE USING (
+
+DROP POLICY IF EXISTS "portfolio_images_delete_own" ON portfolio_images;
+CREATE POLICY "portfolio_images_delete_own" ON portfolio_images FOR DELETE USING (
   EXISTS (SELECT 1 FROM firms WHERE id = firm_id AND owner_id = auth.uid())
 );
 
@@ -66,11 +76,13 @@ VALUES ('portfolio-images', 'portfolio-images', true, 5242880, ARRAY['image/jpeg
 ON CONFLICT (id) DO NOTHING;
 
 -- Storage policies for job-images
-CREATE POLICY IF NOT EXISTS "job_images_storage_select_public"
+DROP POLICY IF EXISTS "job_images_storage_select_public" ON storage.objects;
+CREATE POLICY "job_images_storage_select_public"
   ON storage.objects FOR SELECT
   USING (bucket_id = 'job-images');
 
-CREATE POLICY IF NOT EXISTS "job_images_storage_insert_own"
+DROP POLICY IF EXISTS "job_images_storage_insert_own" ON storage.objects;
+CREATE POLICY "job_images_storage_insert_own"
   ON storage.objects FOR INSERT
   WITH CHECK (
     bucket_id = 'job-images'
@@ -79,7 +91,8 @@ CREATE POLICY IF NOT EXISTS "job_images_storage_insert_own"
     )
   );
 
-CREATE POLICY IF NOT EXISTS "job_images_storage_delete_own"
+DROP POLICY IF EXISTS "job_images_storage_delete_own" ON storage.objects;
+CREATE POLICY "job_images_storage_delete_own"
   ON storage.objects FOR DELETE
   USING (
     bucket_id = 'job-images'
@@ -89,11 +102,13 @@ CREATE POLICY IF NOT EXISTS "job_images_storage_delete_own"
   );
 
 -- Storage policies for portfolio-images
-CREATE POLICY IF NOT EXISTS "portfolio_images_storage_select_public"
+DROP POLICY IF EXISTS "portfolio_images_storage_select_public" ON storage.objects;
+CREATE POLICY "portfolio_images_storage_select_public"
   ON storage.objects FOR SELECT
   USING (bucket_id = 'portfolio-images');
 
-CREATE POLICY IF NOT EXISTS "portfolio_images_storage_insert_own"
+DROP POLICY IF EXISTS "portfolio_images_storage_insert_own" ON storage.objects;
+CREATE POLICY "portfolio_images_storage_insert_own"
   ON storage.objects FOR INSERT
   WITH CHECK (
     bucket_id = 'portfolio-images'
@@ -102,7 +117,8 @@ CREATE POLICY IF NOT EXISTS "portfolio_images_storage_insert_own"
     )
   );
 
-CREATE POLICY IF NOT EXISTS "portfolio_images_storage_delete_own"
+DROP POLICY IF EXISTS "portfolio_images_storage_delete_own" ON storage.objects;
+CREATE POLICY "portfolio_images_storage_delete_own"
   ON storage.objects FOR DELETE
   USING (
     bucket_id = 'portfolio-images'
