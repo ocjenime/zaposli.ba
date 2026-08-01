@@ -61,8 +61,8 @@ export default function StatsSection() {
           : undefined;
 
         const formatCount = (count: number | null | undefined) => {
-          if (count === null || count === undefined || count <= 0) return null;
-          return count.toLocaleString('bs') + '+';
+          if (count === null || count === undefined || count < 10) return null;
+          return count.toLocaleString('bs');
         };
 
         const nextStats: StatData[] = [];

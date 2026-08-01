@@ -194,8 +194,12 @@ export default function Header() {
             <button
               ref={mobileButtonRef}
               type="button"
-              className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800 touch-manipulation"
+              onClick={() => setMobileMenuOpen((v) => !v)}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen((v) => !v);
+              }}
               aria-label={mobileMenuOpen ? 'Zatvori meni' : 'Otvori meni'}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-menu"
