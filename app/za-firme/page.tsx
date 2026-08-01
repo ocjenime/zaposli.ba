@@ -350,6 +350,25 @@ export default function ForCompaniesPage() {
               </p>
             </div>
             <FirmProcessAnimation />
+
+            <div className="mt-10 md:mt-14 flex flex-wrap items-center justify-center gap-3">
+              {[
+                'Besplatna registracija',
+                'Bez provizije od posla',
+                'Prve ponude u 24h',
+                '20+ kategorija',
+                'Verifikacija profila',
+                'Podrška na bosanskom',
+              ].map((badge) => (
+                <span
+                  key={badge}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm font-medium text-gray-700 shadow-sm"
+                >
+                  <CheckCircle className="w-4 h-4 text-brand-orange" />
+                  {badge}
+                </span>
+              ))}
+            </div>
           </div>
         </section>
 
