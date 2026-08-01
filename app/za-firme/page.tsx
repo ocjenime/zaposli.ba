@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
 import PricingCTA from '@/components/PricingCTA';
-import { useLiveStats, formatCount, formatRating } from '@/hooks/useLiveStats';
+
 import {
   CheckCircle,
   TrendingUp,
@@ -17,80 +17,36 @@ import {
   BadgeCheck,
   Clock,
   Wallet,
-  Sparkles,
   Building2,
   Target,
   Headphones,
-  Zap,
   ChevronDown,
-  Award,
-  Phone,
   HelpCircle,
+  Phone,
 } from 'lucide-react';
-
-function FloatingOpenJobsBadge() {
-  const { openJobsCount, loading } = useLiveStats();
-  const value = formatCount(openJobsCount, '');
-  if (!value) return null;
-  return (
-    <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 text-center">
-      <div className={`text-2xl font-extrabold text-brand-orange ${loading ? 'opacity-70' : ''}`}>
-        {value}
-      </div>
-      <div className="text-xs text-steel">aktivnih poslova</div>
-    </div>
-  );
-}
-
-function StatsSection() {
-  const { firmsCount, completedJobsCount, averageRating, loading } = useLiveStats();
-
-  const stats = [
-    { value: formatCount(firmsCount, ''), label: 'Registrovanih majstora' },
-    { value: formatCount(completedJobsCount, ''), label: 'Završenih poslova' },
-    { value: formatRating(averageRating, ''), label: 'Prosječna ocjena' },
-  ].filter((s) => s.value);
-
-  if (stats.length === 0) return null;
-
-  return (
-    <div className={`grid gap-8 md:gap-4 ${stats.length === 3 ? 'grid-cols-3' : stats.length === 2 ? 'grid-cols-2' : 'grid-cols-2 md:grid-cols-4'}`}>
-      {stats.map((stat) => (
-        <div key={stat.label} className="text-center">
-          <div className={`text-3xl md:text-4xl font-bold text-ink ${loading ? 'opacity-70' : ''}`}>
-            {stat.value}
-          </div>
-          <div className="mt-1 text-sm text-steel">{stat.label}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
 
 const benefits = [
   {
     icon: TrendingUp,
     title: 'Rastite bez marketinga',
-    description: 'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i društvene mreže.',
-    badge: 'Rast',
+    description:
+      'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i društvene mreže.',
   },
   {
     icon: Users,
-    title: 'Hiljade klijenata',
-    description: 'Pristupite najvećoj bazi klijenata u BiH koji aktivno traže majstore i firme.',
-    badge: 'Tržište',
+    title: 'Marketplace u BiH',
+    description:
+      'Pristupite bazi klijenata u Bosni i Hercegovini koji aktivno traže majstore i firme.',
   },
   {
     icon: Star,
     title: 'Izgradite reputaciju',
     description: 'Skupljajte ocjene i recenzije koje vas ističu ispred konkurencije.',
-    badge: 'Povjerenje',
   },
   {
     icon: Shield,
     title: 'Verifikacija profila',
     description: 'Verifikovani profil dobija značku povjerenja i bolju poziciju u listi.',
-    badge: 'Sigurnost',
   },
 ];
 
@@ -123,7 +79,6 @@ const pricingPlans = [
     price: '0',
     period: 'KM/mj',
     description: 'Idealno za početak i testiranje tržišta.',
-    emblem: 'Start',
     features: [
       'Profil firme / majstora',
       '5 ponuda mjesečno',
@@ -138,7 +93,6 @@ const pricingPlans = [
     price: '29',
     period: 'KM/mj',
     description: 'Za početnike koji žele više poslova.',
-    emblem: 'Rast',
     features: [
       '10 ponuda mjesečno',
       'Verifikacija profila',
@@ -154,7 +108,6 @@ const pricingPlans = [
     price: '79',
     period: 'KM/mj',
     description: 'Za aktivne firme i majstore koji žele rasti.',
-    emblem: 'Preporučeno',
     features: [
       '30 ponuda mjesečno',
       'Istaknuti profil',
@@ -171,7 +124,6 @@ const pricingPlans = [
     price: '149',
     period: 'KM/mj',
     description: 'Za najzahtjevnije profesionalce i firme.',
-    emblem: 'Premium',
     features: [
       'Neograničene ponude',
       'Premium istaknutost',
@@ -188,27 +140,33 @@ const pricingPlans = [
 const faqs = [
   {
     question: 'Koliko košta registracija firme ili majstora?',
-    answer: 'Registracija je potpuno besplatna. Plaćate tek kada odlučite nadograditi paket radi više ponuda i dodatnih pogodnosti.',
+    answer:
+      'Registracija je potpuno besplatna. Plaćate tek kada odlučite nadograditi paket radi više ponuda i dodatnih pogodnosti.',
   },
   {
     question: 'Šta znači "ponuda mjesečno"?',
-    answer: 'To je broj poslova na koje možete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
+    answer:
+      'To je broj poslova na koje možete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
   },
   {
     question: 'Mogu li otkazati pretplatu u bilo kom trenutku?',
-    answer: 'Da. Bez ugovorne obaveze i bez skrivenih naknadi. Pretplatu možete otkazati ili promijeniti iz svog dashboarda.',
+    answer:
+      'Da. Bez ugovorne obaveze i bez skrivenih naknadi. Pretplatu možete otkazati ili promijeniti iz svog dashboarda.',
   },
   {
     question: 'Kako funkcioniše verifikacija profila?',
-    answer: 'Verifikacija uključuje provjeru dokumentacije i kvaliteta prethodnih radova. Verifikovani profili dobijaju značku i bolju poziciju.',
+    answer:
+      'Verifikacija uključuje provjeru dokumentacije i kvaliteta prethodnih radova. Verifikovani profili dobijaju značku i bolju poziciju.',
   },
   {
     question: 'Da li postoji provizija po dobijenom poslu?',
-    answer: 'Ne. Zaposli.ba ne naplaćuje proviziju po dobijenom poslu. Plaćate samo fiksnu mjesečnu naknadu prema odabranom paketu.',
+    answer:
+      'Ne. Zaposli.ba ne naplaćuje proviziju po dobijenom poslu. Plaćate samo fiksnu mjesečnu naknadu prema odabranom paketu.',
   },
   {
     question: 'Kako se plaćaju paketi?',
-    answer: 'Paketi se plaćaju mjesečno ili godišnje. Godišnje plaćanje donosi 10% popusta. Dostupni su Stripe, PayPal i bankovna uplata.',
+    answer:
+      'Paketi se plaćaju mjesečno ili godišnje. Godišnje plaćanje donosi 10% popusta. Dostupni su Stripe, PayPal i bankovna uplata.',
   },
 ];
 
@@ -218,23 +176,24 @@ export default function ForCompaniesPage() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-gradient-hero pt-32 pb-20 md:pt-40 md:pb-28">
+        <section className="relative overflow-hidden bg-gradient-hero pt-28 pb-16 md:pt-40 md:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
-                  <Sparkles className="h-4 w-4 text-brand-orange" />
+                  <Building2 className="h-4 w-4 text-brand-orange" />
                   Marketplace za majstore i firme u BiH
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 text-balance">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5 text-balance">
                   Novi poslovi, direktno u vaš inbox
                 </h1>
-                <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-10 max-w-xl">
-                  Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i Hercegovini.
-                  Dobijajte upite, šaljite ponude i rastite bez velikih početnih ulaganja.
+                <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-xl">
+                  Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i
+                  Hercegovini. Dobijajte upite, šaljite ponude i rastite bez velikih početnih
+                  ulaganja.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <PricingCTA
                     popular
                     className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
@@ -248,7 +207,7 @@ export default function ForCompaniesPage() {
                     Pogledajte pakete
                   </Link>
                 </div>
-                <div className="flex flex-wrap items-center gap-5 text-sm text-white/70">
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
                   <span className="inline-flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-brand-orange" />
                     Bez ugovorne obaveze
@@ -264,63 +223,47 @@ export default function ForCompaniesPage() {
                 </div>
               </div>
 
-              <div className="relative hidden lg:flex lg:justify-end">
+              <div className="relative flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
                   <Image
-                    src="/zaposli.ba/images/majstor-cekic.jpg"
+                    src="/zaposli.ba/images/majstor-hero.jpg"
                     alt="Majstor sa čekićem tokom renovacije"
-                    width={480}
-                    height={360}
+                    width={560}
+                    height={420}
                     className="w-full h-auto object-cover"
                     priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
                 </div>
-                {/* Floating badge */}
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                    <BadgeCheck className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-gray-900">Verifikovani profili</div>
-                    <div className="text-xs text-steel">Povjerenje klijenata</div>
-                  </div>
-                </div>
-                {/* Floating stat */}
-                <FloatingOpenJobsBadge />
               </div>
             </div>
           </div>
         </section>
 
         {/* Benefits */}
-        <section className="py-20 md:py-24 bg-white">
+        <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
-                <Award className="h-4 w-4" /> Prednosti platforme
+                <Building2 className="h-4 w-4" /> Prednosti platforme
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Zašto se profesionalci pridružuju Zaposli.ba?
               </h2>
               <p className="text-steel text-lg">
-                Platforma koja vam donosi klijente, pomaže da gradite reputaciju i rastete bez velikih početnih ulaganja.
+                Platforma koja vam donosi klijente, pomaže da gradite reputaciju i rastete bez
+                velikih početnih ulaganja.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit) => (
                 <div
                   key={benefit.title}
-                  className="relative bg-white rounded-2xl border border-gray-100 p-7 text-center shadow-sm hover:shadow-card transition-shadow duration-200"
+                  className="bg-white rounded-2xl border border-gray-100 p-6 hover:border-orange-200 transition-colors duration-200"
                 >
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
-                      {benefit.badge}
-                    </span>
-                  </div>
-                  <div className="w-14 h-14 mx-auto mb-4 mt-2 bg-orange-50 rounded-2xl border border-orange-100 flex items-center justify-center">
-                    <benefit.icon className="w-7 h-7 text-brand-orange" />
+                  <div className="w-12 h-12 mb-4 bg-orange-50 rounded-xl border border-orange-100 flex items-center justify-center">
+                    <benefit.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{benefit.title}</h3>
                   <p className="text-sm text-steel leading-relaxed">{benefit.description}</p>
@@ -331,17 +274,18 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* How it works */}
-        <section className="py-20 md:py-24 bg-cloud">
+        <section className="py-16 md:py-20 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
                 <Building2 className="h-4 w-4" /> Kako radi
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Od registracije do zarade u 4 koraka
               </h2>
               <p className="text-steel text-lg">
-                Besplatno se registrujte, pronađite poslove u vašoj oblasti i šaljite ponude klijentima.
+                Besplatno se registrujte, pronađite poslove u vašoj oblasti i šaljite ponude
+                klijentima.
               </p>
             </div>
             <FirmProcessAnimation />
@@ -349,17 +293,18 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Real project showcase */}
-        <section className="py-20 md:py-24 bg-white">
+        <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
-                <Building2 className="h-4 w-4" /> Stvarni poslovi
+                <Building2 className="h-4 w-4" /> Kategorije poslova
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Pronađite projekte u svojoj oblasti
               </h2>
               <p className="text-steel text-lg">
-                Od adaptacija stanova do kuhinja, kupatila, farbanja i završnih radova. Klijenti svakodnevno objavljuju nove poslove.
+                Od adaptacija stanova do kuhinja, kupatila, farbanja i završnih radova. Klijenti
+                svakodnevno objavljuju nove poslove.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -373,7 +318,9 @@ export default function ForCompaniesPage() {
                 />
                 <div className="p-5">
                   <h3 className="font-bold text-gray-900 mb-1">Malterski i bojadžijski radovi</h3>
-                  <p className="text-sm text-steel">Molerski radovi, gletovanje, krečenje i bojenje enterijera.</p>
+                  <p className="text-sm text-steel">
+                    Molerski radovi, gletovanje, krečenje i bojenje enterijera.
+                  </p>
                 </div>
               </div>
               <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
@@ -386,7 +333,9 @@ export default function ForCompaniesPage() {
                 />
                 <div className="p-5">
                   <h3 className="font-bold text-gray-900 mb-1">Renovacija kuhinja i stanova</h3>
-                  <p className="text-sm text-steel">Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.</p>
+                  <p className="text-sm text-steel">
+                    Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.
+                  </p>
                 </div>
               </div>
               <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
@@ -399,7 +348,9 @@ export default function ForCompaniesPage() {
                 />
                 <div className="p-5">
                   <h3 className="font-bold text-gray-900 mb-1">Završni i građevinski radovi</h3>
-                  <p className="text-sm text-steel">Keramika, parket, instalacije, elektrika i vodoinstalateri.</p>
+                  <p className="text-sm text-steel">
+                    Keramika, parket, instalacije, elektrika i vodoinstalateri.
+                  </p>
                 </div>
               </div>
             </div>
@@ -407,10 +358,10 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Trust signals */}
-        <section className="py-20 md:py-24 bg-white">
+        <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="relative order-2 md:order-1">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="relative order-2 lg:order-1">
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
                   <Image
                     src="/zaposli.ba/images/renovacija-enterijer.jpg"
@@ -420,32 +371,24 @@ export default function ForCompaniesPage() {
                     className="w-full h-auto object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-5 -right-5 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 max-w-[200px]">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center">
-                      <BadgeCheck className="w-5 h-5" />
-                    </div>
-                    <span className="text-sm font-bold text-gray-900">Provjereni profili</span>
-                  </div>
-                  <p className="text-xs text-steel">Pridružite se mreži provjerenih majstora i firmi.</p>
-                </div>
               </div>
-              <div className="order-1 md:order-2">
+              <div className="order-1 lg:order-2">
                 <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
                   <Shield className="h-4 w-4" /> Sigurnost i transparentnost
                 </span>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                   Izgradite povjerenje klijenata
                 </h2>
                 <p className="text-steel text-lg mb-8">
-                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima transparentan model rasta.
-                  Bez skrivenih troškova, bez provizija, bez komplikacija.
+                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima
+                  transparentan model rasta. Bez skrivenih troškova, bez provizija, bez
+                  komplikacija.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-6">
                   {trustSignals.map((signal) => (
                     <div key={signal.title} className="flex gap-4">
                       <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
-                        <signal.icon className="w-6 h-6 text-brand-orange" />
+                        <signal.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                       </div>
                       <div>
                         <h3 className="font-bold text-gray-900 mb-1">{signal.title}</h3>
@@ -460,20 +403,20 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Pricing */}
-        <section id="cijene" className="py-20 md:py-24 bg-cloud">
+        <section id="cijene" className="py-16 md:py-20 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
                 <Wallet className="h-4 w-4" /> Cijene
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Jednostavne cijene, bez iznenađenja
               </h2>
-              <p className="text-steel text-lg mb-4">
+              <p className="text-steel text-lg mb-6">
                 Počnite besplatno. Nadogradite kada platforma počne da vam donosi poslove.
               </p>
               <p className="inline-flex items-center gap-2 text-sm font-semibold text-green-700 bg-green-50 px-4 py-2 rounded-full">
-                <Sparkles className="w-4 h-4" /> Godišnje plaćanje: 10% popusta
+                Godišnje plaćanje: 10% popusta
               </p>
             </div>
 
@@ -481,35 +424,27 @@ export default function ForCompaniesPage() {
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative bg-white rounded-3xl p-7 flex flex-col transition-shadow duration-200 ${
+                  className={`relative bg-white rounded-2xl p-6 flex flex-col transition-shadow duration-200 ${
                     plan.popular
                       ? 'ring-2 ring-brand-orange shadow-card-hover'
                       : 'border border-gray-100 shadow-sm hover:shadow-card'
                   }`}
                 >
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-                    <span className={`inline-flex items-center gap-1.5 px-4 py-1.5 text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-sm ${
-                      plan.popular
-                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark'
-                        : 'bg-gray-800'
-                    }`}>
-                      {plan.popular && <Star className="w-3 h-3" />}
-                      {plan.emblem}
-                    </span>
-                  </div>
+                  {plan.popular && (
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-brand-orange text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-sm">
+                        Preporučeno
+                      </span>
+                    </div>
+                  )}
 
                   <div className="text-center mb-6">
-                    <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 ${
-                      plan.popular
-                        ? 'bg-gradient-to-br from-brand-orange to-brand-orange-dark text-white shadow-md shadow-brand-orange/20'
-                        : 'bg-orange-50 text-brand-orange'
-                    }`}>
-                      {plan.popular ? <Zap className="w-7 h-7" /> : <BadgeCheck className="w-7 h-7" />}
-                    </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-1">{plan.name}</h3>
-                    <p className="text-sm text-steel mb-5">{plan.description}</p>
-                    <div className="flex items-end justify-center gap-1.5">
-                      <span className="text-4xl font-extrabold text-gray-900 leading-none">{plan.price}</span>
+                    <p className="text-sm text-steel mb-4">{plan.description}</p>
+                    <div className="flex items-end justify-center gap-1">
+                      <span className="text-4xl font-extrabold text-gray-900 leading-none">
+                        {plan.price}
+                      </span>
                       <span className="text-steel font-semibold mb-1">KM</span>
                     </div>
                     <p className="text-sm text-steel mt-1">{plan.period}</p>
@@ -518,9 +453,11 @@ export default function ForCompaniesPage() {
                   <ul className="space-y-3 mb-8 flex-1">
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
-                        <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
-                          plan.popular ? 'bg-brand-orange text-white' : 'bg-orange-100 text-brand-orange'
-                        }`}>
+                        <div
+                          className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
+                            plan.popular ? 'bg-brand-orange text-white' : 'bg-orange-100 text-brand-orange'
+                          }`}
+                        >
                           <CheckCircle className="w-3.5 h-3.5" />
                         </div>
                         <span className="text-gray-900/80 text-sm">{feature}</span>
@@ -550,18 +487,16 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* FAQ */}
-        <section className="py-20 md:py-24 bg-white">
+        <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Često postavljana pitanja
               </h2>
-              <p className="text-steel text-lg">
-                Sve što trebate znati prije registracije.
-              </p>
+              <p className="text-steel text-lg">Sve što trebate znati prije registracije.</p>
             </div>
 
             <div className="space-y-4">
@@ -574,9 +509,7 @@ export default function ForCompaniesPage() {
                     <span className="font-bold text-gray-900">{faq.question}</span>
                     <ChevronDown className="w-5 h-5 text-steel flex-shrink-0 transition-transform duration-200 group-open:rotate-180" />
                   </summary>
-                  <div className="px-6 pb-6 text-steel leading-relaxed">
-                    {faq.answer}
-                  </div>
+                  <div className="px-6 pb-6 text-steel leading-relaxed">{faq.answer}</div>
                 </details>
               ))}
             </div>
@@ -584,19 +517,19 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="relative py-20 md:py-24 bg-gradient-hero overflow-hidden">
+        <section className="relative py-16 md:py-20 bg-gradient-hero overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
               <Target className="h-4 w-4 text-brand-orange" />
               Počnite već danas
             </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-6">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
               Spremni ste da rastete?
             </h2>
             <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
-              Registrujte firmu besplatno i počnite da primate nove poslove već sutra. 
-              Bez rizika, bez ugovorne obaveze.
+              Registrujte firmu besplatno i počnite da primate nove poslove već sutra. Bez rizika,
+              bez ugovorne obaveze.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <PricingCTA
