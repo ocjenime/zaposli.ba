@@ -78,8 +78,8 @@ export default function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-18 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Text & form — appears second on mobile */}
-          <div className="lg:col-span-6 order-2 lg:order-1 animate-fade-in">
+          {/* Text & form — first on mobile, second on desktop */}
+          <div className="lg:col-span-6 order-1 lg:order-2 animate-fade-in">
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-brand-orange tracking-wide uppercase mb-5 sm:mb-6">
                 Marketplace za usluge u BiH
@@ -143,8 +143,8 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Hero image — appears first on mobile */}
-          <div className="lg:col-span-6 order-1 lg:order-2 animate-fade-in" style={{ animationDelay: '0.15s' }}>
+          {/* Hero image — first on desktop, second on mobile */}
+          <div className="lg:col-span-6 order-2 lg:order-1 animate-fade-in" style={{ animationDelay: '0.15s' }}>
             <div className="relative mx-auto max-w-xl lg:max-w-none">
               {/* Decorative brand shape behind image */}
               <div className="absolute -inset-3 sm:-inset-4 lg:-inset-5 bg-gradient-to-br from-brand-orange/10 via-brand-orange/5 to-transparent rounded-[2rem] sm:rounded-[3rem] rotate-2" />

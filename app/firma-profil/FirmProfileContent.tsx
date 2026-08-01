@@ -134,9 +134,25 @@ export default function FirmProfileContent() {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
+        <main className="flex-grow pt-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <div className="bg-white rounded-2xl h-48 md:h-64 animate-pulse mb-8" />
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <div className="h-8 bg-gray-200 rounded-xl animate-pulse w-2/3" />
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-5/6" />
+                  <div className="h-4 bg-gray-200 rounded animate-pulse w-4/6" />
+                </div>
+                <div className="h-40 bg-gray-200 rounded-xl animate-pulse" />
+                <div className="h-32 bg-gray-200 rounded-xl animate-pulse" />
+              </div>
+              <div className="bg-ink rounded-3xl h-96 animate-pulse" />
+            </div>
+          </div>
         </main>
+        <Footer />
       </div>
     );
   }
@@ -284,7 +300,7 @@ export default function FirmProfileContent() {
                   <div className="space-y-4">
                     {reviews.map((review) => (
                       <div key={review.id} className="bg-cloud rounded-2xl p-5 border border-gray-100">
-                        <div className="flex items-start justify-between mb-3 gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs">
                               {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}

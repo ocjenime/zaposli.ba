@@ -398,14 +398,14 @@ export default function AdminPage() {
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
+          <div className="flex gap-2 mb-6 border-b border-gray-200 pb-2 overflow-x-auto md:flex-wrap md:overflow-visible no-scrollbar">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors shrink-0 ${
                     activeTab === tab.id
                       ? 'bg-brand-orange text-[#ffffff]'
                       : 'text-steel hover:bg-gray-100'
