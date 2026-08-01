@@ -6,7 +6,7 @@ import { Search, MapPin, ChevronDown, ArrowRight, Siren, X } from 'lucide-react'
 import Image from 'next/image';
 import Link from 'next/link';
 import { cities } from '@/lib/data';
-import { useLiveStats, formatCount, formatRating } from '@/hooks/useLiveStats';
+
 
 export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
@@ -14,7 +14,6 @@ export default function HeroSection() {
   const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
-  const { firmsCount, completedJobsCount, averageRating } = useLiveStats();
 
   useEffect(() => {
     setMounted(true);
@@ -41,12 +40,6 @@ export default function HeroSection() {
     if (selectedCity) params.set('city', selectedCity);
     router.push(`/objavi-projekat/?${params.toString()}`);
   };
-
-  const stats = [
-    { value: formatCount(firmsCount, ''), label: 'registrovanih majstora' },
-    { value: formatCount(completedJobsCount, ''), label: 'završenih poslova' },
-    { value: formatRating(averageRating, ''), label: 'prosječna ocjena' },
-  ].filter((s) => s.value);
 
   return (
     <section className="relative bg-white">
@@ -124,17 +117,6 @@ export default function HeroSection() {
                 </button>
               </div>
             </form>
-
-            {stats.length > 0 && (
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-sm text-gray-500">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="flex items-center gap-2">
-                    <span className="font-bold text-gray-900">{stat.value}</span>
-                    <span>{stat.label}</span>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
 
           <div className="relative order-1 lg:order-2">
