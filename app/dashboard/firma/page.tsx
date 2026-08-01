@@ -5,6 +5,9 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import DashboardHeader from '@/components/ui/DashboardHeader';
+import DashboardStat from '@/components/ui/DashboardStat';
+import EmptyState from '@/components/ui/EmptyState';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
@@ -17,8 +20,23 @@ import {
   formatDateTime,
 } from '@/lib/subscriptions';
 import {
-  MapPin, Tag, Loader2, Send, MessageSquare, CheckCircle, XCircle, Clock,
-  Briefcase, Crown, AlertTriangle, DollarSign, Calendar, ImageIcon,
+  MapPin,
+  Tag,
+  Loader2,
+  Send,
+  MessageSquare,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Briefcase,
+  Crown,
+  AlertTriangle,
+  DollarSign,
+  Calendar,
+  ImageIcon,
+  ArrowRight,
+  Settings,
+  Timer,
 } from 'lucide-react';
 
 interface Job {
@@ -46,26 +64,42 @@ interface Bid {
   jobs: Job | null;
 }
 
-const statusLabels: Record<string, string> = {
+type BidStatus = Bid['status'];
+
+const statusLabels: Record<BidStatus, string> = {
   pending: 'Na čekanju',
   accepted: 'Prihvaćena',
   rejected: 'Odbijena',
 };
 
-const statusIcons: Record<string, React.ReactNode> = {
-  pending: <Clock className="w-4 h-4 text-steel" />,
-  accepted: <CheckCircle className="w-4 h-4 text-green-600" />,
-  rejected: <XCircle className="w-4 h-4 text-gray-400" />,
+const statusIcons: Record<BidStatus, React.ReactNode> = {
+  pending: <Clock className="w-4 h-4" />,
+  accepted: <CheckCircle className="w-4 h-4" />,
+  rejected: <XCircle className="w-4 h-4" />,
+};
+
+const statusBadgeClasses: Record<BidStatus, string> = {
+  pending: 'bg-gray-100 text-steel border-gray-200',
+  accepted: 'bg-success-50 text-success-700 border-success-100',
+  rejected: 'bg-gray-100 text-gray-500 border-gray-200',
 };
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long' });
 }
 
+function formatBudget(job: Job) {
+  if (job.budget_min != null && job.budget_max != null) {
+    return `${job.budget_min}–${job.budget_max} KM`;
+  }
+  return null;
+}
+
 function FirmDashboardContent() {
   const { user, loading, role } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
+
   const [firmId, setFirmId] = useState<string | null>(null);
   const [openJobs, setOpenJobs] = useState<Job[]>([]);
   const [myBids, setMyBids] = useState<Bid[]>([]);
@@ -73,16 +107,20 @@ function FirmDashboardContent() {
   const [loadingJobs, setLoadingJobs] = useState(true);
   const [loadingBids, setLoadingBids] = useState(true);
   const [error, setError] = useState('');
+
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitJobId, setSubmitJobId] = useState<string | null>(null);
+
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [bidsUsed, setBidsUsed] = useState(0);
   const [bidsLimit, setBidsLimit] = useState(0);
   const [canBid, setCanBid] = useState(true);
   const [loadingPlan, setLoadingPlan] = useState(true);
+
+  const [activeTab, setActiveTab] = useState<'jobs' | 'bids'>('jobs');
 
   useEffect(() => {
     if (!loading) {
@@ -93,7 +131,10 @@ function FirmDashboardContent() {
 
   useEffect(() => {
     const expandId = searchParams.get('expandJobId');
-    if (expandId) setExpandedJob(expandId);
+    if (expandId) {
+      setExpandedJob(expandId);
+      setActiveTab('jobs');
+    }
   }, [searchParams]);
 
   useEffect(() => {
@@ -103,23 +144,24 @@ function FirmDashboardContent() {
   async function fetchFirm() {
     if (!user) return;
     setLoadingFirm(true);
+    setError('');
+
     const { data, error: err } = await supabase
       .from('firms')
       .select('id')
       .eq('owner_id', user.id)
       .single();
+
     if (err || !data) {
       setError('Nije pronađena firma povezana sa vašim nalogom. Registrujte firmu.');
       setLoadingFirm(false);
       return;
     }
+
     setFirmId(data.id);
     setLoadingFirm(false);
-    await Promise.all([
-      fetchOpenJobs(),
-      fetchMyBids(data.id),
-      loadPlan(data.id),
-    ]);
+
+    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), loadPlan(data.id)]);
   }
 
   async function loadPlan(id: string) {
@@ -144,11 +186,13 @@ function FirmDashboardContent() {
       .select('*')
       .eq('status', 'open')
       .order('created_at', { ascending: false });
+
     if (err) {
       setError('Greška prilikom učitavanja otvorenih poslova.');
       setLoadingJobs(false);
       return;
     }
+
     const jobs = (data as Job[]) || [];
     if (jobs.length > 0) {
       const { data: imagesData } = await supabase
@@ -173,6 +217,7 @@ function FirmDashboardContent() {
       .select('*, jobs(id,title,city,category_slug,status,created_at)')
       .eq('firm_id', id)
       .order('created_at', { ascending: false });
+
     if (err) {
       setError('Greška prilikom učitavanja vaših ponuda.');
     } else {
@@ -192,6 +237,7 @@ function FirmDashboardContent() {
       setError('Dostigli ste mjesečno ograničenje ponuda. Nadogradite paket.');
       return;
     }
+
     setSubmitting(true);
     setSubmitJobId(jobId);
     setError('');
@@ -206,10 +252,12 @@ function FirmDashboardContent() {
 
     setSubmitting(false);
     setSubmitJobId(null);
+
     if (err) {
       setError(err.message);
       return;
     }
+
     setAmount('');
     setMessage('');
     setExpandedJob(null);
@@ -220,9 +268,15 @@ function FirmDashboardContent() {
     return myBids.some((b) => b.job_id === jobId);
   }
 
+  const planName = subscription?.plans?.name || 'Besplatno';
+  const planFeatured = Boolean(subscription?.plans?.featured);
+  const planActiveDate = subscription?.ends_at
+    ? formatDateTime(subscription.ends_at)
+    : null;
+
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <p className="text-steel">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
@@ -233,209 +287,423 @@ function FirmDashboardContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
       <Header />
-      <main className="flex-grow pt-24 pb-10 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Dashboard firme</h1>
-              <p className="text-steel text-sm">{user.email}</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Link href="/dashboard/firma/profil/" className="btn-secondary text-sm py-2.5 px-4 inline-flex items-center gap-2">
-                Uredi profil
-              </Link>
-              <Link href="/dashboard/firma/pretplata/" className="btn-secondary text-sm py-2.5 px-4 inline-flex items-center gap-2">
-                <Crown className="w-4 h-4 text-brand-orange" /> Pretplata
-              </Link>
-            </div>
-          </div>
-
-          {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
-
-          {firmId && !loadingPlan && (
-            <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 rounded-xl border px-4 py-3 text-sm ${canBid ? 'bg-white border-gray-100' : 'bg-orange-50 border-orange-100'}`}>
-              <div className="flex flex-wrap items-center gap-2">
-                <Crown className={`w-4 h-4 ${subscription?.plans?.featured ? 'text-brand-orange' : 'text-steel'}`} />
-                <span className="font-medium text-gray-900">
-                  {subscription?.plans?.name || 'Besplatno'}
-                </span>
-                <span className="text-steel">· {remainingBidsText(bidsUsed, bidsLimit)}</span>
-                <span className="text-steel">· {getResetCountdownText()}</span>
-                {subscription?.ends_at && (
-                  <span className="text-steel">· Aktivna do {formatDateTime(subscription.ends_at)}</span>
-                )}
-              </div>
-              {!canBid && (
-                <div className="flex items-center gap-2 text-brand-orange-dark">
-                  <AlertTriangle className="w-4 h-4" />
-                  <span className="font-medium">Ograničenje dostignuto</span>
-                </div>
-              )}
+      <main className="flex-grow pt-24 md:pt-28 pb-10 md:pb-14 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto space-y-6">
+          {error && (
+            <div className="flex items-start gap-3 text-sm text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-200 rounded-xl px-4 py-3 border border-red-100 dark:border-red-900/30 animate-fade-in">
+              <AlertTriangle className="w-5 h-5 shrink-0" />
+              {error}
             </div>
           )}
 
-          {loadingFirm ? (
-            <div className="flex items-center justify-center py-12 text-steel">
-              <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje firme...
+          <DashboardHeader
+            label="Firm dashboard"
+            title="Dobro došli natrag"
+            email={user.email || ''}
+            planName={firmId && !loadingPlan ? planName : undefined}
+            planFeatured={planFeatured}
+            actions={
+              <>
+                <Link
+                  href="/dashboard/firma/profil/"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="hidden sm:inline">Uredi profil</span>
+                  <span className="sm:hidden">Profil</span>
+                </Link>
+                <Link
+                  href="/dashboard/firma/pretplata/"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
+                >
+                  <Crown className="w-4 h-4" />
+                  Pretplata
+                </Link>
+              </>
+            }
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <DashboardStat
+                label="Trenutni paket"
+                value={loadingPlan ? 'Učitavanje...' : planName}
+                sub={planFeatured ? 'Istaknut profil' : 'Aktivni paket'}
+                icon={Crown}
+                tone={planFeatured ? 'orange' : 'neutral'}
+                isLoading={loadingPlan}
+              />
+              <DashboardStat
+                label="Ponude ovaj mjesec"
+                value={loadingPlan ? 'Učitavanje...' : remainingBidsText(bidsUsed, bidsLimit)}
+                sub={canBid ? 'Možete slati ponude' : 'Dostignuto ograničenje'}
+                icon={Send}
+                tone={canBid ? 'green' : 'red'}
+                isLoading={loadingPlan}
+              />
+              <DashboardStat
+                label="Reset ponuda"
+                value={loadingPlan ? 'Učitavanje...' : getResetCountdownText()}
+                sub="Ponude se resetuju 1. u mjesecu"
+                icon={Timer}
+                tone="neutral"
+                isLoading={loadingPlan}
+              />
+              <DashboardStat
+                label="Pretplata aktivna do"
+                value={loadingPlan ? 'Učitavanje...' : planActiveDate || '—'}
+                sub={planActiveDate ? 'Nakon toga se podrazumijeva besplatni paket' : 'Besplatan paket'}
+                icon={Calendar}
+                tone="neutral"
+                isLoading={loadingPlan}
+              />
             </div>
-          ) : !firmId ? (
-            <div className="bg-white rounded-xl border border-gray-100 p-6 text-center">
-              <p className="text-steel text-sm">Nemate povezan profil firme.</p>
-              <Link href="/registracija/" className="btn-primary text-sm py-2 px-4 mt-3 inline-block">Registruj firmu</Link>
+          </DashboardHeader>
+
+          {!loadingFirm && !firmId && (
+            <EmptyState
+              title="Profil firme nije pronađen"
+              description="Nemate povezan profil firme. Registrujte firmu kako biste mogli slati ponude."
+              ctaLabel="Registruj firmu"
+              ctaHref="/registracija/"
+            />
+          )}
+
+          {loadingFirm && (
+            <div className="flex items-center justify-center py-16 text-steel">
+              <Loader2 className="w-6 h-6 animate-spin mr-2" />
+              Učitavanje profila firme...
             </div>
-          ) : (
+          )}
+
+          {firmId && !loadingFirm && (
             <>
-              <section className="mb-8">
-                <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-brand-orange" /> Otvoreni poslovi
-                </h2>
-                {loadingJobs ? (
-                  <div className="flex items-center text-steel py-6">
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" /> Učitavanje poslova...
+              {!canBid && !loadingPlan && (
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-900/10 border border-red-100 dark:border-red-900/30 px-4 py-3 text-sm text-red-800 dark:text-red-200 animate-fade-in">
+                  <div className="flex items-center gap-2 font-medium">
+                    <AlertTriangle className="w-4 h-4" />
+                    Dostigli ste mjesečno ograničenje ponuda.
                   </div>
-                ) : openJobs.length === 0 ? (
-                  <p className="text-steel text-sm bg-white rounded-xl border border-gray-100 p-4">Trenutno nema otvorenih poslova.</p>
-                ) : (
-                  <div className="grid gap-3">
-                    {openJobs.map((job) => {
-                      const category = getCategory(job.category_slug);
-                      const alreadyBid = hasBidForJob(job.id);
-                      return (
+                  <Link
+                    href="/dashboard/firma/pretplata/"
+                    className="inline-flex items-center gap-1.5 font-semibold text-red-700 dark:text-red-200 hover:underline"
+                  >
+                    Nadogradite paket <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="inline-flex p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
+                  <button
+                    onClick={() => setActiveTab('jobs')}
+                    className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      activeTab === 'jobs'
+                        ? 'bg-brand-orange text-white shadow-sm'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
+                    }`}
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    Otvoreni poslovi
+                    <span
+                      className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
+                        activeTab === 'jobs'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
+                      }`}
+                    >
+                      {openJobs.length}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('bids')}
+                    className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      activeTab === 'bids'
+                        ? 'bg-brand-orange text-white shadow-sm'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
+                    }`}
+                  >
+                    <Send className="w-4 h-4" />
+                    Moje ponude
+                    <span
+                      className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
+                        activeTab === 'bids'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
+                      }`}
+                    >
+                      {myBids.length}
+                    </span>
+                  </button>
+                </div>
+
+                <p className="text-sm text-steel">
+                  {activeTab === 'jobs'
+                    ? 'Pronađite nove poslove i pošaljite ponudu.'
+                    : 'Pregledajte sve ponude koje ste poslali.'}
+                </p>
+              </div>
+
+              {activeTab === 'jobs' && (
+                <section className="animate-fade-in space-y-4">
+                  {loadingJobs ? (
+                    <div className="grid gap-4">
+                      {[1, 2, 3].map((i) => (
                         <div
-                          key={job.id}
-                          className={`bg-white rounded-xl border p-4 shadow-sm transition-all duration-200 ${alreadyBid || !canBid ? 'border-gray-100 opacity-75' : 'border-gray-100 hover:border-brand-orange/30 hover:shadow-md cursor-pointer'}`}
-                          onClick={() => { if (!alreadyBid && canBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
-                        >
-                          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                            <div className="flex-1">
-                              <h3 className="font-bold text-gray-900">{job.title}</h3>
-                              <div className="flex flex-wrap items-center gap-2 text-sm text-steel mt-1">
-                                <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {job.city}</span>
-                                {category && (
-                                  <span className="flex items-center gap-1"><Tag className="w-4 h-4" /> {category.name}</span>
-                                )}
-                                <span className="w-1 h-1 bg-steel rounded-full" />
-                                <span>{formatDate(job.created_at)}</span>
-                                {job.budget_min != null && job.budget_max != null && (
-                                  <span className="flex items-center gap-1"><DollarSign className="w-4 h-4" /> {job.budget_min}–{job.budget_max} KM</span>
-                                )}
-                                {job.deadline && (
-                                  <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {formatDate(job.deadline)}</span>
-                                )}
-                                {job.image_count && job.image_count > 0 && (
-                                  <span className="flex items-center gap-1"><ImageIcon className="w-4 h-4" /> {job.image_count} {job.image_count === 1 ? 'foto' : 'foto'}</span>
-                                )}
-                              </div>
-                            </div>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); if (!alreadyBid && canBid) setExpandedJob(expandedJob === job.id ? null : job.id); }}
-                              disabled={alreadyBid || !canBid}
-                              className="text-sm py-2 px-3 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed bg-orange-50 text-brand-orange hover:bg-orange-100 shrink-0"
-                            >
-                              {alreadyBid ? 'Već ste poslali ponudu' : !canBid ? 'Limit ponuda dostignut' : expandedJob === job.id ? 'Zatvori' : 'Pošalji ponudu'}
-                            </button>
-                          </div>
+                          key={i}
+                          className="h-28 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
+                        />
+                      ))}
+                    </div>
+                  ) : openJobs.length === 0 ? (
+                    <EmptyState
+                      title="Nema otvorenih poslova"
+                      description="Trenutno nema dostupnih otvorenih poslova. Vratite se kasnije."
+                    />
+                  ) : (
+                    <div className="grid gap-4">
+                      {openJobs.map((job) => {
+                        const category = getCategory(job.category_slug);
+                        const alreadyBid = hasBidForJob(job.id);
+                        const isExpanded = expandedJob === job.id;
+                        const budget = formatBudget(job);
 
-                          {expandedJob === job.id && !alreadyBid && (
-                            <div className="mt-4 pt-4 border-t border-gray-100">
-                              <p className="text-sm text-gray-900 mb-3 leading-relaxed">{job.description}</p>
-                              <div className="grid sm:grid-cols-2 gap-3 mb-3">
-                                <div>
-                                  <label className="block text-xs font-medium text-steel mb-1">Iznos ponude (KM) *</label>
-                                  <input
-                                    type="number"
-                                    value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
-                                    placeholder="npr. 500"
-                                    className="input-field"
-                                    min="1"
-                                    step="0.01"
-                                    required
-                                  />
-                                </div>
-                                <div className="sm:col-span-2">
-                                  <label className="block text-xs font-medium text-steel mb-1">Poruka (opcionalno)</label>
-                                  <textarea
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                    placeholder="Predstavite se i navedi rok izvršenja..."
-                                    rows={3}
-                                    className="input-field"
-                                  />
-                                </div>
-                              </div>
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => submitBid(job.id)}
-                                  disabled={(submitting && submitJobId === job.id) || !canBid}
-                                  className="btn-primary text-sm py-2 px-4 inline-flex items-center gap-2 disabled:opacity-50"
-                                >
-                                  <Send className="w-4 h-4" />
-                                  {submitting && submitJobId === job.id ? 'Slanje...' : !canBid ? 'Limit dostignut' : 'Pošalji ponudu'}
-                                </button>
-                                <button
-                                  onClick={() => setExpandedJob(null)}
-                                  className="text-sm text-steel hover:text-gray-900 px-3 py-2"
-                                >
-                                  Odustani
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </section>
-
-              <section>
-                <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <Send className="w-5 h-5 text-brand-orange" /> Moje ponude
-                </h2>
-                {loadingBids ? (
-                  <div className="flex items-center text-steel py-6">
-                    <Loader2 className="w-4 h-4 animate-spin mr-2" /> Učitavanje ponuda...
-                  </div>
-                ) : myBids.length === 0 ? (
-                  <p className="text-steel text-sm bg-white rounded-xl border border-gray-100 p-4">Još niste poslali nijednu ponudu.</p>
-                ) : (
-                  <div className="grid gap-3">
-                    {myBids.map((bid) => (
-                      <div key={bid.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm">
-                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                          <div>
-                            <h3 className="font-bold text-gray-900">{bid.jobs?.title || 'Posao'}</h3>
-                            <div className="flex items-center gap-2 text-sm text-steel mt-1">
-                              <MapPin className="w-4 h-4" /> {bid.jobs?.city}
-                              <span className="w-1 h-1 bg-steel rounded-full" />
-                              <span>{formatDate(bid.created_at)}</span>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-lg font-bold text-brand-orange">{bid.amount} KM</p>
-                            <div className="flex items-center justify-end gap-1 text-xs font-medium">
-                              {statusIcons[bid.status]}
-                              <span>{statusLabels[bid.status]}</span>
-                            </div>
-                          </div>
-                        </div>
-                        {bid.message && <p className="text-sm text-gray-900 mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>}
-                        {bid.status === 'accepted' && bid.jobs?.id && (
-                          <Link
-                            href={`/dashboard/razgovor/?job_id=${bid.jobs.id}`}
-                            className="mt-3 btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2"
+                        return (
+                          <div
+                            key={job.id}
+                            className={`group bg-white dark:bg-ink-900 rounded-2xl border p-5 shadow-sm transition-all duration-200 ${
+                              alreadyBid || !canBid
+                                ? 'border-gray-100 dark:border-ink-800 opacity-80'
+                                : 'border-gray-100 dark:border-ink-800 hover:border-brand-orange/30 hover:shadow-md hover:-translate-y-0.5 cursor-pointer'
+                            }`}
+                            onClick={() => {
+                              if (!alreadyBid && canBid) setExpandedJob(isExpanded ? null : job.id);
+                            }}
                           >
-                            <MessageSquare className="w-4 h-4" /> Razgovor sa klijentom
-                          </Link>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </section>
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                              <div className="flex items-start gap-4">
+                                <div className="hidden sm:flex w-12 h-12 rounded-xl bg-cloud dark:bg-ink-800 items-center justify-center text-steel shrink-0">
+                                  <Briefcase className="w-6 h-6" />
+                                </div>
+                                <div>
+                                  <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1">
+                                    {job.title}
+                                  </h3>
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-steel">
+                                    <span className="inline-flex items-center gap-1">
+                                      <MapPin className="w-3.5 h-3.5" />
+                                      {job.city}
+                                    </span>
+                                    {category && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <Tag className="w-3.5 h-3.5" />
+                                        {category.name}
+                                      </span>
+                                    )}
+                                    <span className="inline-flex items-center gap-1">
+                                      <Calendar className="w-3.5 h-3.5" />
+                                      {formatDate(job.created_at)}
+                                    </span>
+                                    {budget && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <DollarSign className="w-3.5 h-3.5" />
+                                        {budget}
+                                      </span>
+                                    )}
+                                    {job.deadline && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        Rok: {formatDate(job.deadline)}
+                                      </span>
+                                    )}
+                                    {(job.image_count || 0) > 0 && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <ImageIcon className="w-3.5 h-3.5" />
+                                        {job.image_count} foto
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (!alreadyBid && canBid) setExpandedJob(isExpanded ? null : job.id);
+                                }}
+                                disabled={alreadyBid || !canBid}
+                                className={`shrink-0 inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
+                                  alreadyBid || !canBid
+                                    ? 'bg-cloud dark:bg-ink-800 text-steel'
+                                    : isExpanded
+                                    ? 'bg-gray-100 dark:bg-ink-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-ink-700'
+                                    : 'bg-orange-50 dark:bg-orange-900/20 text-brand-orange-dark dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                                }`}
+                              >
+                                {alreadyBid
+                                  ? 'Već poslano'
+                                  : !canBid
+                                  ? 'Limit dostignut'
+                                  : isExpanded
+                                  ? 'Zatvori'
+                                  : 'Pošalji ponudu'}
+                              </button>
+                            </div>
+
+                            {isExpanded && !alreadyBid && (
+                              <div className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in">
+                                <div className="bg-cloud dark:bg-ink-950 rounded-xl p-4 mb-4">
+                                  <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                                    {job.description}
+                                  </p>
+                                </div>
+                                <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                                  <div>
+                                    <label className="block text-xs font-semibold text-steel uppercase tracking-wide mb-1.5">
+                                      Iznos ponude (KM) *
+                                    </label>
+                                    <div className="relative">
+                                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-steel" />
+                                      <input
+                                        type="number"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        placeholder="npr. 500"
+                                        className="input-field pl-9"
+                                        min="1"
+                                        step="0.01"
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="sm:col-span-2">
+                                    <label className="block text-xs font-semibold text-steel uppercase tracking-wide mb-1.5">
+                                      Poruka (opcionalno)
+                                    </label>
+                                    <textarea
+                                      value={message}
+                                      onChange={(e) => setMessage(e.target.value)}
+                                      placeholder="Predstavite se i navedite rok izvršenja..."
+                                      rows={3}
+                                      className="input-field resize-none"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="flex flex-wrap items-center gap-3">
+                                  <button
+                                    onClick={() => submitBid(job.id)}
+                                    disabled={(submitting && submitJobId === job.id) || !canBid}
+                                    className="inline-flex items-center gap-2 btn-primary text-sm py-2.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
+                                  >
+                                    <Send className="w-4 h-4" />
+                                    {submitting && submitJobId === job.id
+                                      ? 'Slanje...'
+                                      : !canBid
+                                      ? 'Limit dostignut'
+                                      : 'Pošalji ponudu'}
+                                  </button>
+                                  <button
+                                    onClick={() => setExpandedJob(null)}
+                                    className="text-sm font-medium text-steel hover:text-gray-900 dark:hover:text-white px-3 py-2.5 transition-colors"
+                                  >
+                                    Odustani
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {activeTab === 'bids' && (
+                <section className="animate-fade-in space-y-4">
+                  {loadingBids ? (
+                    <div className="grid gap-4">
+                      {[1, 2].map((i) => (
+                        <div
+                          key={i}
+                          className="h-32 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
+                        />
+                      ))}
+                    </div>
+                  ) : myBids.length === 0 ? (
+                    <EmptyState
+                      title="Još nema ponuda"
+                      description="Niste poslali nijednu ponudu. Pregledajte otvorene poslove i pošaljite prvu ponudu."
+                    />
+                  ) : (
+                    <div className="grid gap-4">
+                      {myBids.map((bid) => {
+                        const badgeClass = statusBadgeClasses[bid.status];
+                        return (
+                          <div
+                            key={bid.id}
+                            className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm hover:shadow-md transition-all duration-200"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                              <div className="flex items-start gap-4">
+                                <div
+                                  className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border ${badgeClass}`}
+                                >
+                                  {statusIcons[bid.status]}
+                                </div>
+                                <div>
+                                  <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1">
+                                    {bid.jobs?.title || 'Posao'}
+                                  </h3>
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-steel">
+                                    <span className="inline-flex items-center gap-1">
+                                      <MapPin className="w-3.5 h-3.5" />
+                                      {bid.jobs?.city || '—'}
+                                    </span>
+                                    <span className="inline-flex items-center gap-1">
+                                      <Calendar className="w-3.5 h-3.5" />
+                                      {formatDate(bid.created_at)}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-col items-start md:items-end gap-2">
+                                <p className="text-xl font-bold text-brand-orange">{bid.amount} KM</p>
+                                <span
+                                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold border ${badgeClass}`}
+                                >
+                                  {statusIcons[bid.status]}
+                                  {statusLabels[bid.status]}
+                                </span>
+                              </div>
+                            </div>
+
+                            {bid.message && (
+                              <div className="mt-4 bg-cloud dark:bg-ink-950 rounded-xl p-4 text-sm text-gray-800 dark:text-gray-200">
+                                <p className="font-medium text-steel text-xs uppercase tracking-wide mb-1">
+                                  Vaša poruka
+                                </p>
+                                <p className="whitespace-pre-line">{bid.message}</p>
+                              </div>
+                            )}
+
+                            {bid.status === 'accepted' && bid.jobs?.id && (
+                              <Link
+                                href={`/dashboard/razgovor/?job_id=${bid.jobs.id}`}
+                                className="mt-4 inline-flex items-center gap-2 btn-secondary text-sm py-2 px-4"
+                              >
+                                <MessageSquare className="w-4 h-4" />
+                                Razgovor sa klijentom
+                              </Link>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+              )}
             </>
           )}
         </div>
@@ -449,10 +717,10 @@ export default function FirmDashboard() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-cloud">
+        <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
-            <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
+            <Loader2 className="w-8 h-8 animate-spin text-brand-orange" />
           </main>
           <Footer />
         </div>

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import DashboardHeader from '@/components/ui/DashboardHeader';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
@@ -212,23 +213,22 @@ function FirmSubscriptionContent() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-5xl mx-auto">
-          <Link
-            href="/dashboard/firma/"
-            className="inline-flex items-center gap-2 text-sm text-steel hover:text-gray-900 mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Nazad na dashboard firme
-          </Link>
-
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Pretplata</h1>
-            <p className="text-steel text-sm">
-              Trenutni paket:{' '}
-              <span className="font-medium text-gray-900">
-                {subscription?.plans?.name || 'Besplatno'}
-              </span>
-            </p>
-          </div>
+          <DashboardHeader
+            label="Pretplata"
+            title="Paketi i plaćanje"
+            email={user?.email || ''}
+            planName={subscription?.plans?.name || 'Besplatno'}
+            planFeatured={Boolean(subscription?.plans?.featured)}
+            actions={
+              <Link
+                href="/dashboard/firma/"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Nazad na dashboard
+              </Link>
+            }
+          />
 
           {success && (
             <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3 mb-6">

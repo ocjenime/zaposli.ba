@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import DashboardHeader from '@/components/ui/DashboardHeader';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
@@ -394,24 +395,22 @@ export default function FirmProfileEditorPage() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
-          <Link
-            href="/dashboard/firma/"
-            className="inline-flex items-center gap-2 text-sm text-steel hover:text-gray-900 mb-4"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Nazad na dashboard firme
-          </Link>
+          <DashboardHeader
+            label="Profil firme"
+            title="Upravljanje profilom"
+            email={user?.email || ''}
+            actions={
+              <Link
+                href="/dashboard/firma/"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Nazad na dashboard
+              </Link>
+            }
+          />
 
-          <div className="bg-white rounded-2xl shadow-card border border-gray-100 p-6 sm:p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-primary-50 rounded-xl">
-                <Building2 className="w-6 h-6 text-brand-orange" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Profil firme</h1>
-                <p className="text-sm text-steel">Ažurirajte podatke i kategorije</p>
-              </div>
-            </div>
+          <div className="bg-white dark:bg-ink-900 rounded-2xl shadow-card border border-gray-100 dark:border-ink-800 p-6 sm:p-8">
 
             {success && (
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3">
