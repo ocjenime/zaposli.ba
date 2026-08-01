@@ -264,13 +264,13 @@ export default function ForCompaniesPage() {
                 </div>
               </div>
 
-              <div className="relative hidden lg:block">
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
+              <div className="relative hidden lg:flex lg:justify-end">
+                <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
                   <Image
                     src="/zaposli.ba/images/majstor-cekic.jpg"
                     alt="Majstor sa čekićem tokom renovacije"
-                    width={600}
-                    height={450}
+                    width={480}
+                    height={360}
                     className="w-full h-auto object-cover"
                     priority
                   />
@@ -290,13 +290,6 @@ export default function ForCompaniesPage() {
                 <FloatingOpenJobsBadge />
               </div>
             </div>
-          </div>
-        </section>
-
-        {/* Trust bar */}
-        <section className="border-b border-gray-100 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-            <StatsSection />
           </div>
         </section>
 
