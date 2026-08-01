@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   MapPin, Clock, BadgeCheck, ArrowRight, Loader2, Send, DollarSign,
-  Calendar, ImageIcon, ChevronDown, ChevronUp, X,
+  Calendar, ImageIcon, ChevronDown, ChevronUp, X, Search, SlidersHorizontal,
+  ArrowUpDown,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -14,7 +15,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
-import { getCategory } from '@/lib/data';
+import { getCategory, categories } from '@/lib/data';
 
 interface Job {
   id: string;
@@ -55,6 +56,13 @@ function ProjectsPageContent() {
   const [jobImages, setJobImages] = useState<Record<string, JobImage[]>>({});
   const [loadingImages, setLoadingImages] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [cityFilter, setCityFilter] = useState('');
+  const [minBudget, setMinBudget] = useState('');
+  const [maxBudget, setMaxBudget] = useState('');
+  const [sortBy, setSortBy] = useState<'newest' | 'budget-asc' | 'budget-desc' | 'bids'>('newest');
+  const [showFilters, setShowFilters] = useState(false);
   const { user, role } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -122,6 +130,53 @@ function ProjectsPageContent() {
     router.push(`/dashboard/firma/?expandJobId=${jobId}`);
   }
 
+  const filteredJobs = jobs
+    .filter((job) => {
+      const category = getCategory(job.category_slug);
+      const categoryName = category?.name || job.category_slug;
+      const term = search.trim().toLowerCase();
+      const matchesSearch =
+        !term ||
+        job.title.toLowerCase().includes(term) ||
+        job.description.toLowerCase().includes(term) ||
+        job.city.toLowerCase().includes(term) ||
+        categoryName.toLowerCase().includes(term);
+      const matchesCategory = !categoryFilter || job.category_slug === categoryFilter;
+      const matchesCity = !cityFilter || job.city === cityFilter;
+      const min = minBudget ? parseFloat(minBudget) : null;
+      const max = maxBudget ? parseFloat(maxBudget) : null;
+      const matchesBudget =
+        (!min || (job.budget_max != null && job.budget_max >= min) || (job.budget_min != null && job.budget_min >= min)) &&
+        (!max || (job.budget_min != null && job.budget_min <= max) || (job.budget_max != null && job.budget_max <= max));
+      return matchesSearch && matchesCategory && matchesCity && matchesBudget;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'newest') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      if (sortBy === 'budget-asc') return (a.budget_min || a.budget_max || 0) - (b.budget_min || b.budget_max || 0);
+      if (sortBy === 'budget-desc') return (b.budget_min || b.budget_max || 0) - (a.budget_min || a.budget_max || 0);
+      if (sortBy === 'bids') return b.bids_count - a.bids_count;
+      return 0;
+    });
+
+  const activeFiltersCount = [
+    search.trim(),
+    categoryFilter,
+    cityFilter,
+    minBudget,
+    maxBudget,
+  ].filter(Boolean).length;
+
+  function clearFilters() {
+    setSearch('');
+    setCategoryFilter('');
+    setCityFilter('');
+    setMinBudget('');
+    setMaxBudget('');
+    setSortBy('newest');
+  }
+
+  const cities = Array.from(new Set(jobs.map((j) => j.city))).sort();
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -134,22 +189,132 @@ function ProjectsPageContent() {
 
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {/* Search & filters */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 mb-8 shadow-sm">
+              <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Pretraži poslove po nazivu, kategoriji, gradu..."
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none transition-all text-sm"
+                  />
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setShowFilters((s) => !s)}
+                    className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-orange hover:text-brand-orange transition-colors"
+                  >
+                    <SlidersHorizontal className="w-4 h-4" />
+                    Filteri
+                    {activeFiltersCount > 0 && (
+                      <span className="bg-brand-orange text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                        {activeFiltersCount}
+                      </span>
+                    )}
+                  </button>
+                  <div className="relative">
+                    <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                      className="pl-9 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none appearance-none bg-white min-w-[160px]"
+                    >
+                      <option value="newest">Najnovije</option>
+                      <option value="budget-asc">Budžet: rastući</option>
+                      <option value="budget-desc">Budžet: opadajući</option>
+                      <option value="bids">Najviše ponuda</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {showFilters && (
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Kategorija</label>
+                    <select
+                      value={categoryFilter}
+                      onChange={(e) => setCategoryFilter(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none bg-white"
+                    >
+                      <option value="">Sve kategorije</option>
+                      {categories.map((c) => (
+                        <option key={c.slug} value={c.slug}>{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Grad</label>
+                    <select
+                      value={cityFilter}
+                      onChange={(e) => setCityFilter(e.target.value)}
+                      className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none bg-white"
+                    >
+                      <option value="">Svi gradovi</option>
+                      {cities.map((city) => (
+                        <option key={city} value={city}>{city}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Min. budžet (KM)</label>
+                    <input
+                      type="number"
+                      value={minBudget}
+                      onChange={(e) => setMinBudget(e.target.value)}
+                      placeholder="npr. 500"
+                      className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Max. budžet (KM)</label>
+                    <input
+                      type="number"
+                      value={maxBudget}
+                      onChange={(e) => setMaxBudget(e.target.value)}
+                      placeholder="npr. 5000"
+                      className="w-full px-3 py-2.5 rounded-lg border border-gray-200 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {activeFiltersCount > 0 && (
+                <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                  <p className="text-sm text-steel">{filteredJobs.length} od {jobs.length} poslova</p>
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-brand-orange font-medium hover:text-brand-orange-dark flex items-center gap-1"
+                  >
+                    <X className="w-4 h-4" /> Poništi filtere
+                  </button>
+                </div>
+              )}
+            </div>
+
             {loading ? (
               <div className="flex items-center justify-center py-12 text-steel">
                 <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje poslova...
               </div>
             ) : error ? (
               <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 text-center">{error}</p>
-            ) : jobs.length === 0 ? (
+            ) : filteredJobs.length === 0 ? (
               <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
-                <p className="text-steel mb-4">Trenutno nema otvorenih poslova.</p>
-                <Link href="/objavi-projekat/" className="btn-primary">
-                  Objavi prvi posao
-                </Link>
+                <p className="text-steel mb-2">Nema poslova koji odgovaraju filterima.</p>
+                {activeFiltersCount > 0 ? (
+                  <button onClick={clearFilters} className="text-brand-orange font-medium hover:underline">Poništi filtere</button>
+                ) : (
+                  <Link href="/objavi-projekat/" className="btn-primary">
+                    Objavi prvi posao
+                  </Link>
+                )}
               </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-5 mb-12">
-                {jobs.map((job) => {
+                {filteredJobs.map((job) => {
                   const category = getCategory(job.category_slug);
                   const isExpanded = expandedJobId === job.id;
                   const images = jobImages[job.id] || [];
