@@ -1,84 +1,65 @@
-import { UserPlus, ClipboardList, Bell, FileText, Briefcase, Wallet, Star } from 'lucide-react';
+import { UserPlus, Briefcase, Wallet } from 'lucide-react';
 
-const phases = [
+const steps = [
   {
-    number: 1,
-    title: 'Pripremite profil',
-    description: 'Brza registracija i detalji koji izdvajaju vaš rad.',
-    accent: 'bg-orange-50 border-orange-100',
-    steps: [
-      { icon: UserPlus, title: 'Registruj se', description: 'Kreiraj profil firme ili majstora.' },
-      { icon: ClipboardList, title: 'Popuni profil', description: 'Dodaj usluge, gradove i reference.' },
-    ],
+    number: '01',
+    title: 'Kreirajte profil',
+    description: 'Besplatna registracija firme ili majstora u par minuta.',
+    icon: UserPlus,
   },
   {
-    number: 2,
+    number: '02',
     title: 'Pronađite i odradite posao',
-    description: 'Dobijajte upite, šaljite ponude i naplatite rad.',
-    accent: 'bg-white border-gray-100',
-    steps: [
-      { icon: Bell, title: 'Dobijaj poslove', description: 'Primaj obavještenja za nove projekte.' },
-      { icon: FileText, title: 'Pošalji ponudu', description: 'Kontaktiraj klijenta i ponudi cijenu.' },
-      { icon: Briefcase, title: 'Odradi posao', description: 'Dogovori detalje i izvedi rad.' },
-      { icon: Wallet, title: 'Naplati', description: 'Direktno od klijenta, bez provizije.' },
-    ],
+    description: 'Dobijajte upite, šaljite ponude i rješavajte projekte.',
+    icon: Briefcase,
   },
   {
-    number: 3,
-    title: 'Gradite reputaciju',
-    description: 'Ocjene i recenzije donose vam nove klijente.',
-    accent: 'bg-orange-50 border-orange-100',
-    steps: [
-      { icon: Star, title: 'Skupljaj ocjene', description: 'Građi reputaciju i dobijaj više posla.' },
-    ],
+    number: '03',
+    title: 'Naplatite i gradite reputaciju',
+    description: 'Primajte uplatu direktno i skupljajte ocjene klijenata.',
+    icon: Wallet,
   },
 ];
 
 export function FirmProcessAnimation() {
   return (
     <div className="relative">
-      {/* Desktop phase connector */}
-      <div className="hidden lg:block absolute top-10 left-[16%] right-[16%] h-0.5 bg-gradient-to-r from-gray-200 via-brand-orange/30 to-gray-200" />
+      {/* Desktop connecting line */}
+      <div className="hidden md:block absolute top-8 left-[22%] right-[22%] h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
-      <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-        {phases.map((phase) => (
-          <div
-            key={phase.title}
-            className={`relative rounded-2xl border p-5 ${phase.accent}`}
-          >
-            {/* Phase number */}
-            <div className="absolute -top-3 left-5">
-              <span className="w-7 h-7 rounded-full bg-brand-orange text-white text-sm font-bold flex items-center justify-center border-2 border-white shadow-sm">
-                {phase.number}
-              </span>
-            </div>
+      {/* Mobile vertical timeline */}
+      <div className="md:hidden absolute left-[1.875rem] top-10 bottom-10 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent" />
 
-            <div className="mb-4 pt-2">
-              <h3 className="text-lg font-bold text-gray-900">{phase.title}</h3>
-              <p className="text-sm text-steel mt-1">{phase.description}</p>
-            </div>
+      <div className="grid md:grid-cols-3 gap-10 md:gap-6 lg:gap-10">
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <div
+              key={step.number}
+              className="group relative flex md:flex-col items-start md:items-center gap-5 md:gap-6 animate-fade-in"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+                <span className="absolute inset-0 flex items-center justify-center text-5xl md:text-6xl font-extrabold text-gray-100 select-none transition-colors duration-300 group-hover:text-orange-100">
+                  {step.number}
+                </span>
+                <Icon
+                  className="relative w-5 h-5 md:w-6 md:h-6 text-brand-orange transition-transform duration-300 group-hover:scale-110"
+                  strokeWidth={1.5}
+                />
+              </div>
 
-            <div className="space-y-3">
-              {phase.steps.map((step, index) => {
-                const Icon = step.icon;
-                return (
-                  <div key={step.title} className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-white border border-gray-100 shadow-sm flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-brand-orange" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-brand-orange">{index + 1}.</span>
-                        <h4 className="text-sm font-semibold text-gray-900">{step.title}</h4>
-                      </div>
-                      <p className="text-xs text-steel leading-snug mt-0.5">{step.description}</p>
-                    </div>
-                  </div>
-                );
-              })}
+              <div className="flex-1 md:text-center">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-sm md:text-base text-steel leading-relaxed max-w-xs">
+                  {step.description}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
