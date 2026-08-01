@@ -160,7 +160,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Majstori */}
             {catWorkers.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Provjereni majstori Â· {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Provjereni majstori · {cat.name}</h2>
                 <div className="grid md:grid-cols-3 gap-5 mb-14">
                   {catWorkers.map((w) => (
                     <Link
@@ -195,7 +195,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             {/* Poslovi */}
             {catProjects.length > 0 && (
               <>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Aktivni poslovi Â· {cat.name.toLowerCase()}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Aktivni poslovi · {cat.name}</h2>
                 <div className="grid md:grid-cols-2 gap-5">
                   {catProjects.map((p) => (
                     <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-xl transition-all">

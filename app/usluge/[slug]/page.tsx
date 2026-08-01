@@ -111,7 +111,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori: ${cat.name.toLowerCase()}`}
+              {localWorkers.length > 0 ? `Provjereni majstori u gradu ${city.loc}` : `Provjereni majstori: ${cat.name}`}
             </h2>
             <p className="text-steel mb-8">Ocjene i recenzije stvarnih klijenata</p>
             {shownWorkers.length > 0 ? (
@@ -145,7 +145,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
               </div>
             ) : (
               <div className="bg-cloud rounded-2xl p-8 text-center">
-                <p className="text-steel mb-4">Firme iz kategorije {cat.name.toLowerCase()} se aktivno registruju u gradu {city.name}. Objavite posao i budite među prvima koji će primiti ponude.</p>
+                <p className="text-steel mb-4">Firme iz kategorije {cat.name} se aktivno registruju u gradu {city.name}. Objavite posao i budite među prvima koji će primiti ponude.</p>
                 <Link href="/objavi-projekat/" className="btn-primary">Objavi posao</Link>
               </div>
             )}
@@ -156,7 +156,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         {localProjects.length > 0 && (
         <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Primjeri poslova Â· {cat.name.toLowerCase()}</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Primjeri poslova · {cat.name}</h2>
             <div className="grid md:grid-cols-2 gap-5">
               {localProjects.map((p) => (
                 <div key={p.id} className="bg-white rounded-2xl p-6 border border-gray-100">

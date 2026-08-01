@@ -327,16 +327,16 @@ function PostProjectContent() {
                   </div>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (min)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (min) <span className="text-gray-400 font-normal">— opcionalno</span></label>
                       <input type="number" name="budgetMin" value={formData.budgetMin} onChange={handleInputChange} placeholder="Minimalni budžet (KM)" className="input-field" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (max)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (max) <span className="text-gray-400 font-normal">— opcionalno</span></label>
                       <input type="number" name="budgetMax" value={formData.budgetMax} onChange={handleInputChange} placeholder="Maksimalni budžet (KM)" className="input-field" />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja <span className="text-gray-400 font-normal">— opcionalno</span></label>
                     <input type="date" name="deadline" value={formData.deadline} onChange={handleInputChange} className="input-field" />
                   </div>
                   <div>

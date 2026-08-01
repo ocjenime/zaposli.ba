@@ -71,7 +71,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         {/* Sve usluge u gradu */}
         <section className="py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Sve usluge Â· {city.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Sve usluge · {city.name}</h2>
             <p className="text-steel mb-8">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
             <CityCategoriesGrid slugs={categories.filter((cat) => !cat.noSeo).map((cat) => cat.slug)} citySlug={city.slug} />
           </div>
