@@ -64,12 +64,16 @@ function Majstor(props: {
         )}
       </g>
 
-      {/* Kratka muška frizura — samo vrh glave, lice ostaje vidljivo */}
+      {/* Kratka, uredna frizura + kapa majstora */}
       <g transform={t(0, 0)}>
-        <path d="M-16 -10 C-16 -26 16 -26 16 -10 C16 -16 12 -20 0 -20 C-12 -20 -16 -16 -16 -10 Z" fill={INK} stroke={INK} strokeWidth="2" />
-        <path d="M-14 -16 C-14 -24 14 -24 14 -16 C14 -10 10 -8 0 -8 C-10 -8 -14 -10 -14 -16" fill={INK} />
-        {/* Kratka šiška / tekstura kose */}
-        <path d="M-10 -18 L-6 -12 L-2 -18 L2 -12 L6 -18 L10 -12" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
+        {/* Kosa — tanka, kratka, ne prekriva lice */}
+        <path d="M-14 -14 C-14 -22 14 -22 14 -14 C14 -12 12 -10 0 -10 C-12 -10 -14 -12 -14 -14 Z" fill="#3E2723" />
+        <path d="M-12 -16 C-12 -20 12 -20 12 -16" stroke="#5D4037" strokeWidth="2" strokeLinecap="round" fill="none" />
+        {/* Kapa majstora */}
+        <path d="M-18 -16 C-18 -28 18 -28 18 -16 L18 -12 C18 -10 12 -8 0 -8 C-12 -8 -18 -10 -18 -12 Z" fill={INK} />
+        <rect x="-20" y="-14" width="40" height="4" rx="2" fill="#334155" />
+        {/* Sjenka na kapi */}
+        <path d="M-14 -20 C-6 -18 6 -18 14 -20" stroke="#475569" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5" />
       </g>
 
       {/* Tool belt */}
