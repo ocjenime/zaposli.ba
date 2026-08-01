@@ -67,24 +67,26 @@ export default function CijenaFasadePoM2Page() {
 
             <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">Cijene po sistemu (materijal + rad)</h2>
             <div className="bg-white rounded-2xl border border-gray-100 shadow-card overflow-hidden mb-8">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-ink text-[#ffffff]">
-                    <th className="text-left px-5 py-3.5 font-semibold">Sistem fasade</th>
-                    <th className="text-right px-5 py-3.5 font-semibold">Cijena (KM/m²)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {priceRows.map((row, i) => (
-                    <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-cloud/50'}>
-                      <td className="px-5 py-3 text-gray-900">{row.system}</td>
-                      <td className="px-5 py-3 text-right font-semibold text-brand-orange-dark whitespace-nowrap">
-                        {row.range}
-                      </td>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm min-w-[280px]">
+                  <thead>
+                    <tr className="bg-ink text-[#ffffff]">
+                      <th className="text-left px-3 sm:px-5 py-2.5 sm:py-3.5 font-semibold">Sistem fasade</th>
+                      <th className="text-right px-3 sm:px-5 py-2.5 sm:py-3.5 font-semibold">Cijena (KM/m²)</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {priceRows.map((row, i) => (
+                      <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-cloud/50'}>
+                        <td className="px-3 sm:px-5 py-2.5 sm:py-3 text-gray-900">{row.system}</td>
+                        <td className="px-3 sm:px-5 py-2.5 sm:py-3 text-right font-semibold text-brand-orange-dark whitespace-nowrap">
+                          {row.range}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <p className="text-steel leading-relaxed mb-4">
               Za kuću sa 150 m² fasadne površine, stiropor 10 cm iznosi otprilike 6.000-8.200 KM,
