@@ -76,7 +76,7 @@ export default function HeroSection() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-100/40 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8 pb-14 sm:pt-12 sm:pb-18 lg:pt-16 lg:pb-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-18 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Text & form — appears second on mobile */}
           <div className="lg:col-span-6 order-2 lg:order-1 animate-fade-in">
@@ -150,10 +150,10 @@ export default function HeroSection() {
               <div className="absolute -inset-3 sm:-inset-4 lg:-inset-5 bg-gradient-to-br from-brand-orange/10 via-brand-orange/5 to-transparent rounded-[2rem] sm:rounded-[3rem] rotate-2" />
               <div className="absolute -inset-3 sm:-inset-4 lg:-inset-5 bg-gradient-to-tr from-orange-100/50 to-transparent rounded-[2rem] sm:rounded-[3rem] -rotate-1" />
 
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-[2rem] bg-gray-100 shadow-2xl shadow-gray-200/70">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-[2rem] bg-gray-100 shadow-2xl shadow-gray-200/70">
                 <Image
-                  src="/zaposli.ba/images/farbanje-zid.jpg"
-                  alt="Profesionalni majstor u radu — farbanje zida"
+                  src="/zaposli.ba/images/majstor-hero.jpg"
+                  alt="Profesionalni i ugledan majstor rješava kuhinjsku instalaciju"
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 50vw"
