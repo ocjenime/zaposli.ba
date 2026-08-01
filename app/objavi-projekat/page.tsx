@@ -215,8 +215,28 @@ function PostProjectContent() {
   if (loading || !user) return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow flex items-center justify-center pt-24">
-        <p className="text-steel">Učitavanje...</p>
+      <main className="flex-grow pt-28 pb-12 px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="bg-white rounded-xl shadow-md p-6 md:p-8 animate-pulse">
+            <div className="w-48 h-7 bg-gray-200 rounded mb-2" />
+            <div className="w-3/4 h-4 bg-gray-200 rounded mb-8" />
+            <div className="space-y-6">
+              <div>
+                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
+                <div className="w-full h-12 bg-gray-200 rounded-xl" />
+              </div>
+              <div>
+                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
+                <div className="w-full h-12 bg-gray-200 rounded-xl" />
+              </div>
+              <div>
+                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
+                <div className="w-full h-32 bg-gray-200 rounded-xl" />
+              </div>
+              <div className="w-full h-12 bg-gray-200 rounded-xl" />
+            </div>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>
@@ -261,19 +281,25 @@ function PostProjectContent() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="flex items-center justify-between">
-              {[1, 2, 3].map((s) => (
-                <div key={s} className="flex items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${step >= s ? 'bg-primary-600 text-[#ffffff]' : 'bg-gray-200 text-gray-500'}`}>
-                    {s}
+              {[
+                { n: 1, label: 'Osnovno' },
+                { n: 2, label: 'Detalji' },
+                { n: 3, label: 'Pregled' },
+              ].map((s, idx) => (
+                <div key={s.n} className="flex items-center flex-1">
+                  <div className="flex flex-col items-center text-center flex-1">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${step >= s.n ? 'bg-primary-600 text-[#ffffff]' : 'bg-gray-200 text-gray-500'}`}>
+                      {s.n}
+                    </div>
+                    <span className={`mt-1.5 text-xs font-medium ${step >= s.n ? 'text-primary-600' : 'text-gray-400'}`}>
+                      {s.label}
+                    </span>
                   </div>
-                  {s < 3 && <div className={`hidden sm:block w-24 h-1 mx-2 ${step > s ? 'bg-primary-600' : 'bg-gray-200'}`} />}
+                  {idx < 2 && (
+                    <div className={`flex-1 h-1 mx-2 sm:mx-4 rounded-full ${step > s.n ? 'bg-primary-600' : 'bg-gray-200'}`} />
+                  )}
                 </div>
               ))}
-            </div>
-            <div className="hidden sm:flex justify-between mt-2 text-sm text-gray-500">
-              <span>Osnovne informacije</span>
-              <span>Detalji posla</span>
-              <span>Pregled i objava</span>
             </div>
           </div>
 
@@ -398,11 +424,25 @@ function PostProjectContent() {
                   <div className="bg-gray-50 rounded-lg p-6">
                     <h3 className="font-semibold text-gray-900 mb-4">Pregled posla</h3>
                     <dl className="space-y-3">
-                      <div className="flex justify-between"><dt className="text-gray-500">Naslov:</dt><dd className="font-medium text-gray-900">{formData.title || '-'}</dd></div>
-                      <div className="flex justify-between"><dt className="text-gray-500">Kategorija:</dt><dd className="font-medium text-gray-900">{formData.category || '-'}</dd></div>
-                      <div className="flex justify-between"><dt className="text-gray-500">Grad:</dt><dd className="font-medium text-gray-900">{formData.city || '-'}</dd></div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
+                        <dt className="text-gray-500 text-sm sm:text-base">Naslov</dt>
+                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right break-words">{formData.title || '-'}</dd>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
+                        <dt className="text-gray-500 text-sm sm:text-base">Kategorija</dt>
+                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">{formData.category || '-'}</dd>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
+                        <dt className="text-gray-500 text-sm sm:text-base">Grad</dt>
+                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">{formData.city || '-'}</dd>
+                      </div>
                     </dl>
-                    {formData.description && <div className="mt-4 pt-4 border-t border-gray-200"><dt className="text-gray-500 mb-2">Opis:</dt><dd className="text-gray-700 whitespace-pre-wrap">{formData.description}</dd></div>}
+                    {formData.description && (
+                      <div className="mt-4 pt-4 border-t border-gray-200">
+                        <dt className="text-gray-500 text-sm sm:text-base mb-2">Opis</dt>
+                        <dd className="text-gray-700 whitespace-pre-wrap text-sm sm:text-base break-words">{formData.description}</dd>
+                      </div>
+                    )}
                   </div>
                   <div className="flex gap-4">
                     <button type="button" onClick={() => setStep(2)} className="flex-1 btn-secondary">Nazad</button>
@@ -427,8 +467,17 @@ export default function PostProjectPage() {
       fallback={
         <div className="min-h-screen flex flex-col bg-cloud">
           <Header />
-          <main className="flex-grow flex items-center justify-center pt-24">
-            <p className="text-steel">Učitavanje...</p>
+          <main className="flex-grow pt-28 pb-12 px-4 sm:px-6">
+            <div className="mx-auto max-w-3xl bg-white rounded-xl shadow-md p-6 md:p-8 animate-pulse">
+              <div className="w-48 h-7 bg-gray-200 rounded mb-2" />
+              <div className="w-3/4 h-4 bg-gray-200 rounded mb-8" />
+              <div className="space-y-6">
+                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-12 bg-gray-200 rounded-xl" /></div>
+                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-12 bg-gray-200 rounded-xl" /></div>
+                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-32 bg-gray-200 rounded-xl" /></div>
+                <div className="w-full h-12 bg-gray-200 rounded-xl" />
+              </div>
+            </div>
           </main>
           <Footer />
         </div>
