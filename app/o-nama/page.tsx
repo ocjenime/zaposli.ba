@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ShieldCheck, MapPin, ThumbsUp, MessageSquare, Lock } from 'lucide-react';
 import type { Metadata } from 'next';
+import LiveStatsSection from '@/components/ui/LiveStatsSection';
 
 export const metadata: Metadata = {
   title: 'O nama. Zaposli.ba',
@@ -13,13 +14,6 @@ export const metadata: Metadata = {
     'Zaposli.ba je platforma koja spaja klijente i provjerene građevinske firme u BiH. Saznajte kako je sve počelo i koje vrijednosti nas vode.',
   alternates: { canonical: 'https://ocjenime.github.io/zaposli.ba/o-nama/' },
 };
-
-const stats = [
-  { value: '2.800+', label: 'verificiranih firmi' },
-  { value: '12.500+', label: 'registrovanih klijenata' },
-  { value: '4,8', label: 'prosječna ocjena firmi' },
-  { value: '25.000+', label: 'realiziranih poslova' },
-];
 
 const values = [
   {
@@ -98,19 +92,7 @@ export default function ONamaPage() {
         {/* Statistike */}
         <section className="pb-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="bg-white rounded-2xl border border-gray-100 p-6 text-center shadow-card"
-                >
-                  <div className="text-3xl md:text-4xl font-extrabold text-brand-orange mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-steel">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            <LiveStatsSection />
           </div>
         </section>
 

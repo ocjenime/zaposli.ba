@@ -10,6 +10,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { JsonLd, breadcrumbSchema, serviceSchema } from '@/lib/jsonld';
 import { categories, getCategory, cities, workers, projects } from '@/lib/data';
 import { site } from '@/lib/site';
+import CategoryHeroStats from '@/components/CategoryHeroStats';
 
 export function generateStaticParams() {
   return categories.filter((c) => !c.noSeo).map((c) => ({ slug: c.slug }));
@@ -65,7 +66,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                     </span>
                   )}
                 </div>
-                <p className="text-steel mt-1">{cat.count} provjerenih firmi širom BiH</p>
+                <p className="text-steel mt-1">
+                  <CategoryHeroStats slug={cat.slug} fallback={cat.count} />
+                </p>
               </div>
             </div>
             <p className="text-lg text-steel max-w-2xl mb-6">{cat.description}.</p>

@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities, categories, workers } from '@/lib/data';
 import { site } from '@/lib/site';
+import CityCategoriesGrid from '@/components/CityCategoriesGrid';
 
 export function generateStaticParams() {
   return cities.map((c) => ({ slug: c.slug }));
@@ -72,23 +73,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Sve usluge Â· {city.name}</h2>
             <p className="text-steel mb-8">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {categories.filter((cat) => !cat.noSeo).map((cat) => (
-                <Link
-                  key={cat.slug}
-                  href={`/usluge/${cat.seoSlug}-${city.slug}/`}
-                  className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-brand-orange/40 hover:shadow-lg transition-all"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <cat.icon className="w-5.5 h-5.5 text-brand-orange" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 text-sm group-hover:text-brand-orange transition-colors mb-0.5">
-                    {cat.profession}
-                  </h3>
-                  <p className="text-xs text-steel">{cat.count} firmi</p>
-                </Link>
-              ))}
-            </div>
+            <CityCategoriesGrid slugs={categories.filter((cat) => !cat.noSeo).map((cat) => cat.slug)} citySlug={city.slug} />
           </div>
         </section>
 

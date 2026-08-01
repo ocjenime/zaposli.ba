@@ -269,6 +269,7 @@ export interface Worker {
   about: string;
   services: string[];
   reviewList: Review[];
+  portfolioImages?: string[];
 }
 
 export const workers: Worker[] = [

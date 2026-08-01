@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Wrench, Paintbrush, Zap, Droplets, Sparkles, Hammer, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
 
 const services = [
   {
@@ -8,30 +9,35 @@ const services = [
     description: 'Kompletne adaptacije stanova, kuhinja i kupatila.',
     image: '/zaposli.ba/images/renovacija-enterijer.jpg',
     icon: Hammer,
+    slug: 'adaptacije',
   },
   {
     title: 'Vodoinstalaterski radovi',
     description: 'Cijevi, bojleri, kupatila, kanalizacija i popravke.',
     image: '/zaposli.ba/images/vodoinstalater.jpg',
     icon: Droplets,
+    slug: 'vodoinstalacije',
   },
   {
     title: 'Elektroinstalacije',
     description: 'Rasvjeta, utičnice, osigurači i kompletne instalacije.',
     image: '/zaposli.ba/images/elektricar.jpg',
     icon: Zap,
+    slug: 'elektroinstalacije',
   },
   {
     title: 'Molersko-farbarski radovi',
     description: 'Krečenje, gletovanje, bojenje zidova i fasade.',
     image: '/zaposli.ba/images/farbanje-zid.jpg',
     icon: Paintbrush,
+    slug: 'molerski-radovi',
   },
   {
     title: 'Čišćenje i održavanje',
     description: 'Čišćenje stanova, kuća, poslovnih prostora i selidbe.',
     image: '/zaposli.ba/images/ciscenje.jpg',
     icon: Sparkles,
+    slug: 'ciscenje-i-odrzavanje',
   },
   {
     title: 'Sve usluge',

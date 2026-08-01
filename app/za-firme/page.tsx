@@ -1,9 +1,12 @@
+'use client';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
 import PricingCTA from '@/components/PricingCTA';
+import { useLiveStats, formatCount, formatRating } from '@/hooks/useLiveStats';
 import {
   CheckCircle,
   TrendingUp,
@@ -25,12 +28,42 @@ import {
   HelpCircle,
 } from 'lucide-react';
 
-const stats = [
-  { value: '2,800+', label: 'Registrovanih majstora' },
-  { value: '25,000+', label: 'Objavljenih poslova' },
-  { value: '4.8', label: 'Prosječna ocjena' },
-  { value: '95%', label: 'Zadovoljnih klijenata' },
-];
+function FloatingOpenJobsBadge() {
+  const { openJobsCount, loading } = useLiveStats();
+  return (
+    <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 text-center">
+      <div className={`text-2xl font-extrabold text-brand-orange ${loading ? 'opacity-70' : ''}`}>
+        {formatCount(openJobsCount, '25.000+')}
+      </div>
+      <div className="text-xs text-steel">aktivnih poslova</div>
+    </div>
+  );
+}
+
+function StatsSection() {
+  const { firmsCount, completedJobsCount, averageRating, loading, error } = useLiveStats();
+  const positiveRate = 95; // fallback, možemo kasnije izračunati iz recenzija
+
+  const stats = [
+    { value: formatCount(firmsCount, '2,800+'), label: 'Registrovanih majstora' },
+    { value: formatCount(completedJobsCount, '25,000+'), label: 'Završenih poslova' },
+    { value: formatRating(averageRating, '4.8'), label: 'Prosječna ocjena' },
+    { value: `${loading && !error ? '...' : positiveRate}%`, label: 'Zadovoljnih klijenata' },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+      {stats.map((stat) => (
+        <div key={stat.label} className="text-center">
+          <div className={`text-3xl md:text-4xl font-bold text-ink ${loading ? 'opacity-70' : ''}`}>
+            {stat.value}
+          </div>
+          <div className="mt-1 text-sm text-steel">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 const benefits = [
   {
@@ -252,10 +285,7 @@ export default function ForCompaniesPage() {
                   </div>
                 </div>
                 {/* Floating stat */}
-                <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-gray-100 p-4 text-center">
-                  <div className="text-2xl font-extrabold text-brand-orange">25.000+</div>
-                  <div className="text-xs text-steel">objavljenih poslova</div>
-                </div>
+                <FloatingOpenJobsBadge />
               </div>
             </div>
           </div>
@@ -264,14 +294,7 @@ export default function ForCompaniesPage() {
         {/* Trust bar */}
         <section className="border-b border-gray-100 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div className="text-3xl md:text-4xl font-bold text-ink">{stat.value}</div>
-                  <div className="mt-1 text-sm text-steel">{stat.label}</div>
-                </div>
-              ))}
-            </div>
+            <StatsSection />
           </div>
         </section>
 

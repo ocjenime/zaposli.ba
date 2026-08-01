@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, Star, CheckCircle, ArrowRight, Quote } from 'lucide-react';
+import { MapPin, Star, CheckCircle, ArrowRight, Quote, ImageIcon } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -92,6 +92,29 @@ export default async function WorkerProfilePage({ params }: { params: Promise<{ 
                       {s}
                     </span>
                   ))}
+                </div>
+
+                <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+                  <ImageIcon className="w-6 h-6 text-brand-orange" /> Portfolio
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
+                  {w.portfolioImages?.map((img, index) => (
+                    <div key={index} className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100">
+                      <img src={img} alt={`Portfolio ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  )) || (
+                    <>
+                      <div className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100">
+                        <img src="/zaposli.ba/images/renovacija-enterijer.jpg" alt="Portfolio primjer" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                      </div>
+                      <div className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100">
+                        <img src="/zaposli.ba/images/farbanje-zid.jpg" alt="Portfolio primjer" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                      </div>
+                      <div className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100">
+                        <img src="/zaposli.ba/images/kuhinja-renovacija.jpg" alt="Portfolio primjer" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Recenzije klijenata</h2>

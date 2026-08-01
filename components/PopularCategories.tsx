@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { categories } from '@/lib/data';
+import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
 
 // Izbor za homepage: izvodi se iz lib/data (single source of truth)
 const featuredSlugs = [
@@ -69,7 +70,9 @@ export default function PopularCategories() {
                 }`} />
               </div>
               <h3 className="font-semibold text-gray-900 mb-1 text-sm">{category.name}</h3>
-              <p className="text-xs text-steel">{category.count} firmi</p>
+              <p className="text-xs text-steel">
+                <LiveCategoryCount slug={category.slug} fallback={category.count} />
+              </p>
             </Link>
           ))}
         </div>

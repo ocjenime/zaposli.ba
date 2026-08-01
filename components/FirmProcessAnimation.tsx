@@ -58,18 +58,18 @@ function Majstor(props: {
         <circle cx="5" cy="-9" r="2" fill={INK} />
         {/* Osmiјeh ili neutral */}
         {face === 'smile' ? (
-          <path d="M-5 -2 Q0 2 5 -2" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
+          <path d="M-6 -1 Q0 5 6 -1" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
         ) : (
           <line x1="-4" y1="-2" x2="4" y2="-2" stroke={INK} strokeWidth="1.5" strokeLinecap="round" />
         )}
       </g>
 
-      {/* Kratka muška frizura */}
+      {/* Kratka muška frizura — samo vrh glave, lice ostaje vidljivo */}
       <g transform={t(0, 0)}>
-        <path d="M-16 -10 C-16 -26 16 -26 16 -10 L16 -4 C16 2 12 6 0 6 C-12 6 -16 2 -16 -4 Z" fill={INK} stroke={INK} strokeWidth="2" />
+        <path d="M-16 -10 C-16 -26 16 -26 16 -10 C16 -16 12 -20 0 -20 C-12 -20 -16 -16 -16 -10 Z" fill={INK} stroke={INK} strokeWidth="2" />
         <path d="M-14 -16 C-14 -24 14 -24 14 -16 C14 -10 10 -8 0 -8 C-10 -8 -14 -10 -14 -16" fill={INK} />
         {/* Kratka šiška / tekstura kose */}
-        <path d="M-10 -18 L-6 -12 L-2 -18 L2 -12 L6 -18 L10 -12" stroke={INK} strokeWidth="2" strokeLinecap="round" fill="none" />
+        <path d="M-10 -18 L-6 -12 L-2 -18 L2 -12 L6 -18 L10 -12" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" fill="none" opacity="0.5" />
       </g>
 
       {/* Tool belt */}
