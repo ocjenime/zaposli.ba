@@ -33,8 +33,8 @@ export default function Footer() {
     <footer className="bg-ink text-[#ffffff]">
       {/* Glavni footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
-          <div className="col-span-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10">
+          <div className="col-span-1 sm:col-span-2">
             <Link href="/" className="inline-flex items-center mb-5">
               <Logo variant="light" />
             </Link>
@@ -103,8 +103,8 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-[#ffffff]/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-gray-500">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-sm text-gray-500">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 <span>{site.email}</span>

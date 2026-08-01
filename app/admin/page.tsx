@@ -521,10 +521,10 @@ export default function AdminPage() {
                             {roleLabel(profile.role)} · {formatDate(profile.created_at)}
                           </p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <button
                             onClick={() => setEditingProfile(profile)}
-                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                           >
                             <Pencil className="w-3.5 h-3.5" />
                             Uredi
@@ -532,7 +532,7 @@ export default function AdminPage() {
                           <button
                             onClick={() => toggleAdmin(profile)}
                             disabled={savingAdmin === profile.id}
-                            className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                            className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg transition-colors ${
                               profile.is_admin
                                 ? 'bg-brand-orange text-[#ffffff] hover:bg-brand-orange-dark'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -566,23 +566,23 @@ export default function AdminPage() {
                     {filteredFirms().map((firm) => (
                       <div key={firm.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <p className="font-medium text-gray-900">{firm.name}</p>
                             {firm.verified && <CheckCircle className="w-4 h-4 text-green-600" />}
                           </div>
                           <p className="text-sm text-steel">{firm.email} · {firm.city || '—'} · {firm.review_count} recenzija</p>
                           <p className="text-xs text-steel mt-1">{formatDate(firm.created_at)}</p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <Link
                             href={`/firma-profil/?slug=${firm.slug}`}
-                            className="text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                            className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                           >
                             Profil
                           </Link>
                           <button
                             onClick={() => setEditingFirm(firm)}
-                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                           >
                             <Pencil className="w-3.5 h-3.5" />
                             Uredi
@@ -590,7 +590,7 @@ export default function AdminPage() {
                           <button
                             onClick={() => toggleVerified(firm)}
                             disabled={savingVerified === firm.id}
-                            className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                            className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg transition-colors ${
                               firm.verified
                                 ? 'bg-green-100 text-green-700 hover:bg-green-200'
                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -671,10 +671,10 @@ export default function AdminPage() {
                                     : 'Bez pretplate'}
                                 </p>
                               </div>
-                              <div className="flex items-center gap-2">
+                              <div className="flex flex-wrap items-center gap-2">
                                 <button
                                   onClick={() => setEditingSubscription({ firm, subscription })}
-                                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                                 >
                                   <Pencil className="w-3.5 h-3.5" />
                                   Uredi
@@ -707,7 +707,7 @@ export default function AdminPage() {
                       payments.map((p) => (
                         <div key={p.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                           <div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                               <p className="font-medium text-gray-900">
                                 {p.firms?.name || 'Firma'} · {p.plans?.name || 'Paket'}
                               </p>
@@ -744,7 +744,7 @@ export default function AdminPage() {
                     {plans.map((plan) => (
                       <div key={plan.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             <p className="font-medium text-gray-900">{plan.name}</p>
                             {plan.featured && <Star className="w-4 h-4 text-brand-orange" />}
                           </div>
@@ -781,7 +781,7 @@ export default function AdminPage() {
                           className={`p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${n.read ? 'opacity-60' : ''}`}
                         >
                           <div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                               <p className="font-medium text-gray-900">
                                 {n.type === 'subscription_request' ? 'Zahtjev za nadogradnju' : n.type}
                               </p>
@@ -803,7 +803,7 @@ export default function AdminPage() {
                           {!n.read && (
                             <button
                               onClick={() => markRequestRead(n.id)}
-                              className="text-xs font-medium px-3 py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                              className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                             >
                               Označi pročitanim
                             </button>
