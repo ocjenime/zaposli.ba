@@ -8,6 +8,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 import NotificationBell from '@/components/NotificationBell';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
+import { Building2, FilePlus } from 'lucide-react';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -42,12 +43,14 @@ export default function Header() {
                 <div className="relative">
                   <NotificationBell />
                 </div>
-                <Link
-                  href={dashboardHref}
-                  className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
-                >
-                  Moj profil
-                </Link>
+                {!isFirmRole(role) && (
+                  <Link
+                    href={dashboardHref}
+                    className="px-4 py-2 rounded-xl text-sm font-semibold text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark transition-all duration-200"
+                  >
+                    Moj profil
+                  </Link>
+                )}
                 {isAdmin && (
                   <Link
                     href="/admin/"
@@ -72,10 +75,10 @@ export default function Header() {
               </Link>
             )}
             <Link
-              href="/objavi-projekat/"
-              className="ml-3 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
+              href={isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/'}
+              className="ml-3 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-5 py-2.5 rounded-xl text-sm font-semibold shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0 inline-flex items-center gap-2"
             >
-              Objavi posao
+              {isFirmRole(role) ? <><Building2 className="w-4 h-4" /> Moja firma</> : <><FilePlus className="w-4 h-4" /> Objavi posao</>}
             </Link>
             <div className="ml-3">
               <ThemeToggle />
@@ -100,24 +103,26 @@ export default function Header() {
           </div>
         </div>
 
-        {mobileMenuOpen && (
+          {mobileMenuOpen && (
           <div className="md:hidden bg-[#ffffff]/95 dark:bg-ink/95 backdrop-blur-xl rounded-2xl shadow-xl mt-2 p-4 mb-4 border border-gray-100 dark:border-ink-700">
             <Link
-              href="/objavi-projekat/"
+              href={isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/'}
               className="block text-center px-4 py-3 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] font-semibold mb-2"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Objavi posao
+              {isFirmRole(role) ? 'Moja firma' : 'Objavi posao'}
             </Link>
             {user ? (
               <>
-                <Link
-                  href={dashboardHref}
-                  className="block text-center px-4 py-3 rounded-xl bg-orange-50 text-brand-orange font-semibold"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Moj profil
-                </Link>
+                {!isFirmRole(role) && (
+                  <Link
+                    href={dashboardHref}
+                    className="block text-center px-4 py-3 rounded-xl bg-orange-50 text-brand-orange font-semibold"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Moj profil
+                  </Link>
+                )}
                 {isAdmin && (
                   <Link
                     href="/admin/"
