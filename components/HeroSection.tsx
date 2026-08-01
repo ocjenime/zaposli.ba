@@ -87,7 +87,7 @@ export default function HeroSection() {
 
               <h1 className="text-[2.1rem] sm:text-5xl md:text-[3.25rem] lg:text-[3.5rem] xl:text-[3.75rem] font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-5 sm:mb-6 max-w-3xl">
                 Pronađite majstora
-                <br className="hidden sm:block" />
+                <br />
                 <span className="text-brand-orange">za vaš posao</span>
               </h1>
 
