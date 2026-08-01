@@ -112,7 +112,7 @@ export default function RecentProjects() {
           {projects.map((project) => (
             <Link
               key={project.id}
-              href={`/projekti/`}
+              href={`/projekti/?expandId=${project.id}`}
               className={`bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block ${
                 loading ? 'opacity-70' : ''
               }`}
