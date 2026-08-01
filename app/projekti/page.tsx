@@ -454,7 +454,12 @@ function ProjectsPageContent() {
                               className="inline-flex items-center gap-1.5 text-sm py-2 px-4 rounded-xl font-medium bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors"
                             >
                               <Send className="w-4 h-4" />
-                              {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
+                              <span className="hidden sm:inline">
+                                {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
+                              </span>
+                              <span className="sm:hidden">
+                                {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Dashboard') : 'Prijavi se'}
+                              </span>
                             </button>
                           </div>
                         </div>
