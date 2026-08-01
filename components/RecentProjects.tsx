@@ -45,23 +45,8 @@ function timeAgo(dateString: string) {
   return `Prije ${diffDays} dana`;
 }
 
-const fallbackProjects: Job[] = [
-  {
-    id: '1',
-    title: 'Adaptacija kupatila: kompletan renovis',
-    category_slug: 'vodoinstalacije',
-    description: 'Potrebna adaptacija kupatila u stanu od 60m2.',
-    city: 'Sarajevo',
-    deadline: null,
-    budget_min: 2000,
-    budget_max: 3500,
-    bids_count: 8,
-    created_at: new Date(Date.now() - 2 * 3600000).toISOString(),
-  },
-];
-
 export default function RecentProjects() {
-  const [projects, setProjects] = useState<Job[]>(fallbackProjects);
+  const [projects, setProjects] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -85,6 +70,8 @@ export default function RecentProjects() {
 
     loadProjects();
   }, []);
+
+  if (!loading && projects.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-cloud relative overflow-hidden">

@@ -29,43 +29,8 @@ function getCity(name: string | null | undefined) {
   return 'Klijent';
 }
 
-const fallbackTestimonials: Review[] = [
-  {
-    id: '1',
-    rating: 5,
-    comment: 'Zaposli.ba mi je pomogao da pronađem odličnog majstora za adaptaciju kupatila. Proces je bio jednostavan, a ponude koje sam dobio bile su vrlo konkurentne.',
-    created_at: new Date().toISOString(),
-    client_name: 'Amir H.',
-    firm_name: 'Sarajevo',
-  },
-  {
-    id: '2',
-    rating: 5,
-    comment: 'Kao investitor, redovno tražim izvođače radova. Zaposli.ba mi je uštedio mnogo vremena jer na jednom mjestu mogu pronaći sve firme sa recenzijama.',
-    created_at: new Date().toISOString(),
-    client_name: 'Jelena M.',
-    firm_name: 'Banja Luka',
-  },
-  {
-    id: '3',
-    rating: 5,
-    comment: 'Otkad sam registrovao firmu na Zaposli.ba, dobijam redovno nove poslove. Sistem recenzija mi pomaže da se istaknem od konkurencije.',
-    created_at: new Date().toISOString(),
-    client_name: 'Marko P.',
-    firm_name: 'Tuzla',
-  },
-  {
-    id: '4',
-    rating: 5,
-    comment: 'Trebala sam hitno vodoinstalatera. Preko Zaposli.ba sam u roku od sat vremena imala 3 ponude. Fenomenalno iskustvo!',
-    created_at: new Date().toISOString(),
-    client_name: 'Fatima K.',
-    firm_name: 'Mostar',
-  },
-];
-
 export default function Testimonials() {
-  const [reviews, setReviews] = useState<Review[]>(fallbackTestimonials);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -90,7 +55,7 @@ export default function Testimonials() {
 
         setReviews(mapped);
       } catch {
-        // keep fallback
+        // keep empty
       } finally {
         setLoading(false);
       }
@@ -98,6 +63,8 @@ export default function Testimonials() {
 
     loadReviews();
   }, []);
+
+  if (!loading && reviews.length === 0) return null;
 
   return (
     <section className="py-10 md:py-14 bg-white relative overflow-hidden">
@@ -112,7 +79,7 @@ export default function Testimonials() {
             Šta kažu naši korisnici?
           </h2>
           <p className="text-lg text-gray-500">
-            Hiljade zadovoljnih klijenata i firmi koriste Zaposli.ba svaki dan
+            Recenzije stvarnih klijenata koji su završili poslove preko Zaposli.ba
           </p>
         </div>
 

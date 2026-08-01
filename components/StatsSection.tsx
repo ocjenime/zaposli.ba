@@ -11,13 +11,6 @@ interface StatData {
   icon: typeof Users;
 }
 
-const fallbackStats: StatData[] = [
-  { icon: Users, value: '12,500+', label: 'Zadovoljnih klijenata' },
-  { icon: Building2, value: '2,800+', label: 'Prijavljenih firmi' },
-  { icon: Star, value: '4.8', label: 'Prosječna ocjena' },
-  { icon: CheckCircle, value: '25,000+', label: 'Završenih poslova' },
-];
-
 const trustCards = [
   {
     icon: Shield,
@@ -37,7 +30,7 @@ const trustCards = [
 ];
 
 export default function StatsSection() {
-  const [stats, setStats] = useState<StatData[]>(fallbackStats);
+  const [stats, setStats] = useState<StatData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,27 +48,36 @@ export default function StatsSection() {
           supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
         ]);
 
+        const hasAnyData =
+          (clientsCount ?? 0) > 0 ||
+          (firmsCount ?? 0) > 0 ||
+          (reviewData?.length ?? 0) > 0 ||
+          (completedJobsCount ?? 0) > 0;
+
+        if (!hasAnyData) return;
+
         const avgRating = reviewData?.length
           ? (reviewData.reduce((sum, r) => sum + (r.rating || 0), 0) / reviewData.length).toFixed(1)
-          : '4.8';
+          : undefined;
 
         const formatCount = (count: number | null | undefined) => {
-          if (count === null || count === undefined || count < 0) return null;
+          if (count === null || count === undefined || count <= 0) return null;
           return count.toLocaleString('bs') + '+';
         };
 
-        const clientDisplay = formatCount(clientsCount) ?? '12,500+';
-        const firmsDisplay = formatCount(firmsCount) ?? '2,800+';
-        const jobsDisplay = formatCount(completedJobsCount) ?? '25,000+';
+        const nextStats: StatData[] = [];
+        const clientDisplay = formatCount(clientsCount);
+        const firmsDisplay = formatCount(firmsCount);
+        const jobsDisplay = formatCount(completedJobsCount);
 
-        setStats([
-          { icon: Users, value: clientDisplay, label: 'Zadovoljnih klijenata' },
-          { icon: Building2, value: firmsDisplay, label: 'Prijavljenih firmi' },
-          { icon: Star, value: avgRating, label: 'Prosječna ocjena' },
-          { icon: CheckCircle, value: jobsDisplay, label: 'Završenih poslova' },
-        ]);
+        if (clientDisplay) nextStats.push({ icon: Users, value: clientDisplay, label: 'Zadovoljnih klijenata' });
+        if (firmsDisplay) nextStats.push({ icon: Building2, value: firmsDisplay, label: 'Prijavljenih firmi' });
+        if (avgRating) nextStats.push({ icon: Star, value: avgRating, label: 'Prosječna ocjena' });
+        if (jobsDisplay) nextStats.push({ icon: CheckCircle, value: jobsDisplay, label: 'Završenih poslova' });
+
+        setStats(nextStats);
       } catch {
-        // keep fallback
+        // keep empty
       } finally {
         setLoading(false);
       }
@@ -97,34 +99,36 @@ export default function StatsSection() {
             Zašto Zaposli.ba?
           </h2>
           <p className="text-lg text-gray-500">
-            Platforma kojoj vjeruju hiljade klijenata i firmi širom Bosne i Hercegovine
+            Platforma koja povezuje klijente sa provjerenim firmama širom Bosne i Hercegovine
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {stats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className={`text-center p-6 rounded-2xl bg-cloud hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 ${
-                loading ? 'opacity-70' : ''
-              }`}
-            >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
-                <stat.icon className="w-7 h-7 text-brand-orange" />
+        {stats.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {stats.map((stat, index) => (
+              <div
+                key={stat.label}
+                className={`text-center p-6 rounded-2xl bg-cloud hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 ${
+                  loading ? 'opacity-70' : ''
+                }`}
+              >
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
+                  <stat.icon className="w-7 h-7 text-brand-orange" />
+                </div>
+                <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
+                  {loading && index === 0 ? (
+                    <span className="inline-block w-20 h-8 bg-gray-200 rounded animate-pulse" />
+                  ) : (
+                    <Counter value={stat.value} />
+                  )}
+                </div>
+                <div className="text-sm text-steel">{stat.label}</div>
               </div>
-              <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
-                {loading && index === 0 ? (
-                  <span className="inline-block w-20 h-8 bg-gray-200 rounded animate-pulse" />
-                ) : (
-                  <Counter value={stat.value} />
-                )}
-              </div>
-              <div className="text-sm text-steel">{stat.label}</div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
-        <div className="mt-10 grid md:grid-cols-3 gap-6">
+        <div className={`grid md:grid-cols-3 gap-6 ${stats.length > 0 ? 'mt-10' : ''}`}>
           {trustCards.map((card) => (
             <div key={card.title} className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden group">
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />

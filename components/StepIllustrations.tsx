@@ -96,7 +96,7 @@ export function StepTwoIllustration() {
       <g className="anim-float-soft" style={{ animationDelay: '0.8s' }}>
         <rect x="66" y="30" width="68" height="40" rx="7" fill={WHITE} stroke="#E5E7EB" strokeWidth="2" transform="rotate(-4 100 50)" />
         <circle cx="80" cy="46" r="6" fill={INK} />
-        <text x="92" y="44" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(-4 92 44)">2.400 KM</text>
+        <text x="92" y="44" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(-4 92 44)">PONUDA</text>
         <rect x="92" y="50" width="30" height="4" rx="2" fill="#E5E7EB" transform="rotate(-4 107 52)" />
       </g>
 
@@ -104,7 +104,7 @@ export function StepTwoIllustration() {
       <g className="anim-float-soft">
         <rect x="72" y="52" width="68" height="40" rx="7" fill={WHITE} stroke="#E5E7EB" strokeWidth="2" transform="rotate(3 106 72)" />
         <circle cx="86" cy="68" r="6" fill={INK} />
-        <text x="98" y="66" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(3 98 66)">2.800 KM</text>
+        <text x="98" y="66" fontFamily="Plus Jakarta Sans, sans-serif" fontSize="9" fontWeight="800" fill={ORANGE} transform="rotate(3 98 66)">PONUDA</text>
         <rect x="98" y="72" width="30" height="4" rx="2" fill="#E5E7EB" transform="rotate(3 113 74)" />
       </g>
 
