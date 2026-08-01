@@ -10,9 +10,10 @@ const GREEN = '#22C55E';
 const YELLOW = '#FACC15';
 const SKIN = '#E8B89A';
 const BLUE = '#3B82F6';
-const SHIRT_BLUE = '#60A5FA';
+const SHIRT_BLUE = '#FB923C';
+const SHIRT_DARK = '#EA580C';
 const HAIR = '#4B3A2A';
-const PANTS = '#334155';
+const PANTS = '#1F2937';
 const BELT = '#5D4037';
 
 function Majstor(props: {
@@ -44,13 +45,13 @@ function Majstor(props: {
       <g transform={t(0, 0)}>
         <rect x="-20" y="12" width="40" height="38" rx="12" fill={SHIRT_BLUE} />
         {/* Kragna */}
-        <path d="M-10 12 L0 18 L10 12" stroke={WHITE} strokeWidth="2" fill="none" opacity="0.5" />
+        <path d="M-10 12 L0 18 L10 12" stroke="rgba(255,255,255,0.6)" strokeWidth="2" fill="none" />
         {/* Džep */}
-        <rect x="12" y="20" width="8" height="12" rx="2" fill="#3B82F4" opacity="0.4" />
+        <rect x="12" y="20" width="8" height="12" rx="2" fill={SHIRT_DARK} opacity="0.3" />
         {/* Gumbi */}
-        <circle cx="0" cy="22" r="1.5" fill={WHITE} opacity="0.6" />
-        <circle cx="0" cy="30" r="1.5" fill={WHITE} opacity="0.6" />
-        <circle cx="0" cy="38" r="1.5" fill={WHITE} opacity="0.6" />
+        <circle cx="0" cy="22" r="1.5" fill={WHITE} opacity="0.7" />
+        <circle cx="0" cy="30" r="1.5" fill={WHITE} opacity="0.7" />
+        <circle cx="0" cy="38" r="1.5" fill={WHITE} opacity="0.7" />
       </g>
 
       {/* Vrat */}
