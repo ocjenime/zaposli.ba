@@ -152,10 +152,10 @@ export const categories: Category[] = [
   {
     name: 'Stolarija i namještaj', slug: 'stolarija', seoSlug: 'stolar',
     profession: 'Stolar', icon: Armchair,
-    description: 'Namještaj po mjeri, sklapanje IKEA namještaja, restauracija, prozori i vrata',
+    description: 'Namještaj po mjeri, sklapanje namještaja, restauracija, prozori i vrata',
     count: 260, priceRange: 'po ponudi', priceNote: 'zavisno od mjere',
     group: 'Namještaj',
-    services: ['Namještaj po mjeri', 'Sklapanje IKEA namještaja', 'Restauracija namještaja', 'Prozori i vrata'],
+    services: ['Namještaj po mjeri', 'Sklapanje namještaja', 'Restauracija namještaja', 'Prozori i vrata'],
   },
   // Dvorište
   {
