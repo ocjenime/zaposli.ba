@@ -10,6 +10,8 @@ import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
+import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   ArrowLeft,
   Upload,
@@ -74,6 +76,7 @@ export default function FirmProfileEditorPage() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -157,7 +160,7 @@ export default function FirmProfileEditorPage() {
     }
   }
 
-  function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
     setError('');
     if (!file) return;
@@ -168,16 +171,40 @@ export default function FirmProfileEditorPage() {
       return;
     }
 
-    const maxSize = 2 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setError('Logotip mora biti manji od 2MB.');
-      return;
-    }
+    setUploadingLogo(true);
+    try {
+      const compressedBlob = await resizeAndCompressImage(file, {
+        maxWidth: 800,
+        maxHeight: 800,
+        quality: 0.9,
+        type: file.type as 'image/jpeg' | 'image/png' | 'image/webp',
+      });
 
-    setLogoFile(file);
-    const reader = new FileReader();
-    reader.onload = () => setLogoPreview(reader.result as string);
-    reader.readAsDataURL(file);
+      if (compressedBlob.size > 2 * 1024 * 1024) {
+        setError('Logotip je i nakon kompresije prevelik. Probajte manju sliku.');
+        setUploadingLogo(false);
+        return;
+      }
+
+      const ext = file.name.split('.').pop() || 'jpg';
+      const compressedFile = blobToFile(compressedBlob, `logo.${ext}`, file.type);
+      setLogoFile(compressedFile);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setLogoPreview(reader.result as string);
+        setUploadingLogo(false);
+      };
+      reader.onerror = () => {
+        setError('Greška pri učitavanju pregleda logotipa.');
+        setUploadingLogo(false);
+      };
+      reader.readAsDataURL(compressedFile);
+    } catch (err) {
+      console.error('Logo compression error:', err);
+      setError('Greška pri pripremi logotipa. Probajte drugu sliku.');
+      setUploadingLogo(false);
+    }
   }
 
   function removeLogo() {
@@ -576,37 +603,47 @@ export default function FirmProfileEditorPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Logotip</label>
                   <p className="text-xs text-steel mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
-                  {logoPreview ? (
-                    <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
-                      <img
-                        src={logoPreview}
-                        alt={`Logotip firme ${name || ''}`}
-                        className="w-32 h-32 object-cover"
-                      />
+                  <div className="relative inline-block">
+                    <LogoDisplay
+                      name={name || 'Firma'}
+                      src={logoPreview}
+                      alt={`Logotip firme ${name || ''}`}
+                      size="xl"
+                      rounded="xl"
+                    />
+                    {uploadingLogo && (
+                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-2xl">
+                        <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
+                      </div>
+                    )}
+                    {logoPreview && (
                       <button
                         type="button"
                         onClick={removeLogo}
-                        className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-steel hover:text-red-500 shadow-sm"
+                        className="absolute -top-2 -right-2 p-1 bg-white border border-gray-100 rounded-full text-steel hover:text-red-500 shadow-sm"
                         aria-label="Ukloni logotip"
                       >
                         <X className="w-4 h-4" />
                       </button>
-                    </div>
-                  ) : (
+                    )}
+                  </div>
+                  <div className="mt-3">
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors"
+                      disabled={uploadingLogo}
+                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
                     >
                       <Upload className="w-4 h-4" />
-                      Dodaj logotip
+                      {logoPreview ? 'Promijeni logotip' : 'Dodaj logotip'}
                     </button>
-                  )}
+                  </div>
                   <input
                     ref={fileInputRef}
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
                     onChange={handleLogoChange}
+                    disabled={uploadingLogo}
                     className="hidden"
                   />
                 </div>

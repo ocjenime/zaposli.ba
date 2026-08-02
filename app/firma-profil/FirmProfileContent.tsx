@@ -12,6 +12,7 @@ import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
+import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   MapPin,
   Star,
@@ -309,17 +310,13 @@ export default function FirmProfileContent() {
           <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 mb-6">
-              {firm.logo_url ? (
-                <img
-                  src={firm.logo_url}
-                  alt={firm.name}
-                  className="w-24 h-24 rounded-2xl object-cover border border-gray-100 shadow-sm shrink-0"
-                />
-              ) : (
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-3xl shrink-0 shadow-lg">
-                  {firm.name.charAt(0).toUpperCase()}
-                </div>
-              )}
+              <LogoDisplay
+                name={firm.name}
+                src={firm.logo_url}
+                alt={firm.name}
+                size="lg"
+                rounded="2xl"
+              />
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight">

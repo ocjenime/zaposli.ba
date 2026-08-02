@@ -9,9 +9,10 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
+import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
-import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
+import { getCategory } from '@/lib/data';
 import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
@@ -29,15 +30,6 @@ interface Firm {
 interface FirmCategory {
   firm_id: string;
   category_slug: string;
-}
-
-function getInitials(name: string) {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
 }
 
 export default function FeaturedWorkersPage() {
@@ -161,17 +153,13 @@ export default function FeaturedWorkersPage() {
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />
 
                       <div className="flex items-start justify-between mb-5">
-                        {f.logo_url ? (
-                          <img
-                            src={f.logo_url}
-                            alt={f.name}
-                            className="w-16 h-16 rounded-2xl object-cover border border-gray-100"
-                          />
-                        ) : (
-                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-xl shadow-lg group-hover:scale-105 transition-transform">
-                            {getInitials(f.name)}
-                          </div>
-                        )}
+                        <LogoDisplay
+                          name={f.name}
+                          src={f.logo_url}
+                          alt={f.name}
+                          size="md"
+                          rounded="2xl"
+                        />
                         {f.verified && <VerifiedBadge size="sm" />}
                       </div>
 
