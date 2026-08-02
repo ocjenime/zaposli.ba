@@ -21,9 +21,11 @@ interface Job {
   title: string;
   description: string;
   city: string;
+  address: string | null;
   category_slug: string;
   status: string;
   created_at: string;
+  budget_mode: string | null;
   budget_min: number | null;
   budget_max: number | null;
   deadline: string | null;
@@ -39,11 +41,12 @@ function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-function formatBudget(min: number | null, max: number | null) {
-  if (min && max) return `${min.toLocaleString('bs')} – ${max.toLocaleString('bs')} KM`;
-  if (min) return `Od ${min.toLocaleString('bs')} KM`;
-  if (max) return `Do ${max.toLocaleString('bs')} KM`;
-  return 'Majstori predlažu cijenu';
+function formatBudget(job: Job) {
+  if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
+  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')} – ${job.budget_max.toLocaleString('bs')} KM`;
+  if (job.budget_min) return `Od ${job.budget_min.toLocaleString('bs')} KM`;
+  if (job.budget_max) return `Do ${job.budget_max.toLocaleString('bs')} KM`;
+  return 'Budžet po dogovoru';
 }
 
 function ProjectsPageContent() {
@@ -83,7 +86,7 @@ function ProjectsPageContent() {
     setLoading(true);
     const { data, error: err } = await supabase
       .from('jobs')
-      .select('id,title,description,city,category_slug,status,created_at,budget_min,budget_max,deadline,bids_count')
+      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count')
       .eq('status', 'open')
       .order('created_at', { ascending: false });
     if (err) {
@@ -412,7 +415,7 @@ function ProjectsPageContent() {
                       <div className="flex flex-wrap gap-3 text-xs text-steel mb-4">
                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{job.city}</span>
                         <span className="flex items-center gap-1.5 font-medium text-gray-700">
-                          <DollarSign className="w-3.5 h-3.5 text-brand-orange" />{formatBudget(job.budget_min, job.budget_max)}
+                          <DollarSign className="w-3.5 h-3.5 text-brand-orange" />{formatBudget(job)}
                         </span>
                         {job.deadline && (
                           <span className="flex items-center gap-1.5">

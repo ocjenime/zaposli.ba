@@ -10,6 +10,7 @@ interface JobRecord {
   description: string | null;
   city: string | null;
   category_slug: string;
+  budget_mode: string | null;
   budget_min: number | null;
   budget_max: number | null;
   client_id: string;
@@ -29,11 +30,12 @@ interface WebhookPayload {
   schema: string;
 }
 
-function formatBudget(min: number | null, max: number | null) {
+function formatBudget(mode: string | null, min: number | null, max: number | null) {
+  if (mode === "open") return "Klijent želi da majstori predlože cijenu";
   if (min && max) return `${min.toLocaleString("bs-BA")} – ${max.toLocaleString("bs-BA")} KM`;
   if (min) return `od ${min.toLocaleString("bs-BA")} KM`;
   if (max) return `do ${max.toLocaleString("bs-BA")} KM`;
-  return "Klijent želi da majstori predlože cijenu";
+  return "po dogovoru";
 }
 
 Deno.serve(async (req: Request) => {
@@ -143,7 +145,7 @@ Deno.serve(async (req: Request) => {
                 <p style="margin: 0 0 12px; font-size: 14px; color: #555; line-height: 1.5;">${job.description ? job.description.slice(0, 180) + (job.description.length > 180 ? "..." : "") : ""}</p>
                 <p style="margin: 0; font-size: 14px; color: #555;">
                   <strong>Grad:</strong> ${job.city || "nepoznato"}<br>
-                  <strong>Budžet:</strong> ${formatBudget(job.budget_min, job.budget_max)}
+                  <strong>Budžet:</strong> ${formatBudget(job.budget_mode, job.budget_min, job.budget_max)}
                 </p>
               </div>
               <a href="${dashboardUrl}" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Pogledaj posao i pošalji ponudu</a>

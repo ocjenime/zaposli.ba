@@ -13,6 +13,7 @@ interface Job {
   description: string;
   city: string;
   deadline: string | null;
+  budget_mode: string | null;
   budget_min: number | null;
   budget_max: number | null;
   bids_count: number;
@@ -23,11 +24,12 @@ function getCategoryName(slug: string) {
   return categories.find((c) => c.slug === slug)?.name || slug;
 }
 
-function formatBudget(min: number | null, max: number | null) {
-  if (min && max) return `${min.toLocaleString('bs')}-${max.toLocaleString('bs')} KM`;
-  if (min) return `Od ${min.toLocaleString('bs')} KM`;
-  if (max) return `Do ${max.toLocaleString('bs')} KM`;
-  return 'Majstori predlažu cijenu';
+function formatBudget(job: Job) {
+  if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
+  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')}-${job.budget_max.toLocaleString('bs')} KM`;
+  if (job.budget_min) return `Od ${job.budget_min.toLocaleString('bs')} KM`;
+  if (job.budget_max) return `Do ${job.budget_max.toLocaleString('bs')} KM`;
+  return 'Budžet po dogovoru';
 }
 
 function timeAgo(dateString: string) {
@@ -54,7 +56,7 @@ export default function RecentProjects() {
       try {
         const { data, error } = await supabase
           .from('jobs')
-          .select('id, title, category_slug, description, city, deadline, budget_min, budget_max, bids_count, created_at')
+          .select('id, title, category_slug, description, city, deadline, budget_mode, budget_min, budget_max, bids_count, created_at')
           .eq('status', 'open')
           .order('created_at', { ascending: false })
           .limit(4);
@@ -152,7 +154,7 @@ export default function RecentProjects() {
               </div>
 
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-bold text-brand-orange text-sm">{formatBudget(project.budget_min, project.budget_max)}</div>
+                <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
                 <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
                   <span>{project.bids_count} ponuda</span>
                 </div>

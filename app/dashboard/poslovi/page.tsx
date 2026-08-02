@@ -31,8 +31,10 @@ interface Job {
   title: string;
   description: string;
   city: string;
+  address: string | null;
   status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled';
   created_at: string;
+  budget_mode: string | null;
   budget_min: number | null;
   budget_max: number | null;
   deadline: string | null;
@@ -245,7 +247,7 @@ function JobDetail() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-steel mb-4">
-                  <MapPin className="w-4 h-4" /> {job.city}
+                  <MapPin className="w-4 h-4" /> {job.city}{job.address ? `, ${job.address}` : ''}
                   <span className="w-1 h-1 bg-steel rounded-full" />
                   <span>Objavljen {formatDate(job.created_at)}</span>
                 </div>
@@ -254,13 +256,15 @@ function JobDetail() {
                 <div className="flex flex-wrap gap-3 text-sm mt-4">
                   <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
                     <DollarSign className="w-4 h-4 text-brand-orange" />
-                    {job.budget_min != null && job.budget_max != null
+                    {job.budget_mode === 'open'
+                      ? 'Majstori predlažu cijenu'
+                      : job.budget_min != null && job.budget_max != null
                       ? `${job.budget_min} – ${job.budget_max} KM`
                       : job.budget_min != null
                       ? `od ${job.budget_min} KM`
                       : job.budget_max != null
                       ? `do ${job.budget_max} KM`
-                      : 'Majstori predlažu cijenu'}
+                      : 'Budžet po dogovoru'}
                   </span>
                   {job.deadline && (
                     <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">

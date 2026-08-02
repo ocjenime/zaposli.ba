@@ -44,9 +44,11 @@ interface Job {
   title: string;
   description: string;
   city: string;
+  address: string | null;
   category_slug: string;
   status: string;
   created_at: string;
+  budget_mode: string | null;
   budget_min: number | null;
   budget_max: number | null;
   deadline: string | null;
@@ -89,10 +91,13 @@ function formatDate(iso: string) {
 }
 
 function formatBudget(job: Job) {
+  if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
   if (job.budget_min != null && job.budget_max != null) {
     return `${job.budget_min}–${job.budget_max} KM`;
   }
-  return 'Majstori predlažu cijenu';
+  if (job.budget_min != null) return `od ${job.budget_min} KM`;
+  if (job.budget_max != null) return `do ${job.budget_max} KM`;
+  return 'Budžet po dogovoru';
 }
 
 function FirmDashboardContent() {
@@ -214,7 +219,7 @@ function FirmDashboardContent() {
     setLoadingBids(true);
     const { data, error: err } = await supabase
       .from('bids')
-      .select('*, jobs(id,title,city,category_slug,status,created_at)')
+      .select('*, jobs(id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline)')
       .eq('firm_id', id)
       .order('created_at', { ascending: false });
 
@@ -557,6 +562,12 @@ function FirmDashboardContent() {
                                     {job.description}
                                   </p>
                                 </div>
+                                {job.address && (
+                                  <div className="flex items-center gap-2 text-sm text-steel mb-4">
+                                    <MapPin className="w-4 h-4" />
+                                    {job.address}
+                                  </div>
+                                )}
                                 <div className="grid sm:grid-cols-2 gap-4 mb-4">
                                   <div>
                                     <label className="block text-xs font-semibold text-steel uppercase tracking-wide mb-1.5">
