@@ -43,6 +43,13 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
   }
 
+  // Validate authorization to prevent public abuse
+  const authHeader = req.headers.get("Authorization");
+  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+  if (supabaseServiceRole && (!authHeader || authHeader !== `Bearer ${supabaseServiceRole}`)) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
+
   let payload: WebhookPayload | null = null;
   try {
     payload = (await req.json()) as WebhookPayload;
@@ -55,8 +62,7 @@ Deno.serve(async (req: Request) => {
   }
 
   const message = payload.record;
-  const supabaseUrl = Deno.env.get("SB_URL") || Deno.env.get("SUPABASE_URL");
-  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseUrl = Deno.env.get("SB_URL") || Deno.env.get("SUPABASE_URL") || "";
 
   if (!supabaseUrl || !supabaseServiceRole) {
     return new Response(JSON.stringify({ error: "Missing Supabase env vars" }), { status: 500 });

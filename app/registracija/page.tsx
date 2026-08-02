@@ -73,13 +73,14 @@ export default function RegisterPage() {
     }
 
     // Direct signup (no email confirmation): create profile and firm immediately
-    const { error: profileError } = await supabase.from('profiles').insert({
+    // Using upsert with ignoreDuplicates to avoid conflicts with the database trigger
+    const { error: profileError } = await supabase.from('profiles').upsert({
       id: authData.user.id,
       email: formData.email,
       full_name: formData.name,
       phone: formData.phone,
       role: userType,
-    });
+    }, { ignoreDuplicates: true });
 
     if (profileError) {
       setError(profileError.message);
@@ -88,13 +89,13 @@ export default function RegisterPage() {
     }
 
     if (isFirmRole(userType)) {
-      const { error: firmError } = await supabase.from('firms').insert({
+      const { error: firmError } = await supabase.from('firms').upsert({
         owner_id: authData.user.id,
         name: formData.name,
         slug: slugify(formData.name),
         email: formData.email,
         phone: formData.phone,
-      });
+      }, { ignoreDuplicates: true });
       if (firmError) {
         console.error('Firm creation error:', firmError);
       }
