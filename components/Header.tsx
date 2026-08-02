@@ -44,6 +44,7 @@ export default function Header() {
   const pathname = usePathname();
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
+  const touchHandled = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -195,8 +196,15 @@ export default function Header() {
               ref={mobileButtonRef}
               type="button"
               className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800 touch-manipulation"
-              onClick={() => setMobileMenuOpen((v) => !v)}
+              onClick={() => {
+                if (touchHandled.current) {
+                  touchHandled.current = false;
+                  return;
+                }
+                setMobileMenuOpen((v) => !v);
+              }}
               onTouchStart={(e) => {
+                touchHandled.current = true;
                 e.preventDefault();
                 setMobileMenuOpen((v) => !v);
               }}
