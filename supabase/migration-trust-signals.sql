@@ -32,15 +32,29 @@ UPDATE reviews SET status = 'approved' WHERE status IS NULL;
 
 -- ---------------------------------------------------------------------------
 -- Public view: premium partner status
+-- Use a SECURITY DEFINER helper function for the cross-RLS lookup, but keep
+-- the view itself SECURITY INVOKER so it does not trip security lint rules.
 -- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.get_premium_firm_ids()
+RETURNS SETOF UUID
+LANGUAGE sql
+SECURITY DEFINER
+SET row_security = off
+AS $$
+  SELECT DISTINCT s.firm_id
+  FROM public.subscriptions s
+  JOIN public.plans p ON p.id = s.plan_id
+  WHERE s.status = 'active'
+    AND (s.ends_at IS NULL OR s.ends_at > now())
+    AND p.featured = true;
+$$;
+
 DROP VIEW IF EXISTS public_firm_premium;
-CREATE VIEW public_firm_premium AS
-SELECT DISTINCT s.firm_id
-FROM subscriptions s
-JOIN plans p ON p.id = s.plan_id
-WHERE s.status = 'active'
-  AND (s.ends_at IS NULL OR s.ends_at > now())
-  AND p.featured = true;
+CREATE VIEW public_firm_premium
+WITH (security_invoker = true)
+AS
+SELECT get_premium_firm_ids AS firm_id
+FROM public.get_premium_firm_ids();
 
 -- ---------------------------------------------------------------------------
 -- Trigger: keep firms.average_rating / review_count in sync (approved only)

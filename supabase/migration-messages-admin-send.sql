@@ -8,6 +8,5 @@ DROP POLICY IF EXISTS "messages_insert_admin" ON public.messages;
 
 CREATE POLICY "messages_insert_admin" ON public.messages
   FOR INSERT WITH CHECK (
-    public.is_admin()
-    OR public.is_admin_user(auth.uid())
+    public.is_admin_user(auth.uid())
   );
