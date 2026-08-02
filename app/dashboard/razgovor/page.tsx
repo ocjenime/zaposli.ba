@@ -43,11 +43,12 @@ function formatDate(iso: string) {
 function Conversation() {
   const searchParams = useSearchParams();
   const jobId = searchParams.get('job_id');
-  const { user, loading, role } = useAuth();
+  const { user, loading, role, isAdmin } = useAuth();
   const router = useRouter();
   const [job, setJob] = useState<Job | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [partner, setPartner] = useState<Profile | null>(null);
+  const [adminInfo, setAdminInfo] = useState<string | null>(null);
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState('');
   const [input, setInput] = useState('');
@@ -110,7 +111,29 @@ function Conversation() {
     let allowed = false;
     let partnerId: string | null = null;
 
-    if (role === 'client' && currentJob.client_id === user.id) {
+    if (isAdmin) {
+      allowed = true;
+      const { data: bidData } = await supabase
+        .from('bids')
+        .select('firm_id, firms(owner_id, name)')
+        .eq('job_id', jobId)
+        .eq('status', 'accepted')
+        .single();
+      const typedBid = bidData as unknown as { firm_id: string; firms: { owner_id: string; name: string } | null } | null;
+      if (typedBid?.firms) {
+        const [{ data: clientProfile }, { data: ownerProfile }] = await Promise.all([
+          supabase.from('profiles').select('id, full_name').eq('id', currentJob.client_id).single(),
+          supabase.from('profiles').select('id, full_name').eq('id', typedBid.firms.owner_id).single(),
+        ]);
+        const clientName = (clientProfile as Profile | null)?.full_name || 'Klijent';
+        const ownerName = (ownerProfile as Profile | null)?.full_name || 'Firma';
+        setAdminInfo(`Klijent: ${clientName} · Firma: ${typedBid.firms.name || ownerName}`);
+        partnerId = typedBid.firms.owner_id;
+      } else {
+        setAdminInfo('Admin pregled');
+        partnerId = currentJob.client_id;
+      }
+    } else if (role === 'client' && currentJob.client_id === user.id) {
       allowed = true;
       const { data: bidData } = await supabase
         .from('bids')
@@ -151,12 +174,14 @@ function Conversation() {
 
     setJob(currentJob);
 
-    const { data: profileData } = await supabase
-      .from('profiles')
-      .select('id, full_name')
-      .eq('id', partnerId)
-      .single();
-    setPartner(profileData as Profile | null);
+    if (partnerId) {
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('id, full_name')
+        .eq('id', partnerId)
+        .single();
+      setPartner(profileData as Profile | null);
+    }
 
     const { data: messagesData, error: messagesErr } = await supabase
       .from('messages')
@@ -219,7 +244,7 @@ function Conversation() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto h-[calc(100vh-14rem)] sm:h-[calc(100vh-15rem)] flex flex-col">
-          <Link href={isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
+          <Link href={isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad
           </Link>
 
@@ -237,7 +262,13 @@ function Conversation() {
                 <h1 className="font-bold text-gray-900">{job.title}</h1>
                 <div className="flex items-center gap-2 text-sm text-steel mt-1">
                   <MapPin className="w-4 h-4" /> {job.city}
-                  {partner?.full_name && (
+                  {adminInfo && (
+                    <>
+                      <span className="w-1 h-1 bg-steel rounded-full" />
+                      <span className="text-brand-orange font-medium">{adminInfo}</span>
+                    </>
+                  )}
+                  {!adminInfo && partner?.full_name && (
                     <>
                       <span className="w-1 h-1 bg-steel rounded-full" />
                       <span>{role === 'client' ? 'Firma' : 'Klijent'}: {partner.full_name}</span>
@@ -266,7 +297,13 @@ function Conversation() {
                               }`}
                             >
                               <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
-                                {isMe ? 'Vi' : role === 'client' ? 'Firma' : 'Klijent'}
+                                {isMe
+                                  ? 'Vi'
+                                  : isAdmin
+                                  ? (msg.sender_id === job?.client_id ? 'Klijent' : 'Firma')
+                                  : role === 'client'
+                                  ? 'Firma'
+                                  : 'Klijent'}
                               </p>
                               <p>{msg.content}</p>
                               <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
@@ -282,23 +319,25 @@ function Conversation() {
                 )}
               </div>
 
-              <form onSubmit={sendMessage} className="mt-3 flex gap-2">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Napišite poruku..."
-                  className="input-field flex-grow"
-                  disabled={sending}
-                />
-                <button
-                  type="submit"
-                  disabled={!input.trim() || sending}
-                  className="btn-primary px-4 disabled:opacity-50 inline-flex items-center gap-2"
-                >
-                  {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                </button>
-              </form>
+              {!isAdmin && (
+                <form onSubmit={sendMessage} className="mt-3 flex gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Napišite poruku..."
+                    className="input-field flex-grow"
+                    disabled={sending}
+                  />
+                  <button
+                    type="submit"
+                    disabled={!input.trim() || sending}
+                    className="btn-primary px-4 disabled:opacity-50 inline-flex items-center gap-2"
+                  >
+                    {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                  </button>
+                </form>
+              )}
             </>
           )}
         </div>

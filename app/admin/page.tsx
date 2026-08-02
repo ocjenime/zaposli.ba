@@ -32,6 +32,14 @@ interface AdminRequest {
   firms?: AdminFirm;
 }
 
+interface AdminConversation {
+  job_id: string;
+  job_title: string;
+  job_city: string;
+  firm_name: string;
+  created_at: string;
+}
+
 interface FirmPlan {
   firm: AdminFirm;
   subscription: Subscription | null;
@@ -76,6 +84,7 @@ const tabs = [
   { id: 'overview', label: 'Pregled', icon: LayoutDashboard },
   { id: 'users', label: 'Korisnici', icon: Users },
   { id: 'firms', label: 'Firme', icon: Building2 },
+  { id: 'conversations', label: 'Razgovori', icon: MessageSquare },
   { id: 'subscriptions', label: 'Pretplate', icon: CreditCard },
   { id: 'payments', label: 'Plaćanja', icon: DollarSign },
   { id: 'plans', label: 'Paketi', icon: FileText },
@@ -93,6 +102,7 @@ export default function AdminPage() {
   const [firmPlans, setFirmPlans] = useState<FirmPlan[]>([]);
   const [requests, setRequests] = useState<AdminRequest[]>([]);
   const [payments, setPayments] = useState<PaymentRow[]>([]);
+  const [conversations, setConversations] = useState<AdminConversation[]>([]);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -245,10 +255,35 @@ export default function AdminPage() {
     });
   }
 
+  async function loadConversations() {
+    const { data, error } = await supabase
+      .from('bids')
+      .select('created_at, jobs(id,title,city), firms(id,name)')
+      .eq('status', 'accepted')
+      .order('created_at', { ascending: false });
+    if (error) {
+      setError('Greška prilikom učitavanja razgovora.');
+      return;
+    }
+    const rows = (data as unknown as Array<{ created_at: string; jobs: { id: string; title: string; city: string } | null; firms: { id: string; name: string } | null }>) || [];
+    setConversations(
+      rows.map((row) => ({
+        job_id: row.jobs?.id || '',
+        job_title: row.jobs?.title || 'Nepoznati posao',
+        job_city: row.jobs?.city || '',
+        firm_name: row.firms?.name || 'Nepoznata firma',
+        created_at: row.created_at,
+      }))
+    );
+  }
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
       loadPromoCount();
+    }
+    if (activeTab === 'conversations') {
+      loadConversations();
     }
     if (activeTab === 'payments') {
       loadPayments();
@@ -762,6 +797,39 @@ export default function AdminPage() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'conversations' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100">
+                    <p className="text-sm text-steel">Razgovori između klijenata i firmi sa prihvaćenom ponudom</p>
+                  </div>
+                  <div className="divide-y divide-gray-100">
+                    {conversations.length === 0 ? (
+                      <p className="p-6 text-sm text-steel text-center">Nema aktivnih razgovora.</p>
+                    ) : (
+                      conversations.map((c) => (
+                        <div
+                          key={c.job_id}
+                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                        >
+                          <div>
+                            <p className="font-medium text-gray-900">{c.job_title}</p>
+                            <p className="text-sm text-steel">
+                              {c.job_city} · Firma: {c.firm_name} · {formatDate(c.created_at)}
+                            </p>
+                          </div>
+                          <Link
+                            href={`/dashboard/razgovor/?job_id=${c.job_id}`}
+                            className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors inline-flex items-center justify-center"
+                          >
+                            Pregledaj razgovor
+                          </Link>
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               )}
