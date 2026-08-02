@@ -128,6 +128,7 @@ function PostProjectContent() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'budgetMin' || name === 'budgetMax') setError('');
   };
 
   const handleBudgetModeChange = (mode: 'open' | 'fixed') => {
@@ -137,6 +138,23 @@ function PostProjectContent() {
       budgetMin: mode === 'open' ? '' : prev.budgetMin,
       budgetMax: mode === 'open' ? '' : prev.budgetMax,
     }));
+    setError('');
+  };
+
+  const validateBudget = () => {
+    if (formData.budgetMode === 'fixed') {
+      const min = formData.budgetMin ? parseFloat(formData.budgetMin) : null;
+      const max = formData.budgetMax ? parseFloat(formData.budgetMax) : null;
+      if (min === null && max === null) {
+        setError('Unesite minimalni ili maksimalni budžet.');
+        return false;
+      }
+      if (min !== null && max !== null && min > max) {
+        setError('Maksimalni budžet ne može biti manji od minimalnog.');
+        return false;
+      }
+    }
+    return true;
   };
 
   const compressImage = async (file: File): Promise<File> => {
@@ -220,6 +238,7 @@ function PostProjectContent() {
 
     const cat = categories.find((c) => c.name === formData.category);
     if (!cat) { setError('Odaberite kategoriju'); return; }
+    if (!validateBudget()) return;
 
     setSubmitting(true);
     const budgetMin = formData.budgetMin ? parseFloat(formData.budgetMin) : null;
@@ -512,7 +531,7 @@ function PostProjectContent() {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button type="button" onClick={() => setStep(1)} className="flex-1 btn-secondary">Nazad</button>
-                    <button type="button" onClick={() => setStep(3)} className="flex-1 btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
+                    <button type="button" onClick={() => { if (validateBudget()) setStep(3); }} className="flex-1 btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
                   </div>
                 </div>
               )}
