@@ -8,6 +8,8 @@ import Footer from '@/components/Footer';
 import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
+import { slugify } from '@/lib/slugify';
+import { site } from '@/lib/site';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +17,7 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailConfirmation, setEmailConfirmation] = useState(false);
   const router = useRouter();
 
   const validate = () => {
@@ -40,6 +43,14 @@ export default function RegisterPage() {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: formData.email,
       password: formData.password,
+      options: {
+        data: {
+          full_name: formData.name,
+          phone: formData.phone,
+          role: userType,
+        },
+        emailRedirectTo: `${site.url}/auth/callback`,
+      },
     });
 
     if (authError) {
@@ -54,6 +65,14 @@ export default function RegisterPage() {
       return;
     }
 
+    // Email confirmation enabled: no session yet, profile/firm will be created after callback
+    if (!authData.session) {
+      setEmailConfirmation(true);
+      setLoading(false);
+      return;
+    }
+
+    // Direct signup (no email confirmation): create profile and firm immediately
     const { error: profileError } = await supabase.from('profiles').insert({
       id: authData.user.id,
       email: formData.email,
@@ -69,13 +88,16 @@ export default function RegisterPage() {
     }
 
     if (isFirmRole(userType)) {
-      await supabase.from('firms').insert({
+      const { error: firmError } = await supabase.from('firms').insert({
         owner_id: authData.user.id,
         name: formData.name,
-        slug: formData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+        slug: slugify(formData.name),
         email: formData.email,
         phone: formData.phone,
       });
+      if (firmError) {
+        console.error('Firm creation error:', firmError);
+      }
     }
 
     router.push(isFirmRole(userType) ? '/dashboard/firma/' : '/dashboard/');
@@ -92,28 +114,35 @@ export default function RegisterPage() {
               <p className="text-gray-600 mt-2">Registrujte se besplatno</p>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mb-6">
-              {([
-                { value: 'client', label: 'Klijent' },
-                { value: 'firm', label: 'Firma' },
-                { value: 'majstor', label: 'Majstor' },
-              ] as const).map((type) => (
-                <button
-                  key={type.value}
-                  type="button"
-                  onClick={() => setUserType(type.value)}
-                  className={`py-3 px-2 rounded-lg font-medium text-sm transition-colors ${
-                    userType === type.value
-                      ? 'bg-primary-600 text-[#ffffff]'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  {type.label}
-                </button>
-              ))}
-            </div>
+            {emailConfirmation ? (
+              <div className="mb-6 bg-green-50 text-green-700 rounded-xl px-4 py-4 text-sm">
+                <p className="font-semibold mb-1">Registracija uspješna!</p>
+                <p>Poslali smo vam email za potvrdu. Kliknite na link u emailu da biste aktivirali nalog.</p>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  {([
+                    { value: 'client', label: 'Klijent' },
+                    { value: 'firm', label: 'Firma' },
+                    { value: 'majstor', label: 'Majstor' },
+                  ] as const).map((type) => (
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => setUserType(type.value)}
+                      className={`py-3 px-2 rounded-lg font-medium text-sm transition-colors ${
+                        userType === type.value
+                          ? 'bg-primary-600 text-[#ffffff]'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {type.label}
+                    </button>
+                  ))}
+                </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   {userType === 'firm' ? 'Naziv firme' : 'Ime i prezime'}
@@ -211,6 +240,8 @@ export default function RegisterPage() {
               Već imate nalog?{' '}
               <Link href="/prijava/" className="text-primary-600 font-medium hover:text-primary-700">Prijavite se</Link>
             </p>
+              </>
+            )}
           </div>
         </div>
       </main>

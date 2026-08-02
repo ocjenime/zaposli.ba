@@ -1,17 +1,30 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import {
   Loader2, AlertCircle, Check, Lock, Eye, EyeOff,
 } from 'lucide-react';
 
+function parseHashParams(hash: string): Record<string, string> {
+  const params: Record<string, string> = {};
+  const clean = hash.replace(/^#/, '');
+  if (!clean) return params;
+  const url = new URL(`http://localhost/?${clean}`);
+  url.searchParams.forEach((value, key) => {
+    params[key] = value;
+  });
+  return params;
+}
+
 export default function NewPasswordPage() {
   const router = useRouter();
+  const clientRef = useRef<SupabaseClient | null>(null);
   const [loading, setLoading] = useState(true);
   const [sessionReady, setSessionReady] = useState(false);
   const [error, setError] = useState('');
@@ -23,30 +36,59 @@ export default function NewPasswordPage() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    // Supabase client with detectSessionInUrl:true will automatically handle
-    // the recovery hash fragment. We just wait briefly and then check session.
     let cancelled = false;
 
     async function init() {
-      // Give the client a moment to process the URL hash
-      await new Promise((resolve) => setTimeout(resolve, 800));
-      const { data, error: sessionError } = await supabase.auth.getSession();
+      const client = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        { auth: { detectSessionInUrl: false, persistSession: true, autoRefreshToken: true } }
+      );
+      clientRef.current = client;
+
+      const hashParams = parseHashParams(window.location.hash);
+      const url = new URL(window.location.href);
+      const type = hashParams.type || url.searchParams.get('type') || undefined;
+      const token = hashParams.access_token || hashParams.token || url.searchParams.get('token') || undefined;
+      const tokenHash = hashParams.token_hash || url.searchParams.get('token_hash') || undefined;
+
       if (cancelled) return;
 
-      if (sessionError) {
-        setError(sessionError.message);
-        setLoading(false);
-        return;
-      }
-
-      if (!data.session) {
+      if (type !== 'recovery' || (!token && !tokenHash)) {
         setError('Link za reset lozinke je istekao ili nije važeći. Zatražite novi link.');
         setLoading(false);
         return;
       }
 
-      setSessionReady(true);
-      setLoading(false);
+      try {
+        const { error: verifyError } = await client.auth.verifyOtp({
+          type: 'recovery',
+          token: (token || tokenHash) as string,
+          token_hash: tokenHash || token || '',
+        });
+        if (cancelled) return;
+
+        if (verifyError) {
+          setError(verifyError.message);
+          setLoading(false);
+          return;
+        }
+
+        const { data: sessionData } = await client.auth.getSession();
+        if (cancelled) return;
+
+        if (!sessionData.session) {
+          setError('Link za reset lozinke je istekao ili nije važeći. Zatražite novi link.');
+          setLoading(false);
+          return;
+        }
+
+        setSessionReady(true);
+        setLoading(false);
+      } catch (err: any) {
+        setError(err?.message || 'Link za reset lozinke je istekao ili nije važeći.');
+        setLoading(false);
+      }
     }
 
     init();
@@ -55,6 +97,8 @@ export default function NewPasswordPage() {
       cancelled = true;
     };
   }, []);
+
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -71,7 +115,13 @@ export default function NewPasswordPage() {
     }
 
     setSaving(true);
-    const { error: updateError } = await supabase.auth.updateUser({ password });
+    const client = clientRef.current;
+    if (!client) {
+      setError('Sesija nije učitana. Osvježite stranicu.');
+      setSaving(false);
+      return;
+    }
+    const { error: updateError } = await client.auth.updateUser({ password });
     setSaving(false);
 
     if (updateError) {

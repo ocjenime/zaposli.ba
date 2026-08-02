@@ -22,6 +22,7 @@ import FirmEditModal, { AdminFirm } from './FirmEditModal';
 import SubscriptionEditModal from './SubscriptionEditModal';
 import { roleLabel, isFirmRole } from '@/lib/roles';
 import { formatDateTime, getResetCountdownText } from '@/lib/subscriptions';
+import { site } from '@/lib/site';
 
 interface AdminRequest {
   id: string;
@@ -479,7 +480,7 @@ export default function AdminPage() {
   }
 
   async function resetPassword(email: string) {
-    const redirectTo = `${window.location.origin}/zaposli.ba/nova-lozinka/`;
+    const redirectTo = `${site.url}/nova-lozinka/`;
     const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo,
     });
@@ -594,6 +595,17 @@ export default function AdminPage() {
 
   function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-cloud">
+        <Header />
+        <main className="flex-grow flex items-center justify-center px-4">
+          <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
+        </main>
+      </div>
+    );
   }
 
   if (!user) {

@@ -1,5 +1,9 @@
--- Admin access to messages and webhook instructions for new-message notifications
--- 1. Ensure the admin helper function exists (checks profiles.is_admin boolean)
+: Admin RLS fixes and webhook URL update
+-- Run this in Supabase SQL Editor after the base migrations.
+
+-- ---------------------------------------------------------------------------
+-- 1. Fix messages admin SELECT policy
+-- ---------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.is_admin_user(uid UUID)
 RETURNS BOOLEAN
 SET row_security = off
@@ -11,7 +15,6 @@ BEGIN
 END;
 $$;
 
--- 2. Update messages RLS policies so admins can read (for support/arbitration)
 DROP POLICY IF EXISTS "messages_select_participant" ON public.messages;
 CREATE POLICY "messages_select_participant" ON public.messages
   FOR SELECT USING (
@@ -25,30 +28,23 @@ CREATE POLICY "messages_select_participant" ON public.messages
     )
   );
 
-DROP POLICY IF EXISTS "messages_update_participant_read" ON public.messages;
-CREATE POLICY "messages_update_participant_read" ON public.messages
-  FOR UPDATE USING (
-    auth.uid() IN (SELECT client_id FROM public.jobs WHERE id = job_id)
-    OR auth.uid() IN (
-      SELECT owner_id FROM public.firms
-      WHERE id IN (
-        SELECT b.firm_id FROM public.bids b WHERE b.job_id = public.messages.job_id
-      )
-    )
-  )
-  WITH CHECK (
-    auth.uid() IN (SELECT client_id FROM public.jobs WHERE id = job_id)
-    OR auth.uid() IN (
-      SELECT owner_id FROM public.firms
-      WHERE id IN (
-        SELECT b.firm_id FROM public.bids b WHERE b.job_id = public.messages.job_id
-      )
-    )
-  );
+GRANT EXECUTE ON FUNCTION public.is_admin_user(UUID) TO anon, authenticated;
 
--- 3. Webhook trigger for email notifications
+-- ---------------------------------------------------------------------------
+-- 2. Admin policies for jobs and bids
+-- ---------------------------------------------------------------------------
+DROP POLICY IF EXISTS "jobs_update_admin" ON public.jobs;
+CREATE POLICY "jobs_update_admin" ON public.jobs
+  FOR UPDATE USING (public.is_admin_user(auth.uid()));
+
+DROP POLICY IF EXISTS "bids_select_admin" ON public.bids;
+CREATE POLICY "bids_select_admin" ON public.bids
+  FOR SELECT USING (public.is_admin_user(auth.uid()));
+
+-- ---------------------------------------------------------------------------
+-- 3. Update webhook trigger with real Edge Function URL
 -- IMPORTANT: replace <SERVICE_ROLE_KEY> with your Supabase service role key.
--- Project ref for this deployment: nwgbrvpomjkzkofjknyi
+-- ---------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION public.handle_new_message()
 RETURNS TRIGGER AS $$
 DECLARE
