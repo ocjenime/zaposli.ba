@@ -15,7 +15,7 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   ];
 
   return (
-    <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 pb-0">
+    <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-16 md:mt-20 pt-4 pb-4">
       <JsonLd data={breadcrumbSchema(schemaItems)} />
       <ol className="flex flex-wrap items-center gap-1.5 text-sm text-steel">
         <li>
