@@ -440,18 +440,25 @@ export default function AdminPage() {
     setSavingVerified(firm.id);
     setError('');
     setSuccess('');
-    const { error: err } = await supabase
-      .from('firms')
-      .update({ verified: !firm.verified })
-      .eq('id', firm.id);
+    const action = firm.verified ? 'revoke' : 'approve';
+    const { data, error: err } = await supabase.rpc('verify_firm', {
+      firm_id: firm.id,
+      action,
+      notes: null,
+    });
     setSavingVerified(null);
     if (err) {
       setError(err.message);
       return;
     }
+    if (!data) {
+      setError('Verifikacija nije ažurirana. Provjerite administratorska prava u bazi.');
+      return;
+    }
     await loadFirms();
     await loadFirmPlans();
-    setSuccess('Verifikacija firme ažurirana.');
+    await loadVerifications();
+    setSuccess(action === 'approve' ? 'Firma verifikovana.' : 'Verifikacija povučena.');
   }
 
   async function toggleAdmin(profile: AdminProfile) {
