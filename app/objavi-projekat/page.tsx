@@ -141,9 +141,18 @@ function PostProjectContent() {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    const files = Array.from(e.target.files).slice(0, 5);
+    const selected = Array.from(e.target.files);
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    const allAllowed = selected.every((file) => allowedTypes.includes(file.type));
+    if (!allAllowed) {
+      setError('Dozvoljeni su samo JPG, JPEG i PNG formati.');
+      e.target.value = '';
+      return;
+    }
+    const files = selected.slice(0, 5);
     setImages(files);
     setImagePreviews(files.map((file) => URL.createObjectURL(file)));
+    setError('');
   };
 
   const removeImage = (index: number) => {
@@ -418,7 +427,7 @@ function PostProjectContent() {
                       <input
                         type="file"
                         id="job-images"
-                        accept="image/*"
+                        accept=".jpg,.jpeg,.png"
                         multiple
                         onChange={handleImageChange}
                         className="hidden"
@@ -426,7 +435,7 @@ function PostProjectContent() {
                       <label htmlFor="job-images" className="cursor-pointer inline-flex flex-col items-center gap-2">
                         <Upload className="w-8 h-8 text-gray-400" />
                         <span className="text-sm text-gray-600 font-medium">Kliknite za upload fotografija</span>
-                        <span className="text-xs text-gray-400">Do 5 fotografija (JPEG, PNG, WebP)</span>
+                        <span className="text-xs text-gray-400">Do 5 fotografija (JPG, JPEG, PNG)</span>
                       </label>
                     </div>
                     {imagePreviews.length > 0 && (
