@@ -131,9 +131,11 @@ function FirmDashboardContent() {
   const [activeTab, setActiveTab] = useState<'jobs' | 'bids'>('jobs');
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) router.push('/prijava/');
-      else if (!isFirmRole(role)) router.push('/dashboard/');
+    if (loading) return;
+    if (!user) {
+      router.push('/prijava/');
+    } else if (!isFirmRole(role)) {
+      router.push('/dashboard/');
     }
   }, [user, role, loading, router]);
 

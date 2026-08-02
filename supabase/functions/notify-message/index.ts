@@ -55,8 +55,8 @@ Deno.serve(async (req: Request) => {
   }
 
   const message = payload.record;
-  const supabaseUrl = Deno.env.get("SB_URL");
-  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY");
+  const supabaseUrl = Deno.env.get("SB_URL") || Deno.env.get("SUPABASE_URL");
+  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
   if (!supabaseUrl || !supabaseServiceRole) {
     return new Response(JSON.stringify({ error: "Missing Supabase env vars" }), { status: 500 });
@@ -155,7 +155,7 @@ Deno.serve(async (req: Request) => {
   }
 
   if (!RESEND_API_KEY) {
-    return new Response(JSON.stringify({ message: "No Resend key configured" }), { status: 200 });
+    return new Response(JSON.stringify({ error: "No Resend key configured" }), { status: 500, headers: { "Content-Type": "application/json" } });
   }
 
   const conversationUrl = `${SITE_URL}/dashboard/razgovor/?job_id=${job.id}`;

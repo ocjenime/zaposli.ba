@@ -137,7 +137,9 @@ ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "firms_update_verification_request" ON firms;
 CREATE POLICY "firms_update_verification_request" ON firms
 FOR UPDATE
-USING (auth.uid() = owner_id)
+-- Exclude admins from this owner policy so that admin approval/rejection
+-- of their own firms is not blocked by the owner-only WITH CHECK below.
+USING (auth.uid() = owner_id AND NOT is_admin_user(auth.uid()))
 WITH CHECK (
   auth.uid() = owner_id
   AND verification_status IN ('unverified', 'pending', 'rejected')

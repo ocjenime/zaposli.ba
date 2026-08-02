@@ -4,7 +4,8 @@ CREATE TABLE profiles (
   email TEXT NOT NULL,
   full_name TEXT,
   phone TEXT,
-  role TEXT NOT NULL CHECK (role IN ('client', 'firm')),
+  role TEXT NOT NULL CHECK (role IN ('client', 'firm', 'majstor')),
+  is_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 

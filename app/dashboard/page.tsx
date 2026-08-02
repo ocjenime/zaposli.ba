@@ -44,9 +44,11 @@ export default function DashboardPage() {
   const [actionId, setActionId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) router.push('/prijava/');
-      else if (isFirmRole(role)) router.push('/dashboard/firma/');
+    if (loading) return;
+    if (!user) {
+      router.push('/prijava/');
+    } else if (isFirmRole(role)) {
+      router.push('/dashboard/firma/');
     }
   }, [user, role, loading, router]);
 

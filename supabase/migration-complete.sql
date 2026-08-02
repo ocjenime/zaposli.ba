@@ -3,6 +3,29 @@
 -- Note: PostgreSQL does not support "CREATE OR REPLACE POLICY", so each policy is dropped before creation.
 
 -- ---------------------------------------------------------------------------
+-- Profiles: ensure is_admin column exists and role accepts 'majstor'
+-- ---------------------------------------------------------------------------
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT false;
+
+DO $$
+DECLARE
+  conname text;
+BEGIN
+  SELECT con.conname INTO conname
+  FROM pg_constraint con
+  JOIN pg_class rel ON rel.oid = con.conrelid
+  WHERE rel.relname = 'profiles'
+    AND con.contype = 'c'
+    AND pg_get_constraintdef(con.oid) LIKE '%role%';
+  IF conname IS NOT NULL THEN
+    EXECUTE format('ALTER TABLE profiles DROP CONSTRAINT %I', conname);
+  END IF;
+END $$;
+
+ALTER TABLE profiles ADD CONSTRAINT profiles_role_check CHECK (role IN ('client', 'firm', 'majstor'));
+
+
+-- ---------------------------------------------------------------------------
 -- Profiles (extends Supabase Auth)
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS profiles (
@@ -10,7 +33,8 @@ CREATE TABLE IF NOT EXISTS profiles (
   email TEXT NOT NULL,
   full_name TEXT,
   phone TEXT,
-  role TEXT NOT NULL CHECK (role IN ('client', 'firm')),
+  role TEXT NOT NULL CHECK (role IN ('client', 'firm', 'majstor')),
+  is_admin BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 

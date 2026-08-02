@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next';
+﻿import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { site } from '@/lib/site';
 import AuthWrapper from '@/components/AuthWrapper';
@@ -41,6 +41,11 @@ export const metadata: Metadata = {
   other: {
     'msapplication-TileColor': '#ffffff',
   },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({

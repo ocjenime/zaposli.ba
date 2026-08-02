@@ -26,22 +26,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<UserRole | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [roleLoading, setRoleLoading] = useState(true);
+  const loading = sessionLoading || roleLoading;
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
 
     async function init() {
+      setSessionLoading(true);
+      setRoleLoading(true);
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error) throw error;
         const u = data.session?.user ?? null;
         setUser(u);
-        if (u) await fetchRole(u.id);
+        if (u) {
+          await fetchRole(u.id);
+        } else {
+          setRole(null);
+          setIsAdmin(false);
+          setRoleLoading(false);
+        }
       } catch (err) {
         console.error('Auth init error:', err);
+        setRole(null);
+        setIsAdmin(false);
+        setRoleLoading(false);
       } finally {
-        setLoading(false);
+        setSessionLoading(false);
         clearTimeout(timeoutId);
       }
     }
@@ -49,16 +62,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     init();
 
     // Safety fallback so the UI never hangs forever
-    timeoutId = setTimeout(() => setLoading(false), 3000);
+    timeoutId = setTimeout(() => {
+      setSessionLoading(false);
+      setRoleLoading(false);
+    }, 5000);
 
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSessionLoading(true);
+      setRoleLoading(true);
       const u = session?.user ?? null;
       setUser(u);
-      if (u) await fetchRole(u.id);
-      else {
+      if (u) {
+        await fetchRole(u.id);
+      } else {
         setRole(null);
         setIsAdmin(false);
       }
+      setSessionLoading(false);
+      setRoleLoading(false);
     });
 
     return () => {
@@ -68,19 +89,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   async function fetchRole(userId: string) {
+    setRoleLoading(true);
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select('role, is_admin')
+        .select('role')
         .eq('id', userId)
         .maybeSingle();
       if (error) throw error;
-      setRole(data?.role ?? null);
-      setIsAdmin(data?.is_admin ?? false);
+      setRole((data?.role as UserRole) ?? null);
+
+      // is_admin is added by a later migration; if the column is missing,
+      // do not fail the role lookup because of it.
+      const { data: adminData, error: adminError } = await supabase
+        .from('profiles')
+        .select('is_admin')
+        .eq('id', userId)
+        .maybeSingle();
+      if (adminError) {
+        console.warn('is_admin column not available, defaulting to false:', adminError.message);
+        setIsAdmin(false);
+      } else {
+        setIsAdmin(adminData?.is_admin ?? false);
+      }
     } catch (err) {
       console.error('fetchRole error:', err);
       setRole(null);
       setIsAdmin(false);
+    } finally {
+      setRoleLoading(false);
     }
   }
 

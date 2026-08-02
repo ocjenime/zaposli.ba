@@ -134,6 +134,7 @@ function ProjectsPageContent() {
       router.push('/registracija/');
       return;
     }
+    if (role === null) return; // still resolving role; wait before deciding
     if (!isFirmRole(role)) {
       router.push('/dashboard/');
       return;
