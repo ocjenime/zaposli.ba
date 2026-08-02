@@ -64,7 +64,7 @@ export default function Header() {
       if (e.key === 'Escape') setMobileMenuOpen(false);
     };
 
-    const handleClickOutside = (e: MouseEvent) => {
+    const handlePointerDown = (e: PointerEvent) => {
       const target = e.target as Node;
       if (
         mobileMenuRef.current &&
@@ -77,12 +77,12 @@ export default function Header() {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('pointerdown', handlePointerDown);
     document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('pointerdown', handlePointerDown);
       document.body.style.overflow = '';
     };
   }, [mobileMenuOpen]);
@@ -196,7 +196,6 @@ export default function Header() {
                 ref={mobileButtonRef}
                 type="button"
                 className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800 touch-manipulation cursor-pointer"
-                onClick={() => setMobileMenuOpen((v) => !v)}
                 onPointerDown={(e) => {
                   e.preventDefault();
                   setMobileMenuOpen((v) => !v);
