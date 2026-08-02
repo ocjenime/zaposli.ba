@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { JsonLd, serviceSchema, faqSchema } from '@/lib/jsonld';
 import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
+import ServiceCityFirms from '@/components/ServiceCityFirms';
 
 function parseSlug(slug: string): { cat: Category; city: City } | null {
   for (const city of cities) {
@@ -101,6 +102,13 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
             </Link>
           </div>
         </section>
+
+        {/* Firme iz kategorije i grada */}
+        <ServiceCityFirms
+          categorySlug={cat.slug}
+          cityName={city.name}
+          profession={cat.profession}
+        />
 
         {/* FAQ */}
         <section className="py-14 bg-white">

@@ -17,6 +17,7 @@ import {
   Phone,
   Bell,
   Sun,
+  Shield,
 } from 'lucide-react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -90,9 +91,9 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   const dashboardHref = isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/';
-  const ctaHref = isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/';
-  const ctaLabel = isFirmRole(role) ? 'Moja firma' : 'Objavi posao';
-  const CtaIcon = isFirmRole(role) ? Building2 : FilePlus;
+  const ctaHref = isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/';
+  const ctaLabel = isAdmin ? 'Admin panel' : isFirmRole(role) ? 'Moja firma' : 'Objavi posao';
+  const CtaIcon = isAdmin ? Shield : isFirmRole(role) ? Building2 : FilePlus;
 
   return (
     <>
@@ -131,7 +132,7 @@ export default function Header() {
                   <div className="relative">
                     <NotificationBell />
                   </div>
-                  {!isFirmRole(role) && (
+                  {user && !isAdmin && !isFirmRole(role) && (
                     <Link
                       href={dashboardHref}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
@@ -141,18 +142,6 @@ export default function Header() {
                       }`}
                     >
                       Moj profil
-                    </Link>
-                  )}
-                  {isAdmin && (
-                    <Link
-                      href="/admin/"
-                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                        isActive(pathname, '/admin/')
-                          ? 'text-gray-900 bg-gray-100'
-                          : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50/80'
-                      }`}
-                    >
-                      Admin
                     </Link>
                   )}
                   <button
@@ -253,7 +242,7 @@ export default function Header() {
               <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Račun</p>
               {user ? (
                 <>
-                  {!isFirmRole(role) && (
+                  {user && !isAdmin && !isFirmRole(role) && (
                     <Link
                       href={dashboardHref}
                       className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-ink-800"
@@ -261,16 +250,6 @@ export default function Header() {
                     >
                       <Info className="w-5 h-5 shrink-0" />
                       Moj profil
-                    </Link>
-                  )}
-                  {isAdmin && (
-                    <Link
-                      href="/admin/"
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-ink-800"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Building2 className="w-5 h-5 shrink-0" />
-                      Admin
                     </Link>
                   )}
                   <button
