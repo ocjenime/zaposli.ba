@@ -2,7 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "Zaposli.ba <info@zaposli.ba>";
-const SITE_URL = Deno.env.get("SITE_URL") || "https://ocjenime.github.io/zaposli.ba";
+const SITE_URL = Deno.env.get("SITE_URL") || "https://zaposli.ba";
 
 interface MessageRecord {
   id: string;
