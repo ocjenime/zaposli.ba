@@ -152,7 +152,7 @@ export default function HeroSection() {
 
                 <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:rounded-[2rem] bg-gray-100 shadow-2xl shadow-gray-200/70">
                 <Image
-                  src="/images/majstor-hero.webp"
+                  src="/zaposli.ba/images/majstor-hero.webp"
                   alt="Profesionalni i ugledan majstor rješava kuhinjsku instalaciju"
                   fill
                   priority

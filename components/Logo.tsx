@@ -7,7 +7,7 @@ export function LogoMark({ className = 'h-9 w-auto' }: { className?: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/images/logo-mark.png"
+      src="/zaposli.ba/images/logo-mark.png"
       alt=""
       className={className}
       aria-hidden="true"
