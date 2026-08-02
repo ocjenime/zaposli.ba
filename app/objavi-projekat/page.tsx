@@ -35,6 +35,7 @@ function PostProjectContent() {
     description: '',
     city: '',
     address: '',
+    budgetMode: 'open',
     budgetMin: '',
     budgetMax: '',
     deadline: '',
@@ -127,6 +128,15 @@ function PostProjectContent() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleBudgetModeChange = (mode: 'open' | 'fixed') => {
+    setFormData((prev) => ({
+      ...prev,
+      budgetMode: mode,
+      budgetMin: mode === 'open' ? '' : prev.budgetMin,
+      budgetMax: mode === 'open' ? '' : prev.budgetMax,
+    }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -261,7 +271,7 @@ function PostProjectContent() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
               <button
-                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
+                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
                 className="btn-primary"
               >
                 Objavite još jedan posao
@@ -364,15 +374,39 @@ function PostProjectContent() {
                       <input type="text" name="address" value={formData.address} onChange={handleInputChange} placeholder="Ulica, broj..." className="input-field" />
                     </div>
                   </div>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (min) <span className="text-gray-400 font-normal">— opcionalno</span></label>
-                      <input type="number" name="budgetMin" value={formData.budgetMin} onChange={handleInputChange} placeholder="Minimalni budžet (KM)" className="input-field" />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-3">Imate li okvirni budžet?</label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <label className={`relative flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors ${formData.budgetMode === 'open' ? 'border-brand-orange bg-orange-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <input type="radio" name="budgetMode" value="open" checked={formData.budgetMode === 'open'} onChange={() => handleBudgetModeChange('open')} className="mt-1 h-4 w-4 text-brand-orange border-gray-300 focus:ring-brand-orange" />
+                        <div className="text-sm">
+                          <div className="font-semibold text-gray-900 flex items-center gap-2 flex-wrap">
+                            Želim da mi majstori predlože cijenu
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-brand-orange text-white">Preporučeno</span>
+                          </div>
+                          <div className="text-gray-500 mt-0.5">Povećava šansu za više ponuda</div>
+                        </div>
+                      </label>
+                      <label className={`relative flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors ${formData.budgetMode === 'fixed' ? 'border-brand-orange bg-orange-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                        <input type="radio" name="budgetMode" value="fixed" checked={formData.budgetMode === 'fixed'} onChange={() => handleBudgetModeChange('fixed')} className="mt-1 h-4 w-4 text-brand-orange border-gray-300 focus:ring-brand-orange" />
+                        <div className="text-sm">
+                          <div className="font-semibold text-gray-900">Već imam okvirni budžet</div>
+                          <div className="text-gray-500 mt-0.5">Unesite procijenjeni raspon</div>
+                        </div>
+                      </label>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (max) <span className="text-gray-400 font-normal">— opcionalno</span></label>
-                      <input type="number" name="budgetMax" value={formData.budgetMax} onChange={handleInputChange} placeholder="Maksimalni budžet (KM)" className="input-field" />
-                    </div>
+                    {formData.budgetMode === 'fixed' && (
+                      <div className="grid md:grid-cols-2 gap-6 mt-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (min)</label>
+                          <input type="number" name="budgetMin" value={formData.budgetMin} onChange={handleInputChange} placeholder="Minimalni budžet (KM)" className="input-field" />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (max)</label>
+                          <input type="number" name="budgetMax" value={formData.budgetMax} onChange={handleInputChange} placeholder="Maksimalni budžet (KM)" className="input-field" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja <span className="text-gray-400 font-normal">— opcionalno</span></label>
@@ -435,6 +469,20 @@ function PostProjectContent() {
                       <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
                         <dt className="text-gray-500 text-sm sm:text-base">Grad</dt>
                         <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">{formData.city || '-'}</dd>
+                      </div>
+                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
+                        <dt className="text-gray-500 text-sm sm:text-base">Budžet</dt>
+                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">
+                          {formData.budgetMode === 'open'
+                            ? 'Majstori predlažu cijenu'
+                            : formData.budgetMin && formData.budgetMax
+                            ? `${formData.budgetMin} – ${formData.budgetMax} KM`
+                            : formData.budgetMin
+                            ? `od ${formData.budgetMin} KM`
+                            : formData.budgetMax
+                            ? `do ${formData.budgetMax} KM`
+                            : 'Budžet po dogovoru'}
+                        </dd>
                       </div>
                     </dl>
                     {formData.description && (

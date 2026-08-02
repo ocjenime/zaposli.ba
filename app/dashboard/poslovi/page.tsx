@@ -252,12 +252,16 @@ function JobDetail() {
                 <p className="text-gray-900 text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
 
                 <div className="flex flex-wrap gap-3 text-sm mt-4">
-                  {job.budget_min != null && job.budget_max != null && (
-                    <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
-                      <DollarSign className="w-4 h-4 text-brand-orange" />
-                      {job.budget_min} – {job.budget_max} KM
-                    </span>
-                  )}
+                  <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
+                    <DollarSign className="w-4 h-4 text-brand-orange" />
+                    {job.budget_min != null && job.budget_max != null
+                      ? `${job.budget_min} – ${job.budget_max} KM`
+                      : job.budget_min != null
+                      ? `od ${job.budget_min} KM`
+                      : job.budget_max != null
+                      ? `do ${job.budget_max} KM`
+                      : 'Majstori predlažu cijenu'}
+                  </span>
                   {job.deadline && (
                     <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
                       <Calendar className="w-4 h-4 text-brand-orange" />

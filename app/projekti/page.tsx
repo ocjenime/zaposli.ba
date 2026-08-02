@@ -43,7 +43,7 @@ function formatBudget(min: number | null, max: number | null) {
   if (min && max) return `${min.toLocaleString('bs')} – ${max.toLocaleString('bs')} KM`;
   if (min) return `Od ${min.toLocaleString('bs')} KM`;
   if (max) return `Do ${max.toLocaleString('bs')} KM`;
-  return 'Budžet po dogovoru';
+  return 'Majstori predlažu cijenu';
 }
 
 function ProjectsPageContent() {
@@ -411,11 +411,9 @@ function ProjectsPageContent() {
 
                       <div className="flex flex-wrap gap-3 text-xs text-steel mb-4">
                         <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" />{job.city}</span>
-                        {(job.budget_min != null || job.budget_max != null) && (
-                          <span className="flex items-center gap-1.5 font-medium text-gray-700">
-                            <DollarSign className="w-3.5 h-3.5 text-brand-orange" />{formatBudget(job.budget_min, job.budget_max)}
-                          </span>
-                        )}
+                        <span className="flex items-center gap-1.5 font-medium text-gray-700">
+                          <DollarSign className="w-3.5 h-3.5 text-brand-orange" />{formatBudget(job.budget_min, job.budget_max)}
+                        </span>
                         {job.deadline && (
                           <span className="flex items-center gap-1.5">
                             <Calendar className="w-3.5 h-3.5 text-brand-orange" />Rok: {formatDate(job.deadline)}

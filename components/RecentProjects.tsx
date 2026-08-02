@@ -27,7 +27,7 @@ function formatBudget(min: number | null, max: number | null) {
   if (min && max) return `${min.toLocaleString('bs')}-${max.toLocaleString('bs')} KM`;
   if (min) return `Od ${min.toLocaleString('bs')} KM`;
   if (max) return `Do ${max.toLocaleString('bs')} KM`;
-  return 'Budžet po dogovoru';
+  return 'Majstori predlažu cijenu';
 }
 
 function timeAgo(dateString: string) {

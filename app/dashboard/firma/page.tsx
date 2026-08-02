@@ -92,7 +92,7 @@ function formatBudget(job: Job) {
   if (job.budget_min != null && job.budget_max != null) {
     return `${job.budget_min}–${job.budget_max} KM`;
   }
-  return null;
+  return 'Majstori predlažu cijenu';
 }
 
 function FirmDashboardContent() {

@@ -33,7 +33,7 @@ function formatBudget(min: number | null, max: number | null) {
   if (min && max) return `${min.toLocaleString("bs-BA")} – ${max.toLocaleString("bs-BA")} KM`;
   if (min) return `od ${min.toLocaleString("bs-BA")} KM`;
   if (max) return `do ${max.toLocaleString("bs-BA")} KM`;
-  return "po dogovoru";
+  return "Klijent želi da majstori predlože cijenu";
 }
 
 Deno.serve(async (req: Request) => {
