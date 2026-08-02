@@ -516,21 +516,17 @@ export default function AdminPage() {
     setSavingVerification(firm.id);
     setError('');
     setSuccess('');
-    const { data, error: err } = await supabase
-      .from('firms')
-      .update({
-        verification_status: action === 'approve' ? 'verified' : 'rejected',
-        verified: action === 'approve',
-        verification_notes: notes || null,
-      })
-      .eq('id', firm.id)
-      .select('id, verification_status, verified');
+    const { data, error: err } = await supabase.rpc('verify_firm', {
+      firm_id: firm.id,
+      action,
+      notes: notes || null,
+    });
     setSavingVerification(null);
     if (err) {
       setError(err.message);
       return;
     }
-    if (!data || data.length === 0) {
+    if (!data) {
       setError('Verifikacija nije ažurirana. Provjerite administratorska prava u bazi.');
       return;
     }

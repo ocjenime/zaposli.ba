@@ -156,6 +156,41 @@ USING (is_admin_user(auth.uid()))
 WITH CHECK (is_admin_user(auth.uid()));
 
 -- ---------------------------------------------------------------------------
+-- Admin RPC: bypass RLS for firm verification (avoids policy conflicts when
+-- admin is also the firm owner).
+-- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.verify_firm(
+  firm_id UUID,
+  action TEXT,
+  notes TEXT DEFAULT NULL
+)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET row_security = off
+AS $$
+BEGIN
+  IF NOT is_admin_user(auth.uid()) THEN
+    RAISE EXCEPTION 'Samo administrator može verifikovati firmu.';
+  END IF;
+
+  IF action NOT IN ('approve', 'reject') THEN
+    RAISE EXCEPTION 'Nepoznata akcija: %', action;
+  END IF;
+
+  UPDATE public.firms
+  SET
+    verification_status = CASE WHEN action = 'approve' THEN 'verified' ELSE 'rejected' END,
+    verified = (action = 'approve'),
+    verification_notes = notes,
+    verification_submitted_at = CASE WHEN action = 'approve' THEN verification_submitted_at ELSE verification_submitted_at END
+  WHERE id = firm_id;
+
+  RETURN FOUND;
+END;
+$$;
+
+-- ---------------------------------------------------------------------------
 -- RLS: firm owners can reply to reviews on their firms
 -- ---------------------------------------------------------------------------
 ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
