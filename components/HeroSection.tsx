@@ -41,7 +41,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative bg-white overflow-hidden">
+    <section className="relative bg-white overflow-hidden mt-16 md:mt-20">
       {/* Emergency banner */}
       {mounted && emergencyBannerVisible && (
         <div className="relative z-20 bg-[#111] text-white">
@@ -76,7 +76,7 @@ export default function HeroSection() {
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-orange-100/40 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-14 sm:pb-18 lg:pb-24">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 sm:pt-14 lg:pt-16 pb-14 sm:pb-18 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Text & form — first on mobile, second on desktop */}
           <div className="lg:col-span-6 order-1 lg:order-2 animate-fade-in">
