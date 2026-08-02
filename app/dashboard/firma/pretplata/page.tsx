@@ -18,10 +18,9 @@ import {
 } from '@/lib/subscriptions';
 import {
   ArrowLeft, Check, Crown, Loader2, AlertCircle,
-  Star, HeadphonesIcon, Briefcase, CreditCard,
-  Calendar, Building2, Banknote, Wallet, Receipt,
+  Star, HeadphonesIcon, Briefcase,
+  Calendar, Building2, Banknote, Receipt,
 } from 'lucide-react';
-import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 type BillingInterval = 'monthly' | 'yearly';
 
@@ -39,7 +38,6 @@ function FirmSubscriptionContent() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [interval, setInterval] = useState<BillingInterval>('monthly');
-  const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
   const [instructionsPlanId, setInstructionsPlanId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -132,69 +130,6 @@ function FirmSubscriptionContent() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async function startStripeCheckout(plan: Plan) {
-    if (!firmId) {
-      setError('Firma nije učitana. Osvježite stranicu.');
-      return;
-    }
-    if (!plan.payment_link_url) {
-      setError('Stripe link za ovaj paket još nije postavljen.');
-      return;
-    }
-    setProcessingPlanId(plan.id);
-    setError('');
-    setSuccess('');
-
-    try {
-      // Validate URL before using it
-      const stripeUrl = new URL(plan.payment_link_url);
-      stripeUrl.searchParams.set('client_reference_id', firmId);
-
-      // Try to record pending payment, but don't block redirect if it fails
-      const amount = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-      const { error: paymentErr } = await supabase.from('payments').insert({
-        firm_id: firmId,
-        plan_id: plan.id,
-        provider: 'stripe',
-        amount,
-        currency: 'BAM',
-        interval,
-        status: 'pending',
-      });
-      if (paymentErr) {
-        console.warn('Payment record failed (non-blocking):', paymentErr.message);
-      }
-
-      window.location.href = stripeUrl.toString();
-    } catch (err: unknown) {
-      setProcessingPlanId(null);
-      const message = err instanceof Error ? err.message : 'Nepoznata greška';
-      setError(`Greška prilikom pokretanja plaćanja: ${message}`);
-    }
-  }
-
-  async function handlePayPalApprove(plan: Plan, orderId: string) {
-    if (!firmId) return;
-    const amount = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-    try {
-      await supabase.from('payments').insert({
-        firm_id: firmId,
-        plan_id: plan.id,
-        provider: 'paypal',
-        provider_session_id: orderId,
-        amount,
-        currency: 'BAM',
-        interval,
-        status: 'completed',
-        paid_at: new Date().toISOString(),
-      });
-      setSuccess('Plaćanje je uspješno. Vaša pretplata će biti aktivirana u najkraćem roku.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } catch (err) {
-      setError('Plaćanje je obavljeno, ali došlo je do greške prilikom zapisivanja. Kontaktirajte podršku.');
-    }
-  }
-
   const isCurrent = (planId: string) => subscription?.plan_id === planId;
 
   if (authLoading || (!user && !isFirmRole(role))) {
@@ -280,15 +215,6 @@ function FirmSubscriptionContent() {
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {plans.map((plan) => {
                   const price = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-                  const isRealStripeLink = Boolean(
-                    plan.payment_link_url &&
-                      (plan.payment_link_url.startsWith('https://buy.stripe.com/') ||
-                        plan.payment_link_url.startsWith('https://donate.stripe.com/')) &&
-                      !plan.payment_link_url.includes('tvoj_link')
-                  );
-                  const hasStripe = isRealStripeLink;
-                  const hasPayPal = false; // PayPal hidden until explicitly enabled
-                  const isProcessing = processingPlanId === plan.id;
                   return (
                     <div
                       key={plan.id}
@@ -386,51 +312,6 @@ function FirmSubscriptionContent() {
                             <Banknote className="w-4 h-4" />
                             {instructionsPlanId === plan.id ? 'Sakrij uplate' : 'Keš / kartica na licu mjesta'}
                           </button>
-                          {hasPayPal && (
-                            <div className="min-h-[45px]">
-                              <PayPalScriptProvider
-                                options={{
-                                  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test',
-                                  currency: 'BAM',
-                                }}
-                              >
-                                <PayPalButtons
-                                  style={{ layout: 'vertical', height: 40, color: 'gold' }}
-                                  createOrder={(_, actions) => {
-                                    return actions.order.create({
-                                      intent: 'CAPTURE',
-                                      purchase_units: [
-                                        {
-                                          amount: {
-                                            currency_code: 'BAM',
-                                            value: price.toFixed(2),
-                                          },
-                                          description: `${plan.name} - ${interval === 'yearly' ? 'Godišnja' : 'Mjesečna'} pretplata`,
-                                        },
-                                      ],
-                                    });
-                                  }}
-                                  onApprove={async (_, actions) => {
-                                    const order = await actions.order?.capture();
-                                    if (order?.id) {
-                                      await handlePayPalApprove(plan, order.id);
-                                    }
-                                  }}
-                                  onError={() => setError('PayPal plaćanje nije uspjelo. Pokušajte ponovo.')}
-                                />
-                              </PayPalScriptProvider>
-                            </div>
-                          )}
-                          {hasStripe && (
-                            <button
-                              onClick={() => startStripeCheckout(plan)}
-                              disabled={isProcessing}
-                              className="w-full py-2.5 rounded-xl text-sm font-semibold bg-gray-900 text-[#ffffff] hover:bg-gray-800 transition-colors disabled:opacity-50 inline-flex items-center justify-center gap-2"
-                            >
-                              <CreditCard className="w-4 h-4" />
-                              {isProcessing ? 'Učitavanje...' : 'Plati karticom (Stripe)'}
-                            </button>
-                          )}
                           {instructionsPlanId === plan.id && (
                             <div className="mt-3 p-3 bg-cloud rounded-xl text-xs text-steel border border-gray-100">
                               <p className="font-medium text-gray-900 mb-1">Uplate u BiH:</p>
@@ -458,8 +339,6 @@ function FirmSubscriptionContent() {
             <ul className="space-y-1 list-disc list-inside">
               <li>Platni nalog / uplatnica na žiro račun (preporučeno)</li>
               <li>Keš ili kartica prilikom susreta (POS terminal)</li>
-              <li>PayPal (ako je konfigurisan)</li>
-              <li>Stripe kartično plaćanje — dostupno samo ako postoji pravi Stripe Payment Link</li>
             </ul>
             <p className="mt-3">
               Nakon slanja zahtjeva, admin tim će vas kontaktirati s uplatnim podacima i aktivirati
