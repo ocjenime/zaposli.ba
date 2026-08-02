@@ -3,9 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
+import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   X, Loader2, AlertCircle, Check, Building2, Globe, FileText,
-  MapPin, Phone, Mail, Upload, Star,
+  MapPin, Phone, Mail, Upload,
 } from 'lucide-react';
 
 export interface AdminFirm {
@@ -47,7 +49,6 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [verified, setVerified] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -68,7 +69,6 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
     setCity(firm.city || '');
     setPhone(firm.phone || '');
     setEmail(firm.email || '');
-    setVerified(firm.verified);
     setLogoUrl(firm.logo_url);
     setLogoPreview(firm.logo_url);
     setLogoFile(null);
@@ -91,7 +91,7 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
     setSelectedCategories((data || []).map((c: any) => c.category_slug));
   }
 
-  function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
     setError('');
     if (!file) return;
@@ -108,10 +108,25 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
       return;
     }
 
-    setLogoFile(file);
-    const reader = new FileReader();
-    reader.onload = () => setLogoPreview(reader.result as string);
-    reader.readAsDataURL(file);
+    try {
+      const compressedBlob = await resizeAndCompressImage(file, {
+        maxWidth: 512,
+        maxHeight: 512,
+        quality: 0.85,
+        type: 'image/jpeg',
+      });
+      const finalFile = blobToFile(compressedBlob, 'logo.jpg', 'image/jpeg');
+      setLogoFile(finalFile);
+
+      const reader = new FileReader();
+      reader.onload = () => setLogoPreview(reader.result as string);
+      reader.onerror = () => setError('Greška pri učitavanju pregleda logotipa.');
+      reader.readAsDataURL(finalFile);
+    } catch (err: any) {
+      setError('Greška pri kompresiji logotipa: ' + (err?.message || 'Nepoznata greška'));
+      setLogoFile(null);
+      setLogoPreview(null);
+    }
   }
 
   function removeLogo() {
@@ -169,17 +184,17 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
       let newLogoUrl = logoUrl;
 
       if (logoFile) {
-        const ext = logoFile.name.split('.').pop() || 'jpg';
-        const path = `${firm.owner_id}/${Date.now()}.${ext}`;
+        const path = `${firm.owner_id}/${Date.now()}.jpg`;
         const { error: uploadError } = await supabase.storage
           .from('firm-logos')
           .upload(path, logoFile, {
             cacheControl: '3600',
             upsert: false,
+            contentType: 'image/jpeg',
           });
 
         if (uploadError) {
-          setError('Greška pri otpremanju logotipa.');
+          setError('Greška pri otpremanju logotipa: ' + uploadError.message);
           setSaving(false);
           return;
         }
@@ -199,7 +214,6 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
           city: city.trim() || null,
           phone: phone.trim() || null,
           email: email.trim() || null,
-          verified,
           logo_url: newLogoUrl,
         })
         .eq('id', firm.id);
@@ -276,21 +290,6 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setVerified((v) => !v)}
-                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium border transition-colors ${
-                  verified
-                    ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-200 dark:border-green-800'
-                    : 'bg-cloud dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700'
-                }`}
-              >
-                {verified ? <Check className="w-4 h-4" /> : <Star className="w-4 h-4" />}
-                {verified ? 'Verifikovana firma' : 'Nije verifikovana'}
-              </button>
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Naziv firme</label>
               <div className="relative">
@@ -386,28 +385,35 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
             <div>
               <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Logotip</label>
               <p className="text-xs text-steel dark:text-gray-500 mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
-              {logoPreview ? (
-                <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
-                  <img src={logoPreview} alt={`Logotip firme ${name || ''}`} className="w-32 h-32 object-cover" />
+              <div className="relative inline-block">
+                <LogoDisplay
+                  name={name || 'Firma'}
+                  src={logoPreview}
+                  alt={`Logotip firme ${name || ''}`}
+                  size="xl"
+                  rounded="xl"
+                />
+                {logoPreview && (
                   <button
                     type="button"
                     onClick={removeLogo}
-                    className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-steel hover:text-red-500 shadow-sm"
+                    className="absolute -top-2 -right-2 p-1 bg-white border border-gray-100 rounded-full text-steel hover:text-red-500 shadow-sm"
                     aria-label="Ukloni logotip"
                   >
                     <X className="w-4 h-4" />
                   </button>
-                </div>
-              ) : (
+                )}
+              </div>
+              <div className="mt-3">
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center gap-2 px-4 py-3 bg-cloud dark:bg-gray-800 border border-gray-200 dark:border-gray-700 border-dashed rounded-xl text-sm text-steel dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-brand-orange transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-cloud dark:bg-gray-800 border border-gray-200 dark:border-gray-700 border-dashed rounded-xl text-sm text-steel dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-brand-orange transition-colors"
                 >
                   <Upload className="w-4 h-4" />
-                  Dodaj logotip
+                  {logoPreview ? 'Promijeni logotip' : 'Dodaj logotip'}
                 </button>
-              )}
+              </div>
               <input
                 ref={fileInputRef}
                 type="file"
