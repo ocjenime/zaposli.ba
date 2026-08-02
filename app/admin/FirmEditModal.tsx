@@ -388,7 +388,7 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
               <p className="text-xs text-steel dark:text-gray-500 mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
               {logoPreview ? (
                 <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800">
-                  <img src={logoPreview} alt="Logotip" className="w-32 h-32 object-cover" />
+                  <img src={logoPreview} alt={`Logotip firme ${name || ''}`} className="w-32 h-32 object-cover" />
                   <button
                     type="button"
                     onClick={removeLogo}

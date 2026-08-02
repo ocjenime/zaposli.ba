@@ -15,6 +15,8 @@ import {
   Mail,
   Info,
   Phone,
+  Bell,
+  Sun,
 } from 'lucide-react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -186,12 +188,6 @@ export default function Header() {
 
             {/* Mobile actions */}
             <div className="flex items-center lg:hidden">
-              <div className="mr-1">
-                <NotificationBell />
-              </div>
-              <div className="mr-2">
-                <ThemeToggle />
-              </div>
               <button
                 ref={mobileButtonRef}
                 type="button"
@@ -303,6 +299,27 @@ export default function Header() {
                 </Link>
               )}
             </div>
+
+            {/* Settings */}
+            {user && (
+              <div className="space-y-1 pt-4 border-t border-gray-100 dark:border-ink-700">
+                <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Postavke</p>
+                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
+                  <span className="flex items-center gap-3">
+                    <Bell className="w-5 h-5 shrink-0" />
+                    Obavještenja
+                  </span>
+                  <NotificationBell />
+                </div>
+                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
+                  <span className="flex items-center gap-3">
+                    <Sun className="w-5 h-5 shrink-0" />
+                    Tema
+                  </span>
+                  <ThemeToggle />
+                </div>
+              </div>
+            )}
 
             {/* Contact */}
             <div className="pt-4 border-t border-gray-100 dark:border-ink-700 space-y-3">

@@ -43,6 +43,7 @@ function PostProjectContent() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [notifiedCount, setNotifiedCount] = useState<number | null>(null);
   const [targetProvider, setTargetProvider] = useState<{ id: string; name: string; type: 'worker' | 'firm'; ownerId?: string } | null>(null);
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -269,6 +270,19 @@ function PostProjectContent() {
       return;
     }
 
+    // Count firms that will be notified
+    try {
+      const { data: notifyRows } = await supabase
+        .from('firm_categories')
+        .select('firms(email)')
+        .eq('category_slug', cat.slug)
+        .eq('email_enabled', true);
+      const rows = (notifyRows as unknown as Array<{ firms?: { email: string | null } }>) || [];
+      setNotifiedCount(rows.filter((row) => row.firms?.email).length);
+    } catch {
+      setNotifiedCount(null);
+    }
+
     // Upload images
     if (images.length > 0) {
       for (const file of images) {
@@ -287,8 +301,6 @@ function PostProjectContent() {
       }
     }
 
-    setSubmitting(false);
-
     // Obavijesti ciljanu firmu ako je posao zatražen s profila firme
     if (targetProvider?.type === 'firm' && targetProvider.ownerId) {
       try {
@@ -302,7 +314,8 @@ function PostProjectContent() {
       } catch {}
     }
 
-    router.push('/dashboard/');
+    setSubmitting(false);
+    setSubmitted(true);
   };
 
   if (loading || !user) return (
@@ -349,12 +362,17 @@ function PostProjectContent() {
             <h1 className="text-3xl font-extrabold text-gray-900 mb-3">Posao je objavljen!</h1>
             <p className="text-steel mb-8 leading-relaxed">
               Vaš posao <b className="text-gray-900">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
-              Prve ponude obično stižu u roku od <b className="text-gray-900">24 sata</b>.
+              {notifiedCount != null && notifiedCount > 0 && (
+                <>
+                  {' '}Obavijestili smo <b className="text-gray-900">{notifiedCount} {notifiedCount === 1 ? 'firmu' : notifiedCount < 5 ? 'firme' : 'firmi'}</b> iz kategorije.
+                </>
+              )}
+              {' '}Prve ponude obično stižu u roku od <b className="text-gray-900">24 sata</b>.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
               <button
-                onClick={() => { setSubmitted(false); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
+                onClick={() => { setSubmitted(false); setNotifiedCount(null); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
                 className="btn-primary"
               >
                 Objavite još jedan posao
@@ -516,7 +534,7 @@ function PostProjectContent() {
                       <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
                         {imagePreviews.map((preview, index) => (
                           <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
-                            <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                            <img src={preview} alt={`Pregled fotografije ${index + 1} za posao`} className="w-full h-full object-cover" />
                             <button
                               type="button"
                               onClick={() => removeImage(index)}

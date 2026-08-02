@@ -57,7 +57,7 @@ function ProjectsPageContent() {
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
   const [jobImages, setJobImages] = useState<Record<string, JobImage[]>>({});
   const [loadingImages, setLoadingImages] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<{ url: string; title: string } | null>(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
@@ -377,15 +377,32 @@ function ProjectsPageContent() {
             ) : error ? (
               <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 text-center">{error}</p>
             ) : filteredJobs.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
-                <p className="text-steel mb-2">Nema poslova koji odgovaraju filterima.</p>
-                {activeFiltersCount > 0 ? (
-                  <button onClick={clearFilters} className="text-brand-orange font-medium hover:underline">Poništi filtere</button>
-                ) : (
-                  <Link href="/objavi-projekat/" className="btn-primary">
-                    Objavi prvi posao
+              <div className="bg-white rounded-2xl border border-gray-100 p-10 md:p-14 text-center mb-12">
+                <div className="w-16 h-16 bg-cloud rounded-2xl flex items-center justify-center mx-auto mb-5">
+                  <Search className="w-8 h-8 text-brand-orange" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {activeFiltersCount > 0 ? 'Nema poslova za izabrane filtere' : 'Trenutno nema otvorenih poslova'}
+                </h3>
+                <p className="text-steel max-w-md mx-auto mb-6">
+                  {activeFiltersCount > 0
+                    ? 'Pokušajte poništiti filtere ili se vratite kasnije.'
+                    : 'Budite prvi koji će objaviti posao i primiti ponude od provjerenih firmi.'}
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  {activeFiltersCount > 0 ? (
+                    <button onClick={clearFilters} className="btn-secondary inline-flex items-center justify-center gap-2">
+                      Poništi filtere
+                    </button>
+                  ) : (
+                    <Link href="/objavi-projekat/" className="btn-primary inline-flex items-center justify-center gap-2">
+                      Objavi prvi posao <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  )}
+                  <Link href="/registracija/" className="btn-secondary inline-flex items-center justify-center gap-2">
+                    Registruj firmu <ArrowRight className="w-4 h-4" />
                   </Link>
-                )}
+                </div>
               </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-5 mb-12">
@@ -439,10 +456,10 @@ function ProjectsPageContent() {
                                 {images.map((img) => (
                                   <button
                                     key={img.id}
-                                    onClick={() => setSelectedImage(img.image_url)}
+                                    onClick={() => setSelectedImage({ url: img.image_url, title: job.title })}
                                     className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
                                   >
-                                    <img src={img.image_url} alt="Fotografija posla" className="w-full h-full object-cover" />
+                                    <img src={img.image_url} alt={`Fotografija posla: ${job.title}`} className="w-full h-full object-cover" />
                                   </button>
                                 ))}
                               </div>
@@ -507,8 +524,8 @@ function ProjectsPageContent() {
                 </button>
                 <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
                   <img
-                    src={selectedImage}
-                    alt="Uvećana fotografija posla"
+                    src={selectedImage.url}
+                    alt={`Uvećana fotografija posla: ${selectedImage.title}`}
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                     onClick={(e) => e.stopPropagation()}
                   />

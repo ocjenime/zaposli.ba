@@ -61,6 +61,10 @@ export default function Testimonials() {
       }
     }
 
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setLoading(false);
+      return;
+    }
     loadReviews();
   }, []);
 

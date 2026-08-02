@@ -327,7 +327,7 @@ function ReviewPage() {
                     <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
                       <img
                         src={imagePreview}
-                        alt="Pregled slike"
+                        alt="Pregled fotografije za recenziju"
                         className="w-full max-w-xs h-auto object-cover"
                       />
                       <button

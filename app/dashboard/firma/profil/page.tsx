@@ -545,7 +545,7 @@ export default function FirmProfileEditorPage() {
                     <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
                       <img
                         src={logoPreview}
-                        alt="Logotip"
+                        alt={`Logotip firme ${name || ''}`}
                         className="w-32 h-32 object-cover"
                       />
                       <button
@@ -608,9 +608,9 @@ export default function FirmProfileEditorPage() {
 
                   {portfolioImages.length > 0 && (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
-                      {portfolioImages.map((img) => (
+                      {portfolioImages.map((img, index) => (
                         <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200">
-                          <img src={img.image_url} alt="Portfolio" className="w-full h-full object-cover" />
+                          <img src={img.image_url} alt={`Portfolio firme ${name || ''} - fotografija ${index + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
                             onClick={() => deletePortfolioImage(img.id)}

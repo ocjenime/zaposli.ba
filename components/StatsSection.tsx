@@ -83,6 +83,10 @@ export default function StatsSection() {
       }
     }
 
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setLoading(false);
+      return;
+    }
     loadStats();
   }, []);
 

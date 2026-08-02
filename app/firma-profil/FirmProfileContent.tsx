@@ -289,7 +289,7 @@ export default function FirmProfileContent() {
                         >
                           <img
                             src={url}
-                            alt={`Portfolio ${index + 1}`}
+                            alt={`Portfolio firme ${firm.name} - fotografija ${index + 1}`}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                           />
                         </button>
@@ -424,7 +424,7 @@ export default function FirmProfileContent() {
             <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
               <img
                 src={selectedPortfolioImage}
-                alt="Portfolio uvećano"
+                alt={`Uvećana fotografija portfolioa firme ${firm.name}`}
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               />
