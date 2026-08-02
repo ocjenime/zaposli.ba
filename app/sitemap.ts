@@ -7,7 +7,7 @@ export const dynamic = 'force-static';
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticPages = [
+  const staticPages: MetadataRoute.Sitemap = [
     '', '/kategorije', '/projekti', '/kako-radi', '/za-firme', '/savjeti',
     '/faq', '/kontakt', '/o-nama', '/objavi-projekat', '/prijava', '/registracija',
     '/uslovi-koristenja', '/privacy', '/gradovi', '/izdvojeni-majstori',
@@ -17,6 +17,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'weekly' as const,
     priority: path === '' ? 1 : 0.8,
   }));
+
+  // Add OG cover image to the home page entry
+  staticPages[0].images = [`${site.url}/images/og-cover.webp`];
 
   const cityPages = cities.map((city) => ({
     url: `${site.url}/gradovi/${city.slug}/`,
@@ -29,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${site.url}/kategorije/${c.slug}/`,
     lastModified: now,
     changeFrequency: 'weekly' as const,
-    priority: 0.8,
+    priority: 0.7,
   }));
 
   const servicePages = categories.filter((c) => !c.noSeo).flatMap((c) =>
@@ -37,7 +40,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/usluge/${c.seoSlug}-${city.slug}/`,
       lastModified: now,
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.6,
     }))
   );
 

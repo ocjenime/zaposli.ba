@@ -5,17 +5,9 @@ import Link from 'next/link';
 import { Bell, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
-import { isFirmRole } from '@/lib/roles';
-
-interface Notification {
-  id: string;
-  type: string;
-  title: string;
-  message: string;
-  read: boolean;
-  job_id: string | null;
-  created_at: string;
-}
+import { showToast } from '@/components/ToastProvider';
+import { getNotificationHref } from '@/lib/notifications';
+import type { Notification } from '@/lib/types';
 
 export default function NotificationBell() {
   const { user, role } = useAuth();
@@ -69,6 +61,8 @@ export default function NotificationBell() {
             const n = payload.new as Notification;
             setNotifications((prev) => [n, ...prev].slice(0, 20));
             setUnreadCount((c) => c + 1);
+            const href = getNotificationHref(n, role);
+            showToast(n.title, n.message, href);
           }
         )
         .on(
@@ -176,13 +170,7 @@ export default function NotificationBell() {
               <p className="text-sm text-steel text-center py-6">Nema obavještenja.</p>
             ) : (
               notifications.map((n) => {
-                const getHref = () => {
-                  if (!n.job_id) return undefined;
-                  if (n.type === 'bid_accepted') return `/dashboard/razgovor/?job_id=${n.job_id}`;
-                  if (n.type === 'new_job' && isFirmRole(role)) return `/dashboard/firma/?expandJobId=${n.job_id}`;
-                  return `/dashboard/poslovi/?id=${n.job_id}`;
-                };
-                const href = getHref();
+                const href = getNotificationHref(n, role);
 
                 const content = (
                   <div className="px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50">
@@ -217,6 +205,15 @@ export default function NotificationBell() {
                 );
               })
             )}
+          </div>
+          <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 px-4 py-2.5">
+            <Link
+              href="/dashboard/notifications/"
+              onClick={() => setOpen(false)}
+              className="text-xs font-medium text-brand-orange hover:text-brand-orange-dark transition-colors"
+            >
+              Prikaži sve obavještenja
+            </Link>
           </div>
         </div>
       )}

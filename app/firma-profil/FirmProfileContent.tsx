@@ -8,7 +8,10 @@ import Footer from '@/components/Footer';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
+import { site } from '@/lib/site';
+import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
 import {
   MapPin,
   Star,
@@ -26,15 +29,21 @@ interface ReviewerProfile {
 
 interface ReviewRow {
   id: string;
+  firm_id: string;
+  client_id: string;
   rating: number;
   comment: string | null;
   image_url: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  reply: string | null;
+  replied_at: string | null;
   created_at: string;
   profiles: ReviewerProfile | null;
 }
 
 interface FirmRow {
   id: string;
+  owner_id: string;
   name: string;
   slug: string;
   description: string | null;
@@ -43,6 +52,8 @@ interface FirmRow {
   city: string | null;
   logo_url: string | null;
   verified: boolean;
+  verification_status: 'unverified' | 'pending' | 'verified' | 'rejected';
+  verification_notes: string | null;
   average_rating: number | null;
   review_count: number | null;
   created_at: string;
@@ -55,12 +66,14 @@ interface FirmCategoryRow {
 export default function FirmProfileContent() {
   const searchParams = useSearchParams();
   const slug = searchParams.get('slug') || '';
+  const { user } = useAuth();
 
   const [firm, setFirm] = useState<FirmRow | null>(null);
   const [reviews, setReviews] = useState<ReviewRow[]>([]);
   const [firmCategories, setFirmCategories] = useState<FirmCategoryRow[]>([]);
   const [portfolioImages, setPortfolioImages] = useState<string[]>([]);
   const [selectedPortfolioImage, setSelectedPortfolioImage] = useState<string | null>(null);
+  const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -81,7 +94,7 @@ export default function FirmProfileContent() {
       const { data, error: firmError } = await supabase
         .from('firms')
         .select(
-          'id, name, slug, description, email, phone, city, logo_url, verified, average_rating, review_count, created_at, reviews(id, rating, comment, image_url, created_at, profiles(full_name))'
+          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
         )
         .eq('slug', slug)
         .single();
@@ -94,7 +107,7 @@ export default function FirmProfileContent() {
 
       const typedFirm = data as unknown as FirmRow & { reviews: ReviewRow[] };
       setFirm(typedFirm);
-      setReviews(typedFirm.reviews || []);
+      setReviews((typedFirm.reviews || []).filter((r) => r.status === 'approved'));
 
       const { data: catData } = await supabase
         .from('firm_categories')
@@ -109,6 +122,13 @@ export default function FirmProfileContent() {
         .eq('firm_id', typedFirm.id)
         .order('created_at', { ascending: true });
       setPortfolioImages((portfolioData || []).map((row: { image_url: string }) => row.image_url));
+
+      const { data: premiumData } = await supabase
+        .from('public_firm_premium')
+        .select('firm_id')
+        .eq('firm_id', typedFirm.id)
+        .maybeSingle();
+      setIsPremium(!!premiumData);
     } catch (err) {
       setError('Došlo je do greške pri učitavanju profila.');
     } finally {
@@ -124,12 +144,90 @@ export default function FirmProfileContent() {
     });
   }
 
+  function ReviewReplyForm({
+    reviewId,
+    onReply,
+  }: {
+    reviewId: string;
+    onReply: (id: string, reply: string) => void;
+  }) {
+    const [text, setText] = useState('');
+    const [submitting, setSubmitting] = useState(false);
+    const [replyError, setReplyError] = useState('');
+
+    async function submitReply(e: React.FormEvent) {
+      e.preventDefault();
+      if (!text.trim()) return;
+      setSubmitting(true);
+      setReplyError('');
+      const trimmed = text.trim();
+      const { error } = await supabase
+        .from('reviews')
+        .update({ reply: trimmed })
+        .eq('id', reviewId);
+      if (error) {
+        setReplyError('Greška pri spremanju odgovora. Pokušajte ponovo.');
+      } else {
+        onReply(reviewId, trimmed);
+      }
+      setSubmitting(false);
+    }
+
+    return (
+      <form onSubmit={submitReply} className="mt-4">
+        <label htmlFor={`reply-${reviewId}`} className="sr-only">
+          Vaš odgovor na recenziju
+        </label>
+        <textarea
+          id={`reply-${reviewId}`}
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          rows={3}
+          maxLength={1000}
+          placeholder="Napišite odgovor na ovu recenziju..."
+          className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+        />
+        <div className="flex items-center justify-between mt-2">
+          <span className="text-xs text-steel">{text.length}/1000</span>
+          <button
+            type="submit"
+            disabled={submitting || !text.trim()}
+            className="bg-ink text-[#ffffff] px-4 py-2 rounded-lg text-sm font-semibold hover:bg-ink-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {submitting ? 'Spremanje...' : 'Odgovori'}
+          </button>
+        </div>
+        {replyError && (
+          <p className="text-xs text-red-600 mt-2">{replyError}</p>
+        )}
+      </form>
+    );
+  }
+
   const categoryNames = firmCategories
     .map((c) => getCategory(c.category_slug)?.name)
     .filter(Boolean) as string[];
 
   const rating = firm?.average_rating || 0;
   const reviewCount = firm?.review_count || 0;
+  const isFirmOwner = !!user && firm?.owner_id === user.id;
+  const primaryCategory = firmCategories[0]
+    ? getCategory(firmCategories[0].category_slug)
+    : null;
+
+  const histogram = [5, 4, 3, 2, 1].map((star) => ({
+    star,
+    count: reviews.filter((r) => r.rating === star).length,
+  }));
+  const maxHistogramCount = Math.max(1, ...histogram.map((h) => h.count));
+
+  function handleReviewReply(reviewId: string, reply: string) {
+    setReviews((prev) =>
+      prev.map((r) =>
+        r.id === reviewId ? { ...r, reply, replied_at: new Date().toISOString() } : r
+      )
+    );
+  }
 
   if (loading) {
     return (
@@ -186,6 +284,20 @@ export default function FirmProfileContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <JsonLd
+        data={localBusinessSchema({
+          name: firm.name,
+          specialty: categoryNames.length > 0 ? categoryNames.join(', ') : 'Razne usluge',
+          location: firm.city || 'BiH',
+          rating,
+          reviews: reviewCount,
+          url: `/firma-profil/?slug=${firm.slug}`,
+          image: firm.logo_url || `${site.url}/images/logo-mark.png`,
+          telephone: firm.phone,
+          email: firm.email,
+          priceRange: primaryCategory?.priceRange || undefined,
+        })}
+      />
       <main className="flex-grow">
         <Breadcrumbs
           items={[
@@ -213,7 +325,31 @@ export default function FirmProfileContent() {
                   <h1 className="text-2xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
                     {firm.name}
                   </h1>
-                  {firm.verified && <VerifiedBadge />}
+                  {firm.verified && (
+                    <span
+                      title="Ova firma je lično provjerena od strane Zaposli.ba tima."
+                      className="cursor-help"
+                    >
+                      <VerifiedBadge />
+                    </span>
+                  )}
+                  {isPremium && (
+                    <span
+                      className="inline-flex items-center gap-1.5 rounded-full font-bold text-[11px] px-2.5 py-1 border border-purple-200/50 bg-gradient-to-r from-purple-50 to-fuchsia-50 text-purple-700"
+                      title="Aktivna premium pretplata sa istaknutim profilom."
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6L12 2z" fill="url(#premium-gradient)" stroke="currentColor" strokeWidth="0.5" />
+                        <defs>
+                          <linearGradient id="premium-gradient" x1="0" y1="0" x2="24" y2="24">
+                            <stop offset="0%" stopColor="#a855f7" />
+                            <stop offset="100%" stopColor="#c026d3" />
+                          </linearGradient>
+                        </defs>
+                      </svg>
+                      Premium partner
+                    </span>
+                  )}
                 </div>
                 <p className="text-steel mb-3">
                   {categoryNames.length > 0 ? categoryNames.join(', ') : 'Razne usluge'}
@@ -304,54 +440,104 @@ export default function FirmProfileContent() {
                     <p className="text-steel">Još nema recenzija za ovu firmu.</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {reviews.map((review) => (
-                      <div key={review.id} className="bg-cloud rounded-2xl p-5 border border-gray-100">
-                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs">
-                              {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                              <div className="font-semibold text-gray-900 text-sm">
-                                {review.profiles?.full_name || 'Klijent'}
-                              </div>
-                              <div className="text-xs text-steel">{formatDate(review.created_at)}</div>
-                            </div>
-                          </div>
-                          <div className="flex gap-0.5 shrink-0">
+                  <>
+                    <div className="bg-cloud rounded-2xl p-5 border border-gray-100 mb-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+                        <div className="text-center sm:text-left">
+                          <div className="text-4xl font-extrabold text-gray-900">{rating.toFixed(1)}</div>
+                          <div className="flex gap-0.5 justify-center sm:justify-start my-1">
                             {[...Array(5)].map((_, i) => (
                               <Star
                                 key={i}
                                 className={`w-4 h-4 ${
-                                  i < review.rating
-                                    ? 'text-brand-orange fill-brand-orange'
-                                    : 'text-mist'
+                                  i < Math.round(rating) ? 'text-brand-orange fill-brand-orange' : 'text-mist'
                                 }`}
                               />
                             ))}
                           </div>
+                          <div className="text-xs text-steel">{reviewCount} recenzija</div>
                         </div>
-                        {review.comment && (
-                          <div className="flex gap-2 mb-3">
-                            <Quote className="w-4 h-4 text-primary-200 shrink-0 mt-0.5" />
-                            <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
-                          </div>
-                        )}
-                        {review.image_url && (
-                          <a
-                            href={review.image_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 text-sm text-brand-orange hover:underline"
-                          >
-                            <ImageIcon className="w-4 h-4" />
-                            Pogledaj sliku
-                          </a>
-                        )}
+                        <div className="flex-1 space-y-2">
+                          {histogram.map(({ star, count }) => (
+                            <div key={star} className="flex items-center gap-3 text-sm">
+                              <span className="w-4 font-semibold text-gray-900">{star}</span>
+                              <Star className="w-3 h-3 text-brand-orange fill-brand-orange" />
+                              <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-brand-orange rounded-full"
+                                  style={{ width: `${(count / maxHistogramCount) * 100}%` }}
+                                />
+                              </div>
+                              <span className="w-8 text-right text-steel text-xs">{count}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      {reviews.map((review) => (
+                        <div key={review.id} className="bg-cloud rounded-2xl p-5 border border-gray-100">
+                          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs">
+                                {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}
+                              </div>
+                              <div>
+                                <div className="font-semibold text-gray-900 text-sm">
+                                  {review.profiles?.full_name || 'Klijent'}
+                                </div>
+                                <div className="text-xs text-steel">{formatDate(review.created_at)}</div>
+                              </div>
+                            </div>
+                            <div className="flex gap-0.5 shrink-0">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`w-4 h-4 ${
+                                    i < review.rating
+                                      ? 'text-brand-orange fill-brand-orange'
+                                      : 'text-mist'
+                                  }`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          {review.comment && (
+                            <div className="flex gap-2 mb-3">
+                              <Quote className="w-4 h-4 text-primary-200 shrink-0 mt-0.5" />
+                              <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
+                            </div>
+                          )}
+                          {review.image_url && (
+                            <a
+                              href={review.image_url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 text-sm text-brand-orange hover:underline"
+                            >
+                              <ImageIcon className="w-4 h-4" />
+                              Pogledaj sliku
+                            </a>
+                          )}
+                          {review.reply && (
+                            <div className="mt-4 bg-white rounded-xl p-4 border border-gray-100">
+                              <div className="text-xs font-semibold text-gray-900 mb-1">
+                                Odgovor firme
+                                {review.replied_at && (
+                                  <span className="font-normal text-steel ml-2">{formatDate(review.replied_at)}</span>
+                                )}
+                              </div>
+                              <p className="text-steel text-sm leading-relaxed">{review.reply}</p>
+                            </div>
+                          )}
+                          {isFirmOwner && !review.reply && (
+                            <ReviewReplyForm reviewId={review.id} onReply={handleReviewReply} />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
 
@@ -389,8 +575,12 @@ export default function FirmProfileContent() {
                     )}
                     <div className="flex justify-between items-center">
                       <span className="text-[#ffffff]/60 text-sm">Status</span>
-                      {firm.verified ? (
+                      {firm.verification_status === 'verified' ? (
                         <VerifiedBadge size="sm" />
+                      ) : firm.verification_status === 'pending' ? (
+                        <span className="text-sm text-accent-400">Na čekanju</span>
+                      ) : firm.verification_status === 'rejected' ? (
+                        <span className="text-sm text-red-400">Odbijeno</span>
                       ) : (
                         <span className="text-sm text-[#ffffff]/70">U provjeri</span>
                       )}

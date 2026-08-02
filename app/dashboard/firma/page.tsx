@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import DashboardHeader from '@/components/ui/DashboardHeader';
 import DashboardStat from '@/components/ui/DashboardStat';
 import EmptyState from '@/components/ui/EmptyState';
+import FeaturedBadge from '@/components/FeaturedBadge';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
@@ -53,6 +54,8 @@ interface Job {
   budget_max: number | null;
   deadline: string | null;
   image_count?: number;
+  is_featured: boolean | null;
+  featured_until: string | null;
 }
 
 interface Bid {
@@ -184,6 +187,11 @@ function FirmDashboardContent() {
     }
   }
 
+  function isActiveFeatured(job: Job) {
+    if (!job.is_featured || !job.featured_until) return false;
+    return new Date(job.featured_until).getTime() > Date.now();
+  }
+
   async function fetchOpenJobs() {
     setLoadingJobs(true);
     const { data, error: err } = await supabase
@@ -199,18 +207,24 @@ function FirmDashboardContent() {
     }
 
     const jobs = (data as Job[]) || [];
-    if (jobs.length > 0) {
+    const sortedJobs = jobs.sort((a, b) => {
+      const aFeatured = isActiveFeatured(a) ? 1 : 0;
+      const bFeatured = isActiveFeatured(b) ? 1 : 0;
+      if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
+    if (sortedJobs.length > 0) {
       const { data: imagesData } = await supabase
         .from('job_images')
         .select('job_id')
-        .in('job_id', jobs.map((j) => j.id));
+        .in('job_id', sortedJobs.map((j) => j.id));
       const counts: Record<string, number> = {};
       (imagesData || []).forEach((row: { job_id: string }) => {
         counts[row.job_id] = (counts[row.job_id] || 0) + 1;
       });
-      setOpenJobs(jobs.map((j) => ({ ...j, image_count: counts[j.id] || 0 })));
+      setOpenJobs(sortedJobs.map((j) => ({ ...j, image_count: counts[j.id] || 0 })));
     } else {
-      setOpenJobs(jobs);
+      setOpenJobs(sortedJobs);
     }
     setLoadingJobs(false);
   }
@@ -491,9 +505,12 @@ function FirmDashboardContent() {
                                   <Briefcase className="w-6 h-6" />
                                 </div>
                                 <div>
-                                  <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1">
-                                    {job.title}
-                                  </h3>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+                                      {job.title}
+                                    </h3>
+                                    {isActiveFeatured(job) && <FeaturedBadge />}
+                                  </div>
                                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-steel">
                                     <span className="inline-flex items-center gap-1">
                                       <MapPin className="w-3.5 h-3.5" />

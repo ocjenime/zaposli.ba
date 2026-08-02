@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Clock, ArrowRight, TrendingUp } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, TrendingUp, Sparkles } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
+import FeaturedBadge from './FeaturedBadge';
 
 interface Job {
   id: string;
@@ -18,6 +19,13 @@ interface Job {
   budget_max: number | null;
   bids_count: number;
   created_at: string;
+  is_featured: boolean | null;
+  featured_until: string | null;
+}
+
+function isActiveFeatured(job: Job) {
+  if (!job.is_featured || !job.featured_until) return false;
+  return new Date(job.featured_until).getTime() > Date.now();
 }
 
 function getCategoryName(slug: string) {
@@ -56,10 +64,10 @@ export default function RecentProjects() {
       try {
         const { data, error } = await supabase
           .from('jobs')
-          .select('id, title, category_slug, description, city, deadline, budget_mode, budget_min, budget_max, bids_count, created_at')
+          .select('id, title, category_slug, description, city, deadline, budget_mode, budget_min, budget_max, bids_count, created_at, is_featured, featured_until')
           .eq('status', 'open')
           .order('created_at', { ascending: false })
-          .limit(4);
+          .limit(8);
 
         if (error || !data || data.length === 0) return;
         setProjects(data as Job[]);
@@ -74,6 +82,10 @@ export default function RecentProjects() {
   }, []);
 
   if (!loading && projects.length === 0) return null;
+
+  const featured = projects.filter(isActiveFeatured);
+  const normal = projects.filter((p) => !isActiveFeatured(p));
+  const showFeatured = featured.length > 0;
 
   return (
     <section className="py-8 md:py-14 bg-cloud relative overflow-hidden">
@@ -97,6 +109,26 @@ export default function RecentProjects() {
           </Link>
         </div>
 
+        {showFeatured && !loading && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <h3 className="text-lg font-bold text-gray-900">Istaknuti poslovi</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-5">
+              {featured.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {(showFeatured || loading) && (
+          <div className="flex items-center gap-2 mb-4">
+            <h3 className="text-lg font-bold text-gray-900">{showFeatured ? 'Najnovije' : 'Najnoviji poslovi'}</h3>
+          </div>
+        )}
+
         <div className="grid md:grid-cols-2 gap-5">
           {loading ? (
             Array.from({ length: 4 }).map((_, i) => (
@@ -119,51 +151,59 @@ export default function RecentProjects() {
               </div>
             ))
           ) : (
-            projects.map((project) => (
-            <Link
-              key={project.id}
-              href={`/projekti/?expandId=${project.id}`}
-              className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
-            >
-              <div className="flex justify-between items-start mb-3">
-                <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
-                  {getCategoryName(project.category_slug)}
-                </span>
-                <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
-                  {timeAgo(project.created_at)}
-                </span>
-              </div>
-
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
-                {project.title}
-              </h3>
-
-              <p className="text-steel text-sm mb-4 line-clamp-2">{project.description}</p>
-
-              <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-4">
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>{project.city}</span>
-                </div>
-                {project.deadline && (
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>Do {new Date(project.deadline).toLocaleDateString('bs')}</span>
-                  </div>
-                )}
-              </div>
-
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
-                <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
-                  <span>{project.bids_count} ponuda</span>
-                </div>
-              </div>
-            </Link>
-          ))
+            normal.slice(0, 4).map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))
           )}
         </div>
       </div>
     </section>
+  );
+}
+
+function ProjectCard({ project }: { project: Job }) {
+  return (
+    <Link
+      href={`/projekti/?expandId=${project.id}`}
+      className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
+    >
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
+            {getCategoryName(project.category_slug)}
+          </span>
+          {isActiveFeatured(project) && <FeaturedBadge />}
+        </div>
+        <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+          {timeAgo(project.created_at)}
+        </span>
+      </div>
+
+      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
+        {project.title}
+      </h3>
+
+      <p className="text-steel text-sm mb-4 line-clamp-2">{project.description}</p>
+
+      <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-4">
+        <div className="flex items-center gap-1.5">
+          <MapPin className="w-3.5 h-3.5" />
+          <span>{project.city}</span>
+        </div>
+        {project.deadline && (
+          <div className="flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5" />
+            <span>Do {new Date(project.deadline).toLocaleDateString('bs')}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+        <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
+        <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
+          <span>{project.bids_count} ponuda</span>
+        </div>
+      </div>
+    </Link>
   );
 }

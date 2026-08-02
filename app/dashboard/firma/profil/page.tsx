@@ -37,6 +37,9 @@ interface FirmRow {
   city: string | null;
   logo_url: string | null;
   verified: boolean;
+  verification_status: 'unverified' | 'pending' | 'verified' | 'rejected';
+  verification_submitted_at: string | null;
+  verification_notes: string | null;
 }
 
 interface FirmCategoryRow {
@@ -76,6 +79,8 @@ export default function FirmProfileEditorPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [verificationLoading, setVerificationLoading] = useState(false);
+  const [verificationMessage, setVerificationMessage] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const portfolioInputRef = useRef<HTMLInputElement>(null);
@@ -101,7 +106,7 @@ export default function FirmProfileEditorPage() {
     try {
       const { data, error: firmError } = await supabase
         .from('firms')
-        .select('id, owner_id, name, slug, description, email, phone, city, logo_url, verified')
+        .select('id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_submitted_at, verification_notes')
         .eq('owner_id', user.id)
         .single();
 
@@ -262,6 +267,36 @@ export default function FirmProfileEditorPage() {
       ...prev,
       [slug]: { ...(prev[slug] || { notify: true }), email },
     }));
+  }
+
+  async function requestVerification() {
+    if (!firm) return;
+    setVerificationLoading(true);
+    setVerificationMessage('');
+    setError('');
+    try {
+      const { error: updateError } = await supabase
+        .from('firms')
+        .update({
+          verification_status: 'pending',
+          verification_submitted_at: new Date().toISOString(),
+        })
+        .eq('id', firm.id);
+      if (updateError) {
+        setVerificationMessage('Zahtjev za verifikaciju nije uspio. Pokušajte ponovo.');
+      } else {
+        setFirm({
+          ...firm,
+          verification_status: 'pending',
+          verification_submitted_at: new Date().toISOString(),
+        });
+        setVerificationMessage('Zahtjev za verifikaciju poslan. Hvala!');
+      }
+    } catch (err) {
+      setVerificationMessage('Došlo je do greške. Pokušajte ponovo.');
+    } finally {
+      setVerificationLoading(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {

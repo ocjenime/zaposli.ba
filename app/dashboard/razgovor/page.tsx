@@ -13,6 +13,7 @@ import { ArrowLeft, MapPin, Send, Loader2 } from 'lucide-react';
 interface Profile {
   id: string;
   full_name: string | null;
+  is_admin?: boolean | null;
 }
 
 interface Message {
@@ -74,8 +75,16 @@ function Conversation() {
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'messages', filter: `job_id=eq.${jobId}` },
-        (payload) => {
+        async (payload) => {
           const newMessage = payload.new as Message;
+          if (newMessage.sender_id && newMessage.sender_id !== user?.id) {
+            const { data: senderProfile } = await supabase
+              .from('profiles')
+              .select('id, full_name, is_admin')
+              .eq('id', newMessage.sender_id)
+              .single();
+            newMessage.sender = senderProfile as Profile | undefined;
+          }
           setMessages((prev) => {
             if (prev.some((m) => m.id === newMessage.id)) return prev;
             return [...prev, newMessage];
@@ -185,7 +194,7 @@ function Conversation() {
 
     const { data: messagesData, error: messagesErr } = await supabase
       .from('messages')
-      .select('*')
+      .select('*, sender:profiles!sender_id(id, full_name, is_admin)')
       .eq('job_id', jobId)
       .order('created_at', { ascending: true });
 
@@ -207,6 +216,13 @@ function Conversation() {
       .eq('job_id', jobId)
       .neq('sender_id', user.id)
       .eq('read', false);
+  }
+
+  function getSenderLabel(msg: Message, isMe: boolean) {
+    if (isMe) return isAdmin ? 'Vi (admin)' : 'Vi';
+    if (msg.sender?.is_admin) return 'Administrator';
+    if (isAdmin) return msg.sender_id === job?.client_id ? 'Klijent' : 'Firma';
+    return role === 'client' ? 'Firma' : 'Klijent';
   }
 
   async function sendMessage(e: React.FormEvent) {
@@ -249,6 +265,12 @@ function Conversation() {
           </Link>
 
           {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{error}</p>}
+
+          {isAdmin && (
+            <div className="bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-xl px-4 py-3 mb-3 text-sm font-medium">
+              Pregled administratora — možete slati poruke u ovaj razgovor
+            </div>
+          )}
 
           {loadingData ? (
             <div className="flex-grow flex items-center justify-center text-steel">
@@ -297,13 +319,7 @@ function Conversation() {
                               }`}
                             >
                               <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
-                                {isMe
-                                  ? 'Vi'
-                                  : isAdmin
-                                  ? (msg.sender_id === job?.client_id ? 'Klijent' : 'Firma')
-                                  : role === 'client'
-                                  ? 'Firma'
-                                  : 'Klijent'}
+                                {getSenderLabel(msg, isMe)}
                               </p>
                               <p>{msg.content}</p>
                               <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
@@ -319,25 +335,23 @@ function Conversation() {
                 )}
               </div>
 
-              {!isAdmin && (
-                <form onSubmit={sendMessage} className="mt-3 flex gap-2">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Napišite poruku..."
-                    className="input-field flex-grow"
-                    disabled={sending}
-                  />
-                  <button
-                    type="submit"
-                    disabled={!input.trim() || sending}
-                    className="btn-primary px-4 disabled:opacity-50 inline-flex items-center gap-2"
-                  >
-                    {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                  </button>
-                </form>
-              )}
+              <form onSubmit={sendMessage} className="mt-3 flex gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  placeholder="Napišite poruku..."
+                  className="input-field flex-grow"
+                  disabled={sending}
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || sending}
+                  className="btn-primary px-4 disabled:opacity-50 inline-flex items-center gap-2"
+                >
+                  {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                </button>
+              </form>
             </>
           )}
         </div>

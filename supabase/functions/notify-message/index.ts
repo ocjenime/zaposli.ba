@@ -35,6 +35,7 @@ interface Profile {
   id: string;
   email: string | null;
   full_name: string | null;
+  is_admin?: boolean | null;
 }
 
 Deno.serve(async (req: Request) => {
@@ -89,51 +90,82 @@ Deno.serve(async (req: Request) => {
   const firmOwnerId = bid?.firms?.owner_id;
   const firmName = bid?.firms?.name || "Firma";
 
-  let recipientId: string | null = null;
-  let senderLabel = "Korisnik";
-  let recipientLabel = "vas";
-
-  if (message.sender_id === job.client_id) {
-    recipientId = firmOwnerId ?? null;
-    senderLabel = "Klijent";
-    recipientLabel = "firmi";
-  } else if (message.sender_id === firmOwnerId) {
-    recipientId = job.client_id;
-    senderLabel = "Firma";
-    recipientLabel = "klijentu";
-  }
-
-  if (!recipientId) {
-    return new Response(JSON.stringify({ message: "No recipient" }), { status: 200 });
-  }
-
-  const { data: recipient } = await supabase
+  const { data: senderData } = await supabase
     .from("profiles")
-    .select("id, email, full_name")
-    .eq("id", recipientId)
+    .select("id, email, full_name, is_admin")
+    .eq("id", message.sender_id)
     .single();
 
-  if (!recipient || !recipient.email) {
-    return new Response(JSON.stringify({ message: "No recipient email" }), { status: 200 });
+  const senderProfile = senderData as Profile | null;
+  const isAdminSender = senderProfile?.is_admin ?? false;
+
+  const recipients: Profile[] = [];
+  let senderLabel = "Korisnik";
+  let subject = `Nova poruka za ${job.title} — Zaposli.ba`;
+  let htmlBody = "";
+
+  if (isAdminSender) {
+    senderLabel = "Administrator";
+    subject = `Administrator se uključio u razgovor: ${job.title}`;
+
+    const [{ data: clientProfile }, { data: ownerProfile }] = await Promise.all([
+      supabase.from("profiles").select("id, email, full_name").eq("id", job.client_id).single(),
+      firmOwnerId
+        ? supabase.from("profiles").select("id, email, full_name").eq("id", firmOwnerId).single()
+        : Promise.resolve({ data: null }),
+    ]);
+
+    if (clientProfile) recipients.push(clientProfile as Profile);
+    if (ownerProfile) recipients.push(ownerProfile as Profile);
+
+    htmlBody = `<p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px;">
+      Administrator se uključio u razgovor za posao <strong>${job.title}</strong> (${job.city}).
+    </p>`;
+  } else {
+    let recipientId: string | null = null;
+    let recipientLabel = "vas";
+
+    if (message.sender_id === job.client_id) {
+      recipientId = firmOwnerId ?? null;
+      senderLabel = "Klijent";
+      recipientLabel = "firmi";
+    } else if (message.sender_id === firmOwnerId) {
+      recipientId = job.client_id;
+      senderLabel = "Firma";
+      recipientLabel = "klijentu";
+    }
+
+    if (recipientId) {
+      const { data: recipient } = await supabase
+        .from("profiles")
+        .select("id, email, full_name")
+        .eq("id", recipientId)
+        .single();
+
+      if (recipient) recipients.push(recipient as Profile);
+    }
+
+    htmlBody = `<p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px;">
+      ${senderLabel} vam je poslao poruku u vezi posla <strong>${job.title}</strong> (${job.city}).
+    </p>`;
   }
 
-  const profile = recipient as Profile;
+  if (recipients.length === 0) {
+    return new Response(JSON.stringify({ message: "No recipient" }), { status: 200 });
+  }
 
   if (!RESEND_API_KEY) {
     return new Response(JSON.stringify({ message: "No Resend key configured" }), { status: 200 });
   }
 
   const conversationUrl = `${SITE_URL}/dashboard/razgovor/?job_id=${job.id}`;
-  const subject = `Nova poruka za ${job.title} — Zaposli.ba`;
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">
       <div style="margin-bottom: 24px;">
         <strong style="font-size: 20px; color: #f97316;">Zaposli.ba</strong>
       </div>
-      <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">Nova poruka</h1>
-      <p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px;">
-        ${senderLabel} vam je poslao poruku u vezi posla <strong>${job.title}</strong> (${job.city}).
-      </p>
+      <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">${isAdminSender ? "Administrator se uključio" : "Nova poruka"}</h1>
+      ${htmlBody}
       <div style="background: #f8f8fb; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
         <p style="margin: 0; font-size: 16px; color: #1f1f1f; line-height: 1.5;">${message.content.replace(/\n/g, "<br>")}</p>
       </div>
@@ -144,29 +176,42 @@ Deno.serve(async (req: Request) => {
     </div>
   `;
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: FROM_EMAIL,
-        to: profile.email,
-        subject,
-        html,
-      }),
-    });
+  const sentTo: string[] = [];
+  let lastError: string | null = null;
 
-    if (!res.ok) {
-      const body = await res.text();
-      throw new Error(body);
+  for (const profile of recipients) {
+    if (!profile.email) continue;
+
+    try {
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: profile.email,
+          subject,
+          html,
+        }),
+      });
+
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error(body);
+      }
+
+      sentTo.push(profile.email);
+    } catch (err) {
+      console.error(`Email to ${profile.email} failed:`, err);
+      lastError = String(err);
     }
-
-    return new Response(JSON.stringify({ message: "Sent" }), { status: 200 });
-  } catch (err) {
-    console.error("Email failed:", err);
-    return new Response(JSON.stringify({ message: "Email failed", error: String(err) }), { status: 500 });
   }
+
+  if (sentTo.length === 0) {
+    return new Response(JSON.stringify({ message: "Email failed", error: lastError }), { status: 500 });
+  }
+
+  return new Response(JSON.stringify({ message: "Sent", recipients: sentTo }), { status: 200 });
 });

@@ -11,10 +11,12 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import FeaturedBadge from '@/components/FeaturedBadge';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory, categories } from '@/lib/data';
+import { JsonLd, jobListSchema } from '@/lib/jsonld';
 
 interface Job {
   id: string;
@@ -30,6 +32,8 @@ interface Job {
   budget_max: number | null;
   deadline: string | null;
   bids_count: number;
+  is_featured: boolean | null;
+  featured_until: string | null;
 }
 
 interface JobImage {
@@ -63,7 +67,7 @@ function ProjectsPageContent() {
   const [cityFilter, setCityFilter] = useState('');
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
-  const [sortBy, setSortBy] = useState<'newest' | 'budget-asc' | 'budget-desc' | 'bids'>('newest');
+  const [sortBy, setSortBy] = useState<'featured' | 'newest' | 'budget-asc' | 'budget-desc' | 'bids'>('featured');
   const [showFilters, setShowFilters] = useState(false);
   const { user, role } = useAuth();
   const router = useRouter();
@@ -82,11 +86,16 @@ function ProjectsPageContent() {
     }
   }, [searchParams]);
 
+  function isActiveFeatured(job: Job) {
+    if (!job.is_featured || !job.featured_until) return false;
+    return new Date(job.featured_until).getTime() > Date.now();
+  }
+
   async function loadJobs() {
     setLoading(true);
     const { data, error: err } = await supabase
       .from('jobs')
-      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count')
+      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count,is_featured,featured_until')
       .eq('status', 'open')
       .order('created_at', { ascending: false });
     if (err) {
@@ -153,7 +162,10 @@ function ProjectsPageContent() {
       return matchesSearch && matchesCategory && matchesCity && matchesBudget;
     })
     .sort((a, b) => {
-      if (sortBy === 'newest') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      const aFeatured = isActiveFeatured(a) ? 1 : 0;
+      const bFeatured = isActiveFeatured(b) ? 1 : 0;
+      if (aFeatured !== bFeatured) return bFeatured - aFeatured;
+      if (sortBy === 'newest' || sortBy === 'featured') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       if (sortBy === 'budget-asc') return (a.budget_min || a.budget_max || 0) - (b.budget_min || b.budget_max || 0);
       if (sortBy === 'budget-desc') return (b.budget_min || b.budget_max || 0) - (a.budget_min || a.budget_max || 0);
       if (sortBy === 'bids') return b.bids_count - a.bids_count;
@@ -174,7 +186,7 @@ function ProjectsPageContent() {
     setCityFilter('');
     setMinBudget('');
     setMaxBudget('');
-    setSortBy('newest');
+    setSortBy('featured');
   }
 
   const cities = Array.from(new Set(jobs.map((j) => j.city))).sort();
@@ -182,6 +194,7 @@ function ProjectsPageContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <JsonLd data={jobListSchema(filteredJobs)} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 
@@ -279,6 +292,7 @@ function ProjectsPageContent() {
                       onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
                       className="pl-9 pr-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/20 outline-none appearance-none bg-white w-full sm:min-w-[160px]"
                     >
+                      <option value="featured">Istaknuti prvo</option>
                       <option value="newest">Najnovije</option>
                       <option value="budget-asc">Budžet: rastući</option>
                       <option value="budget-desc">Budžet: opadajući</option>
@@ -422,6 +436,7 @@ function ProjectsPageContent() {
                           <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
                             {category?.name || job.category_slug}
                           </span>
+                          {isActiveFeatured(job) && <FeaturedBadge />}
                         </div>
                         <span className="text-xs text-steel">{formatDate(job.created_at)}</span>
                       </div>

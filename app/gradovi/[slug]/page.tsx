@@ -8,6 +8,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { cities, categories } from '@/lib/data';
 import { site } from '@/lib/site';
 import CityCategoriesGrid from '@/components/CityCategoriesGrid';
+import FeaturedJobsSection from '@/components/FeaturedJobsSection';
 
 export function generateStaticParams() {
   return cities.map((c) => ({ slug: c.slug }));
@@ -64,6 +65,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             </Link>
           </div>
         </section>
+
+        {/* Istaknuti poslovi u gradu */}
+        <FeaturedJobsSection city={city.name} />
 
         {/* Sve usluge u gradu */}
         <section className="py-14 bg-white">

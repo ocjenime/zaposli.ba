@@ -15,6 +15,7 @@ import {
   Loader2, Check, Crown, AlertCircle, Search,
   Star, CheckCircle, XCircle, Pencil,
   MessageSquare, Briefcase, TrendingUp, DollarSign,
+  ShieldCheck, Flag, Gavel, ListFilter,
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
@@ -61,6 +62,55 @@ interface PaymentRow {
   plans: { name: string } | null;
 }
 
+interface AdminJob {
+  id: string;
+  title: string;
+  city: string;
+  status: string;
+  is_featured: boolean;
+  featured_until: string | null;
+  created_at: string;
+  client_id: string;
+}
+
+interface AdminReport {
+  id: string;
+  type: string;
+  firm_id: string;
+  metadata: Record<string, unknown>;
+  read: boolean;
+  created_at: string;
+  firms?: AdminFirm;
+}
+
+interface AdminVerification {
+  id: string;
+  name: string;
+  slug: string;
+  city: string | null;
+  email: string | null;
+  verification_status: string;
+  verification_submitted_at: string | null;
+  verification_notes: string | null;
+  verified: boolean;
+  created_at: string;
+}
+
+interface AdminReview {
+  id: string;
+  job_id: string;
+  client_id: string;
+  firm_id: string;
+  rating: number;
+  comment: string | null;
+  status: string;
+  reply: string | null;
+  replied_at: string | null;
+  created_at: string;
+  firms: { name: string; slug: string } | null;
+  profiles: { full_name: string | null } | null;
+}
+
 interface AdminStats {
   users: number;
   clients: number;
@@ -84,10 +134,14 @@ const tabs = [
   { id: 'overview', label: 'Pregled', icon: LayoutDashboard },
   { id: 'users', label: 'Korisnici', icon: Users },
   { id: 'firms', label: 'Firme', icon: Building2 },
+  { id: 'verifications', label: 'Verifikacije', icon: ShieldCheck },
+  { id: 'reviews', label: 'Recenzije', icon: Star },
   { id: 'conversations', label: 'Razgovori', icon: MessageSquare },
+  { id: 'jobs', label: 'Poslovi', icon: Briefcase },
   { id: 'subscriptions', label: 'Pretplate', icon: CreditCard },
   { id: 'payments', label: 'Plaćanja', icon: DollarSign },
   { id: 'plans', label: 'Paketi', icon: FileText },
+  { id: 'reports', label: 'Prijave', icon: Flag },
   { id: 'requests', label: 'Zahtjevi', icon: Bell },
 ];
 
@@ -103,6 +157,10 @@ export default function AdminPage() {
   const [requests, setRequests] = useState<AdminRequest[]>([]);
   const [payments, setPayments] = useState<PaymentRow[]>([]);
   const [conversations, setConversations] = useState<AdminConversation[]>([]);
+  const [jobs, setJobs] = useState<AdminJob[]>([]);
+  const [reports, setReports] = useState<AdminReport[]>([]);
+  const [verifications, setVerifications] = useState<AdminVerification[]>([]);
+  const [reviews, setReviews] = useState<AdminReview[]>([]);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -112,6 +170,14 @@ export default function AdminPage() {
   const [savingVerified, setSavingVerified] = useState<string | null>(null);
   const [savingAdmin, setSavingAdmin] = useState<string | null>(null);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(false);
+  const [loadingJobs, setLoadingJobs] = useState(false);
+  const [loadingReports, setLoadingReports] = useState(false);
+  const [loadingVerifications, setLoadingVerifications] = useState(false);
+  const [loadingReviews, setLoadingReviews] = useState(false);
+  const [savingVerification, setSavingVerification] = useState<string | null>(null);
+  const [savingReview, setSavingReview] = useState<string | null>(null);
+  const [savingJob, setSavingJob] = useState<string | null>(null);
+  const [reviewFilter, setReviewFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
 
   const [editingProfile, setEditingProfile] = useState<AdminProfile | null>(null);
   const [editingFirm, setEditingFirm] = useState<AdminFirm | null>(null);
@@ -277,6 +343,74 @@ export default function AdminPage() {
     );
   }
 
+  async function loadJobs() {
+    setLoadingJobs(true);
+    try {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('id, title, city, status, is_featured, featured_until, created_at, client_id')
+        .order('created_at', { ascending: false })
+        .limit(50);
+      if (error) throw error;
+      setJobs((data as AdminJob[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja poslova.');
+    } finally {
+      setLoadingJobs(false);
+    }
+  }
+
+  async function loadReports() {
+    setLoadingReports(true);
+    try {
+      const { data, error } = await supabase
+        .from('admin_requests')
+        .select('*, firms(*)')
+        .eq('type', 'report')
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+      setReports((data as AdminReport[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja prijava.');
+    } finally {
+      setLoadingReports(false);
+    }
+  }
+
+  async function loadVerifications() {
+    setLoadingVerifications(true);
+    try {
+      const { data, error } = await supabase
+        .from('firms')
+        .select('id, name, slug, city, email, verification_status, verification_submitted_at, verification_notes, verified, created_at')
+        .in('verification_status', ['pending', 'rejected'])
+        .order('verification_submitted_at', { ascending: false });
+      if (error) throw error;
+      setVerifications((data as AdminVerification[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja verifikacija.');
+    } finally {
+      setLoadingVerifications(false);
+    }
+  }
+
+  async function loadReviews() {
+    setLoadingReviews(true);
+    try {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('id, job_id, client_id, firm_id, rating, comment, status, reply, replied_at, created_at, firms(name, slug), profiles(full_name)')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      setReviews((data as unknown as AdminReview[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja recenzija.');
+    } finally {
+      setLoadingReviews(false);
+    }
+  }
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
@@ -287,6 +421,18 @@ export default function AdminPage() {
     }
     if (activeTab === 'payments') {
       loadPayments();
+    }
+    if (activeTab === 'jobs') {
+      loadJobs();
+    }
+    if (activeTab === 'reports') {
+      loadReports();
+    }
+    if (activeTab === 'verifications') {
+      loadVerifications();
+    }
+    if (activeTab === 'reviews') {
+      loadReviews();
     }
   }, [activeTab, firms]);
 
@@ -331,6 +477,79 @@ export default function AdminPage() {
       redirectTo,
     });
     if (err) throw err;
+  }
+
+  async function toggleJobFeatured(job: AdminJob) {
+    setSavingJob(job.id);
+    setError('');
+    setSuccess('');
+    const newFeatured = !job.is_featured;
+    const { error: err } = await supabase
+      .from('jobs')
+      .update({
+        is_featured: newFeatured,
+        featured_until: newFeatured ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null,
+      })
+      .eq('id', job.id);
+    setSavingJob(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadJobs();
+    setSuccess(`Posao ${newFeatured ? 'istaknut' : 'uklonjen sa istaknutog'}.`);
+  }
+
+  async function markReportRead(id: string) {
+    const { error: err } = await supabase
+      .from('admin_requests')
+      .update({ read: true })
+      .eq('id', id);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadReports();
+  }
+
+  async function updateVerification(firm: AdminVerification, action: 'approve' | 'reject', notes?: string) {
+    setSavingVerification(firm.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('firms')
+      .update({
+        verification_status: action === 'approve' ? 'verified' : 'rejected',
+        verified: action === 'approve',
+        verification_notes: notes || null,
+      })
+      .eq('id', firm.id);
+    setSavingVerification(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadVerifications();
+    await loadFirms();
+    await loadFirmPlans();
+    setSuccess(`Verifikacija ${action === 'approve' ? 'odgovrena' : 'odbijena'}.`);
+  }
+
+  async function updateReviewStatus(review: AdminReview, action: 'approve' | 'reject') {
+    setSavingReview(review.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('reviews')
+      .update({ status: action === 'approve' ? 'approved' : 'rejected' })
+      .eq('id', review.id);
+    setSavingReview(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadReviews();
+    setSuccess(`Recenzija ${action === 'approve' ? 'odgovrena' : 'odbijena'}.`);
   }
 
   async function markRequestRead(id: string) {
@@ -831,6 +1050,297 @@ export default function AdminPage() {
                       ))
                     )}
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'jobs' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-steel">Poslovi (istaknuti poslovi se prikazuju prvi na javnom sajtu)</p>
+                    <button
+                      onClick={loadJobs}
+                      disabled={loadingJobs}
+                      className="text-sm text-brand-orange hover:text-brand-orange-dark font-medium disabled:opacity-50"
+                    >
+                      {loadingJobs ? 'Učitavanje...' : 'Osvježi'}
+                    </button>
+                  </div>
+                  {loadingJobs ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje poslova...
+                    </div>
+                  ) : jobs.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema poslova.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {jobs.map((job) => (
+                        <div
+                          key={job.id}
+                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                        >
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-medium text-gray-900">{job.title}</p>
+                              {job.is_featured && job.featured_until && new Date(job.featured_until) > new Date() && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">
+                                  ISTAKNUTO
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-steel">
+                              {job.city} · {formatDate(job.created_at)}
+                              {job.status !== 'open' && (
+                                <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                                  {job.status}
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                          <button
+                            onClick={() => toggleJobFeatured(job)}
+                            disabled={savingJob === job.id}
+                            className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg transition-colors ${
+                              job.is_featured && job.featured_until && new Date(job.featured_until) > new Date()
+                                ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            }`}
+                          >
+                            {savingJob === job.id ? (
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            ) : job.is_featured && job.featured_until && new Date(job.featured_until) > new Date() ? (
+                              <>
+                                <Check className="w-3.5 h-3.5" />
+                                Istaknuto
+                              </>
+                            ) : (
+                              <>
+                                <Star className="w-3.5 h-3.5" />
+                                Istakni
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'verifications' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100">
+                    <p className="text-sm text-steel">Firme koje su zatražile verifikaciju (na čekanju ili odbijene)</p>
+                  </div>
+                  {loadingVerifications ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje verifikacija...
+                    </div>
+                  ) : verifications.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema zahtjeva za verifikaciju.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {verifications.map((v) => (
+                        <div
+                          key={v.id}
+                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                        >
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-medium text-gray-900">{v.name}</p>
+                              {v.verification_status === 'pending' && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
+                                  NA ČEKANJU
+                                </span>
+                              )}
+                              {v.verification_status === 'rejected' && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                  ODBIJENA
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-steel">
+                              {v.city || '—'} · {v.email || '—'} · {formatDate(v.verification_submitted_at || v.created_at)}
+                            </p>
+                            {v.verification_notes && (
+                              <p className="text-xs text-steel mt-1">Napomena: {v.verification_notes}</p>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <Link
+                              href={`/firma-profil/?slug=${v.slug}`}
+                              className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                            >
+                              Profil
+                            </Link>
+                            {v.verification_status === 'pending' && (
+                              <>
+                                <button
+                                  onClick={() => updateVerification(v, 'approve', prompt('Napomena (opcionalno):') || undefined)}
+                                  disabled={savingVerification === v.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                >
+                                  {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
+                                </button>
+                                <button
+                                  onClick={() => updateVerification(v, 'reject', prompt('Razlog odbijanja (obavezno):') || undefined)}
+                                  disabled={savingVerification === v.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+                                >
+                                  {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odbij'}
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'reviews' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-steel">Moderacija recenzija</p>
+                    <div className="flex flex-wrap gap-2">
+                      {(['all', 'pending', 'approved', 'rejected'] as const).map((f) => (
+                        <button
+                          key={f}
+                          onClick={() => setReviewFilter(f)}
+                          className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                            reviewFilter === f
+                              ? 'bg-brand-orange text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          {f === 'all' ? 'Sve' : f === 'pending' ? 'Na čekanju' : f === 'approved' ? 'Odobrene' : 'Odbijene'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  {loadingReviews ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje recenzija...
+                    </div>
+                  ) : reviews.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema recenzija.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {reviews
+                        .filter((r) => reviewFilter === 'all' || r.status === reviewFilter)
+                        .map((r) => (
+                          <div
+                            key={r.id}
+                            className="p-4 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3"
+                          >
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <p className="font-medium text-gray-900">Firma: {r.firms?.name || '—'}</p>
+                                {r.status === 'pending' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
+                                    NA ČEKANJU
+                                  </span>
+                                )}
+                                {r.status === 'approved' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                                    ODGOBRENA
+                                  </span>
+                                )}
+                                {r.status === 'rejected' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                    ODBIJENA
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-sm text-steel">
+                                Klijent: {r.profiles?.full_name || '—'} · Ocjena: {r.rating}/5 · {formatDate(r.created_at)}
+                              </p>
+                              {r.comment && (
+                                <p className="text-xs text-steel mt-1 line-clamp-2">{r.comment}</p>
+                              )}
+                              {r.reply && (
+                                <p className="text-xs text-brand-orange mt-1">Odgovor firme: {r.reply}</p>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <Link
+                                href={`/firma-profil/?slug=${r.firms?.slug}`}
+                                className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                              >
+                                Profil
+                              </Link>
+                              {r.status === 'pending' && (
+                                <>
+                                  <button
+                                    onClick={() => updateReviewStatus(r, 'approve')}
+                                    disabled={savingReview === r.id}
+                                    className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                  >
+                                    {savingReview === r.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
+                                  </button>
+                                  <button
+                                    onClick={() => updateReviewStatus(r, 'reject')}
+                                    disabled={savingReview === r.id}
+                                    className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+                                  >
+                                    {savingReview === r.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odbij'}
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'reports' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100">
+                    <p className="text-sm text-steel">Prijave problema od korisnika</p>
+                  </div>
+                  {loadingReports ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje prijava...
+                    </div>
+                  ) : reports.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema prijava.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {reports.map((n) => (
+                        <div
+                          key={n.id}
+                          className={`p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${n.read ? 'opacity-60' : ''}`}
+                        >
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-medium text-gray-900">Prijava</p>
+                              {!n.read && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                  NOVO
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-steel">
+                              Firma: {n.firms?.name || '—'} · {formatDate(n.created_at)}
+                            </p>
+                            {n.metadata && (
+                              <p className="text-xs text-steel mt-1">{JSON.stringify(n.metadata)}</p>
+                            )}
+                          </div>
+                          {!n.read && (
+                            <button
+                              onClick={() => markReportRead(n.id)}
+                              className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                            >
+                              Označi pročitanim
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 

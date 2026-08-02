@@ -10,6 +10,7 @@ import { JsonLd, breadcrumbSchema, serviceSchema } from '@/lib/jsonld';
 import { categories, getCategory, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 import CategoryHeroStats from '@/components/CategoryHeroStats';
+import FeaturedJobsSection from '@/components/FeaturedJobsSection';
 
 export function generateStaticParams() {
   return categories.filter((c) => !c.noSeo).map((c) => ({ slug: c.slug }));
@@ -99,6 +100,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </Link>
           </div>
         </section>
+
+        {/* Istaknuti poslovi u kategoriji */}
+        <FeaturedJobsSection categorySlug={cat.slug} />
 
         {/* Kako funkcioniše: samo za hitne intervencije */}
         {cat.featured && (

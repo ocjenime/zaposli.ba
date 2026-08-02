@@ -3,7 +3,10 @@ import './globals.css';
 import { site } from '@/lib/site';
 import AuthWrapper from '@/components/AuthWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
+import { ToastProvider } from '@/components/ToastProvider';
 import { JsonLd, websiteSchema, organizationSchema } from '@/lib/jsonld';
+
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -34,7 +37,10 @@ export const metadata: Metadata = {
     images: ['images/og-cover.webp'],
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-  verification: { google: 'dodati-kad-dobijes' },
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
+  other: {
+    'msapplication-TileColor': '#ffffff',
+  },
 };
 
 export default function RootLayout({
@@ -47,7 +53,9 @@ export default function RootLayout({
       <body className="min-h-screen">
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange={false}>
-          <AuthWrapper>{children}</AuthWrapper>
+          <ToastProvider>
+            <AuthWrapper>{children}</AuthWrapper>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -207,6 +207,7 @@ function ReviewPage() {
         rating,
         comment: comment.trim(),
         image_url: imageUrl,
+        status: 'approved',
       });
 
       if (insertError) {

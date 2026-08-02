@@ -156,6 +156,7 @@ export default function HeroSection() {
                   alt="Profesionalni i ugledan majstor rješava kuhinjsku instalaciju"
                   fill
                   priority
+                  fetchPriority="high"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover scale-105 hover:scale-100 transition-transform duration-700"
                 />

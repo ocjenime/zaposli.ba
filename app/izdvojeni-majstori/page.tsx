@@ -12,6 +12,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
+import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
   id: string;
@@ -88,6 +89,21 @@ export default function FeaturedWorkersPage() {
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Izdvojeni majstori' }]} />
+        {!loading && firms.length > 0 && (
+          <JsonLd
+            data={localBusinessListSchema(
+              firms.map((f) => ({
+                name: f.name,
+                specialty: (f as any).specialty || 'Razne usluge',
+                location: f.city || 'BiH',
+                rating: f.average_rating || 0,
+                reviews: f.review_count || 0,
+                url: `/firma-profil/?slug=${f.slug}`,
+                image: f.logo_url || undefined,
+              }))
+            )}
+          />
+        )}
         <PageHero
           title="Izdvojeni majstori"
           subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata na našoj platformi"

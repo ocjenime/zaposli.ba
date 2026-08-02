@@ -26,7 +26,7 @@ export function organizationSchema() {
       addressLocality: 'Sarajevo',
       addressCountry: 'BA',
     },
-    sameAs: [],
+    sameAs: site.sameAs ?? [],
   };
 }
 
@@ -72,13 +72,21 @@ export function localBusinessSchema(worker: {
   rating: number;
   reviews: number;
   url: string;
+  image?: string | null;
+  telephone?: string | null;
+  email?: string | null;
+  priceRange?: string | null;
 }) {
+  const fullUrl = worker.url.startsWith('http')
+    ? worker.url
+    : `${site.url}${worker.url}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
+    '@id': fullUrl,
     name: worker.name,
     description: `${worker.specialty}: ${worker.location}`,
-    url: `${site.url}${worker.url}`,
+    url: fullUrl,
     address: {
       '@type': 'PostalAddress',
       addressLocality: worker.location,
@@ -90,6 +98,95 @@ export function localBusinessSchema(worker: {
       reviewCount: worker.reviews,
       bestRating: 5,
     },
+    ...(worker.image ? { image: worker.image } : {}),
+    ...(worker.telephone ? { telephone: worker.telephone } : {}),
+    ...(worker.email ? { email: worker.email } : {}),
+    ...(worker.priceRange ? { priceRange: worker.priceRange } : {}),
+  };
+}
+
+export interface JobPostingInput {
+  title: string;
+  description: string;
+  city: string;
+  created_at: string;
+  deadline?: string | null;
+  budget_mode?: string | null;
+  budget_min?: number | null;
+  budget_max?: number | null;
+}
+
+export function jobPostingSchema(job: JobPostingInput) {
+  const posted = new Date(job.created_at);
+  const validThrough = job.deadline
+    ? new Date(job.deadline).toISOString()
+    : new Date(posted.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const baseSalary = (() => {
+    if (job.budget_mode === 'open') return undefined;
+    if (!job.budget_min && !job.budget_max) return undefined;
+    const amount: Record<string, unknown> = {
+      '@type': 'MonetaryAmount',
+      currency: 'BAM',
+    };
+    if (job.budget_min && job.budget_max) {
+      amount.minValue = job.budget_min;
+      amount.maxValue = job.budget_max;
+    } else if (job.budget_min) {
+      amount.value = job.budget_min;
+    } else if (job.budget_max) {
+      amount.value = job.budget_max;
+    }
+    return amount;
+  })();
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: job.title,
+    description: job.description,
+    datePosted: posted.toISOString(),
+    validThrough,
+    employmentType: 'https://schema.org/Contractor',
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: site.name,
+      url: site.url,
+      logo: `${site.url}/icon.svg`,
+    },
+    jobLocation: {
+      '@type': 'Place',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: job.city,
+        addressCountry: 'BA',
+      },
+    },
+    ...(baseSalary ? { baseSalary } : {}),
+  };
+}
+
+export function jobListSchema(jobs: JobPostingInput[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: jobs.map((job, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: jobPostingSchema(job),
+    })),
+  };
+}
+
+export function localBusinessListSchema(workers: Parameters<typeof localBusinessSchema>[0][]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: workers.map((worker, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: localBusinessSchema(worker),
+    })),
   };
 }
 

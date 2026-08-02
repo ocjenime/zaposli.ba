@@ -7,4 +7,5 @@ export const site = {
   email: 'info@zaposli.ba',
   phone: '+387 61 770 707',
   city: 'Sarajevo, Bosna i Hercegovina',
+  sameAs: [] as string[],
 };
