@@ -76,7 +76,7 @@ export default function RecentProjects() {
   if (!loading && projects.length === 0) return null;
 
   return (
-    <section className="py-10 md:py-14 bg-cloud relative overflow-hidden">
+    <section className="py-8 md:py-14 bg-cloud relative overflow-hidden">
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>

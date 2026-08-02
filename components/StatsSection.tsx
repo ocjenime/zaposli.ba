@@ -87,7 +87,7 @@ export default function StatsSection() {
   }, []);
 
   return (
-    <section className="py-10 md:py-14 bg-white relative overflow-hidden">
+    <section className="hidden md:block py-10 md:py-14 bg-white relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
