@@ -8,7 +8,7 @@ import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { site } from '@/lib/site';
-import { Mail, Phone, MapPin, Clock, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, Loader2, CheckCircle, AlertCircle, MessageCircleQuestion, ShieldCheck, Users, Sparkles } from 'lucide-react';
 
 const inputClass =
   'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none text-gray-900 text-sm';
@@ -42,6 +42,12 @@ const contactInfo = [
     value: 'Pon-Pet, 9-17h',
     note: 'Vikendom odgovaramo na email',
   },
+];
+
+const trustBadges = [
+  { icon: ShieldCheck, label: 'Sigurnost', value: 'Zaštićeni podaci' },
+  { icon: Users, label: 'Brz odgovor', value: 'U roku 24h' },
+  { icon: Sparkles, label: 'Podrška', value: 'Na bosanskom' },
 ];
 
 export default function KontaktPage() {
@@ -88,11 +94,23 @@ export default function KontaktPage() {
         <PageHero
           title="Kontakt"
           subtitle="Imate pitanje ili prijedlog? Pišite nam: tu smo da pomognemo."
-          image="/zaposli.ba/images/majstor-hero.webp"
         />
 
         <section className="py-16 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {/* SEO intro */}
+            <div className="max-w-3xl mx-auto text-center mb-10">
+              <p className="text-steel leading-relaxed">
+                Naš tim je dostupan putem emaila, telefona ili kontakt forme. Ako tražite majstora,
+                najbrži put je da{' '}
+                <Link href="/objavi-projekat/" className="text-brand-orange font-semibold hover:underline">
+                  objavite posao
+                </Link>{' '}
+                i primite ponude direktno od provjerenih firmi. Ako imate pitanje o platformi,
+                profilu ili suradnji: pišite nam, odgovaramo u najkraćem roku.
+              </p>
+            </div>
+
             <div className="grid lg:grid-cols-2 gap-10">
               {/* Kontakt informacije */}
               <div>
@@ -101,9 +119,9 @@ export default function KontaktPage() {
                   {contactInfo.map((item) => (
                     <div
                       key={item.title}
-                      className="bg-white rounded-2xl border border-gray-100 p-6 shadow-card"
+                      className="bg-white rounded-2xl border border-gray-100 p-6 shadow-card hover:shadow-lg transition-shadow"
                     >
-                      <div className="w-11 h-11 bg-primary-50 rounded-xl flex items-center justify-center mb-4">
+                      <div className="w-11 h-11 bg-gradient-to-br from-primary-50 to-orange-100 rounded-xl flex items-center justify-center mb-4">
                         <item.icon className="w-5 h-5 text-brand-orange" />
                       </div>
                       <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
@@ -112,127 +130,152 @@ export default function KontaktPage() {
                     </div>
                   ))}
                 </div>
+
+                {/* Trust badges */}
+                <div className="mt-6 grid grid-cols-3 gap-4">
+                  {trustBadges.map((badge) => (
+                    <div
+                      key={badge.label}
+                      className="bg-white rounded-xl border border-gray-100 p-4 text-center shadow-card"
+                    >
+                      <badge.icon className="w-6 h-6 text-brand-orange mx-auto mb-2" />
+                      <p className="text-xs font-bold text-gray-900">{badge.value}</p>
+                      <p className="text-[10px] text-steel">{badge.label}</p>
+                    </div>
+                  ))}
+                </div>
+
                 <div className="mt-8 bg-white rounded-2xl border border-gray-100 p-6 shadow-card">
-                  <h3 className="font-semibold text-gray-900 mb-2">Prije nego što nam pišete</h3>
-                  <p className="text-sm text-steel leading-relaxed">
-                    Možda je odgovor već na stranici{' '}
-                    <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
-                      Česta pitanja
-                    </Link>
-                    . Ako tražite majstora za posao, najbrži put je da{' '}
-                    <Link href="/objavi-projekat/" className="text-brand-orange font-medium hover:underline">
-                      objavite posao
-                    </Link>{' '}
-                    i primite ponude direktno od firmi.
-                  </p>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                      <MessageCircleQuestion className="w-5 h-5 text-brand-orange" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-2">Prije nego što nam pišete</h3>
+                      <p className="text-sm text-steel leading-relaxed">
+                        Možda je odgovor već na stranici{' '}
+                        <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
+                          Česta pitanja
+                        </Link>
+                        . Ako tražite majstora za posao, najbrži put je da{' '}
+                        <Link href="/objavi-projekat/" className="text-brand-orange font-medium hover:underline">
+                          objavite posao
+                        </Link>{' '}
+                        i primite ponude direktno od firmi.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               {/* Kontakt forma */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Pošaljite nam poruku</h2>
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div>
-                    <label htmlFor="ime" className="block text-sm font-medium text-gray-900 mb-1.5">
-                      Ime i prezime <span className="text-brand-orange">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      id="ime"
-                      name="ime"
-                      required
-                      value={formData.ime}
-                      onChange={handleChange}
-                      placeholder="npr. Amila Softić"
-                      className={inputClass}
-                    />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-5">
+              <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-3xl" />
+                <div className="relative">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Pošaljite nam poruku</h2>
+                  <form onSubmit={handleSubmit} className="space-y-5">
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1.5">
-                        Email <span className="text-brand-orange">*</span>
+                      <label htmlFor="ime" className="block text-sm font-medium text-gray-900 mb-1.5">
+                        Ime i prezime <span className="text-brand-orange">*</span>
                       </label>
                       <input
-                        type="email"
-                        id="email"
-                        name="email"
+                        type="text"
+                        id="ime"
+                        name="ime"
                         required
-                        value={formData.email}
+                        value={formData.ime}
                         onChange={handleChange}
-                        placeholder="vas@email.com"
+                        placeholder="npr. Amila Softić"
                         className={inputClass}
                       />
+                    </div>
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1.5">
+                          Email <span className="text-brand-orange">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="vas@email.com"
+                          className={inputClass}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="telefon" className="block text-sm font-medium text-gray-900 mb-1.5">
+                          Telefon <span className="text-steel font-normal">(opcionalno)</span>
+                        </label>
+                        <input
+                          type="tel"
+                          id="telefon"
+                          name="telefon"
+                          value={formData.telefon}
+                          onChange={handleChange}
+                          placeholder="+387 6x xxx xxx"
+                          className={inputClass}
+                        />
+                      </div>
                     </div>
                     <div>
-                      <label htmlFor="telefon" className="block text-sm font-medium text-gray-900 mb-1.5">
-                        Telefon <span className="text-steel font-normal">(opcionalno)</span>
+                      <label htmlFor="poruka" className="block text-sm font-medium text-gray-900 mb-1.5">
+                        Poruka <span className="text-brand-orange">*</span>
                       </label>
-                      <input
-                        type="tel"
-                        id="telefon"
-                        name="telefon"
-                        value={formData.telefon}
+                      <textarea
+                        id="poruka"
+                        name="poruka"
+                        required
+                        rows={6}
+                        value={formData.poruka}
                         onChange={handleChange}
-                        placeholder="+387 6x xxx xxx"
-                        className={inputClass}
+                        placeholder="Kako vam možemo pomoći?"
+                        className={`${inputClass} resize-none`}
                       />
                     </div>
-                  </div>
-                  <div>
-                    <label htmlFor="poruka" className="block text-sm font-medium text-gray-900 mb-1.5">
-                      Poruka <span className="text-brand-orange">*</span>
-                    </label>
-                    <textarea
-                      id="poruka"
-                      name="poruka"
-                      required
-                      rows={6}
-                      value={formData.poruka}
-                      onChange={handleChange}
-                      placeholder="Kako vam možemo pomoći?"
-                      className={`${inputClass} resize-none`}
-                    />
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {status === 'loading' ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Šaljem...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        Pošalji poruku
-                      </>
+                    <button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      {status === 'loading' ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Šaljem...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Pošalji poruku
+                        </>
+                      )}
+                    </button>
+
+                    {status === 'success' && (
+                      <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
+                        <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-1" />
+                        <p className="text-sm text-green-800 font-medium">Hvala! Poruka je poslana. Odgovaramo u roku od 24 sata.</p>
+                      </div>
                     )}
-                  </button>
 
-                  {status === 'success' && (
-                    <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-                      <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-1" />
-                      <p className="text-sm text-green-800 font-medium">Hvala! Poruka je poslana. Odgovaramo u roku od 24 sata.</p>
-                    </div>
-                  )}
+                    {status === 'error' && (
+                      <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
+                        <AlertCircle className="w-5 h-5 text-red-600 mx-auto mb-1" />
+                        <p className="text-sm text-red-800 font-medium">Došlo je do greške. Molimo pokušajte ponovo ili pošaljite email direktno.</p>
+                      </div>
+                    )}
 
-                  {status === 'error' && (
-                    <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-                      <AlertCircle className="w-5 h-5 text-red-600 mx-auto mb-1" />
-                      <p className="text-sm text-red-800 font-medium">Došlo je do greške. Molimo pokušajte ponovo ili pošaljite email direktno.</p>
-                    </div>
-                  )}
-
-                  <p className="text-xs text-steel text-center">
-                    Slanjem poruke prihvatate našu{' '}
-                    <Link href="/privacy/" className="text-brand-orange hover:underline">
-                      politiku privatnosti
-                    </Link>
-                    .
-                  </p>
-                </form>
+                    <p className="text-xs text-steel text-center">
+                      Slanjem poruke prihvatate našu{' '}
+                      <Link href="/privacy/" className="text-brand-orange hover:underline">
+                        politiku privatnosti
+                      </Link>
+                      .
+                    </p>
+                  </form>
+                </div>
               </div>
             </div>
           </div>

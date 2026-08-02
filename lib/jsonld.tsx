@@ -1,6 +1,8 @@
 import { site } from '@/lib/site';
 
-export function JsonLd({ data }: { data: Record<string, unknown> }) {
+type JsonLdData = Record<string, unknown> | Record<string, unknown>[];
+
+export function JsonLd({ data }: { data: JsonLdData }) {
   return (
     <script
       type="application/ld+json"
@@ -88,6 +90,80 @@ export function localBusinessSchema(worker: {
       reviewCount: worker.reviews,
       bestRating: 5,
     },
+  };
+}
+
+export function articleSchema({
+  title,
+  description,
+  slug,
+  datePublished,
+  dateModified,
+  author = site.name,
+  image = `${site.url}/images/og-cover.webp`,
+}: {
+  title: string;
+  description: string;
+  slug: string;
+  datePublished: string;
+  dateModified?: string;
+  author?: string;
+  image?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    author: {
+      '@type': 'Organization',
+      name: author,
+      url: site.url,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: site.name,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${site.url}/images/logo-mark.png`,
+      },
+    },
+    datePublished,
+    dateModified: dateModified || datePublished,
+    image,
+    url: `${site.url}/savjeti/${slug}/`,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${site.url}/savjeti/${slug}/`,
+    },
+  };
+}
+
+export function howToSchema({
+  title,
+  description,
+  steps,
+  totalTime,
+  image = `${site.url}/images/og-cover.webp`,
+}: {
+  title: string;
+  description: string;
+  steps: { name: string; text: string }[];
+  totalTime?: string;
+  image?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: title,
+    description,
+    image,
+    totalTime,
+    step: steps.map((step) => ({
+      '@type': 'HowToStep',
+      name: step.name,
+      text: step.text,
+    })),
   };
 }
 

@@ -6,7 +6,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { categories, type Category } from '@/lib/data';
 import { site } from '@/lib/site';
 import { cities } from '@/lib/data';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Siren, ShieldCheck, Clock, Star, MapPin, Users, Briefcase, CheckCircle } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
 
 export const metadata: Metadata = {
@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   description: 'Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. 20 kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.',
   alternates: { canonical: `${site.url}/kategorije/` },
 };
+
+const trustBadges = [
+  { icon: ShieldCheck, label: 'Provjerene firme', value: 'ID + reference' },
+  { icon: Clock, label: 'Brze ponude', value: '24h prosjek' },
+  { icon: Star, label: 'Recenzije', value: 'Od stvarnih klijenata' },
+  { icon: Users, label: '35 gradova', value: 'Širom BiH' },
+];
 
 export default function CategoriesPage() {
   const visible = categories.filter((c) => !c.noSeo);
@@ -53,6 +60,39 @@ export default function CategoriesPage() {
           </div>
         </section>
 
+        {/* SEO intro + trust badges */}
+        <section className="py-8 md:py-10 bg-cloud">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-8 items-center mb-8">
+              <div>
+                <h2 className="text-xl font-bold text-gray-900 mb-3">Pronađite pouzdanog majstora za svaku potrebu</h2>
+                <p className="text-steel leading-relaxed text-sm md:text-base">
+                  Zaposli.ba okuplja provjerene građevinske firme, majstore i uslužne djelatnosti iz
+                  cijele Bosne i Hercegovine. Bilo da vam treba vodoinstalater, električar, keramičar,
+                  moler, bravar ili kompletna adaptacija: objavite posao besplatno i uporedite ponude
+                  od firma iz vašeg grada.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {trustBadges.map((badge) => (
+                  <div
+                    key={badge.label}
+                    className="bg-white rounded-xl border border-gray-100 p-4 shadow-card flex items-center gap-3"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0">
+                      <badge.icon className="w-5 h-5 text-brand-orange" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-steel">{badge.label}</p>
+                      <p className="text-sm font-bold text-gray-900">{badge.value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Featured: hitne intervencije 24/7 */}
         <section className="pt-8 md:pt-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -61,9 +101,7 @@ export default function CategoriesPage() {
               className="group flex items-center gap-4 rounded-xl border border-red-100 bg-red-50 px-5 py-4 hover:border-red-200 hover:shadow-sm transition-all"
             >
               <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-600 text-white flex items-center justify-center">
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
+                <Siren className="w-6 h-6" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
@@ -85,7 +123,10 @@ export default function CategoriesPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
             {groups.map((group) => (
               <div key={group.name}>
-                <h2 className="text-sm font-bold text-steel uppercase tracking-wider mb-3">{group.name}</h2>
+                <h2 className="text-sm font-bold text-steel uppercase tracking-wider mb-3 flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-brand-orange" />
+                  {group.name}
+                </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                   {group.cats.map((category) => (
                     <CategoryCard key={category.slug} slug={category.slug} />
@@ -99,12 +140,20 @@ export default function CategoriesPage() {
         {/* CTA */}
         <section className="py-8 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl bg-white border border-gray-100 p-6">
-              <div>
-                <h2 className="text-lg font-bold text-gray-900 mb-1">Ne pronalazite traženu kategoriju?</h2>
-                <p className="text-sm text-steel">Objavite posao i majstori će vam se javiti sa ponudama.</p>
+            <div className="bg-gradient-hero rounded-2xl p-6 md:p-10 text-white relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-3xl" />
+              <div className="relative">
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Ne pronalazite traženu kategoriju?</h2>
+                <p className="text-white/60 text-sm md:text-base">
+                  Objavite posao i majstori će vam se javiti sa ponudama. Besplatno i neobavezujuće.
+                </p>
               </div>
-              <Link href="/objavi-projekat/" className="btn-primary text-sm whitespace-nowrap">
+              <Link
+                href="/objavi-projekat/"
+                className="relative inline-flex items-center justify-center gap-2 bg-white text-brand-orange hover:bg-white/90 px-6 py-3 rounded-xl font-bold transition-colors shadow-lg shrink-0"
+              >
+                <CheckCircle className="w-4 h-4" />
                 Objavi posao
               </Link>
             </div>

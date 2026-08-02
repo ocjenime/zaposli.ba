@@ -3,7 +3,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import Image from 'next/image';
 import { FirmProcessAnimation } from '@/components/FirmProcessAnimation';
 import PricingCTA from '@/components/PricingCTA';
 
@@ -23,6 +22,15 @@ import {
   ChevronDown,
   HelpCircle,
   Phone,
+  Paintbrush,
+  Home,
+  Hammer,
+  Zap,
+  Sparkles,
+  Briefcase,
+  Rocket,
+  Award,
+  BarChart3,
 } from 'lucide-react';
 
 const benefits = [
@@ -70,6 +78,39 @@ const trustSignals = [
     icon: Clock,
     title: 'Otkazivanje u svakom trenutku',
     description: 'Nema ugovorne obaveze. Mijenjajte ili otkažite paket kad god želite.',
+  },
+];
+
+const projectCards = [
+  {
+    icon: Paintbrush,
+    title: 'Malterski i bojadžijski radovi',
+    description: 'Molerski radovi, gletovanje, krečenje i bojenje enterijera.',
+  },
+  {
+    icon: Home,
+    title: 'Renovacija kuhinja i stanova',
+    description: 'Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.',
+  },
+  {
+    icon: Hammer,
+    title: 'Završni i građevinski radovi',
+    description: 'Keramika, parket, instalacije, elektrika i vodoinstalateri.',
+  },
+  {
+    icon: Zap,
+    title: 'Elektro i vodoinstalacije',
+    description: 'Rasvjeta, struja, cijevi, bojleri i hitne intervencije.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Čišćenje i održavanje',
+    description: 'Stanovi, kuće, poslovni prostori i dubinsko čišćenje.',
+  },
+  {
+    icon: Briefcase,
+    title: 'Projektovanje i dizajn',
+    description: 'Arhitektura, 3D vizualizacije i dizajn enterijera.',
   },
 ];
 
@@ -178,6 +219,8 @@ export default function ForCompaniesPage() {
         {/* Hero */}
         <section className="relative overflow-hidden bg-gradient-hero pt-28 pb-16 md:pt-40 md:pb-24">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-orange/5 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div className="max-w-2xl">
@@ -224,16 +267,39 @@ export default function ForCompaniesPage() {
               </div>
 
               <div className="relative flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10">
-                  <Image
-                    src="/zaposli.ba/images/ciscenje.webp"
-                    alt="Profesionalni majstor s vrhunskom opremom na poslu"
-                    width={560}
-                    height={420}
-                    className="w-full h-auto object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
+                <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/10 bg-gradient-to-br from-ink-800 via-ink-700 to-ink-600 p-8 md:p-10">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
+                      <Rocket className="w-8 h-8 text-brand-orange" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">Zašto firme rastu na Zaposli.ba?</h3>
+                    <ul className="space-y-4">
+                      {[
+                        'Nema plaćanja po kliku ili po ogledu',
+                        'Direktan kontakt sa klijentom',
+                        'Recenzije koje grade dugoročni ugled',
+                        'Alati za upravljanje ponudama',
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-center gap-3 text-white/70">
+                          <div className="w-6 h-6 rounded-full bg-brand-orange/20 flex items-center justify-center shrink-0">
+                            <CheckCircle className="w-3.5 h-3.5 text-brand-orange" />
+                          </div>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-xl flex items-center justify-center">
+                        <BarChart3 className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <p className="text-white font-bold">4.8 / 5</p>
+                        <p className="text-white/60 text-sm">Prosječna ocjena verifikovanih firmi</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -260,9 +326,9 @@ export default function ForCompaniesPage() {
               {benefits.map((benefit) => (
                 <div
                   key={benefit.title}
-                  className="bg-white rounded-2xl border border-gray-100 p-6 hover:border-orange-200 transition-colors duration-200"
+                  className="bg-white rounded-2xl border border-gray-100 p-6 hover:border-orange-200 hover:shadow-card transition-all duration-200"
                 >
-                  <div className="w-12 h-12 mb-4 bg-orange-50 rounded-xl border border-orange-100 flex items-center justify-center">
+                  <div className="w-12 h-12 mb-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-100 flex items-center justify-center">
                     <benefit.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{benefit.title}</h3>
@@ -291,12 +357,12 @@ export default function ForCompaniesPage() {
           </div>
         </section>
 
-        {/* Real project showcase */}
+        {/* Project showcase */}
         <section className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
-                <Building2 className="h-4 w-4" /> Kategorije poslova
+                <Briefcase className="h-4 w-4" /> Kategorije poslova
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
                 Pronađite projekte u svojoj oblasti
@@ -306,73 +372,54 @@ export default function ForCompaniesPage() {
                 svakodnevno objavljuju nove poslove.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
-                <Image
-                  src="/zaposli.ba/images/farbanje-zid.webp"
-                  alt="Majstor farba zid profesionalnom opremom"
-                  width={400}
-                  height={300}
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 mb-1">Malterski i bojadžijski radovi</h3>
-                  <p className="text-sm text-steel">
-                    Molerski radovi, gletovanje, krečenje i bojenje enterijera.
-                  </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projectCards.map((card) => (
+                <div
+                  key={card.title}
+                  className="group bg-gradient-to-br from-white to-cloud rounded-2xl border border-gray-100 p-6 shadow-card hover:shadow-xl transition-all duration-200"
+                >
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary-50 to-orange-100 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <card.icon className="w-6 h-6 text-brand-orange" />
+                  </div>
+                  <h3 className="font-bold text-gray-900 mb-2">{card.title}</h3>
+                  <p className="text-sm text-steel leading-relaxed">{card.description}</p>
                 </div>
-              </div>
-              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
-                <Image
-                  src="/zaposli.ba/images/kuhinja-renovacija.webp"
-                  alt="Kuhinja u toku renovacije"
-                  width={400}
-                  height={300}
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 mb-1">Renovacija kuhinja i stanova</h3>
-                  <p className="text-sm text-steel">
-                    Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.
-                  </p>
-                </div>
-              </div>
-              <div className="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-card transition-all duration-200">
-                <Image
-                  src="/zaposli.ba/images/majstor-cekic.webp"
-                  alt="Majstor sa čekićem na gradilištu"
-                  width={400}
-                  height={300}
-                  className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="p-5">
-                  <h3 className="font-bold text-gray-900 mb-1">Završni i građevinski radovi</h3>
-                  <p className="text-sm text-steel">
-                    Keramika, parket, instalacije, elektrika i vodoinstalateri.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Trust signals */}
-        <section className="py-16 md:py-20 bg-white">
+        <section className="py-16 md:py-20 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative order-2 lg:order-1 flex justify-center lg:justify-start">
-                <div className="relative w-full max-w-md xl:max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-black/10 border border-gray-100">
-                  <Image
-                    src="/zaposli.ba/images/renovacija-enterijer.webp"
-                    alt="Renovacija enterijera u toku"
-                    width={500}
-                    height={375}
-                    className="w-full h-auto object-cover"
-                  />
+              <div className="order-2 lg:order-1">
+                <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-gray-100 bg-gradient-to-br from-ink via-ink-800 to-ink-700 p-8 md:p-10">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
+                  <div className="relative">
+                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
+                      <Award className="w-8 h-8 text-brand-orange" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-4">Značka kvaliteta</h3>
+                    <p className="text-white/70 leading-relaxed mb-6">
+                      Verifikovani profili dobijaju značku „Provjerena firma" i bolju poziciju u
+                      listi. Klijenti više vjeruju firmama koje su prošle provjeru, što direktno
+                      utiče na stopu odabira.
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {['ID broj firme', 'Reference', 'Portfolio', 'Ocjene klijenata'].map((item, i) => (
+                        <span key={i} className="inline-flex items-center gap-1.5 bg-white/10 text-white/80 text-sm px-3 py-1.5 rounded-full border border-white/10">
+                          <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
                   <Shield className="h-4 w-4" /> Sigurnost i transparentnost
                 </span>
                 <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
@@ -386,7 +433,7 @@ export default function ForCompaniesPage() {
                 <div className="grid sm:grid-cols-2 gap-6">
                   {trustSignals.map((signal) => (
                     <div key={signal.title} className="flex gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-100 flex items-center justify-center flex-shrink-0">
                         <signal.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                       </div>
                       <div>
@@ -402,10 +449,10 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* Pricing */}
-        <section id="cijene" className="py-16 md:py-20 bg-cloud">
+        <section id="cijene" className="py-16 md:py-20 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
                 <Wallet className="h-4 w-4" /> Cijene
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
@@ -486,10 +533,10 @@ export default function ForCompaniesPage() {
         </section>
 
         {/* FAQ */}
-        <section className="py-16 md:py-20 bg-white">
+        <section className="py-16 md:py-20 bg-cloud">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
@@ -518,6 +565,7 @@ export default function ForCompaniesPage() {
         {/* Final CTA */}
         <section className="relative py-16 md:py-20 bg-gradient-hero overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
               <Target className="h-4 w-4 text-brand-orange" />
