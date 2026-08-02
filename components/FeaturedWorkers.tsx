@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Star, MapPin, BadgeCheck } from 'lucide-react';
+import { Star, MapPin } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
+import VerifiedBadge from '@/components/ui/VerifiedBadge';
 
 interface Firm {
   id: string;
@@ -146,9 +147,8 @@ export default function FeaturedWorkers() {
               </div>
 
               {firm.verified && (
-                <div className="flex items-center justify-center gap-1 text-xs text-brand-orange bg-primary-50 rounded-lg px-2 py-1 mx-auto">
-                  <BadgeCheck className="w-3 h-3" />
-                  <span className="font-medium">Verifikovana</span>
+                <div className="flex justify-center">
+                  <VerifiedBadge size="sm" />
                 </div>
               )}
               </Link>
