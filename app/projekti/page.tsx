@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import {
   MapPin, Clock, BadgeCheck, ArrowRight, Loader2, Send, DollarSign,
   Calendar, ImageIcon, ChevronDown, ChevronUp, X, Search, SlidersHorizontal,
-  ArrowUpDown, ShieldCheck, LayoutGrid, Wallet,
+  ArrowUpDown, ShieldCheck, LayoutGrid, Wallet, AlertTriangle,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -69,6 +69,8 @@ function ProjectsPageContent() {
   const [maxBudget, setMaxBudget] = useState('');
   const [sortBy, setSortBy] = useState<'featured' | 'newest' | 'budget-asc' | 'budget-desc' | 'bids'>('featured');
   const [showFilters, setShowFilters] = useState(false);
+  const [firmCategories, setFirmCategories] = useState<string[]>([]);
+  const [categoryWarningJob, setCategoryWarningJob] = useState<Job | null>(null);
   const { user, role } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -85,6 +87,24 @@ function ProjectsPageContent() {
       fetchImages(expandId);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (user && isFirmRole(role)) loadFirmCategories();
+  }, [user, role]);
+
+  async function loadFirmCategories() {
+    const { data: firmData } = await supabase
+      .from('firms')
+      .select('id')
+      .eq('owner_id', user!.id)
+      .single();
+    if (!firmData) return;
+    const { data: catData } = await supabase
+      .from('firm_categories')
+      .select('category_slug')
+      .eq('firm_id', firmData.id);
+    setFirmCategories((catData as { category_slug: string }[] | null)?.map((c) => c.category_slug) || []);
+  }
 
   function isActiveFeatured(job: Job) {
     if (!job.is_featured || !job.featured_until) return false;
@@ -129,7 +149,12 @@ function ProjectsPageContent() {
     }
   }
 
-  function handleBidClick(jobId: string) {
+  function isCategoryAllowed(job: Job) {
+    if (firmCategories.length === 0) return true; // legacy firms without categories
+    return firmCategories.includes(job.category_slug);
+  }
+
+  function handleBidClick(job: Job) {
     if (!user) {
       router.push('/registracija/');
       return;
@@ -139,7 +164,11 @@ function ProjectsPageContent() {
       router.push('/dashboard/');
       return;
     }
-    router.push(`/dashboard/firma/?expandJobId=${jobId}`);
+    if (!isCategoryAllowed(job)) {
+      setCategoryWarningJob(job);
+      return;
+    }
+    router.push(`/dashboard/firma/?expandJobId=${job.id}`);
   }
 
   const filteredJobs = jobs
@@ -484,7 +513,7 @@ function ProjectsPageContent() {
 
                           <div className="flex flex-wrap gap-3 mt-5 pt-5 border-t border-gray-100">
                             <button
-                              onClick={() => handleBidClick(job.id)}
+                              onClick={() => handleBidClick(job)}
                               className="inline-flex items-center gap-1.5 text-sm py-2 px-4 rounded-xl font-medium bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors"
                             >
                               <Send className="w-4 h-4" />
@@ -545,6 +574,43 @@ function ProjectsPageContent() {
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                     onClick={(e) => e.stopPropagation()}
                   />
+                </div>
+              </div>
+            )}
+
+            {/* Upozorenje za kategoriju */}
+            {categoryWarningJob && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                <div className="bg-white dark:bg-ink-900 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-fade-in">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center shrink-0">
+                      <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-1">Ne pokrivate ovu kategoriju</h3>
+                      <p className="text-sm text-steel">
+                        Da biste poslali ponudu za posao <strong>{categoryWarningJob.title}</strong> u kategoriji{' '}
+                        <strong>{getCategory(categoryWarningJob.category_slug)?.name || categoryWarningJob.category_slug}</strong>,
+                        morate dodati tu uslugu u profilu svoje firme.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Link
+                      href="/dashboard/firma/profil/"
+                      onClick={() => setCategoryWarningJob(null)}
+                      className="inline-flex items-center justify-center gap-2 bg-brand-orange text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors"
+                    >
+                      Idi na Profil firme
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                    <button
+                      onClick={() => setCategoryWarningJob(null)}
+                      className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-semibold text-steel hover:bg-gray-100 dark:hover:bg-ink-800 transition-colors"
+                    >
+                      Zatvori
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

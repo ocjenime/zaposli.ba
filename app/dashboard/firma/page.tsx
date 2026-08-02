@@ -127,6 +127,7 @@ function FirmDashboardContent() {
   const [bidsLimit, setBidsLimit] = useState(0);
   const [canBid, setCanBid] = useState(true);
   const [loadingPlan, setLoadingPlan] = useState(true);
+  const [firmCategories, setFirmCategories] = useState<string[]>([]);
 
   const [activeTab, setActiveTab] = useState<'jobs' | 'bids'>('jobs');
 
@@ -170,6 +171,12 @@ function FirmDashboardContent() {
 
     setFirmId(data.id);
     setLoadingFirm(false);
+
+    const { data: catData } = await supabase
+      .from('firm_categories')
+      .select('category_slug')
+      .eq('firm_id', data.id);
+    setFirmCategories((catData as { category_slug: string }[] | null)?.map((c) => c.category_slug) || []);
 
     await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), loadPlan(data.id)]);
   }
@@ -247,8 +254,20 @@ function FirmDashboardContent() {
     setLoadingBids(false);
   }
 
-  async function submitBid(jobId: string) {
+  function isCategoryAllowed(job: Job) {
+    if (firmCategories.length === 0) return true; // legacy firms without categories
+    return firmCategories.includes(job.category_slug);
+  }
+
+  async function submitBid(job: Job) {
     if (!firmId) return;
+    if (!isCategoryAllowed(job)) {
+      const category = getCategory(job.category_slug);
+      setError(
+        `Ne možete slati ponudu za kategoriju "${category?.name || job.category_slug}". Idite na Profil firme i dodajte tu uslugu.`
+      );
+      return;
+    }
     const value = parseFloat(amount);
     if (isNaN(value) || value <= 0) {
       setError('Unesite ispravan iznos ponude.');
@@ -260,11 +279,11 @@ function FirmDashboardContent() {
     }
 
     setSubmitting(true);
-    setSubmitJobId(jobId);
+    setSubmitJobId(job.id);
     setError('');
 
     const { error: err } = await supabase.from('bids').insert({
-      job_id: jobId,
+      job_id: job.id,
       firm_id: firmId,
       amount: value,
       message: message.trim() || null,
@@ -576,6 +595,26 @@ function FirmDashboardContent() {
 
                             {isExpanded && !alreadyBid && (
                               <div className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in">
+                                {!isCategoryAllowed(job) && (
+                                  <div className="mb-4 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-4 text-sm text-amber-800">
+                                    <div className="flex items-start gap-3">
+                                      <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+                                      <div>
+                                        <p className="font-semibold mb-1">Ne pokrivate ovu kategoriju</p>
+                                        <p className="mb-2">
+                                          Da biste poslali ponudu za kategoriju <strong>"{getCategory(job.category_slug)?.name || job.category_slug}"</strong>,
+                                          prvo dodajte tu uslugu u profilu svoje firme.
+                                        </p>
+                                        <Link
+                                          href="/dashboard/firma/profil/"
+                                          className="inline-flex items-center gap-1.5 font-semibold text-amber-700 hover:underline"
+                                        >
+                                          Idi na Profil firme <ArrowRight className="w-4 h-4" />
+                                        </Link>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                                 <div className="bg-cloud dark:bg-ink-950 rounded-xl p-4 mb-4">
                                   <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
                                     {job.description}
@@ -621,8 +660,8 @@ function FirmDashboardContent() {
                                 </div>
                                 <div className="flex flex-wrap items-center gap-3">
                                   <button
-                                    onClick={() => submitBid(job.id)}
-                                    disabled={(submitting && submitJobId === job.id) || !canBid}
+                                    onClick={() => submitBid(job)}
+                                    disabled={(submitting && submitJobId === job.id) || !canBid || !isCategoryAllowed(job)}
                                     className="inline-flex items-center gap-2 btn-primary text-sm py-2.5 px-5 disabled:opacity-50 disabled:cursor-not-allowed"
                                   >
                                     <Send className="w-4 h-4" />
@@ -630,6 +669,8 @@ function FirmDashboardContent() {
                                       ? 'Slanje...'
                                       : !canBid
                                       ? 'Limit dostignut'
+                                      : !isCategoryAllowed(job)
+                                      ? 'Kategorija nije odabrana'
                                       : 'Pošalji ponudu'}
                                   </button>
                                   <button
