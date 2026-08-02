@@ -166,6 +166,7 @@ export default function AdminPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [search, setSearch] = useState('');
+  const [verificationFilter, setVerificationFilter] = useState<'all' | 'pending' | 'verified' | 'rejected' | 'unverified'>('all');
 
   const [savingVerified, setSavingVerified] = useState<string | null>(null);
   const [savingAdmin, setSavingAdmin] = useState<string | null>(null);
@@ -383,7 +384,6 @@ export default function AdminPage() {
       const { data, error } = await supabase
         .from('firms')
         .select('id, name, slug, city, email, verification_status, verification_submitted_at, verification_notes, verified, created_at')
-        .in('verification_status', ['pending', 'rejected'])
         .order('verification_submitted_at', { ascending: false });
       if (error) throw error;
       setVerifications((data as AdminVerification[]) || []);
@@ -512,7 +512,7 @@ export default function AdminPage() {
     await loadReports();
   }
 
-  async function updateVerification(firm: AdminVerification, action: 'approve' | 'reject', notes?: string) {
+  async function updateVerification(firm: AdminVerification, action: 'approve' | 'reject' | 'revoke', notes?: string) {
     setSavingVerification(firm.id);
     setError('');
     setSuccess('');
@@ -1129,72 +1129,122 @@ export default function AdminPage() {
 
               {activeTab === 'verifications' && (
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-                  <div className="p-4 border-b border-gray-100">
-                    <p className="text-sm text-steel">Firme koje su zatražile verifikaciju (na čekanju ili odbijene)</p>
+                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-steel">Verifikacija firmi</p>
+                    <div className="flex flex-wrap gap-2">
+                      {(['all', 'pending', 'verified', 'rejected', 'unverified'] as const).map((f) => (
+                        <button
+                          key={f}
+                          onClick={() => setVerificationFilter(f)}
+                          className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-colors ${
+                            verificationFilter === f
+                              ? 'bg-brand-orange text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          {f === 'all' ? 'Sve' : f === 'pending' ? 'Na čekanju' : f === 'verified' ? 'Verifikovane' : f === 'rejected' ? 'Odbijene' : 'Neobrađene'}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                   {loadingVerifications ? (
                     <div className="flex items-center justify-center py-12 text-steel">
                       <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje verifikacija...
                     </div>
-                  ) : verifications.length === 0 ? (
-                    <p className="p-6 text-sm text-steel text-center">Nema zahtjeva za verifikaciju.</p>
                   ) : (
-                    <div className="divide-y divide-gray-100">
-                      {verifications.map((v) => (
-                        <div
-                          key={v.id}
-                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-                        >
-                          <div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="font-medium text-gray-900">{v.name}</p>
-                              {v.verification_status === 'pending' && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
-                                  NA ČEKANJU
-                                </span>
-                              )}
-                              {v.verification_status === 'rejected' && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
-                                  ODBIJENA
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-steel">
-                              {v.city || '—'} · {v.email || '—'} · {formatDate(v.verification_submitted_at || v.created_at)}
-                            </p>
-                            {v.verification_notes && (
-                              <p className="text-xs text-steel mt-1">Napomena: {v.verification_notes}</p>
-                            )}
-                          </div>
-                          <div className="flex flex-wrap items-center gap-2">
-                            <Link
-                              href={`/firma-profil/?slug=${v.slug}`}
-                              className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    (() => {
+                      const filtered = verificationFilter === 'all'
+                        ? verifications
+                        : verifications.filter((v) => v.verification_status === verificationFilter);
+                      return filtered.length === 0 ? (
+                        <p className="p-6 text-sm text-steel text-center">Nema firmi u odabranom statusu.</p>
+                      ) : (
+                        <div className="divide-y divide-gray-100">
+                          {filtered.map((v) => (
+                            <div
+                              key={v.id}
+                              className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
                             >
-                              Profil
-                            </Link>
-                            {v.verification_status === 'pending' && (
-                              <>
-                                <button
-                                  onClick={() => updateVerification(v, 'approve', prompt('Napomena (opcionalno):') || undefined)}
-                                  disabled={savingVerification === v.id}
-                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                              <div>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <p className="font-medium text-gray-900">{v.name}</p>
+                                  {v.verification_status === 'pending' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
+                                      NA ČEKANJU
+                                    </span>
+                                  )}
+                                  {v.verification_status === 'verified' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                                      VERIFIKOVANA
+                                    </span>
+                                  )}
+                                  {v.verification_status === 'rejected' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                      ODBIJENA
+                                    </span>
+                                  )}
+                                  {v.verification_status === 'unverified' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                                      NEPOZNATO
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-steel">
+                                  {v.city || '—'} · {v.email || '—'} · {formatDate(v.verification_submitted_at || v.created_at)}
+                                </p>
+                                {v.verification_notes && (
+                                  <p className="text-xs text-steel mt-1">Napomena: {v.verification_notes}</p>
+                                )}
+                              </div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <Link
+                                  href={`/firma-profil/?slug=${v.slug}`}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                                 >
-                                  {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
-                                </button>
-                                <button
-                                  onClick={() => updateVerification(v, 'reject', prompt('Razlog odbijanja (obavezno):') || undefined)}
-                                  disabled={savingVerification === v.id}
-                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
-                                >
-                                  {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odbij'}
-                                </button>
-                              </>
-                            )}
-                          </div>
+                                  Profil
+                                </Link>
+                                {v.verification_status === 'pending' && (
+                                  <>
+                                    <button
+                                      onClick={() => updateVerification(v, 'approve', prompt('Napomena (opcionalno):') || undefined)}
+                                      disabled={savingVerification === v.id}
+                                      className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                    >
+                                      {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
+                                    </button>
+                                    <button
+                                      onClick={() => updateVerification(v, 'reject', prompt('Razlog odbijanja (obavezno):') || undefined)}
+                                      disabled={savingVerification === v.id}
+                                      className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+                                    >
+                                      {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odbij'}
+                                    </button>
+                                  </>
+                                )}
+                                {v.verification_status === 'verified' && (
+                                  <button
+                                    onClick={() => updateVerification(v, 'revoke', prompt('Razlog povlačenja (opcionalno):') || undefined)}
+                                    disabled={savingVerification === v.id}
+                                    className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors disabled:opacity-50"
+                                  >
+                                    {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Povuci verifikaciju'}
+                                  </button>
+                                )}
+                                {(v.verification_status === 'rejected' || v.verification_status === 'unverified') && (
+                                  <button
+                                    onClick={() => updateVerification(v, 'approve', prompt('Napomena (opcionalno):') || undefined)}
+                                    disabled={savingVerification === v.id}
+                                    className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50"
+                                  >
+                                    {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      );
+                    })()
                   )}
                 </div>
               )}

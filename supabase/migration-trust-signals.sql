@@ -169,27 +169,43 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET row_security = off
 AS $$
+DECLARE
+  target_status TEXT;
+  is_verified BOOLEAN;
 BEGIN
   IF NOT is_admin_user(auth.uid()) THEN
-    RAISE EXCEPTION 'Samo administrator može verifikovati firmu.';
+    RAISE EXCEPTION 'Samo administrator može verifikovati firmu. uid=%, is_admin=%', auth.uid(), is_admin_user(auth.uid());
   END IF;
 
-  IF action NOT IN ('approve', 'reject') THEN
+  IF action = 'approve' THEN
+    target_status := 'verified';
+    is_verified := true;
+  ELSIF action = 'reject' THEN
+    target_status := 'rejected';
+    is_verified := false;
+  ELSIF action = 'revoke' THEN
+    target_status := 'unverified';
+    is_verified := false;
+  ELSE
     RAISE EXCEPTION 'Nepoznata akcija: %', action;
   END IF;
 
   UPDATE public.firms
   SET
-    verification_status = CASE WHEN action = 'approve' THEN 'verified' ELSE 'rejected' END,
-    verified = (action = 'approve'),
-    verification_notes = notes,
-    verification_submitted_at = CASE WHEN action = 'approve' THEN verification_submitted_at ELSE verification_submitted_at END
+    verification_status = target_status,
+    verified = is_verified,
+    verification_notes = notes
   WHERE id = firm_id;
 
   RETURN FOUND;
 END;
 $$;
 
+GRANT EXECUTE ON FUNCTION public.is_admin_user(UUID) TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.verify_firm(UUID, TEXT, TEXT) TO anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- RLS: firm owners can reply to reviews on their firms
 -- ---------------------------------------------------------------------------
 -- RLS: firm owners can reply to reviews on their firms
 -- ---------------------------------------------------------------------------
