@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Uslovi korištenja. Zaposli.ba',
   description:
     'Uslovi korištenja platforme Zaposli.ba: prava i obaveze korisnika i firmi, plaćanje, odgovornost platforme i mjerodavno pravo BiH.',
-  alternates: { canonical: 'https://zaposli.ba/uslovi-koristenja/' },
+  alternates: { canonical: 'https://www.zaposli.ba/uslovi-koristenja/' },
 };
 
 const sections = [
