@@ -91,6 +91,7 @@ export default function Header() {
   }, [mobileMenuOpen]);
 
   const dashboardHref = isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/';
+  const profileHref = isFirmRole(role) ? '/dashboard/firma/profil/' : '/dashboard/profil/';
   const ctaHref = isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/';
   const ctaLabel = isAdmin ? 'Admin panel' : isFirmRole(role) ? 'Moja firma' : 'Objavi posao';
   const CtaIcon = isAdmin ? Shield : isFirmRole(role) ? Building2 : FilePlus;
@@ -134,9 +135,9 @@ export default function Header() {
                   </div>
                   {user && !isAdmin && !isFirmRole(role) && (
                     <Link
-                      href={dashboardHref}
+                      href={profileHref}
                       className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                        isActive(pathname, dashboardHref)
+                        isActive(pathname, profileHref)
                           ? 'text-brand-orange bg-orange-50'
                           : 'text-brand-orange bg-orange-50/60 hover:bg-orange-50 hover:text-brand-orange-dark'
                       }`}
@@ -244,7 +245,7 @@ export default function Header() {
                 <>
                   {user && !isAdmin && !isFirmRole(role) && (
                     <Link
-                      href={dashboardHref}
+                      href={profileHref}
                       className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-ink-800"
                       onClick={() => setMobileMenuOpen(false)}
                     >

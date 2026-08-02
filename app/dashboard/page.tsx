@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
-import { Plus, MapPin, ClipboardList, Loader2 } from 'lucide-react';
+import { Plus, MapPin, ClipboardList, Loader2, User } from 'lucide-react';
 
 interface Job {
   id: string;
@@ -126,7 +126,15 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Moji poslovi</h1>
-              <p className="text-steel text-sm">{user.email}</p>
+              <p className="text-steel text-sm flex items-center gap-2">
+                {user.email}
+                <Link
+                  href="/dashboard/profil/"
+                  className="inline-flex items-center gap-1 text-brand-orange hover:text-brand-orange-dark font-medium text-xs"
+                >
+                  <User className="w-3.5 h-3.5" /> Uredi profil
+                </Link>
+              </p>
             </div>
             <Link href="/objavi-projekat/" className="btn-primary text-sm py-2.5 px-4 inline-flex items-center gap-2">
               <Plus className="w-4 h-4" /> Objavi novi posao
