@@ -139,7 +139,43 @@ function PostProjectContent() {
     }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = async (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let { width, height } = img;
+        const maxDim = 1600;
+        if (width > maxDim || height > maxDim) {
+          const scale = maxDim / Math.max(width, height);
+          width = Math.round(width * scale);
+          height = Math.round(height * scale);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          resolve(file);
+          return;
+        }
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            resolve(file);
+            return;
+          }
+          const name = file.name.replace(/\.[^.]+$/, '.jpg') || 'image.jpg';
+          resolve(new File([blob], name, { type: 'image/jpeg', lastModified: Date.now() }));
+        }, 'image/jpeg', 0.8);
+      };
+      img.onerror = () => reject(new Error('Greška prilikom učitavanja slike.'));
+      img.src = url;
+    });
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     const selected = Array.from(e.target.files);
     const allowedTypes = ['image/jpeg', 'image/png'];
@@ -149,10 +185,27 @@ function PostProjectContent() {
       e.target.value = '';
       return;
     }
+
+    const MAX_SIZE = 2 * 1024 * 1024;
     const files = selected.slice(0, 5);
-    setImages(files);
-    setImagePreviews(files.map((file) => URL.createObjectURL(file)));
-    setError('');
+
+    try {
+      const processed = await Promise.all(
+        files.map(async (file) => {
+          const compressed = await compressImage(file);
+          if (compressed.size > MAX_SIZE) {
+            throw new Error(`Slika „${file.name}” i dalje ima ${(compressed.size / 1024 / 1024).toFixed(1)} MB nakon kompresije. Maksimalno dozvoljeno je 2 MB.`);
+          }
+          return compressed;
+        })
+      );
+      setImages(processed);
+      setImagePreviews(processed.map((file) => URL.createObjectURL(file)));
+      setError('');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Došlo je do greške prilikom obrade slika.');
+      e.target.value = '';
+    }
   };
 
   const removeImage = (index: number) => {
@@ -437,7 +490,7 @@ function PostProjectContent() {
                       <label htmlFor="job-images" className="cursor-pointer inline-flex flex-col items-center gap-2">
                         <Upload className="w-8 h-8 text-gray-400" />
                         <span className="text-sm text-gray-600 font-medium">Kliknite za upload fotografija</span>
-                        <span className="text-xs text-gray-400">Do 5 fotografija (JPG, JPEG, PNG)</span>
+                        <span className="text-xs text-gray-400">Do 5 fotografija (JPG, JPEG, PNG), max 2 MB po slici</span>
                       </label>
                     </div>
                     {imagePreviews.length > 0 && (
