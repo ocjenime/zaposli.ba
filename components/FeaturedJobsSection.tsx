@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Clock, ArrowRight, Sparkles } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, Sparkles, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
+import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import FeaturedBadge from './FeaturedBadge';
 
 interface Job {
@@ -45,6 +47,8 @@ interface FeaturedJobsSectionProps {
 export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: FeaturedJobsSectionProps) {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user, role } = useAuth();
+  const firmUser = isFirmRole(role);
 
   useEffect(() => {
     async function load() {
@@ -94,16 +98,19 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
 
         <div className="grid md:grid-cols-2 gap-5">
           {jobs.map((job) => (
-            <Link
+            <div
               key={job.id}
-              href={`/poslovi/?expandId=${job.id}`}
-              className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
+              className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col h-full"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-white text-brand-orange border border-gray-100">
+                  <Link
+                    href={`/poslovi/?category=${job.category_slug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-white text-brand-orange border border-gray-100 hover:bg-brand-orange hover:text-white hover:border-transparent transition-colors"
+                  >
                     {getCategory(job.category_slug)?.name || job.category_slug}
-                  </span>
+                  </Link>
                   <FeaturedBadge />
                 </div>
                 <span className="text-xs text-gray-400 bg-white px-2 py-1 rounded-md border border-gray-100">
@@ -111,11 +118,16 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
-                {job.title}
-              </h3>
+              <Link
+                href={`/poslovi/?expandId=${job.id}`}
+                className="block group/link"
+              >
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover/link:text-brand-orange transition-colors">
+                  {job.title}
+                </h3>
 
-              <p className="text-steel text-sm mb-4 line-clamp-2">{job.description}</p>
+                <p className="text-steel text-sm mb-4 line-clamp-2">{job.description}</p>
+              </Link>
 
               <div className="flex flex-wrap gap-4 text-xs text-gray-500 mb-4">
                 <div className="flex items-center gap-1.5">
@@ -130,13 +142,23 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 )}
               </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                <div className="font-bold text-brand-orange text-sm">{formatBudget(job)}</div>
-                <div className="flex items-center gap-1.5 text-xs text-steel bg-white px-2.5 py-1 rounded-lg border border-gray-100">
-                  <span>{job.bids_count} ponuda</span>
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="font-bold text-brand-orange text-sm">{formatBudget(job)}</div>
+                  <div className="flex items-center gap-1.5 text-xs text-steel bg-white px-2.5 py-1 rounded-lg border border-gray-100">
+                    <span>{job.bids_count} ponuda</span>
+                  </div>
                 </div>
+                <Link
+                  href={firmUser ? `/dashboard/firma/?expandJobId=${job.id}` : '/registracija-firme/'}
+                  onClick={(e) => e.stopPropagation()}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark px-3 py-1.5 rounded-lg transition-colors"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  {firmUser ? 'Pošalji ponudu' : 'Postani majstor'}
+                </Link>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

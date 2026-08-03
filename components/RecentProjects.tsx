@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { MapPin, Clock, ArrowRight, TrendingUp, Sparkles } from 'lucide-react';
+import { MapPin, Clock, ArrowRight, TrendingUp, Sparkles, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
+import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import FeaturedBadge from './FeaturedBadge';
 
 interface Job {
@@ -58,6 +60,8 @@ function timeAgo(dateString: string) {
 export default function RecentProjects() {
   const [projects, setProjects] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user, role } = useAuth();
+  const firmUser = isFirmRole(role);
 
   useEffect(() => {
     async function loadProjects() {
@@ -117,7 +121,7 @@ export default function RecentProjects() {
             </div>
             <div className="grid md:grid-cols-2 gap-5">
               {featured.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard key={project.id} project={project} firmUser={firmUser} />
               ))}
             </div>
           </div>
@@ -152,7 +156,7 @@ export default function RecentProjects() {
             ))
           ) : (
             normal.slice(0, 4).map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} firmUser={firmUser} />
             ))
           )}
         </div>
@@ -161,17 +165,18 @@ export default function RecentProjects() {
   );
 }
 
-function ProjectCard({ project }: { project: Job }) {
+function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean }) {
   return (
-    <Link
-      href={`/poslovi/?expandId=${project.id}`}
-      className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
-    >
+    <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col h-full">
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange">
+          <Link
+            href={`/poslovi/?category=${project.category_slug}`}
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-primary-50 text-brand-orange hover:bg-brand-orange hover:text-white transition-colors"
+          >
             {getCategoryName(project.category_slug)}
-          </span>
+          </Link>
           {isActiveFeatured(project) && <FeaturedBadge />}
         </div>
         <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
@@ -179,11 +184,16 @@ function ProjectCard({ project }: { project: Job }) {
         </span>
       </div>
 
-      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">
-        {project.title}
-      </h3>
+      <Link
+        href={`/poslovi/?expandId=${project.id}`}
+        className="block group/link"
+      >
+        <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover/link:text-brand-orange transition-colors">
+          {project.title}
+        </h3>
 
-      <p className="text-steel text-sm mb-4 line-clamp-2">{project.description}</p>
+        <p className="text-steel text-sm mb-4 line-clamp-2">{project.description}</p>
+      </Link>
 
       <div className="flex flex-wrap gap-4 text-xs text-gray-400 mb-4">
         <div className="flex items-center gap-1.5">
@@ -198,12 +208,22 @@ function ProjectCard({ project }: { project: Job }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-        <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
-        <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
-          <span>{project.bids_count} ponuda</span>
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
+          <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
+            <span>{project.bids_count} ponuda</span>
+          </div>
         </div>
+        <Link
+          href={firmUser ? `/dashboard/firma/?expandJobId=${project.id}` : '/registracija-firme/'}
+          onClick={(e) => e.stopPropagation()}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark px-3 py-1.5 rounded-lg transition-colors"
+        >
+          <Send className="w-3.5 h-3.5" />
+          {firmUser ? 'Pošalji ponudu' : 'Postani majstor'}
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
