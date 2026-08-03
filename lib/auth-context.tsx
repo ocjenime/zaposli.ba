@@ -32,6 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
+    const ROLE_KEY = 'zaposli_role';
+    const ADMIN_KEY = 'zaposli_is_admin';
 
     async function init() {
       setSessionLoading(true);
@@ -42,10 +44,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const u = data.session?.user ?? null;
         setUser(u);
         if (u) {
+          // Use cached role immediately so role-dependent UIs don't flash
+          const cachedRole = typeof window !== 'undefined' ? localStorage.getItem(ROLE_KEY) : null;
+          if (cachedRole) {
+            setRole(cachedRole as UserRole);
+          }
+          const cachedAdmin = typeof window !== 'undefined' ? localStorage.getItem(ADMIN_KEY) : null;
+          if (cachedAdmin !== null) {
+            setIsAdmin(cachedAdmin === 'true');
+          }
           await fetchRole(u.id);
         } else {
           setRole(null);
           setIsAdmin(false);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem(ROLE_KEY);
+            localStorage.removeItem(ADMIN_KEY);
+          }
           setRoleLoading(false);
         }
       } catch (err) {
@@ -77,6 +92,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         setRole(null);
         setIsAdmin(false);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(ROLE_KEY);
+          localStorage.removeItem(ADMIN_KEY);
+        }
       }
       setSessionLoading(false);
       setRoleLoading(false);
@@ -97,7 +116,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .maybeSingle();
       if (error) throw error;
-      setRole((data?.role as UserRole) ?? null);
+      const resolvedRole = (data?.role as UserRole) ?? null;
+      setRole(resolvedRole);
+      if (typeof window !== 'undefined') {
+        if (resolvedRole) {
+          localStorage.setItem('zaposli_role', resolvedRole);
+        } else {
+          localStorage.removeItem('zaposli_role');
+        }
+      }
 
       // is_admin is added by a later migration; if the column is missing,
       // do not fail the role lookup because of it.
@@ -109,8 +136,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (adminError) {
         console.warn('is_admin column not available, defaulting to false:', adminError.message);
         setIsAdmin(false);
+        if (typeof window !== 'undefined') localStorage.removeItem('zaposli_is_admin');
       } else {
-        setIsAdmin(adminData?.is_admin ?? false);
+        const resolvedAdmin = adminData?.is_admin ?? false;
+        setIsAdmin(resolvedAdmin);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('zaposli_is_admin', String(resolvedAdmin));
+        }
       }
     } catch (err) {
       console.error('fetchRole error:', err);
@@ -126,6 +158,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     setRole(null);
     setIsAdmin(false);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('zaposli_role');
+      localStorage.removeItem('zaposli_is_admin');
+    }
   };
 
   return (

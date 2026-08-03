@@ -216,7 +216,7 @@ function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean })
           </div>
         </div>
         <Link
-          href={firmUser ? `/dashboard/firma/?expandJobId=${project.id}` : '/registracija-firme/'}
+          href={firmUser ? `/dashboard/firma/?expandJobId=${project.id}` : '/registracija/'}
           onClick={(e) => e.stopPropagation()}
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark px-3 py-1.5 rounded-lg transition-colors"
         >
