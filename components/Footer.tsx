@@ -12,7 +12,7 @@ const footerLinks = {
     { name: 'Izdvojeni majstori', href: '/izdvojeni-majstori/' },
     { name: 'Savjeti', href: '/savjeti/' },
   ],
-  'Za majstore': [
+  'Za firme': [
     { name: 'Registracija', href: '/registracija/' },
     { name: 'Premium paketi', href: '/za-firme/' },
     { name: 'Aktivni poslovi', href: '/projekti/' },
@@ -33,8 +33,8 @@ export default function Footer() {
     <footer className="bg-ink text-[#ffffff]">
       {/* Glavni footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-10">
-          <div className="col-span-1 sm:col-span-2">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-10">
+          <div className="col-span-3 sm:col-span-3 md:col-span-2">
             <Link href="/" className="inline-flex items-center mb-5">
               <Logo variant="light" />
             </Link>
