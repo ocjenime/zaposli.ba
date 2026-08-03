@@ -7,7 +7,7 @@ import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   X, Loader2, AlertCircle, Check, Building2, Globe, FileText,
-  MapPin, Phone, Mail, Upload,
+  MapPin, Phone, Mail, Upload, Hash, Calendar,
 } from 'lucide-react';
 
 export interface AdminFirm {
@@ -23,6 +23,8 @@ export interface AdminFirm {
   verified: boolean;
   average_rating: number;
   review_count: number;
+  registration_number: string | null;
+  founded_at: string | null;
   created_at: string;
 }
 
@@ -49,6 +51,8 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [registrationNumber, setRegistrationNumber] = useState('');
+  const [foundedAt, setFoundedAt] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -69,6 +73,8 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
     setCity(firm.city || '');
     setPhone(firm.phone || '');
     setEmail(firm.email || '');
+    setRegistrationNumber(firm.registration_number || '');
+    setFoundedAt(firm.founded_at || '');
     setLogoUrl(firm.logo_url);
     setLogoPreview(firm.logo_url);
     setLogoFile(null);
@@ -214,6 +220,8 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
           city: city.trim() || null,
           phone: phone.trim() || null,
           email: email.trim() || null,
+          registration_number: registrationNumber.trim() || null,
+          founded_at: foundedAt || null,
           logo_url: newLogoUrl,
         })
         .eq('id', firm.id);
@@ -379,6 +387,40 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
                   className="w-full bg-cloud dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                   placeholder="firma@email.com"
                 />
+              </div>
+            </div>
+
+            <div className="bg-cloud dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                <Building2 className="w-4 h-4 text-brand-orange" />
+                Poslovni podaci
+              </h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Registracijski broj</label>
+                  <div className="relative">
+                    <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                    <input
+                      type="text"
+                      value={registrationNumber}
+                      onChange={(e) => setRegistrationNumber(e.target.value)}
+                      className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      placeholder="npr. 12345678"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Datum osnivanja</label>
+                  <div className="relative">
+                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                    <input
+                      type="date"
+                      value={foundedAt}
+                      onChange={(e) => setFoundedAt(e.target.value)}
+                      className="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-900 dark:text-white placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
 

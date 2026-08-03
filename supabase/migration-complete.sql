@@ -68,11 +68,15 @@ CREATE TABLE IF NOT EXISTS firms (
   verified BOOLEAN DEFAULT false,
   average_rating DECIMAL(3,2) DEFAULT 0,
   review_count INT DEFAULT 0,
+  registration_number TEXT,
+  founded_at DATE,
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
 ALTER TABLE firms ADD COLUMN IF NOT EXISTS average_rating DECIMAL(3,2) DEFAULT 0;
 ALTER TABLE firms ADD COLUMN IF NOT EXISTS review_count INT DEFAULT 0;
+ALTER TABLE firms ADD COLUMN IF NOT EXISTS registration_number TEXT;
+ALTER TABLE firms ADD COLUMN IF NOT EXISTS founded_at DATE;
 
 ALTER TABLE firms ENABLE ROW LEVEL SECURITY;
 

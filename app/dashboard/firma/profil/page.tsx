@@ -26,6 +26,8 @@ import {
   Globe,
   ImageIcon,
   Loader2,
+  Hash,
+  Calendar,
 } from 'lucide-react';
 
 interface FirmRow {
@@ -42,6 +44,8 @@ interface FirmRow {
   verification_status: 'unverified' | 'pending' | 'verified' | 'rejected';
   verification_submitted_at: string | null;
   verification_notes: string | null;
+  registration_number: string | null;
+  founded_at: string | null;
 }
 
 interface FirmCategoryRow {
@@ -71,6 +75,8 @@ export default function FirmProfileEditorPage() {
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [registrationNumber, setRegistrationNumber] = useState('');
+  const [foundedAt, setFoundedAt] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [categoryPrefs, setCategoryPrefs] = useState<Record<string, { notify: boolean; email: boolean }>>({});
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
@@ -109,7 +115,7 @@ export default function FirmProfileEditorPage() {
     try {
       const { data, error: firmError } = await supabase
         .from('firms')
-        .select('id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_submitted_at, verification_notes')
+        .select('id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_submitted_at, verification_notes, registration_number, founded_at')
         .eq('owner_id', user.id)
         .single();
 
@@ -127,6 +133,8 @@ export default function FirmProfileEditorPage() {
       setCity(typedFirm.city || '');
       setPhone(typedFirm.phone || '');
       setEmail(typedFirm.email || '');
+      setRegistrationNumber(typedFirm.registration_number || '');
+      setFoundedAt(typedFirm.founded_at || '');
       setLogoUrl(typedFirm.logo_url);
       setLogoPreview(typedFirm.logo_url);
 
@@ -400,6 +408,8 @@ export default function FirmProfileEditorPage() {
           city: city.trim() || null,
           phone: phone.trim() || null,
           email: email.trim() || null,
+          registration_number: registrationNumber.trim() || null,
+          founded_at: foundedAt || null,
           logo_url: newLogoUrl,
         })
         .eq('id', firm.id);
@@ -582,6 +592,41 @@ export default function FirmProfileEditorPage() {
                         className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                         placeholder="+387 61 123 456"
                       />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-cloud rounded-2xl p-5 border border-gray-100">
+                  <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <Building2 className="w-4 h-4 text-brand-orange" />
+                    Poslovni podaci
+                  </h3>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-900 mb-2">Registracijski broj</label>
+                      <div className="relative">
+                        <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                        <input
+                          type="text"
+                          value={registrationNumber}
+                          onChange={(e) => setRegistrationNumber(e.target.value)}
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                          placeholder="npr. 12345678"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-900 mb-2">Datum osnivanja</label>
+                      <div className="relative">
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                        <input
+                          type="date"
+                          value={foundedAt}
+                          onChange={(e) => setFoundedAt(e.target.value)}
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

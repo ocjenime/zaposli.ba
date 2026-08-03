@@ -22,6 +22,9 @@ import {
   AlertCircle,
   ImageIcon,
   X,
+  Hash,
+  Calendar,
+  Clock,
 } from 'lucide-react';
 
 interface ReviewerProfile {
@@ -57,6 +60,8 @@ interface FirmRow {
   verification_notes: string | null;
   average_rating: number | null;
   review_count: number | null;
+  registration_number: string | null;
+  founded_at: string | null;
   created_at: string;
 }
 
@@ -95,7 +100,7 @@ export default function FirmProfileContent() {
       const { data, error: firmError } = await supabase
         .from('firms')
         .select(
-          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
+          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, registration_number, founded_at, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
         )
         .eq('slug', slug)
         .single();
@@ -140,6 +145,19 @@ export default function FirmProfileContent() {
   function formatDate(date: string) {
     return new Date(date).toLocaleDateString('bs-BA', {
       day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  function formatYear(date: string | null) {
+    if (!date) return null;
+    return new Date(date).getFullYear().toString();
+  }
+
+  function formatMonthYear(date: string | null) {
+    if (!date) return null;
+    return new Date(date).toLocaleDateString('bs-BA', {
       month: 'long',
       year: 'numeric',
     });
@@ -410,6 +428,43 @@ export default function FirmProfileContent() {
                   </>
                 )}
 
+                <div className="bg-cloud rounded-2xl p-5 border border-gray-100 mb-8">
+                  <h2 className="text-lg font-bold text-gray-900 mb-4">Poslovni podaci</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0">
+                        <Calendar className="w-5 h-5 text-brand-orange" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-steel">Godina osnivanja</p>
+                        <p className="font-bold text-gray-900">
+                          {firm.founded_at ? formatYear(firm.founded_at) : 'Nije navedeno'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0">
+                        <Hash className="w-5 h-5 text-brand-orange" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-steel">Registracijski broj</p>
+                        <p className="font-bold text-gray-900">
+                          {firm.registration_number || 'Nije navedeno'}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shrink-0">
+                        <Clock className="w-5 h-5 text-brand-orange" />
+                      </div>
+                      <div>
+                        <p className="text-xs text-steel">Član Zaposli.ba</p>
+                        <p className="font-bold text-gray-900">{formatMonthYear(firm.created_at)}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 {portfolioImages.length > 0 && (
                   <>
                     <h2 className="text-xl font-bold text-gray-900 mb-4">Portfolio</h2>
@@ -581,6 +636,34 @@ export default function FirmProfileContent() {
                       ) : (
                         <span className="text-sm text-[#ffffff]/70">U provjeri</span>
                       )}
+                    </div>
+
+                    {firm.founded_at && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#ffffff]/60 text-sm flex items-center gap-2">
+                          <Calendar className="w-4 h-4" />
+                          Godina osnivanja
+                        </span>
+                        <span className="font-bold text-sm">{formatYear(firm.founded_at)}</span>
+                      </div>
+                    )}
+
+                    {firm.registration_number && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#ffffff]/60 text-sm flex items-center gap-2">
+                          <Hash className="w-4 h-4" />
+                          Reg. broj
+                        </span>
+                        <span className="font-bold text-sm">{firm.registration_number}</span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between items-center">
+                      <span className="text-[#ffffff]/60 text-sm flex items-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        Član od
+                      </span>
+                      <span className="font-bold text-sm">{formatMonthYear(firm.created_at)}</span>
                     </div>
                   </div>
                   <Link
