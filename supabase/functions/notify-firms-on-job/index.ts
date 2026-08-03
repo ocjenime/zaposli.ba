@@ -2,6 +2,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const FROM_EMAIL = Deno.env.get("FROM_EMAIL") || "Zaposli.ba <info@zaposli.ba>";
+const ADMIN_EMAIL = Deno.env.get("ADMIN_EMAIL") || "info@zaposli.ba";
 const SITE_URL = Deno.env.get("SITE_URL") || "https://www.zaposli.ba";
 
 interface JobRecord {
@@ -173,6 +174,50 @@ Deno.serve(async (req: Request) => {
     } catch (err) {
       console.error(`Email failed for ${firm.email}:`, err);
       results.push({ email: firm.email, status: "error", error: String(err) });
+    }
+  }
+
+  // Send a summary email to the admin address.
+  if (RESEND_API_KEY && ADMIN_EMAIL) {
+    try {
+      const adminUrl = `${SITE_URL}/admin/`;
+      const adminHtml = `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">
+          <div style="margin-bottom: 24px;">
+            <strong style="font-size: 20px; color: #f97316;">Zaposli.ba</strong>
+          </div>
+          <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">Novi posao objavljen</h1>
+          <p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px;">
+            Upravo je objavljen novi posao na platformi.
+          </p>
+          <div style="background: #f8f8fb; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+            <p style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">${job.title}</p>
+            <p style="margin: 0 0 12px; font-size: 14px; color: #555; line-height: 1.5;">${job.description ? job.description.slice(0, 220) + (job.description.length > 220 ? "..." : "") : ""}</p>
+            <p style="margin: 0; font-size: 14px; color: #555;">
+              <strong>Kategorija:</strong> ${categoryName}<br>
+              <strong>Grad:</strong> ${job.city || "nepoznato"}<br>
+              <strong>Budžet:</strong> ${formatBudget(job.budget_mode, job.budget_min, job.budget_max)}<br>
+              <strong>Firmi obaviješteno:</strong> ${recipients.length}
+            </p>
+          </div>
+          <a href="${adminUrl}" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Otvori admin panel</a>
+        </div>
+      `;
+      await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `Novi posao objavljen: ${job.title}`,
+          html: adminHtml,
+        }),
+      });
+    } catch (err) {
+      console.error("Admin notification failed:", err);
     }
   }
 
