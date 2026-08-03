@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Star, MapPin } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
@@ -119,11 +120,16 @@ export default function FeaturedWorkers() {
                 className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
               >
               {firm.logo_url ? (
-                <img
-                  src={firm.logo_url}
-                  alt={firm.name}
-                  className="w-16 h-16 rounded-2xl object-cover mx-auto mb-4 border border-gray-100"
-                />
+                <div className="relative w-16 h-16 mx-auto mb-4">
+                  <Image
+                    src={firm.logo_url}
+                    alt={firm.name}
+                    fill
+                    sizes="64px"
+                    className="rounded-2xl object-cover border border-gray-100"
+                    unoptimized
+                  />
+                </div>
               ) : (
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-extrabold text-xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
                   {getInitials(firm.name)}

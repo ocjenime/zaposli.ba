@@ -2,6 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   MapPin, Clock, ArrowRight, Loader2, Send,
@@ -604,8 +605,16 @@ function ProjectsPageContent() {
                                       key={img.id}
                                       onClick={() => setSelectedImage({ url: img.image_url, title: job.title })}
                                       className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
+                                      aria-label={`Pogledaj fotografiju posla: ${job.title}`}
                                     >
-                                      <img src={img.image_url} alt={`Fotografija posla: ${job.title}`} className="w-full h-full object-cover" />
+                                      <Image
+                                        src={img.image_url}
+                                        alt={`Fotografija posla: ${job.title}`}
+                                        fill
+                                        sizes="(max-width: 640px) 33vw, 25vw"
+                                        className="object-cover"
+                                        unoptimized
+                                      />
                                     </button>
                                   ))}
                                 </div>
@@ -655,11 +664,14 @@ function ProjectsPageContent() {
                   <X className="w-5 h-5" />
                 </button>
                 <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
-                  <img
+                  <Image
                     src={selectedImage.url}
                     alt={`Uvećana fotografija posla: ${selectedImage.title}`}
+                    width={1200}
+                    height={800}
                     className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
                     onClick={(e) => e.stopPropagation()}
+                    unoptimized
                   />
                 </div>
               </div>

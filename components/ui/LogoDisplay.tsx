@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getInitials } from '@/lib/initials';
 
 interface LogoDisplayProps {
@@ -14,6 +15,13 @@ const sizeClasses: Record<string, string> = {
   md: 'w-16 h-16 text-xl',
   lg: 'w-24 h-24 text-3xl',
   xl: 'w-32 h-32 text-4xl',
+};
+
+const sizePixels: Record<string, string> = {
+  sm: '40px',
+  md: '64px',
+  lg: '96px',
+  xl: '128px',
 };
 
 const roundedClasses: Record<string, string> = {
@@ -38,11 +46,14 @@ export function LogoDisplay({
   if (src) {
     return (
       <div className={containerClasses}>
-        <img
+        <Image
           src={src}
           alt={alt || name}
-          className="w-full h-full object-contain p-1.5"
+          fill
+          sizes={sizePixels[size]}
+          className="object-contain p-1.5"
           loading="lazy"
+          unoptimized
         />
       </div>
     );

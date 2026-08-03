@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface LogoProps {
   variant?: 'dark' | 'light';
   className?: string;
@@ -5,12 +7,14 @@ interface LogoProps {
 
 export function LogoMark({ className = 'h-9 w-auto' }: { className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src="/images/logo-mark.png"
       alt=""
-      className={className}
+      width={40}
+      height={40}
+      className={`${className} object-contain`}
       aria-hidden="true"
+      priority
     />
   );
 }
