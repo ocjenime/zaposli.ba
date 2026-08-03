@@ -84,7 +84,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
             <h2 className="text-xl md:text-2xl font-bold text-gray-900">Istaknuti poslovi</h2>
           </div>
           <Link
-            href={categorySlug ? `/projekti/?category=${categorySlug}` : '/projekti/'}
+            href={categorySlug ? `/poslovi/?category=${categorySlug}` : '/poslovi/'}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors"
           >
             Svi istaknuti poslovi
@@ -96,7 +96,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
           {jobs.map((job) => (
             <Link
               key={job.id}
-              href={`/projekti/?expandId=${job.id}`}
+              href={`/poslovi/?expandId=${job.id}`}
               className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
             >
               <div className="flex justify-between items-start mb-3">

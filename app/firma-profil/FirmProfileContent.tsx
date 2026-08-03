@@ -269,7 +269,7 @@ export default function FirmProfileContent() {
             <h1 className="text-2xl font-bold text-gray-900 mb-2">Profil nije pronađen</h1>
             <p className="text-steel mb-6">{error || 'Tražena firma ne postoji.'}</p>
             <Link
-              href="/projekti/"
+              href="/poslovi/"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-semibold"
             >
               Pogledaj poslove
@@ -302,7 +302,7 @@ export default function FirmProfileContent() {
       <main className="flex-grow">
         <Breadcrumbs
           items={[
-            { name: 'Firme', href: '/projekti/' },
+            { name: 'Firme', href: '/poslovi/' },
             { name: firm.name },
           ]}
         />

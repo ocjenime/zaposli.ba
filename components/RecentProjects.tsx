@@ -101,7 +101,7 @@ export default function RecentProjects() {
             </h2>
           </div>
           <Link
-            href="/projekti/"
+            href="/poslovi/"
             className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group whitespace-nowrap"
           >
             Svi poslovi
@@ -164,7 +164,7 @@ export default function RecentProjects() {
 function ProjectCard({ project }: { project: Job }) {
   return (
     <Link
-      href={`/projekti/?expandId=${project.id}`}
+      href={`/poslovi/?expandId=${project.id}`}
       className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer block"
     >
       <div className="flex justify-between items-start mb-3">
