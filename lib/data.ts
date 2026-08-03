@@ -2,7 +2,7 @@ import {
   BrickWall, Droplets, Zap, Paintbrush, Home, Hammer, TreePine,
   Shovel, Thermometer, Shield, Sparkles, Siren, Layers, KeySquare,
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
-  Waves, Flame, type LucideIcon,
+  Waves, Flame, Wrench, LayoutGrid, type LucideIcon,
 } from 'lucide-react';
 
 /* ---------------------------------- KATEGORIJE ---------------------------------- */
@@ -68,7 +68,7 @@ export const categories: Category[] = [
   },
   {
     name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
-    profession: 'Keramičar', icon: Hammer,
+    profession: 'Keramičar', icon: LayoutGrid,
     description: 'Postavljanje keramike, laminata i parketa',
     count: 420, priceRange: '15-35 KM/m²', priceNote: 'postavljanje',
     group: 'Građevina i završni radovi',
@@ -97,6 +97,22 @@ export const categories: Category[] = [
     count: 180, priceRange: '10-30 KM/m³', priceNote: 'sa odvozom',
     group: 'Građevina i završni radovi',
     services: ['Rušenje objekata', 'Odvoz šuta', 'Čišćenje gradilišta', 'Rušenje stabala'],
+  },
+  {
+    name: 'Varioce', slug: 'varioce', seoSlug: 'varilac',
+    profession: 'Varilac', icon: Wrench,
+    description: 'Zavarivanje metala, konstrukcija, ograda, reparacija i montaža čeličnih elemenata',
+    count: 160, priceRange: '25-60 KM/h', priceNote: 'ili po poslu',
+    group: 'Građevina i završni radovi',
+    services: ['Zavarivanje metala', 'Izrada ograda', 'Konstrukcije', 'Reparacija', 'Montaža čeličnih elemenata'],
+  },
+  {
+    name: 'Tesarski radovi', slug: 'tesarski-radovi', seoSlug: 'tesar',
+    profession: 'Tesar', icon: Hammer,
+    description: 'Tesarski radovi, drvene konstrukcije, skele, podovi, stropovi i krovne stanje',
+    count: 200, priceRange: '20-50 KM/h', priceNote: 'ili po poslu',
+    group: 'Građevina i završni radovi',
+    services: ['Drvene konstrukcije', 'Skele', 'Drveni podovi', 'Stropovi', 'Krovne stanje', 'Tesarska montaža'],
   },
   // Instalacije
   {
