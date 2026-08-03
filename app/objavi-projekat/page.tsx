@@ -48,6 +48,43 @@ function PostProjectContent() {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
+  // Auto-save form progress to localStorage
+  const STORAGE_KEY = 'zaposli-objavi-posao';
+
+  useEffect(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) : null;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.formData) {
+          setFormData((prev) => ({ ...prev, ...parsed.formData }));
+        }
+        if (parsed.step && parsed.step >= 1 && parsed.step <= 3) {
+          setStep(parsed.step);
+        }
+      }
+    } catch {
+      // ignore corrupt saved data
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            formData,
+            step,
+            savedAt: new Date().toISOString(),
+          })
+        );
+      }
+    } catch {
+      // ignore storage errors
+    }
+  }, [formData, step]);
+
   useEffect(() => {
     const serviceParam = searchParams.get('service');
     const cityParam = searchParams.get('city');
@@ -316,6 +353,9 @@ function PostProjectContent() {
 
     setSubmitting(false);
     setSubmitted(true);
+    try {
+      if (typeof window !== 'undefined') localStorage.removeItem(STORAGE_KEY);
+    } catch {}
   };
 
   if (loading || !user) return (
@@ -372,7 +412,7 @@ function PostProjectContent() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
               <button
-                onClick={() => { setSubmitted(false); setNotifiedCount(null); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); }}
+                onClick={() => { setSubmitted(false); setNotifiedCount(null); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); try { if (typeof window !== 'undefined') localStorage.removeItem(STORAGE_KEY); } catch {} }}
                 className="btn-primary"
               >
                 Objavite još jedan posao
@@ -538,9 +578,10 @@ function PostProjectContent() {
                             <button
                               type="button"
                               onClick={() => removeImage(index)}
+                              aria-label={`Ukloni fotografiju ${index + 1}`}
                               className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-red-600"
                             >
-                              <X className="w-4 h-4" />
+                              <X className="w-4 h-4" aria-hidden="true" />
                             </button>
                           </div>
                         ))}

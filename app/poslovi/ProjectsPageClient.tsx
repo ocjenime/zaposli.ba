@@ -339,9 +339,10 @@ function ProjectsPageContent() {
                       {search && (
                         <button
                           onClick={() => setSearch('')}
+                          aria-label="Očisti pretragu"
                           className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
                       )}
                     </div>
@@ -438,30 +439,30 @@ function ProjectsPageContent() {
                 {activeFiltersCount > 0 && (
                   <div className="flex items-start md:items-center justify-between gap-3 pt-3 mt-3 border-t border-gray-200/60">
                     <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1">
-                      {search && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                          {search}
-                          <button onClick={() => setSearch('')} className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                        </span>
-                      )}
-                      {categoryFilter && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                          {getCategory(categoryFilter)?.name || categoryFilter}
-                          <button onClick={() => setCategoryFilter('')} className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                        </span>
-                      )}
-                      {cityFilter && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                          {cityFilter}
-                          <button onClick={() => setCityFilter('')} className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                        </span>
-                      )}
-                      {(minBudget || maxBudget) && (
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                          {minBudget || '0'} – {maxBudget || '∞'} KM
-                          <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                        </span>
-                      )}
+                        {search && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
+                            {search}
+                            <button onClick={() => setSearch('')} aria-label="Ukloni pretragu" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
+                          </span>
+                        )}
+                        {categoryFilter && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
+                            {getCategory(categoryFilter)?.name || categoryFilter}
+                            <button onClick={() => setCategoryFilter('')} aria-label="Ukloni filter kategorije" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
+                          </span>
+                        )}
+                        {cityFilter && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
+                            {cityFilter}
+                            <button onClick={() => setCityFilter('')} aria-label="Ukloni filter grada" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
+                          </span>
+                        )}
+                        {(minBudget || maxBudget) && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
+                            {minBudget || '0'} – {maxBudget || '∞'} KM
+                            <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} aria-label="Ukloni filter budžeta" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
+                          </span>
+                        )}
                     </div>
                     <button
                       onClick={clearFilters}
