@@ -12,6 +12,7 @@ import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
+import { isOnline, formatLastActive } from '@/lib/hooks/useFirmActivityHeartbeat';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   MapPin,
@@ -62,6 +63,7 @@ interface FirmRow {
   review_count: number | null;
   registration_number: string | null;
   founded_at: string | null;
+  last_active_at: string | null;
   created_at: string;
 }
 
@@ -100,7 +102,7 @@ export default function FirmProfileContent() {
       const { data, error: firmError } = await supabase
         .from('firms')
         .select(
-          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, registration_number, founded_at, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
+          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, registration_number, founded_at, last_active_at, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
         )
         .eq('slug', slug)
         .single();
@@ -380,6 +382,16 @@ export default function FirmProfileContent() {
                       {firm.city}
                     </span>
                   )}
+                  <span className="flex items-center gap-1.5">
+                    <span
+                      className={`w-2.5 h-2.5 rounded-full ${
+                        isOnline(firm.last_active_at) ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
+                      }`}
+                    />
+                    {isOnline(firm.last_active_at)
+                      ? 'Online sada'
+                      : `Zadnji put online: ${formatLastActive(firm.last_active_at)}`}
+                  </span>
                 </div>
               </div>
             </div>

@@ -20,6 +20,7 @@ import {
   getResetCountdownText,
   formatDateTime,
 } from '@/lib/subscriptions';
+import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
 import {
   MapPin,
   Tag,
@@ -118,6 +119,8 @@ function FirmDashboardContent() {
 
   const [expandedJob, setExpandedJob] = useState<string | null>(null);
   const [amount, setAmount] = useState('');
+
+  useFirmActivityHeartbeat(firmId);
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitJobId, setSubmitJobId] = useState<string | null>(null);

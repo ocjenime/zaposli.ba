@@ -33,8 +33,8 @@ export default function Footer() {
     <footer className="bg-ink text-[#ffffff]">
       {/* Glavni footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-10">
-          <div className="col-span-3 sm:col-span-3 md:col-span-2">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-10">
+          <div className="col-span-2 md:col-span-2">
             <Link href="/" className="inline-flex items-center mb-5">
               <Logo variant="light" />
             </Link>
@@ -46,21 +46,24 @@ export default function Footer() {
             </p>
           </div>
 
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">{category}</h3>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link.name}>
-                    <Link href={link.href} className="text-gray-400 hover:text-[#ffffff] text-sm transition-colors inline-flex items-center gap-1 group">
-                      {link.name}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {Object.entries(footerLinks).map(([category, links], index) => {
+            const isLast = index === Object.keys(footerLinks).length - 1;
+            return (
+              <div key={category} className={`${isLast ? 'col-span-2 md:col-span-1 flex flex-col items-center md:items-start' : 'col-span-1 md:col-span-1'}`}>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">{category}</h3>
+                <ul className={`space-y-2.5 ${isLast ? 'text-center md:text-left' : ''}`}>
+                  {links.map((link) => (
+                    <li key={link.name}>
+                      <Link href={link.href} className="text-gray-400 hover:text-[#ffffff] text-sm transition-colors inline-flex items-center gap-1 group leading-tight">
+                        {link.name}
+                        <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
 

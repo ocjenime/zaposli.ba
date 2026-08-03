@@ -11,6 +11,7 @@ import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   ArrowLeft,
@@ -46,6 +47,7 @@ interface FirmRow {
   verification_notes: string | null;
   registration_number: string | null;
   founded_at: string | null;
+  last_active_at: string | null;
 }
 
 interface FirmCategoryRow {
@@ -90,6 +92,8 @@ export default function FirmProfileEditorPage() {
   const [success, setSuccess] = useState(false);
   const [verificationLoading, setVerificationLoading] = useState(false);
   const [verificationMessage, setVerificationMessage] = useState('');
+
+  useFirmActivityHeartbeat(firm?.id || null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const portfolioInputRef = useRef<HTMLInputElement>(null);
