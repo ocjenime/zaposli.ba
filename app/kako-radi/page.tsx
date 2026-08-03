@@ -158,19 +158,24 @@ export default function HowItWorksPage() {
               <p className="text-steel">Objavite posao besplatno i neobavezujuće. Dobijte ponude, uporedite i odaberite.</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 relative">
-              <div className="hidden md:block absolute top-12 left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-brand-orange/30 via-brand-orange/30 to-brand-orange/30" />
+            <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
+              <div className="hidden md:block absolute top-[2.375rem] left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-brand-orange/20 via-brand-orange/40 to-brand-orange/20" />
               {clientSteps.map((step, index) => (
-                <div key={step.title} className="relative text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary-50 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10 border-4 border-white shadow-lg">
-                    <step.icon className="w-8 h-8 text-brand-orange" />
+                <div
+                  key={step.title}
+                  className="relative bg-cloud/40 rounded-2xl p-6 lg:p-8 border border-gray-100 text-center transition-shadow hover:shadow-md"
+                >
+                  <div className="relative inline-flex mb-5">
+                    <div className="w-16 h-16 bg-gradient-to-br from-primary-50 to-orange-100 rounded-2xl flex items-center justify-center border-4 border-white shadow-lg">
+                      <step.icon className="w-8 h-8 text-brand-orange" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold border-2 border-white shadow-md">
+                      {index + 1}
+                    </div>
                   </div>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 bg-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold -translate-y-1 z-20">
-                    {index + 1}
-                  </div>
-                  <div className="text-sm font-bold text-brand-orange mb-2">KORAK {index + 1}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-                  <p className="text-steel">{step.description}</p>
+                  <div className="text-xs font-bold uppercase tracking-wider text-brand-orange mb-2">Korak {index + 1}</div>
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
+                  <p className="text-sm lg:text-base text-steel leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
@@ -191,19 +196,24 @@ export default function HowItWorksPage() {
               <p className="text-steel">Registrujte se, pronađite poslove i širite klijentelu bez velikih ulaganja.</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 relative">
-              <div className="hidden md:block absolute top-12 left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-brand-orange/30 via-brand-orange/30 to-brand-orange/30" />
+            <div className="grid md:grid-cols-3 gap-6 lg:gap-8 relative">
+              <div className="hidden md:block absolute top-[2.375rem] left-[16.67%] right-[16.67%] h-0.5 bg-gradient-to-r from-brand-orange/20 via-brand-orange/40 to-brand-orange/20" />
               {firmSteps.map((step, index) => (
-                <div key={step.title} className="relative text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-white to-primary-50 rounded-full flex items-center justify-center mx-auto mb-6 relative z-10 border-4 border-cloud shadow-lg">
-                    <step.icon className="w-8 h-8 text-brand-orange" />
+                <div
+                  key={step.title}
+                  className="relative bg-white rounded-2xl p-6 lg:p-8 border border-gray-100 text-center transition-shadow hover:shadow-md"
+                >
+                  <div className="relative inline-flex mb-5">
+                    <div className="w-16 h-16 bg-gradient-to-br from-white to-primary-50 rounded-2xl flex items-center justify-center border-4 border-cloud shadow-lg">
+                      <step.icon className="w-8 h-8 text-brand-orange" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold border-2 border-cloud shadow-md">
+                      {index + 1}
+                    </div>
                   </div>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-8 bg-brand-orange text-white rounded-full flex items-center justify-center text-sm font-bold -translate-y-1 z-20">
-                    {index + 1}
-                  </div>
-                  <div className="text-sm font-bold text-brand-orange mb-2">KORAK {index + 1}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
-                  <p className="text-steel">{step.description}</p>
+                  <div className="text-xs font-bold uppercase tracking-wider text-brand-orange mb-2">Korak {index + 1}</div>
+                  <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-2">{step.title}</h3>
+                  <p className="text-sm lg:text-base text-steel leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
