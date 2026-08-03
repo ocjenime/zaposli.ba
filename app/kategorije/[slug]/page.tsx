@@ -145,7 +145,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                       <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                      {cities.map((city) => (
+                      {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
                         <Link
                           key={city.slug}
                           href={`/usluge/${cat.seoSlug}-${city.slug}/`}

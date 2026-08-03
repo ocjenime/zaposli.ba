@@ -14,7 +14,7 @@ const footerLinks = {
   ],
   'Za firme': [
     { name: 'Registracija', href: '/registracija/' },
-    { name: 'Premium paketi', href: '/za-firme/' },
+    { name: 'Paketi', href: '/premium-paketi/' },
     { name: 'Aktivni poslovi', href: '/poslovi/' },
     { name: 'Podrška (FAQ)', href: '/faq/' },
   ],

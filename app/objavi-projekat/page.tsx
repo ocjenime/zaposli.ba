@@ -11,7 +11,7 @@ import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 
 const categories = allCategories.filter((c) => !c.noSeo);
-const cities = allCities.map((c) => c.name);
+const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'bs'));
 
 function findCategoryByService(service: string) {
   const s = service.toLowerCase();
