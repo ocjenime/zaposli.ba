@@ -99,10 +99,14 @@ CREATE POLICY "firms_update_own" ON firms
 CREATE TABLE IF NOT EXISTS firm_categories (
   firm_id UUID REFERENCES firms(id) ON DELETE CASCADE,
   category_slug TEXT NOT NULL,
+  notify_enabled BOOLEAN DEFAULT true,
+  email_enabled BOOLEAN DEFAULT true,
   PRIMARY KEY (firm_id, category_slug)
 );
 
 ALTER TABLE firm_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE firm_categories ADD COLUMN IF NOT EXISTS notify_enabled BOOLEAN DEFAULT true;
+ALTER TABLE firm_categories ADD COLUMN IF NOT EXISTS email_enabled BOOLEAN DEFAULT true;
 
 DROP POLICY IF EXISTS "fc_select_public" ON firm_categories;
 CREATE POLICY "fc_select_public" ON firm_categories

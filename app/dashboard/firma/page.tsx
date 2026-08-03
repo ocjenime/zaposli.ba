@@ -39,6 +39,9 @@ import {
   ArrowRight,
   Settings,
   Timer,
+  Bell,
+  Mail,
+  Save,
 } from 'lucide-react';
 
 interface Job {
@@ -131,6 +134,11 @@ function FirmDashboardContent() {
   const [canBid, setCanBid] = useState(true);
   const [loadingPlan, setLoadingPlan] = useState(true);
   const [firmCategories, setFirmCategories] = useState<string[]>([]);
+  const [categoryPrefs, setCategoryPrefs] = useState<
+    Record<string, { notify_enabled: boolean; email_enabled: boolean }>
+  >({});
+  const [savingPrefs, setSavingPrefs] = useState(false);
+  const [prefsSaved, setPrefsSaved] = useState(false);
 
   const [activeTab, setActiveTab] = useState<'jobs' | 'bids'>('jobs');
 
@@ -177,9 +185,19 @@ function FirmDashboardContent() {
 
     const { data: catData } = await supabase
       .from('firm_categories')
-      .select('category_slug')
+      .select('category_slug, notify_enabled, email_enabled')
       .eq('firm_id', data.id);
-    setFirmCategories((catData as { category_slug: string }[] | null)?.map((c) => c.category_slug) || []);
+    const rows = (catData as { category_slug: string; notify_enabled: boolean; email_enabled: boolean }[] | null) || [];
+    setFirmCategories(rows.map((c) => c.category_slug));
+    setCategoryPrefs(
+      rows.reduce((acc, c) => {
+        acc[c.category_slug] = {
+          notify_enabled: c.notify_enabled !== false,
+          email_enabled: c.email_enabled !== false,
+        };
+        return acc;
+      }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
+    );
 
     await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), loadPlan(data.id)]);
   }
@@ -197,6 +215,44 @@ function FirmDashboardContent() {
     } finally {
       setLoadingPlan(false);
     }
+  }
+
+  async function saveCategoryPrefs() {
+    if (!firmId) return;
+    setSavingPrefs(true);
+    setPrefsSaved(false);
+    setError('');
+    try {
+      const rows = firmCategories.map((slug) => ({
+        firm_id: firmId,
+        category_slug: slug,
+        notify_enabled: categoryPrefs[slug]?.notify_enabled !== false,
+        email_enabled: categoryPrefs[slug]?.email_enabled !== false,
+      }));
+      const { error: upsertError } = await supabase.from('firm_categories').upsert(rows, {
+        onConflict: 'firm_id,category_slug',
+      });
+      if (upsertError) {
+        setError('Greška pri spremanju postavki obavještenja.');
+      } else {
+        setPrefsSaved(true);
+        setTimeout(() => setPrefsSaved(false), 3000);
+      }
+    } catch (err) {
+      setError('Došlo je do greške pri spremanju postavki obavještenja.');
+    } finally {
+      setSavingPrefs(false);
+    }
+  }
+
+  function togglePref(slug: string, key: 'notify_enabled' | 'email_enabled') {
+    setCategoryPrefs((prev) => ({
+      ...prev,
+      [slug]: {
+        ...prev[slug],
+        [key]: !prev[slug]?.[key],
+      },
+    }));
   }
 
   function isActiveFeatured(job: Job) {
@@ -258,8 +314,7 @@ function FirmDashboardContent() {
   }
 
   function isCategoryAllowed(job: Job) {
-    if (firmCategories.length === 0) return true; // legacy firms without categories
-    return firmCategories.includes(job.category_slug);
+    return firmCategories.length > 0 && firmCategories.includes(job.category_slug);
   }
 
   async function submitBid(job: Job) {
@@ -606,10 +661,15 @@ function FirmDashboardContent() {
                                     <div className="flex items-start gap-3">
                                       <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
                                       <div>
-                                        <p className="font-semibold mb-1">Ne pokrivate ovu kategoriju</p>
+                                        <p className="font-semibold mb-1">
+                                          {firmCategories.length === 0
+                                            ? 'Nemate odabranih kategorija'
+                                            : 'Ne pokrivate ovu kategoriju'}
+                                        </p>
                                         <p className="mb-2">
-                                          Da biste poslali ponudu za kategoriju <strong>"{getCategory(job.category_slug)?.name || job.category_slug}"</strong>,
-                                          prvo dodajte tu uslugu u profilu svoje firme.
+                                          {firmCategories.length === 0
+                                            ? 'Prije slanja ponude morate u profilu firme odabrati kategorije koje pokrivate.'
+                                            : `Da biste poslali ponudu za kategoriju "${getCategory(job.category_slug)?.name || job.category_slug}", prvo dodajte tu uslugu u profilu svoje firme.`}
                                         </p>
                                         <Link
                                           href="/dashboard/firma/profil/"
@@ -781,6 +841,87 @@ function FirmDashboardContent() {
                   )}
                 </section>
               )}
+
+              {/* Notification preferences */}
+              <section className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+                    <Bell className="w-5 h-5 text-brand-orange" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-gray-900 dark:text-white">Postavke obavještenja</h3>
+                    <p className="text-xs text-steel">Odaberite kako želite primati obavještenja po kategoriji.</p>
+                  </div>
+                </div>
+                {firmCategories.length === 0 ? (
+                  <p className="text-sm text-steel py-4">
+                    Nemate odabranih kategorija. Idite na{' '}
+                    <Link href="/dashboard/firma/profil/" className="text-brand-orange hover:underline">
+                      Profil firme
+                    </Link>{' '}
+                    da biste odabrali kategorije.
+                  </p>
+                ) : (
+                  <div className="space-y-3 mt-4">
+                    {firmCategories.map((slug) => {
+                      const category = getCategory(slug);
+                      const prefs = categoryPrefs[slug] || { notify_enabled: true, email_enabled: true };
+                      return (
+                        <div
+                          key={slug}
+                          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 border-b border-gray-100 dark:border-ink-800 last:border-b-0"
+                        >
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
+                            {category?.name || slug}
+                          </span>
+                          <div className="flex items-center gap-4">
+                            <label className="flex items-center gap-2 text-sm text-steel cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={prefs.notify_enabled}
+                                onChange={() => togglePref(slug, 'notify_enabled')}
+                                className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
+                              />
+                              <Bell className="w-4 h-4" />
+                              In-app
+                            </label>
+                            <label className="flex items-center gap-2 text-sm text-steel cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={prefs.email_enabled}
+                                onChange={() => togglePref(slug, 'email_enabled')}
+                                className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
+                              />
+                              <Mail className="w-4 h-4" />
+                              Email
+                            </label>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <div className="flex items-center gap-3 pt-2">
+                      <button
+                        onClick={saveCategoryPrefs}
+                        disabled={savingPrefs}
+                        className="inline-flex items-center gap-2 bg-brand-orange text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
+                      >
+                        {savingPrefs ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" /> Spremanje...
+                          </>
+                        ) : (
+                          <>
+                            <Save className="w-4 h-4" /> Spremi postavke
+                          </>
+                        )}
+                      </button>
+                      {prefsSaved && (
+                        <span className="text-sm text-green-700 font-medium">Postavke su spremljene.</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </section>
             </>
           )}
         </div>

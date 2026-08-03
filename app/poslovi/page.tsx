@@ -173,8 +173,7 @@ function ProjectsPageContent() {
   }
 
   function isCategoryAllowed(job: Job) {
-    if (firmCategories.length === 0) return true;
-    return firmCategories.includes(job.category_slug);
+    return firmCategories.length > 0 && firmCategories.includes(job.category_slug);
   }
 
   function handleBidClick(job: Job) {
@@ -675,11 +674,17 @@ function ProjectsPageContent() {
                       <AlertTriangle className="w-5 h-5 text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-900 mb-1">Ne pokrivate ovu kategoriju</h3>
+                      <h3 className="font-bold text-gray-900 mb-1">
+                        {firmCategories.length === 0
+                          ? 'Nemate odabranih kategorija'
+                          : 'Ne pokrivate ovu kategoriju'}
+                      </h3>
                       <p className="text-sm text-steel">
-                        Da biste poslali ponudu za posao <strong>{categoryWarningJob.title}</strong> u kategoriji{' '}
-                        <strong>{getCategory(categoryWarningJob.category_slug)?.name || categoryWarningJob.category_slug}</strong>,
-                        morate dodati tu uslugu u profilu svoje firme.
+                        {firmCategories.length === 0
+                          ? 'Prije slanja ponude morate u profilu firme odabrati kategorije koje pokrivate.'
+                          : <>Da biste poslali ponudu za posao <strong>{categoryWarningJob.title}</strong> u kategoriji{' '}
+                            <strong>{getCategory(categoryWarningJob.category_slug)?.name || categoryWarningJob.category_slug}</strong>,
+                            morate dodati tu uslugu u profilu svoje firme.</>}
                       </p>
                     </div>
                   </div>
