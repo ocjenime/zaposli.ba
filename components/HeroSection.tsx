@@ -107,7 +107,7 @@ export default function HeroSection() {
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Šta vam je potrebno?"
+                      placeholder="Unesite uslugu"
                       className="w-full pl-12 pr-4 py-3.5 sm:py-4 bg-gray-50 rounded-xl sm:rounded-2xl border-0 focus:ring-2 focus:ring-brand-orange/20 outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                     />
                   </div>
