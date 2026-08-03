@@ -597,7 +597,10 @@ function FirmDashboardContent() {
                             </div>
 
                             {isExpanded && !alreadyBid && (
-                              <div className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in">
+                              <div
+                                className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in"
+                                onClick={(e) => e.stopPropagation()}
+                              >
                                 {!isCategoryAllowed(job) && (
                                   <div className="mb-4 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-4 text-sm text-amber-800">
                                     <div className="flex items-start gap-3">
