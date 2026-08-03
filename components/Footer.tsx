@@ -9,7 +9,7 @@ const footerLinks = {
     { name: 'Kako radi', href: '/kako-radi/' },
     { name: 'Objavi posao', href: '/objavi-projekat/' },
     { name: 'Kategorije', href: '/kategorije/' },
-    { name: 'Izdvojeni majstori', href: '/izdvojeni-majstori/' },
+    { name: 'Top firme', href: '/top-firme/' },
     { name: 'Savjeti', href: '/savjeti/' },
   ],
   'Za firme': [
@@ -21,7 +21,7 @@ const footerLinks = {
   'O nama': [
     { name: 'O platformi', href: '/o-nama/' },
     { name: 'Kontakt', href: '/kontakt/' },
-    { name: 'Uslovi korištenja', href: '/uslovi-koristenja/' },
+    { name: 'Pravila', href: '/pravila/' },
     { name: 'Privacy policy', href: '/privacy/' },
   ],
 };

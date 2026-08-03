@@ -90,7 +90,7 @@ export default function FeaturedWorkers() {
             Naši najbolji
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            Izdvojeni majstori
+            Top firme
           </h2>
           <p className="text-lg text-gray-500 max-w-xl mx-auto">
             Provjereni profesionalci sa najboljim ocjenama na našoj platformi
@@ -158,7 +158,7 @@ export default function FeaturedWorkers() {
 
         <div className="text-center mt-10">
           <Link
-            href="/izdvojeni-majstori/"
+            href="/top-firme/"
             className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors group"
           >
             Pogledajte sve majstore

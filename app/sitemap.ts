@@ -10,7 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     '', '/kategorije', '/poslovi', '/kako-radi', '/za-firme', '/savjeti',
     '/faq', '/kontakt', '/o-nama', '/objavi-projekat', '/prijava', '/registracija',
-    '/uslovi-koristenja', '/privacy', '/gradovi', '/izdvojeni-majstori',
+    '/pravila', '/privacy', '/gradovi', '/top-firme',
   ].map((path) => ({
     url: `${site.url}${path}/`,
     lastModified: now,

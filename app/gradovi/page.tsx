@@ -70,7 +70,7 @@ export default function CitiesPage() {
         <section className="py-10 md:py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2.5 md:gap-3">
-              {cities.map((city) => (
+              {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
                 <Link
                   key={city.slug}
                   href={`/gradovi/${city.slug}/`}
