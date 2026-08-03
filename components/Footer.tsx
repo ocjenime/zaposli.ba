@@ -33,8 +33,9 @@ export default function Footer() {
     <footer className="bg-ink text-[#ffffff]">
       {/* Glavni footer */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-14 pb-10">
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-10">
-          <div className="col-span-3 sm:col-span-3 md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-10">
+          {/* Brand */}
+          <div className="md:col-span-2">
             <Link href="/" className="inline-flex items-center mb-5">
               <Logo variant="light" />
             </Link>
@@ -46,21 +47,34 @@ export default function Footer() {
             </p>
           </div>
 
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h3 className="text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">{category}</h3>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link.name}>
-                    <Link href={link.href} className="text-gray-400 hover:text-[#ffffff] text-sm transition-colors inline-flex items-center gap-1 group">
-                      {link.name}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Link columns — navigacijski modul */}
+          <div className="md:col-span-3 border-t border-[#ffffff]/5 md:border-t-0 pt-8 md:pt-0">
+            <div className="grid grid-cols-3 gap-4 md:gap-0 md:divide-x md:divide-[#ffffff]/5">
+              {Object.entries(footerLinks).map(([category, links], index) => (
+                <div
+                  key={category}
+                  className={`text-center md:text-left ${index > 0 ? 'md:pl-8' : ''} ${index < Object.keys(footerLinks).length - 1 ? 'md:pr-8' : ''}`}
+                >
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-4">
+                    {category}
+                  </h3>
+                  <ul className="space-y-3">
+                    {links.map((link) => (
+                      <li key={link.name}>
+                        <Link
+                          href={link.href}
+                          className="text-gray-400 hover:text-[#ffffff] text-[13px] leading-tight transition-colors inline-flex items-center justify-center md:justify-start gap-1 group"
+                        >
+                          <span>{link.name}</span>
+                          <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 shrink-0" />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
