@@ -6,6 +6,25 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
+
+function formatError(err: unknown): string {
+  if (typeof err === 'string') return err;
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === 'object') {
+    const message = (err as { message?: string }).message;
+    if (message) return message;
+    const error = (err as { error?: string }).error;
+    if (error) return error;
+    const errorDescription = (err as { error_description?: string }).error_description;
+    if (errorDescription) return errorDescription;
+    try {
+      return JSON.stringify(err);
+    } catch {
+      return 'Došlo je do nepoznate greške.';
+    }
+  }
+  return 'Došlo je do nepoznate greške.';
+}
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 import { slugify } from '@/lib/slugify';
@@ -13,8 +32,9 @@ import { site } from '@/lib/site';
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userType, setUserType] = useState<UserRole>('client');
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailConfirmation, setEmailConfirmation] = useState(false);
@@ -27,6 +47,7 @@ export default function RegisterPage() {
     }
     if (!formData.phone.trim()) return 'Unesite broj telefona.';
     if (formData.password.length < 6) return 'Lozinka mora imati najmanje 6 znakova.';
+    if (formData.password !== formData.confirmPassword) return 'Lozinke se ne podudaraju.';
     return '';
   };
 
@@ -54,7 +75,7 @@ export default function RegisterPage() {
     });
 
     if (authError) {
-      setError(authError.message);
+      setError(formatError(authError));
       setLoading(false);
       return;
     }
@@ -83,7 +104,7 @@ export default function RegisterPage() {
     }, { ignoreDuplicates: true });
 
     if (profileError) {
-      setError(profileError.message);
+      setError(formatError(profileError));
       setLoading(false);
       return;
     }
@@ -208,8 +229,33 @@ export default function RegisterPage() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    aria-label={showPassword ? 'Sakrij lozinku' : 'Prikaži lozinku'}
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Potvrdi lozinku</label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={formData.confirmPassword}
+                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    placeholder="••••••••"
+                    className="input-field pl-10 pr-10"
+                    required
+                    minLength={6}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    aria-label={showConfirmPassword ? 'Sakrij potvrdu lozinke' : 'Prikaži potvrdu lozinke'}
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-5 h-5" aria-hidden="true" /> : <Eye className="w-5 h-5" aria-hidden="true" />}
                   </button>
                 </div>
               </div>
