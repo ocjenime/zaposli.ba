@@ -4,7 +4,6 @@
 --   - new firm registrations (firms)
 --   - new reviews (reviews)
 -- Requires the notify-admin Edge Function to be deployed.
--- IMPORTANT: replace <SERVICE_ROLE_KEY> with your Supabase service role key.
 
 -- 1. New user registration
 CREATE OR REPLACE FUNCTION public.handle_new_profile_admin()
