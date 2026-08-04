@@ -12,18 +12,33 @@ import { slugify } from '@/lib/slugify';
 import { site } from '@/lib/site';
 
 function formatError(err: unknown): string {
-  if (typeof err === 'string') return err;
-  if (err instanceof Error) return err.message || 'Došlo je do greške prilikom registracije.';
+  if (typeof err === 'string') {
+    const trimmed = err.trim();
+    if (trimmed && trimmed !== '{}' && trimmed !== '[object Object]') return trimmed;
+    return 'Došlo je do greške prilikom registracije. Pokušajte ponovo.';
+  }
+  if (err instanceof Error) {
+    const msg = err.message?.trim();
+    if (msg && msg !== '{}' && msg !== '[object Object]') return msg;
+    return 'Došlo je do greške prilikom registracije. Pokušajte ponovo.';
+  }
   if (err && typeof err === 'object') {
     const obj = err as Record<string, unknown>;
-    if (typeof obj.message === 'string' && obj.message.trim()) return obj.message;
-    if (typeof obj.error === 'string' && obj.error.trim()) return obj.error;
-    if (typeof obj.error_description === 'string' && obj.error_description.trim()) return obj.error_description;
-    if (typeof obj.msg === 'string' && obj.msg.trim()) return obj.msg;
-    if (typeof obj.code === 'string' && obj.code.trim()) return `Greška: ${obj.code}`;
+    const candidates: (string | undefined)[] = [
+      typeof obj.message === 'string' ? obj.message : undefined,
+      typeof obj.error === 'string' ? obj.error : undefined,
+      typeof obj.error_description === 'string' ? obj.error_description : undefined,
+      typeof obj.msg === 'string' ? obj.msg : undefined,
+      typeof obj.error_msg === 'string' ? obj.error_msg : undefined,
+    ];
+    for (const candidate of candidates) {
+      const trimmed = candidate?.trim();
+      if (trimmed && trimmed !== '{}' && trimmed !== '[object Object]') return trimmed;
+    }
+    if (typeof obj.code === 'string' && obj.code.trim()) return `Greška: ${obj.code.trim()}`;
     try {
       const str = JSON.stringify(err);
-      if (str && str !== '{}') return str;
+      if (str && str !== '{}' && str !== '[]') return str;
     } catch {}
     return 'Došlo je do greške prilikom registracije. Pokušajte ponovo.';
   }
