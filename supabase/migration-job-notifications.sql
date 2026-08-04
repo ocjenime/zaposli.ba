@@ -1,6 +1,6 @@
-: Webhook trigger to notify firms by email when a new job is posted
--- Replace <SERVICE_ROLE_KEY> with your Supabase service role key.
--- Requires the notify-firms-on-job Edge Function to be deployed.
+-- Webhook trigger to notify firms by email when a new job is posted
+-- Requires the WEBHOOK_SECRET env var on the notify-firms-on-job Edge Function.
+-- The SQL and Edge Function must share the same WEBHOOK_SECRET value.
 
 CREATE OR REPLACE FUNCTION public.handle_new_job()
 RETURNS TRIGGER AS $$
@@ -18,7 +18,8 @@ BEGIN
     url := 'https://nwgbrvpomjkzkofjknyi.supabase.co/functions/v1/notify-firms-on-job',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTMzOTgzNywiZXhwIjoyMTAwOTE1ODM3fQ.kzmROcTZI03sR2aIgtwErUWcm022czTX-kNCxoSy7SE'
+      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMzk4MzcsImV4cCI6MjEwMDkxNTgzN30.DAocTT5b2tcds9dIGm_nVW6y9vIm7BnVecPcZqxVa8I',
+      'X-Webhook-Secret', 'zaposli-webhook-2024-secure-key'
     ),
     body := payload
   );
@@ -32,4 +33,4 @@ CREATE TRIGGER trg_notify_firms_on_job
   AFTER INSERT ON public.jobs
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_job();
 
-COMMENT ON FUNCTION public.handle_new_job() IS 'Webhook trigger that calls the notify-firms-on-job Edge Function. Replace Bearer token with the service role key.';
+COMMENT ON FUNCTION public.handle_new_job() IS 'Webhook trigger that calls the notify-firms-on-job Edge Function. Must match the WEBHOOK_SECRET env var.';

@@ -9,6 +9,7 @@ import DashboardHeader from '@/components/ui/DashboardHeader';
 import DashboardStat from '@/components/ui/DashboardStat';
 import EmptyState from '@/components/ui/EmptyState';
 import FeaturedBadge from '@/components/FeaturedBadge';
+import JobChat from '@/components/JobChat';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
@@ -42,6 +43,8 @@ import {
   Bell,
   Mail,
   Save,
+  User,
+  AlertCircle,
 } from 'lucide-react';
 
 interface Job {
@@ -73,7 +76,55 @@ interface Bid {
   jobs: Job | null;
 }
 
+interface DirectJob {
+  id: string;
+  client_id: string;
+  title: string;
+  description: string;
+  city: string;
+  address: string | null;
+  category_slug: string;
+  status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled';
+  private_status: PrivateStatus;
+  is_private: boolean;
+  client_question: string | null;
+  problem_reported: boolean;
+  problem_description: string | null;
+  budget_mode: string | null;
+  budget_min: number | null;
+  budget_max: number | null;
+  deadline: string | null;
+  created_at: string;
+  updated_at: string;
+  completed_at: string | null;
+  pending_deadline: string | null;
+  image_count?: number;
+  profiles: { full_name: string | null; email: string | null } | null;
+}
+
+type PrivateStatus = 'pending' | 'accepted' | 'in_progress' | 'done_pending' | 'completed' | 'declined' | 'cancelled';
+
 type BidStatus = Bid['status'];
+
+const privateStatusLabels: Record<PrivateStatus, string> = {
+  pending: 'Zahtjev na čekanju',
+  accepted: 'Prihvaćeno',
+  in_progress: 'Rad u toku',
+  done_pending: 'Čeka potvrdu',
+  completed: 'Završeno',
+  declined: 'Odbijeno',
+  cancelled: 'Otkazano',
+};
+
+const privateStatusColors: Record<PrivateStatus, string> = {
+  pending: 'bg-blue-50 text-blue-700 border-blue-100',
+  accepted: 'bg-green-50 text-green-700 border-green-100',
+  in_progress: 'bg-yellow-50 text-yellow-700 border-yellow-100',
+  done_pending: 'bg-orange-50 text-brand-orange border-orange-100',
+  completed: 'bg-green-50 text-green-700 border-green-100',
+  declined: 'bg-gray-100 text-gray-500 border-gray-200',
+  cancelled: 'bg-gray-100 text-gray-500 border-gray-200',
+};
 
 const statusLabels: Record<BidStatus, string> = {
   pending: 'Na čekanju',
@@ -140,7 +191,11 @@ function FirmDashboardContent() {
   const [savingPrefs, setSavingPrefs] = useState(false);
   const [prefsSaved, setPrefsSaved] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'jobs' | 'bids'>('jobs');
+  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct'>('jobs');
+  const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
+  const [loadingDirect, setLoadingDirect] = useState(true);
+  const [expandedDirectJob, setExpandedDirectJob] = useState<string | null>(null);
+  const [directActionId, setDirectActionId] = useState<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -153,9 +208,13 @@ function FirmDashboardContent() {
 
   useEffect(() => {
     const expandId = searchParams.get('expandJobId');
+    const directId = searchParams.get('directJobId');
     if (expandId) {
       setExpandedJob(expandId);
       setActiveTab('jobs');
+    } else if (directId) {
+      setExpandedDirectJob(directId);
+      setActiveTab('direct');
     }
   }, [searchParams]);
 
@@ -199,7 +258,41 @@ function FirmDashboardContent() {
       }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
     );
 
-    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), loadPlan(data.id)]);
+    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id)]);
+  }
+
+  async function fetchDirectJobs(id: string) {
+    setLoadingDirect(true);
+    const { data, error: err } = await supabase
+      .from('jobs')
+      .select(
+        '*, profiles!client_id(full_name, email)'
+      )
+      .eq('is_private', true)
+      .eq('target_firm_id', id)
+      .order('created_at', { ascending: false });
+
+    if (err) {
+      console.error('Greška prilikom učitavanja direktnih zahtjeva:', err);
+      setLoadingDirect(false);
+      return;
+    }
+
+    const jobs = (data as DirectJob[]) || [];
+    if (jobs.length > 0) {
+      const { data: imagesData } = await supabase
+        .from('job_images')
+        .select('job_id')
+        .in('job_id', jobs.map((j) => j.id));
+      const counts: Record<string, number> = {};
+      (imagesData || []).forEach((row: { job_id: string }) => {
+        counts[row.job_id] = (counts[row.job_id] || 0) + 1;
+      });
+      setDirectJobs(jobs.map((j) => ({ ...j, image_count: counts[j.id] || 0 })));
+    } else {
+      setDirectJobs(jobs);
+    }
+    setLoadingDirect(false);
   }
 
   async function loadPlan(id: string) {
@@ -366,6 +459,58 @@ function FirmDashboardContent() {
     return myBids.some((b) => b.job_id === jobId);
   }
 
+  function publicStatusForPrivate(status: PrivateStatus) {
+    if (status === 'completed') return 'completed';
+    if (status === 'declined' || status === 'cancelled') return 'cancelled';
+    return 'in_progress';
+  }
+
+  async function updatePrivateStatus(job: DirectJob, newStatus: PrivateStatus) {
+    if (!firmId) return;
+    setDirectActionId(job.id);
+    setError('');
+
+    const update: Record<string, unknown> = {
+      private_status: newStatus,
+      status: publicStatusForPrivate(newStatus),
+      updated_at: new Date().toISOString(),
+    };
+    if (newStatus === 'completed') {
+      update.completed_at = new Date().toISOString();
+    }
+
+    const { error: err } = await supabase.from('jobs').update(update).eq('id', job.id);
+
+    setDirectActionId(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await fetchDirectJobs(firmId);
+  }
+
+  async function acceptDirect(job: DirectJob) {
+    await updatePrivateStatus(job, 'accepted');
+  }
+
+  async function declineDirect(job: DirectJob) {
+    if (!confirm('Da li ste sigurni da želite odbiti ovaj zahtjev?')) return;
+    await updatePrivateStatus(job, 'declined');
+  }
+
+  async function startWork(job: DirectJob) {
+    await updatePrivateStatus(job, 'in_progress');
+  }
+
+  async function markDone(job: DirectJob) {
+    await updatePrivateStatus(job, 'done_pending');
+  }
+
+  async function cancelDirect(job: DirectJob) {
+    if (!confirm('Da li ste sigurni da želite otkazati ovaj zahtjev?')) return;
+    await updatePrivateStatus(job, 'cancelled');
+  }
+
   const planName = subscription?.plans?.name || 'Besplatno';
   const planFeatured = Boolean(subscription?.plans?.featured);
   const planActiveDate = subscription?.ends_at
@@ -492,7 +637,7 @@ function FirmDashboardContent() {
               )}
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="inline-flex p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
+                <div className="inline-flex flex-wrap p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
                   <button
                     onClick={() => setActiveTab('jobs')}
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
@@ -511,6 +656,26 @@ function FirmDashboardContent() {
                       }`}
                     >
                       {openJobs.length}
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('direct')}
+                    className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      activeTab === 'direct'
+                        ? 'bg-brand-orange text-white shadow-sm'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
+                    }`}
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    Direktni zahtjevi
+                    <span
+                      className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
+                        activeTab === 'direct'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
+                      }`}
+                    >
+                      {directJobs.length}
                     </span>
                   </button>
                   <button
@@ -538,6 +703,8 @@ function FirmDashboardContent() {
                 <p className="text-sm text-steel">
                   {activeTab === 'jobs'
                     ? 'Pronađite nove poslove i pošaljite ponudu.'
+                    : activeTab === 'direct'
+                    ? 'Upravljajte direktnim zahtjevima klijenata.'
                     : 'Pregledajte sve ponude koje ste poslali.'}
                 </p>
               </div>
@@ -833,6 +1000,213 @@ function FirmDashboardContent() {
                                 <MessageSquare className="w-4 h-4" />
                                 Razgovor sa klijentom
                               </Link>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {activeTab === 'direct' && (
+                <section className="animate-fade-in space-y-4">
+                  {loadingDirect ? (
+                    <div className="grid gap-4">
+                      {[1, 2].map((i) => (
+                        <div
+                          key={i}
+                          className="h-32 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
+                        />
+                      ))}
+                    </div>
+                  ) : directJobs.length === 0 ? (
+                    <EmptyState
+                      title="Nema direktnih zahtjeva"
+                      description="Klijenti će vas moći kontaktirati direktno s vašeg profila."
+                    />
+                  ) : (
+                    <div className="grid gap-4">
+                      {directJobs.map((job) => {
+                        const category = getCategory(job.category_slug);
+                        const clientName = job.profiles?.full_name || 'Klijent';
+                        const clientEmail = job.profiles?.email || '';
+                        const isExpanded = expandedDirectJob === job.id;
+                        const badgeClass = privateStatusColors[job.private_status];
+                        const budget = formatBudget(job as unknown as Job);
+
+                        return (
+                          <div
+                            key={job.id}
+                            className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm transition-all duration-200 hover:shadow-md"
+                          >
+                            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                              <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                                  <User className="w-6 h-6" />
+                                </div>
+                                <div>
+                                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                                    <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
+                                      {job.title}
+                                    </h3>
+                                    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold border ${badgeClass}`}>
+                                      {privateStatusLabels[job.private_status]}
+                                    </span>
+                                  </div>
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-steel">
+                                    <span className="inline-flex items-center gap-1">
+                                      <User className="w-3.5 h-3.5" />
+                                      {clientName}
+                                    </span>
+                                    <span className="inline-flex items-center gap-1">
+                                      <MapPin className="w-3.5 h-3.5" />
+                                      {job.city}
+                                    </span>
+                                    {category && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <Tag className="w-3.5 h-3.5" />
+                                        {category.name}
+                                      </span>
+                                    )}
+                                    <span className="inline-flex items-center gap-1">
+                                      <Calendar className="w-3.5 h-3.5" />
+                                      {formatDate(job.created_at)}
+                                    </span>
+                                    {budget && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <DollarSign className="w-3.5 h-3.5" />
+                                        {budget}
+                                      </span>
+                                    )}
+                                    {job.deadline && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <Clock className="w-3.5 h-3.5" />
+                                        Rok: {formatDate(job.deadline)}
+                                      </span>
+                                    )}
+                                    {(job.image_count || 0) > 0 && (
+                                      <span className="inline-flex items-center gap-1">
+                                        <ImageIcon className="w-3.5 h-3.5" />
+                                        {job.image_count} foto
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-wrap items-center gap-2 md:shrink-0">
+                                {job.private_status === 'pending' && (
+                                  <>
+                                    <button
+                                      onClick={() => acceptDirect(job)}
+                                      disabled={directActionId === job.id}
+                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-colors disabled:opacity-50"
+                                    >
+                                      <CheckCircle className="w-4 h-4" />
+                                      {directActionId === job.id ? 'Obrada...' : 'Prihvati'}
+                                    </button>
+                                    <button
+                                      onClick={() => declineDirect(job)}
+                                      disabled={directActionId === job.id}
+                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50"
+                                    >
+                                      <XCircle className="w-4 h-4" />
+                                      Odbij
+                                    </button>
+                                  </>
+                                )}
+                                {job.private_status === 'accepted' && (
+                                  <button
+                                    onClick={() => startWork(job)}
+                                    disabled={directActionId === job.id}
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors disabled:opacity-50"
+                                  >
+                                    <Clock className="w-4 h-4" />
+                                    {directActionId === job.id ? 'Obrada...' : 'Započni rad'}
+                                  </button>
+                                )}
+                                {job.private_status === 'in_progress' && (
+                                  <button
+                                    onClick={() => markDone(job)}
+                                    disabled={directActionId === job.id}
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-brand-orange text-white hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
+                                  >
+                                    <CheckCircle className="w-4 h-4" />
+                                    {directActionId === job.id ? 'Obrada...' : 'Označi kao gotov'}
+                                  </button>
+                                )}
+                                {['pending', 'accepted', 'in_progress'].includes(job.private_status) && (
+                                  <button
+                                    onClick={() => cancelDirect(job)}
+                                    disabled={directActionId === job.id}
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                    Otkaži
+                                  </button>
+                                )}
+                                {job.private_status === 'done_pending' && (
+                                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-orange-700 bg-orange-50 rounded-xl px-4 py-2.5">
+                                    <Clock className="w-4 h-4" /> Čeka potvrdu klijenta
+                                  </span>
+                                )}
+                                <button
+                                  onClick={() => setExpandedDirectJob(isExpanded ? null : job.id)}
+                                  className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl border border-gray-200 dark:border-ink-700 text-steel hover:bg-cloud dark:hover:bg-ink-800 transition-colors"
+                                >
+                                  <MessageSquare className="w-4 h-4" />
+                                  {isExpanded ? 'Sakrij detalje' : 'Detalji i razgovor'}
+                                </button>
+                              </div>
+                            </div>
+
+                            {isExpanded && (
+                              <div className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in">
+                                <div className="grid lg:grid-cols-2 gap-6">
+                                  <div className="space-y-4">
+                                    <div className="bg-cloud dark:bg-ink-950 rounded-xl p-4">
+                                      <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
+                                        {job.description}
+                                      </p>
+                                    </div>
+                                    {job.client_question && (
+                                      <div className="bg-blue-50 text-blue-800 rounded-lg p-3 text-sm">
+                                        <p className="font-semibold mb-1">Pitanje klijenta:</p>
+                                        <p>{job.client_question}</p>
+                                      </div>
+                                    )}
+                                    {job.problem_reported && (
+                                      <div className="bg-red-50 text-red-700 rounded-lg p-3 text-sm">
+                                        <p className="font-semibold flex items-center gap-2 mb-1">
+                                          <AlertTriangle className="w-4 h-4" /> Prijavljen problem
+                                        </p>
+                                        <p>{job.problem_description}</p>
+                                      </div>
+                                    )}
+                                    {clientEmail && (
+                                      <p className="text-sm text-steel flex items-center gap-2">
+                                        <Mail className="w-4 h-4" /> {clientEmail}
+                                      </p>
+                                    )}
+                                  </div>
+                                  <div>
+                                    {['declined', 'cancelled'].includes(job.private_status) ? (
+                                      <p className="text-sm text-steel text-center py-8 bg-cloud dark:bg-ink-950 rounded-xl">
+                                        Razgovor nije dostupan za otkazane/odbijene zahtjeve.
+                                      </p>
+                                    ) : (
+                                      <JobChat
+                                        jobId={job.id}
+                                        userId={user!.id}
+                                        role="firm"
+                                        partnerName={clientName}
+                                        partnerIsAdmin={false}
+                                      />
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
                             )}
                           </div>
                         );

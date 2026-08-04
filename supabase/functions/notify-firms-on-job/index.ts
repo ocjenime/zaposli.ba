@@ -45,10 +45,17 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
   }
 
-  // Validate authorization to prevent public abuse
+  // Validate authorization to prevent public abuse.
+  // The Supabase Edge Function runtime validates the Authorization header as a JWT,
+  // so we accept the service role key there. For the simpler webhook secret we use a
+  // custom X-Webhook-Secret header, which the runtime does not try to validate.
   const authHeader = req.headers.get("Authorization");
+  const webhookHeader = req.headers.get("X-Webhook-Secret") || "";
+  const webhookSecret = Deno.env.get("WEBHOOK_SECRET") || "";
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SB_SERVICE_ROLE_KEY") || "";
-  if (serviceRoleKey && (!authHeader || authHeader !== `Bearer ${serviceRoleKey}`)) {
+  const validWebhook = webhookSecret && webhookHeader === webhookSecret;
+  const validServiceRole = serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`;
+  if (!validWebhook && !validServiceRole) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
   }
 

@@ -637,7 +637,9 @@ function PostProjectContent() {
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button type="button" onClick={() => setStep(2)} className="flex-1 btn-secondary">Nazad</button>
                     <button type="submit" disabled={submitting} className="flex-1 btn-primary disabled:opacity-50">
-                      {submitting ? 'Objavljivanje...' : 'Objavi posao besplatno'}
+                      {submitting
+                        ? (targetProvider ? 'Slanje...' : 'Objavljivanje...')
+                        : (targetProvider ? 'Zatraži ponudu' : 'Objavi posao besplatno')}
                     </button>
                   </div>
                 </div>

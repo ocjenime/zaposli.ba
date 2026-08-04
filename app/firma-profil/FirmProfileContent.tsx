@@ -396,21 +396,29 @@ export default function FirmProfileContent() {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href={`/objavi-projekat/?firm_id=${firm.id}`}
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
-              >
-                Zatraži ponudu
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href={`/objavi-projekat/?firm_id=${firm.id}&message=1`}
-                className="inline-flex items-center justify-center gap-2 bg-white text-brand-orange border-2 border-brand-orange px-6 py-3 rounded-xl font-bold hover:bg-primary-50 transition-all active:scale-95"
-              >
-                <MessageSquare className="w-4 h-4" />
-                Pošalji poruku
-              </Link>
+            <div className="space-y-3">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href={`/zatrazi-ponudu/?firm_id=${firm.id}`}
+                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                >
+                  Zatraži ponudu od {firm.name}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href={`/zatrazi-ponudu/?firm_id=${firm.id}&ask=1`}
+                  className="inline-flex items-center justify-center gap-2 bg-white text-brand-orange border-2 border-brand-orange px-6 py-3 rounded-xl font-bold hover:bg-primary-50 transition-all active:scale-95"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Pitaj prije ponude
+                </Link>
+              </div>
+              <p className="text-sm text-steel">
+                Želiš ponude i od drugih firmi?{' '}
+                <Link href="/objavi-projekat/" className="text-brand-orange hover:underline font-medium">
+                  Objavi javni projekat
+                </Link>
+              </p>
             </div>
           </div>
         </section>
@@ -679,12 +687,20 @@ export default function FirmProfileContent() {
                     </div>
                   </div>
                   <Link
-                    href={`/objavi-projekat/?firm_id=${firm.id}`}
+                    href={`/zatrazi-ponudu/?firm_id=${firm.id}`}
                     className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
                   >
-                    Zatraži ponudu
+                    Zatraži ponudu od {firm.name}
                   </Link>
-                  <p className="text-[#ffffff]/40 text-xs text-center mt-3">Besplatno i neobavezujuće</p>
+                  <Link
+                    href={`/zatrazi-ponudu/?firm_id=${firm.id}&ask=1`}
+                    className="block w-full text-center mt-3 bg-white/10 backdrop-blur-sm text-[#ffffff] border border-[#ffffff]/30 px-6 py-3 rounded-xl font-bold hover:bg-[#ffffff]/20 transition-all active:scale-95"
+                  >
+                    Pitaj prije ponude
+                  </Link>
+                  <p className="text-[#ffffff]/40 text-xs text-center mt-3">
+                    Privatni zahtjev — vidi ga samo {firm.name}
+                  </p>
                 </div>
               </div>
             </div>

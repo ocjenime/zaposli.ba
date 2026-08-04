@@ -31,6 +31,8 @@ interface Job {
   city: string;
   client_id: string;
   status: string;
+  is_private: boolean;
+  target_firm_id: string | null;
 }
 
 function formatTime(iso: string) {
@@ -105,7 +107,7 @@ function Conversation() {
 
     const { data: jobData, error: jobErr } = await supabase
       .from('jobs')
-      .select('id,title,city,client_id,status')
+      .select('id,title,city,client_id,status,is_private,target_firm_id')
       .eq('id', jobId)
       .single();
 
@@ -120,57 +122,91 @@ function Conversation() {
     let allowed = false;
     let partnerId: string | null = null;
 
+    async function getPrivateFirmOwner() {
+      if (!currentJob.target_firm_id) return null;
+      const { data } = await supabase
+        .from('firms')
+        .select('owner_id, name')
+        .eq('id', currentJob.target_firm_id)
+        .single();
+      return data as { owner_id: string; name: string } | null;
+    }
+
     if (isAdmin) {
       allowed = true;
-      const { data: bidData } = await supabase
-        .from('bids')
-        .select('firm_id, firms(owner_id, name)')
-        .eq('job_id', jobId)
-        .eq('status', 'accepted')
-        .single();
-      const typedBid = bidData as unknown as { firm_id: string; firms: { owner_id: string; name: string } | null } | null;
-      if (typedBid?.firms) {
+      if (currentJob.is_private && currentJob.target_firm_id) {
+        const firmOwner = await getPrivateFirmOwner();
         const [{ data: clientProfile }, { data: ownerProfile }] = await Promise.all([
           supabase.from('profiles').select('id, full_name').eq('id', currentJob.client_id).single(),
-          supabase.from('profiles').select('id, full_name').eq('id', typedBid.firms.owner_id).single(),
+          firmOwner?.owner_id
+            ? supabase.from('profiles').select('id, full_name').eq('id', firmOwner.owner_id).single()
+            : Promise.resolve({ data: null }),
         ]);
         const clientName = (clientProfile as Profile | null)?.full_name || 'Klijent';
         const ownerName = (ownerProfile as Profile | null)?.full_name || 'Firma';
-        setAdminInfo(`Klijent: ${clientName} · Firma: ${typedBid.firms.name || ownerName}`);
-        partnerId = typedBid.firms.owner_id;
+        setAdminInfo(`Klijent: ${clientName} · Firma: ${firmOwner?.name || ownerName}`);
+        partnerId = firmOwner?.owner_id ?? currentJob.client_id;
       } else {
-        setAdminInfo('Admin pregled');
-        partnerId = currentJob.client_id;
+        const { data: bidData } = await supabase
+          .from('bids')
+          .select('firm_id, firms(owner_id, name)')
+          .eq('job_id', jobId)
+          .eq('status', 'accepted')
+          .single();
+        const typedBid = bidData as unknown as { firm_id: string; firms: { owner_id: string; name: string } | null } | null;
+        if (typedBid?.firms) {
+          const [{ data: clientProfile }, { data: ownerProfile }] = await Promise.all([
+            supabase.from('profiles').select('id, full_name').eq('id', currentJob.client_id).single(),
+            supabase.from('profiles').select('id, full_name').eq('id', typedBid.firms.owner_id).single(),
+          ]);
+          const clientName = (clientProfile as Profile | null)?.full_name || 'Klijent';
+          const ownerName = (ownerProfile as Profile | null)?.full_name || 'Firma';
+          setAdminInfo(`Klijent: ${clientName} · Firma: ${typedBid.firms.name || ownerName}`);
+          partnerId = typedBid.firms.owner_id;
+        } else {
+          setAdminInfo('Admin pregled');
+          partnerId = currentJob.client_id;
+        }
       }
     } else if (role === 'client' && currentJob.client_id === user.id) {
       allowed = true;
-      const { data: bidData } = await supabase
-        .from('bids')
-        .select('firm_id')
-        .eq('job_id', jobId)
-        .eq('status', 'accepted')
-        .single();
-      if (bidData?.firm_id) {
-        const { data: firmData } = await supabase
-          .from('firms')
-          .select('owner_id')
-          .eq('id', bidData.firm_id)
+      if (currentJob.is_private && currentJob.target_firm_id) {
+        const firmOwner = await getPrivateFirmOwner();
+        partnerId = firmOwner?.owner_id ?? null;
+      } else {
+        const { data: bidData } = await supabase
+          .from('bids')
+          .select('firm_id')
+          .eq('job_id', jobId)
+          .eq('status', 'accepted')
           .single();
-        partnerId = firmData?.owner_id ?? null;
+        if (bidData?.firm_id) {
+          const { data: firmData } = await supabase
+            .from('firms')
+            .select('owner_id')
+            .eq('id', bidData.firm_id)
+            .single();
+          partnerId = firmData?.owner_id ?? null;
+        }
       }
     } else if (isFirmRole(role)) {
       const { data: firmData } = await supabase.from('firms').select('id').eq('owner_id', user.id).single();
       if (firmData) {
-        const { data: bidData } = await supabase
-          .from('bids')
-          .select('id')
-          .eq('job_id', jobId)
-          .eq('firm_id', firmData.id)
-          .eq('status', 'accepted')
-          .single();
-        if (bidData) {
+        if (currentJob.is_private && currentJob.target_firm_id === firmData.id) {
           allowed = true;
           partnerId = currentJob.client_id;
+        } else {
+          const { data: bidData } = await supabase
+            .from('bids')
+            .select('id')
+            .eq('job_id', jobId)
+            .eq('firm_id', firmData.id)
+            .eq('status', 'accepted')
+            .single();
+          if (bidData) {
+            allowed = true;
+            partnerId = currentJob.client_id;
+          }
         }
       }
     }

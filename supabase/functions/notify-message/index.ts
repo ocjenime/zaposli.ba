@@ -43,10 +43,11 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
   }
 
-  // Validate authorization to prevent public abuse
-  const authHeader = req.headers.get("Authorization");
-  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  if (supabaseServiceRole && (!authHeader || authHeader !== `Bearer ${supabaseServiceRole}`)) {
+  // The Supabase Edge Function runtime validates Authorization as a JWT.
+  // Our own authorization is done via the X-Webhook-Secret header.
+  const webhookHeader = req.headers.get("X-Webhook-Secret") || "";
+  const webhookSecret = Deno.env.get("WEBHOOK_SECRET") || "";
+  if (!webhookSecret || webhookHeader !== webhookSecret) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
   }
 
@@ -63,6 +64,7 @@ Deno.serve(async (req: Request) => {
 
   const message = payload.record;
   const supabaseUrl = Deno.env.get("SB_URL") || Deno.env.get("SUPABASE_URL") || "";
+  const supabaseServiceRole = Deno.env.get("SB_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
 
   if (!supabaseUrl || !supabaseServiceRole) {
     return new Response(JSON.stringify({ error: "Missing Supabase env vars" }), { status: 500 });

@@ -14,6 +14,26 @@ export function getNotificationHref(notification: Notification, role: string | n
       : `/dashboard/poslovi/?id=${job_id}`;
   }
 
+  if (
+    type === 'direct_request' ||
+    type === 'direct_request_completed' ||
+    type === 'direct_request_problem' ||
+    type === 'direct_request_cancelled' ||
+    type === 'direct_request_declined'
+  ) {
+    return role === 'firm' || role === 'majstor'
+      ? `/dashboard/firma/?directJobId=${job_id}`
+      : `/dashboard/poslovi/?id=${job_id}`;
+  }
+
+  if (
+    type === 'direct_request_accepted' ||
+    type === 'direct_request_in_progress' ||
+    type === 'direct_request_done'
+  ) {
+    return `/dashboard/poslovi/?id=${job_id}`;
+  }
+
   // Default job-related routes
   return `/dashboard/poslovi/?id=${job_id}`;
 }

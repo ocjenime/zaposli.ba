@@ -4,6 +4,7 @@
 --   - new firm registrations (firms)
 --   - new reviews (reviews)
 -- Requires the notify-admin Edge Function to be deployed.
+-- The SQL and Edge Function must share the same WEBHOOK_SECRET value.
 
 -- 1. New user registration
 CREATE OR REPLACE FUNCTION public.handle_new_profile_admin()
@@ -22,7 +23,8 @@ BEGIN
     url := 'https://nwgbrvpomjkzkofjknyi.supabase.co/functions/v1/notify-admin',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTMzOTgzNywiZXhwIjoyMTAwOTE1ODM3fQ.kzmROcTZI03sR2aIgtwErUWcm022czTX-kNCxoSy7SE'
+      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMzk4MzcsImV4cCI6MjEwMDkxNTgzN30.DAocTT5b2tcds9dIGm_nVW6y9vIm7BnVecPcZqxVa8I',
+      'X-Webhook-Secret', 'zaposli-webhook-2024-secure-key'
     ),
     body := payload
   );
@@ -53,7 +55,8 @@ BEGIN
     url := 'https://nwgbrvpomjkzkofjknyi.supabase.co/functions/v1/notify-admin',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTMzOTgzNywiZXhwIjoyMTAwOTE1ODM3fQ.kzmROcTZI03sR2aIgtwErUWcm022czTX-kNCxoSy7SE'
+      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMzk4MzcsImV4cCI6MjEwMDkxNTgzN30.DAocTT5b2tcds9dIGm_nVW6y9vIm7BnVecPcZqxVa8I',
+      'X-Webhook-Secret', 'zaposli-webhook-2024-secure-key'
     ),
     body := payload
   );
@@ -84,7 +87,8 @@ BEGIN
     url := 'https://nwgbrvpomjkzkofjknyi.supabase.co/functions/v1/notify-admin',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NTMzOTgzNywiZXhwIjoyMTAwOTE1ODM3fQ.kzmROcTZI03sR2aIgtwErUWcm022czTX-kNCxoSy7SE'
+      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53Z2JydnBvbWpremtvZmprbnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMzk4MzcsImV4cCI6MjEwMDkxNTgzN30.DAocTT5b2tcds9dIGm_nVW6y9vIm7BnVecPcZqxVa8I',
+      'X-Webhook-Secret', 'zaposli-webhook-2024-secure-key'
     ),
     body := payload
   );
