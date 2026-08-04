@@ -6,29 +6,29 @@ import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
-
-function formatError(err: unknown): string {
-  if (typeof err === 'string') return err;
-  if (err instanceof Error) return err.message;
-  if (err && typeof err === 'object') {
-    const message = (err as { message?: string }).message;
-    if (message) return message;
-    const error = (err as { error?: string }).error;
-    if (error) return error;
-    const errorDescription = (err as { error_description?: string }).error_description;
-    if (errorDescription) return errorDescription;
-    try {
-      return JSON.stringify(err);
-    } catch {
-      return 'Došlo je do nepoznate greške.';
-    }
-  }
-  return 'Došlo je do nepoznate greške.';
-}
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 import { slugify } from '@/lib/slugify';
 import { site } from '@/lib/site';
+
+function formatError(err: unknown): string {
+  if (typeof err === 'string') return err;
+  if (err instanceof Error) return err.message || 'Došlo je do greške prilikom registracije.';
+  if (err && typeof err === 'object') {
+    const obj = err as Record<string, unknown>;
+    if (typeof obj.message === 'string' && obj.message.trim()) return obj.message;
+    if (typeof obj.error === 'string' && obj.error.trim()) return obj.error;
+    if (typeof obj.error_description === 'string' && obj.error_description.trim()) return obj.error_description;
+    if (typeof obj.msg === 'string' && obj.msg.trim()) return obj.msg;
+    if (typeof obj.code === 'string' && obj.code.trim()) return `Greška: ${obj.code}`;
+    try {
+      const str = JSON.stringify(err);
+      if (str && str !== '{}') return str;
+    } catch {}
+    return 'Došlo je do greške prilikom registracije. Pokušajte ponovo.';
+  }
+  return 'Došlo je do greške prilikom registracije. Pokušajte ponovo.';
+}
 
 export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -61,30 +61,32 @@ export default function RegisterPage() {
     setError('');
     setLoading(true);
 
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.name,
-          phone: formData.phone,
-          role: userType,
+    try {
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            full_name: formData.name,
+            phone: formData.phone,
+            role: userType,
+          },
+          emailRedirectTo: `${site.url}/auth/callback`,
         },
-        emailRedirectTo: `${site.url}/auth/callback`,
-      },
-    });
+      });
 
-    if (authError) {
-      setError(formatError(authError));
-      setLoading(false);
-      return;
-    }
+      if (authError) {
+        console.error('Registration auth error:', authError);
+        setError(formatError(authError));
+        setLoading(false);
+        return;
+      }
 
-    if (!authData.user) {
-      setError('Registracija nije uspjela');
-      setLoading(false);
-      return;
-    }
+      if (!authData.user) {
+        setError('Registracija nije uspjela. Pokušajte ponovo.');
+        setLoading(false);
+        return;
+      }
 
     // Email confirmation enabled: no session yet, profile/firm will be created after callback
     if (!authData.session) {
@@ -123,6 +125,11 @@ export default function RegisterPage() {
     }
 
     router.push(isFirmRole(userType) ? '/dashboard/firma/' : '/dashboard/');
+    } catch (err) {
+      console.error('Unexpected registration error:', err);
+      setError(formatError(err));
+      setLoading(false);
+    }
   };
 
   return (
