@@ -11,13 +11,13 @@ export const metadata: Metadata = {
     'Pronađite aktuelne građevinske i uslužne poslove širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu. Pošaljite ponudu kao provjerena firma ili majstor.',
   keywords: ['poslovi', 'građevinski poslovi', 'majstor', 'firma', 'ponude', 'Bosna i Hercegovina'],
   alternates: {
-    canonical: 'https://www.zaposli.ba/poslovi/',
+    canonical: 'https://zaposli.ba/poslovi/',
   },
   openGraph: {
     title: 'Poslovi | Zaposli.ba',
     description:
       'Pronađite aktuelne građevinske i uslužne poslove širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu.',
-    url: 'https://www.zaposli.ba/poslovi/',
+    url: 'https://zaposli.ba/poslovi/',
     siteName: 'Zaposli.ba',
     locale: 'bs_BA',
     type: 'website',

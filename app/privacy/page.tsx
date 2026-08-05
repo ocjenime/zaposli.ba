@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: 'Politika privatnosti. Zaposli.ba',
   description:
     'Kako Zaposli.ba prikuplja, koristi i štiti vaše lične podatke: kolačići, dijeljenje s firmama, vaša prava i rokovi čuvanja podataka.',
-  alternates: { canonical: 'https://www.zaposli.ba/privacy/' },
+  alternates: { canonical: 'https://zaposli.ba/privacy/' },
 };
 
 export default function PrivacyPage() {

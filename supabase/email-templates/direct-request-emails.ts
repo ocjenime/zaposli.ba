@@ -17,7 +17,7 @@
  * - {{job_url}}         - public/private link to the request/job
  * - {{dashboard_url}}   - recipient dashboard URL
  * - {{review_url}}      - link to the review page
- * - {{site_url}}        - https://www.zaposli.ba
+ * - {{site_url}}        - https://zaposli.ba
  * - {{from_email}}      - from address, usually Zaposli.ba <info@zaposli.ba>
  */
 
@@ -116,7 +116,7 @@ export const emailTemplates = {
           Pregledajte detalje i odgovorite u roku od 48 sati kako ne biste propustili priliku.
         </p>
         ${jobCard(vars.job_title, details)}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard/firma", "Pregledaj zahtjev i odgovori")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard/firma", "Pregledaj zahtjev i odgovori")}
       `
     );
     return { subject, html, ctaText: "Pregledaj zahtjev i odgovori" };
@@ -146,7 +146,7 @@ export const emailTemplates = {
           Možete nastaviti razgovor i dogovoriti detalje izvođenja.
         </p>
         ${jobCard(vars.job_title, details)}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard", "Otvori razgovor")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard", "Otvori razgovor")}
       `
     );
     return { subject, html, ctaText: "Otvori razgovor" };
@@ -167,7 +167,7 @@ export const emailTemplates = {
           Status posla je sada <strong>Rad u toku</strong>. Ako imate bilo kakvih pitanja, kontaktirajte firmu putem razgovora.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard", "Prati napredak")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard", "Prati napredak")}
       `
     );
     return { subject, html, ctaText: "Prati napredak" };
@@ -188,7 +188,7 @@ export const emailTemplates = {
           Molimo vas da pregledate izvedeni rad i potvrdite završetak kako bi firma mogla dobiti ocjenu.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard", "Pregledaj i potvrdi završetak")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard", "Pregledaj i potvrdi završetak")}
         <p style="font-size: 14px; color: #555; margin-top: 16px; line-height: 1.5;">
           Ako smatrate da posao nije dovršen, prijavite problem putem razgovora prije potvrde.
         </p>
@@ -212,7 +212,7 @@ export const emailTemplates = {
           Status posla je sada <strong>Završeno</strong>. Hvala vam na profesionalnoj saradnji.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.dashboard_url || "https://www.zaposli.ba/dashboard/firma", "Idi na dashboard")}
+        ${ctaButton(vars.dashboard_url || "https://zaposli.ba/dashboard/firma", "Idi na dashboard")}
       `
     );
     return { subject, html, ctaText: "Idi na dashboard" };
@@ -245,7 +245,7 @@ export const emailTemplates = {
           Klijent je ostavio recenziju za završeni posao <strong>${vars.job_title}</strong>.
         </p>
         ${jobCard(vars.job_title, details)}
-        ${ctaButton(vars.review_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard/firma", "Pregledaj recenziju")}
+        ${ctaButton(vars.review_url || vars.dashboard_url || "https://zaposli.ba/dashboard/firma", "Pregledaj recenziju")}
       `
     );
     return { subject, html, ctaText: "Pregledaj recenziju" };
@@ -266,7 +266,7 @@ export const emailTemplates = {
           Ne brinite, vaš posao je i dalje vidljiv drugim provjerenim firmama na Zaposli.ba.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.dashboard_url || "https://www.zaposli.ba/dashboard", "Pronađi druge firme")}
+        ${ctaButton(vars.dashboard_url || "https://zaposli.ba/dashboard", "Pronađi druge firme")}
       `
     );
     return { subject, html, ctaText: "Pronađi druge firme" };
@@ -287,7 +287,7 @@ export const emailTemplates = {
           Molimo vas da pregledate rad i potvrdite završetak, ili se javite firmi ukoliko imate primjedbi.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard", "Potvrdi završetak")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard", "Potvrdi završetak")}
         <p style="font-size: 14px; color: #555; margin-top: 16px; line-height: 1.5;">
           Ako ne potvrdite u narednim danima, posao će automatski biti označen kao završen.
         </p>
@@ -311,7 +311,7 @@ export const emailTemplates = {
           Brz odgovor povećava šanse da dobijete posao i ostavite profesionalan prvi utisak.
         </p>
         ${jobCard(vars.job_title, "")}
-        ${ctaButton(vars.job_url || vars.dashboard_url || "https://www.zaposli.ba/dashboard/firma", "Odgovori odmah")}
+        ${ctaButton(vars.job_url || vars.dashboard_url || "https://zaposli.ba/dashboard/firma", "Odgovori odmah")}
       `
     );
     return { subject, html, ctaText: "Odgovori odmah" };
@@ -328,7 +328,7 @@ export const emailTemplates = {
  *   firm_name: "Majstorija d.o.o.",
  *   client_name: "Amir Hodžić",
  *   client_message: "Kada možete doći na pogled?",
- *   job_url: "https://www.zaposli.ba/dashboard/firma/poslovi/123",
+ *   job_url: "https://zaposli.ba/dashboard/firma/poslovi/123",
  * };
  *
  * const { subject, html, ctaText } = emailTemplates.firmReceivesDirectRequest(vars);

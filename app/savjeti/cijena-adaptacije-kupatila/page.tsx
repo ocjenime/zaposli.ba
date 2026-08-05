@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     'Cijena adaptacije kupatila u BiH 2026: demontaža, instalacije, keramika i sanitarije: realni rasponi u KM i savjeti za upoređivanje ponuda.',
   alternates: {
-    canonical: 'https://www.zaposli.ba/savjeti/cijena-adaptacije-kupatila/',
+    canonical: 'https://zaposli.ba/savjeti/cijena-adaptacije-kupatila/',
   },
 };
 
