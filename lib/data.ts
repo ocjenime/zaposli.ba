@@ -270,6 +270,8 @@ export const cities: City[] = [
   // Federacija BiH
   { name: 'Sarajevo', slug: 'sarajevo', loc: 'Sarajevu' },
   { name: 'Tuzla', slug: 'tuzla', loc: 'Tuzli' },
+  { name: 'Kalesije', slug: 'kalesije', loc: 'Kalesijama' },
+  { name: 'Kladanj', slug: 'kladan', loc: 'Kladnju' },
   { name: 'Zenica', slug: 'zenica', loc: 'Zenici' },
   { name: 'Mostar', slug: 'mostar', loc: 'Mostaru' },
   { name: 'Bihać', slug: 'bihac', loc: 'Bihaću' },
@@ -299,6 +301,7 @@ export const cities: City[] = [
   { name: 'Široki Brijeg', slug: 'siroki-brijeg', loc: 'Širokom Brijegu' },
   { name: 'Ljubuški', slug: 'ljubuski', loc: 'Ljubuškom' },
   { name: 'Čapljina', slug: 'capljina', loc: 'Čapljini' },
+  { name: 'Neum', slug: 'neum', loc: 'Neumu' },
   // Republika Srpska
   { name: 'Banja Luka', slug: 'banja-luka', loc: 'Banjoj Luci' },
   { name: 'Bijeljina', slug: 'bijeljina', loc: 'Bijeljini' },
@@ -307,6 +310,7 @@ export const cities: City[] = [
   { name: 'Derventa', slug: 'derventa', loc: 'Derventi' },
   { name: 'Gradiška', slug: 'gradiska', loc: 'Gradišci' },
   { name: 'Zvornik', slug: 'zvornik', loc: 'Zvorniku' },
+  { name: 'Srebrenica', slug: 'srebrenica', loc: 'Srebrenici' },
   { name: 'Istočno Sarajevo', slug: 'istocno-sarajevo', loc: 'Istočnom Sarajevu' },
   { name: 'Trebinje', slug: 'trebinje', loc: 'Trebinju' },
   { name: 'Foča', slug: 'foca', loc: 'Foči' },
