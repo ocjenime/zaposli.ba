@@ -38,19 +38,17 @@
 - Created `lib/date.ts` with deterministic `formatDate`, `formatDateTime`, and `formatMonthYear` helpers.
 - Replaced all client-side `toLocaleDateString('bs-BA')` usages with deterministic helpers.
 - Updated Edge Functions `notify-admin` and `notify-client-on-bid` to use deterministic date formatting.
-- Pushed latest code to `main` and verified `npm run build` succeeds.
+- Added GitHub Actions workflow to deploy Supabase Edge Functions using `SUPABASE_ACCESS_TOKEN`.
+- Pushed latest code to `main`, verified `npm run build` succeeds, and confirmed Edge Functions redeployed (endpoints return `401`).
 
 ### Active / In Progress
-- Need to redeploy the updated Edge Functions to Supabase so email templates use the new date formatting.
 - Preparing Vercel migration for tonight.
 
 ### Blocked
-- Supabase Edge Function deployment requires a `SUPABASE_ACCESS_TOKEN` secret. The local CLI failed because the environment is not logged in; GitHub Actions will be used instead.
+- Nothing.
 
 ## Next Move
-1. Create a Supabase Personal Access Token at https://supabase.com/dashboard/account/tokens and add it as a GitHub repository secret named `SUPABASE_ACCESS_TOKEN`.
-2. The new workflow `.github/workflows/deploy-supabase-functions.yml` will then deploy all functions on every push to `main` that touches `supabase/functions/**`.
-3. Proceed with Vercel migration:
+1. Proceed with Vercel migration:
    - Import repo into Vercel project.
    - Configure env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, etc.).
    - Set DNS A/AAAA records to Vercel.
