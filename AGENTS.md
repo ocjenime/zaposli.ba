@@ -41,7 +41,8 @@
 - Added GitHub Actions workflow to deploy Supabase Edge Functions using `SUPABASE_ACCESS_TOKEN`.
 - Pushed latest code to `main`, verified `npm run build` succeeds, and confirmed Edge Functions redeployed (endpoints return `401`).
 - Fixed firm “last active” tracking by adding a global `FirmActivityTracker` component so firm/majstor users are marked active on any page, not just the dashboard.
-- Added missing cities: Bužim, Ključ, Bosanski Petrovac, Drvar, Bosanska Krupa, Bosanski Novi, Tešanj.
+- Added missing cities: Bužim, Ključ, Bosanski Petrovac, Drvar, Bosanska Krupa, Bosanski Novi, Tešanj, Kalesije, Kladanj, Srebrenica, Neum.
+- Reorganized categories into clear groups (Hitno 24/7, Građevina, Krovovi/Fasade, Boje/Zidovi/Podovi, Instalacije, Dom/Sigurnost, Stolarija, Dvorište, Prevoz, Auto, Metalne konstrukcije, Projektovanje/Dizajn, Ostalo) and added missing trades: Zidar, Limar, Ograde, Gipsar, Podovi, Staklar, Plinoinstalater, Servis kućanskih aparata, Dimnjačar, Varilac.
 
 ### Active / In Progress
 - Vercel migration is planned for tonight; paused until then.
@@ -61,6 +62,8 @@
 - `CNAME` / `public/CNAME`: apex domain for GitHub Pages.
 - `lib/site.ts`: canonical URL.
 - `lib/date.ts`: deterministic date formatting helpers.
+- `lib/categories.ts`: category definitions and taxonomy.
+- `app/kategorije/page.tsx`: categories listing page.
 - `app/not-found.tsx`: custom 404 page.
 - `app/prijava/`, `app/registracija/`, `app/nova-lozinka/`, `app/zaboravljena-lozinka/`: auth pages with metadata wrappers.
 - `app/admin/page.tsx`: admin dashboard (client-side guards).
