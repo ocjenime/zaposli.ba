@@ -64,7 +64,6 @@ EXECUTE FUNCTION notify_firms_on_new_job();
 
 -- Grant the trigger function permission to insert notifications
 GRANT INSERT ON notifications TO postgres;
-GRANT USAGE ON SEQUENCE notifications_id_seq TO postgres;
 
 -- Optional: create a categories lookup table so emails/notifications use
 -- display names. If you keep categories in lib/data.ts, you can populate this
