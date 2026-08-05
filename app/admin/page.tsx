@@ -1,5 +1,9 @@
 'use client';
 
+// NOTE: This project is exported as a static site on GitHub Pages, so there is
+// no server-side route protection here. Admin access is enforced by the
+// client-side auth check below plus Supabase RLS policies on all sensitive data.
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
