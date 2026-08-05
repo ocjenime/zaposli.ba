@@ -9,9 +9,11 @@ import { cities } from '@/lib/data';
 import { ArrowRight, Siren, ShieldCheck, Clock, Star, MapPin, Users, Briefcase, CheckCircle } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
 
+const seoCategories = categories.filter((c) => !c.noSeo);
+
 export const metadata: Metadata = {
   title: 'Kategorije usluga: pronađite majstore | Zaposli.ba',
-  description: 'Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. 20 kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.',
+  description: `Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. ${seoCategories.length} kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.`,
   alternates: { canonical: `${site.url}/kategorije/` },
 };
 
@@ -19,7 +21,7 @@ const trustBadges = [
   { icon: ShieldCheck, label: 'Provjerene firme', value: 'ID + reference' },
   { icon: Clock, label: 'Brze ponude', value: '24h prosjek' },
   { icon: Star, label: 'Recenzije', value: 'Od stvarnih klijenata' },
-  { icon: Users, label: '35 gradova', value: 'Širom BiH' },
+  { icon: Users, label: `${cities.length} gradova`, value: 'Širom BiH' },
 ];
 
 export default function CategoriesPage() {
