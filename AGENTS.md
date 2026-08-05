@@ -51,21 +51,28 @@
 - Refactored `/top-firme/` and `/za-firme/` into server `page.tsx` (metadata + canonical) + client `Content` components so SEO tags are prerendered without changing functionality.
 - Verified the local static export now serves the correct titles for `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/`.
 - Confirmed header mobile menu renders correctly, contact form has required fields, all public static pages return 200, and the 404 page works.
+- Pushed the metadata fixes and verified live titles: `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/` all return 200 with correct `<title>` tags.
+- Prepared the project for Vercel migration by making `output: 'export'` conditional on `GITHUB_PAGES=true` in `next.config.js` and updating `.github/workflows/deploy.yml` so GitHub Pages still exports while Vercel uses the default Next.js runtime.
+- Verified both the static export build (2392 pages) and the default Next.js build (2392 pages) succeed locally.
 
 ### Active / In Progress
-- QA round 2 is complete locally; waiting for the next deploy so the metadata fixes can be verified live before Vercel migration.
+- Vercel migration preparation is complete; waiting for Vercel credentials to import the project.
 
 ### Blocked
-- No current blockers.
+- Need a Vercel access token or an authenticated Vercel CLI session to import the repo and configure the project.
 
 ## Next Move
-1. Deploy the latest fixes (push to `main` so GitHub Pages rebuilds and verify live metadata).
-2. Then proceed with the Vercel migration:
-   - Import repo into a Vercel project.
-   - Configure env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, etc.).
-   - Set DNS A/AAAA records to Vercel.
-   - Disable GitHub Pages.
-   - Update `SITE_URL` in Supabase to `https://zaposli.ba`.
+1. Obtain Vercel access (token or run `npx vercel login`) and import the repo into a Vercel project.
+2. Configure env vars in Vercel:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `RESEND_API_KEY` (if used by serverless/edge routes)
+   - `WEBHOOK_SECRET=zaposli-webhook-2024-secure-key`
+   - `SITE_URL=https://zaposli.ba`
+3. Set DNS A/AAAA records for `zaposli.ba` to Vercel.
+4. Disable GitHub Pages in the repo settings.
+5. Update `SITE_URL` in Supabase to `https://zaposli.ba`.
 
 ## Relevant Files
 - `CNAME` / `public/CNAME`: apex domain for GitHub Pages.
