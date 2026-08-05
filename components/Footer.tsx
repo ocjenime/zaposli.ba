@@ -22,7 +22,7 @@ const footerLinks = {
     { name: 'O platformi', href: '/o-nama/' },
     { name: 'Kontakt', href: '/kontakt/' },
     { name: 'Pravila', href: '/pravila/' },
-    { name: 'Privacy policy', href: '/privacy/' },
+    { name: 'Politika privatnosti', href: '/privacy/' },
   ],
 };
 

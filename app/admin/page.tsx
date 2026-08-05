@@ -1313,7 +1313,7 @@ export default function AdminPage() {
                                 )}
                                 {r.status === 'approved' && (
                                   <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
-                                    ODGOBRENA
+                                    ODOBRENA
                                   </span>
                                 )}
                                 {r.status === 'rejected' && (

@@ -29,6 +29,7 @@ export default function NotificationBell() {
       const { data, error } = await supabase
         .from('notifications')
         .select('*')
+        .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(20);
       if (!error) {
@@ -53,7 +54,7 @@ export default function NotificationBell() {
     let channel: ReturnType<typeof supabase.channel> | null = null;
     try {
       channel = supabase
-        .channel('notifications')
+        .channel(`notifications:${user.id}`)
         .on(
           'postgres_changes',
           { event: 'INSERT', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
@@ -102,7 +103,11 @@ export default function NotificationBell() {
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
     if (unreadIds.length === 0) return;
     try {
-      await supabase.from('notifications').update({ read: true }).in('id', unreadIds);
+      await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('user_id', user.id)
+        .in('id', unreadIds);
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
       setUnreadCount(0);
     } catch (err) {

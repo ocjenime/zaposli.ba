@@ -17,7 +17,7 @@ export function organizationSchema() {
     '@type': 'Organization',
     name: site.name,
     url: site.url,
-    logo: `${site.url}/icon.svg`,
+    logo: `${site.url}/images/logo-mark.png`,
     description: site.description,
     email: site.email,
     telephone: site.phone,
@@ -152,7 +152,7 @@ export function jobPostingSchema(job: JobPostingInput) {
       '@type': 'Organization',
       name: site.name,
       url: site.url,
-      logo: `${site.url}/icon.svg`,
+      logo: `${site.url}/images/logo-mark.png`,
     },
     jobLocation: {
       '@type': 'Place',

@@ -90,9 +90,10 @@ export default function NotificationsPage() {
   }
 
   async function deleteNotification(id: string) {
+    if (!user) return;
     setActionId(id);
     try {
-      await supabase.from('notifications').delete().eq('id', id);
+      await supabase.from('notifications').delete().eq('id', id).eq('user_id', user.id);
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     } catch (err) {
       console.error('deleteNotification error:', err);
