@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from './supabase';
+import FirmActivityTracker from '@/components/FirmActivityTracker';
 
 import type { UserRole } from './roles';
 
@@ -167,6 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={{ user, loading, role, isAdmin, signOut }}>
       {children}
+      <FirmActivityTracker />
     </AuthContext.Provider>
   );
 }

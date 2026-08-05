@@ -29,23 +29,18 @@ export function formatLastActive(lastActiveIso: string | null | undefined) {
 }
 
 export default function useFirmActivityHeartbeat(firmId: string | null | undefined) {
-  const firmIdRef = useRef(firmId);
-  firmIdRef.current = firmId;
-
   useEffect(() => {
-    if (!firmIdRef.current) return;
+    if (!firmId) return;
 
     const update = async () => {
-      const id = firmIdRef.current;
-      if (!id) return;
       await supabase
         .from('firms')
         .update({ last_active_at: new Date().toISOString() })
-        .eq('id', id);
+        .eq('id', firmId);
     };
 
     update();
     const interval = setInterval(update, HEARTBEAT_INTERVAL_MS);
     return () => clearInterval(interval);
-  }, []);
+  }, [firmId]);
 }
