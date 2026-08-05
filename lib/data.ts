@@ -280,7 +280,7 @@ export const cities: City[] = [
   { name: 'Ključ', slug: 'kljuc', loc: 'Ključu' },
   { name: 'Bos. Petrovac', slug: 'bosanski-petrovac', loc: 'Bosanskom Petrovacu' },
   { name: 'Bos. Krupa', slug: 'bosanska-krupa', loc: 'Bosanskoj Krupi' },
-  { name: 'Bo. Novi', slug: 'bosanski-novi', loc: 'Bosanskom Novom' },
+  { name: 'Bos. Novi', slug: 'bosanski-novi', loc: 'Bosanskom Novom' },
   { name: 'Drvar', slug: 'drvar', loc: 'Drvaru' },
   { name: 'Travnik', slug: 'travnik', loc: 'Travniku' },
   { name: 'Jajce', slug: 'jajce', loc: 'Jajcu' },
