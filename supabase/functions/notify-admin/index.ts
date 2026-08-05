@@ -39,6 +39,7 @@ interface ReviewRecord {
   created_at: string;
 }
 
+// Deterministic formatter avoids Node.js ICU/locale issues like "M08".
 function formatDate(iso: string) {
   try {
     const d = new Date(iso);
