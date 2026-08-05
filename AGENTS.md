@@ -45,14 +45,12 @@
 - Preparing Vercel migration for tonight.
 
 ### Blocked
-- Supabase Edge Function deployment requires an access token. `npx supabase functions deploy` failed with `LegacyPlatformAuthRequiredError` because the environment is not logged in.
+- Supabase Edge Function deployment requires a `SUPABASE_ACCESS_TOKEN` secret. The local CLI failed because the environment is not logged in; GitHub Actions will be used instead.
 
 ## Next Move
-1. Authenticate Supabase CLI (run `supabase login` or set `SUPABASE_ACCESS_TOKEN`) then deploy:
-   ```bash
-   npx supabase functions deploy notify-admin notify-client-on-bid --project-ref nwgbrvpomjkzkofjknyi
-   ```
-2. Proceed with Vercel migration:
+1. Create a Supabase Personal Access Token at https://supabase.com/dashboard/account/tokens and add it as a GitHub repository secret named `SUPABASE_ACCESS_TOKEN`.
+2. The new workflow `.github/workflows/deploy-supabase-functions.yml` will then deploy all functions on every push to `main` that touches `supabase/functions/**`.
+3. Proceed with Vercel migration:
    - Import repo into Vercel project.
    - Configure env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, etc.).
    - Set DNS A/AAAA records to Vercel.
@@ -70,4 +68,5 @@
 - `lib/notifications.ts`: notification routing.
 - `supabase/functions/notify-admin/index.ts`: admin email formatting.
 - `supabase/functions/notify-client-on-bid/index.ts`: bid notification formatting.
+- `.github/workflows/deploy-supabase-functions.yml`: automated Edge Function deployment.
 - `.eslintrc.json`: ESLint config.
