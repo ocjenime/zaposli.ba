@@ -15,6 +15,7 @@ const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'b
 
 interface Firm {
   id: string;
+  slug: string;
   name: string;
   city: string | null;
   logo_url: string | null;
@@ -60,7 +61,7 @@ function RequestContent() {
     setLoadingFirm(true);
     const { data } = await supabase
       .from('firms')
-      .select('id, name, city, logo_url, description')
+      .select('id, slug, name, city, logo_url, description')
       .eq('id', firmId)
       .single();
     if (data) {
@@ -278,7 +279,7 @@ function RequestContent() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-2xl mx-auto">
-          <Link href={firm ? `/firma-profil/?id=${firm.id}` : '/top-firme/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
+          <Link href={firm ? `/firma-profil/?slug=${firm.slug}` : '/top-firme/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na profil firme
           </Link>
 
