@@ -42,10 +42,10 @@
 - Pushed latest code to `main`, verified `npm run build` succeeds, and confirmed Edge Functions redeployed (endpoints return `401`).
 
 ### Active / In Progress
-- Preparing Vercel migration for tonight.
+- Vercel migration is planned for tonight; paused until then.
 
 ### Blocked
-- Nothing.
+- Waiting for user to resume Vercel migration (chosen option C).
 
 ## Next Move
 1. Proceed with Vercel migration:
