@@ -7,6 +7,7 @@ export type NotificationType =
   | 'payment'
   | 'review'
   | 'direct_request'
+  | 'direct_quote_request'
   | 'direct_request_accepted'
   | 'direct_request_in_progress'
   | 'direct_request_done'

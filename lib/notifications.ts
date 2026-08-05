@@ -2,10 +2,22 @@ import type { Notification } from '@/lib/types';
 
 export function getNotificationHref(notification: Notification, role: string | null): string | undefined {
   const { type, job_id } = notification;
+
+  // Messages always go to the conversation if we have a job id
+  if (type === 'message' && job_id) {
+    return `/dashboard/razgovor/?job_id=${job_id}`;
+  }
+
   if (!job_id) return undefined;
 
   if (type === 'bid_accepted') {
     return `/dashboard/razgovor/?job_id=${job_id}`;
+  }
+
+  if (type === 'bid_received') {
+    return role === 'firm' || role === 'majstor'
+      ? `/dashboard/firma/?expandJobId=${job_id}`
+      : `/dashboard/poslovi/?id=${job_id}`;
   }
 
   if (type === 'new_job') {
@@ -16,7 +28,7 @@ export function getNotificationHref(notification: Notification, role: string | n
 
   if (
     type === 'direct_request' ||
-    type === 'direct_request_completed' ||
+    type === 'direct_quote_request' ||
     type === 'direct_request_problem' ||
     type === 'direct_request_cancelled' ||
     type === 'direct_request_declined'
@@ -32,6 +44,24 @@ export function getNotificationHref(notification: Notification, role: string | n
     type === 'direct_request_done'
   ) {
     return `/dashboard/poslovi/?id=${job_id}`;
+  }
+
+  if (type === 'direct_request_completed') {
+    return role === 'firm' || role === 'majstor'
+      ? `/dashboard/firma/?directJobId=${job_id}`
+      : `/dashboard/recenzija/?job_id=${job_id}`;
+  }
+
+  if (type === 'review') {
+    return role === 'firm' || role === 'majstor'
+      ? `/dashboard/firma/?directJobId=${job_id}`
+      : `/dashboard/poslovi/?id=${job_id}`;
+  }
+
+  if (type === 'payment') {
+    return role === 'firm' || role === 'majstor'
+      ? '/dashboard/firma/pretplata/'
+      : `/dashboard/poslovi/?id=${job_id}`;
   }
 
   // Default job-related routes

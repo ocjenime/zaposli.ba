@@ -116,8 +116,9 @@ export default function NotificationBell() {
   }
 
   async function markRead(id: string) {
+    if (!user) return;
     try {
-      await supabase.from('notifications').update({ read: true }).eq('id', id);
+      await supabase.from('notifications').update({ read: true }).eq('id', id).eq('user_id', user.id);
       setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
       setUnreadCount((c) => Math.max(0, c - 1));
     } catch (err) {

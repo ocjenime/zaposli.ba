@@ -104,6 +104,15 @@ export default function LoginPage() {
                 </div>
               )}
 
+              <div className="flex items-center justify-between text-sm">
+                <Link
+                  href="/zaboravljena-lozinka/"
+                  className="text-primary-600 hover:text-primary-700 font-medium"
+                >
+                  Zaboravili ste lozinku?
+                </Link>
+              </div>
+
               <button type="submit" disabled={loading} className="w-full btn-primary disabled:opacity-50 inline-flex items-center justify-center gap-2">
                 {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                 {loading ? 'Prijavljivanje...' : 'Prijavite se'}

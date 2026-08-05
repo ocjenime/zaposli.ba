@@ -295,7 +295,7 @@ export default function RegisterPage() {
                   Prihvaćam{' '}
                   <Link href="/pravila/" className="text-primary-600 hover:text-primary-700">Pravila</Link>{' '}
                   i{' '}
-                  <Link href="/privacy/" className="text-primary-600 hover:text-primary-700">Privacy policy</Link>
+                  <Link href="/privacy/" className="text-primary-600 hover:text-primary-700">Politiku privatnosti</Link>
                 </label>
               </div>
 
