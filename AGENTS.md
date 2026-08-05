@@ -40,6 +40,8 @@
 - Updated Edge Functions `notify-admin` and `notify-client-on-bid` to use deterministic date formatting.
 - Added GitHub Actions workflow to deploy Supabase Edge Functions using `SUPABASE_ACCESS_TOKEN`.
 - Pushed latest code to `main`, verified `npm run build` succeeds, and confirmed Edge Functions redeployed (endpoints return `401`).
+- Fixed firm “last active” tracking by adding a global `FirmActivityTracker` component so firm/majstor users are marked active on any page, not just the dashboard.
+- Added missing cities: Bužim, Ključ, Bosanski Petrovac, Drvar, Bosanska Krupa, Bosanski Novi, Tešanj.
 
 ### Active / In Progress
 - Vercel migration is planned for tonight; paused until then.
