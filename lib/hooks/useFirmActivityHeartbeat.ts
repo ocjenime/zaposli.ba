@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
+import { formatDate } from '@/lib/date';
 
 const HEARTBEAT_INTERVAL_MS = 2 * 60 * 1000; // 2 minutes
 const ONLINE_THRESHOLD_MS = 5 * 60 * 1000; // 5 minutes
@@ -24,11 +25,7 @@ export function formatLastActive(lastActiveIso: string | null | undefined) {
   if (minutes < 60) return `prije ${minutes} min`;
   if (hours < 24) return `prije ${hours} h`;
   if (days < 7) return `prije ${days} dana`;
-  return new Date(lastActiveIso).toLocaleDateString('bs-BA', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  return formatDate(lastActiveIso);
 }
 
 export default function useFirmActivityHeartbeat(firmId: string | null | undefined) {

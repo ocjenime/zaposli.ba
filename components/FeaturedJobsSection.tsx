@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
+import { formatDate } from '@/lib/date';
 import FeaturedBadge from './FeaturedBadge';
 
 interface Job {
@@ -114,7 +115,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                   <FeaturedBadge />
                 </div>
                 <span className="text-xs text-gray-400 bg-white px-2 py-1 rounded-md border border-gray-100">
-                  {new Date(job.created_at).toLocaleDateString('bs')}
+                  {formatDate(job.created_at)}
                 </span>
               </div>
 
@@ -137,7 +138,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 {job.deadline && (
                   <div className="flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5" />
-                    <span>Do {new Date(job.deadline).toLocaleDateString('bs')}</span>
+                    <span>Do {formatDate(job.deadline)}</span>
                   </div>
                 )}
               </div>

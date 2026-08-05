@@ -18,6 +18,7 @@ import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory, categories } from '@/lib/data';
+import { formatDate } from '@/lib/date';
 import { JsonLd, jobListSchema } from '@/lib/jsonld';
 
 interface Job {
@@ -41,10 +42,6 @@ interface Job {
 interface JobImage {
   id: string;
   image_url: string;
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 function relativeTime(iso: string) {

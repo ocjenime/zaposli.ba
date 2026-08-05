@@ -22,6 +22,7 @@ import {
   formatDateTime,
 } from '@/lib/subscriptions';
 import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
+import { formatDate } from '@/lib/date';
 import {
   MapPin,
   Tag,
@@ -143,10 +144,6 @@ const statusBadgeClasses: Record<BidStatus, string> = {
   accepted: 'bg-success-50 text-success-700 border-success-100',
   rejected: 'bg-gray-100 text-gray-500 border-gray-200',
 };
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long' });
-}
 
 function formatBudget(job: Job) {
   if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';

@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { formatDate } from './date';
 
 export interface Plan {
   id: string;
@@ -107,11 +108,7 @@ export function addMonths(date: Date, months: number): Date {
 }
 
 export function formatDateTime(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
+  return formatDate(iso);
 }
 
 export function getNextResetDate() {

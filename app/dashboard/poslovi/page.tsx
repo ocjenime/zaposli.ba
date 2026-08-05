@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 import JobChat from '@/components/JobChat';
+import { formatDate } from '@/lib/date';
 import {
   ArrowLeft,
   MapPin,
@@ -117,10 +118,6 @@ const privateStatusColors: Record<PrivateStatus, string> = {
 };
 
 const progressSteps: PrivateStatus[] = ['pending', 'accepted', 'in_progress', 'done_pending', 'completed'];
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long', year: 'numeric' });
-}
 
 function JobDetail() {
   const searchParams = useSearchParams();

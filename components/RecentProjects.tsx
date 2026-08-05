@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
+import { formatDate } from '@/lib/date';
 import FeaturedBadge from './FeaturedBadge';
 
 interface Job {
@@ -203,7 +204,7 @@ function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean })
         {project.deadline && (
           <div className="flex items-center gap-1.5">
             <Clock className="w-3.5 h-3.5" />
-            <span>Do {new Date(project.deadline).toLocaleDateString('bs')}</span>
+            <span>Do {formatDate(project.deadline)}</span>
           </div>
         )}
       </div>

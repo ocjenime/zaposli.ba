@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { showToast } from '@/components/ToastProvider';
 import { getNotificationHref } from '@/lib/notifications';
+import { formatDate } from '@/lib/date';
 import type { Notification } from '@/lib/types';
 
 export default function NotificationBell() {
@@ -127,7 +128,7 @@ export default function NotificationBell() {
   }
 
   function formatTime(iso: string) {
-    return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short' });
+    return formatDate(iso);
   }
 
   if (!mounted || !user) return null;

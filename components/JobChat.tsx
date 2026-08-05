@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Send, Loader2 } from 'lucide-react';
+import { formatDate as formatDateHelper } from '@/lib/date';
 
 interface Profile {
   id: string;
@@ -32,7 +33,7 @@ function formatTime(iso: string) {
 }
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long' });
+  return formatDateHelper(iso);
 }
 
 export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdmin }: JobChatProps) {

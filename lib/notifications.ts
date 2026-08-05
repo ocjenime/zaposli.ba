@@ -1,4 +1,5 @@
 import type { Notification } from '@/lib/types';
+import { formatDate, formatDateTime } from '@/lib/date';
 
 export function getNotificationHref(notification: Notification, role: string | null): string | undefined {
   const { type, job_id } = notification;
@@ -69,18 +70,9 @@ export function getNotificationHref(notification: Notification, role: string | n
 }
 
 export function formatNotificationTime(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', {
-    day: 'numeric',
-    month: 'short',
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  return formatDateTime(iso);
 }
 
 export function formatNotificationDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  return formatDate(iso);
 }

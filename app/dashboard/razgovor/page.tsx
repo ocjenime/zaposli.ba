@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { ArrowLeft, MapPin, Send, Loader2 } from 'lucide-react';
+import { formatDate as formatDateHelper } from '@/lib/date';
 
 interface Profile {
   id: string;
@@ -40,7 +41,7 @@ function formatTime(iso: string) {
 }
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'long' });
+  return formatDateHelper(iso);
 }
 
 function Conversation() {

@@ -11,6 +11,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
+import { formatDate, formatMonthYear } from '@/lib/date';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
 import { isOnline, formatLastActive } from '@/lib/hooks/useFirmActivityHeartbeat';
 import LogoDisplay from '@/components/ui/LogoDisplay';
@@ -144,26 +145,12 @@ export default function FirmProfileContent() {
     }
   }
 
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('bs-BA', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    });
-  }
-
   function formatYear(date: string | null) {
     if (!date) return null;
     return new Date(date).getFullYear().toString();
   }
 
-  function formatMonthYear(date: string | null) {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('bs-BA', {
-      month: 'long',
-      year: 'numeric',
-    });
-  }
+
 
   function ReviewReplyForm({
     reviewId,

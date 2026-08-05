@@ -26,6 +26,7 @@ import FirmEditModal, { AdminFirm } from './FirmEditModal';
 import SubscriptionEditModal from './SubscriptionEditModal';
 import { roleLabel, isFirmRole } from '@/lib/roles';
 import { formatDateTime, getResetCountdownText } from '@/lib/subscriptions';
+import { formatDate } from '@/lib/date';
 import { site } from '@/lib/site';
 
 interface AdminRequest {
@@ -595,10 +596,6 @@ export default function AdminPage() {
         (p.full_name?.toLowerCase() || '').includes(q) ||
         (p.phone?.toLowerCase() || '').includes(q)
     );
-  }
-
-  function formatDate(iso: string) {
-    return new Date(iso).toLocaleDateString('bs-BA', { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
   if (authLoading) {
