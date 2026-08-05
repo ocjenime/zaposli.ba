@@ -9,9 +9,7 @@ interface BreadcrumbsProps {
 export default function Breadcrumbs({ items }: BreadcrumbsProps) {
   const schemaItems = [
     { name: 'Početna', url: '/' },
-    ...items
-      .filter((i) => i.href)
-      .map((i) => ({ name: i.name, url: i.href! })),
+    ...items.map((i) => ({ name: i.name, url: i.href })),
   ];
 
   return (

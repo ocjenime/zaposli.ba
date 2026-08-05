@@ -40,7 +40,7 @@ export function websiteSchema() {
   };
 }
 
-export function breadcrumbSchema(items: { name: string; url: string }[]) {
+export function breadcrumbSchema(items: { name: string; url?: string }[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -48,7 +48,7 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
       '@type': 'ListItem',
       position: i + 1,
       name: item.name,
-      item: `${site.url}${item.url}`,
+      ...(item.url ? { item: `${site.url}${item.url}` } : {}),
     })),
   };
 }

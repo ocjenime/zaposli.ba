@@ -23,12 +23,6 @@ function getInitials(name: string | null | undefined) {
     .toUpperCase();
 }
 
-function getCity(name: string | null | undefined) {
-  if (!name) return 'Bosna i Hercegovina';
-  // Try to extract city from role-like strings if available, otherwise just use name
-  return 'Klijent';
-}
-
 export default function Testimonials() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
