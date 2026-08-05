@@ -42,7 +42,7 @@
 - Pushed latest code to `main`, verified `npm run build` succeeds, and confirmed Edge Functions redeployed (endpoints return `401`).
 - Fixed firm “last active” tracking by adding a global `FirmActivityTracker` component so firm/majstor users are marked active on any page, not just the dashboard.
 - Added missing cities: Bužim, Ključ, Bosanski Petrovac, Drvar, Bosanska Krupa, Bosanski Novi, Tešanj, Kalesije, Kladanj, Srebrenica, Neum.
-- Reorganized categories into clear groups (Hitno 24/7, Građevina, Krovovi/Fasade, Boje/Zidovi/Podovi, Instalacije, Dom/Sigurnost, Stolarija, Dvorište, Prevoz, Auto, Metalne konstrukcije, Projektovanje/Dizajn, Ostalo) and added missing trades: Zidar, Limar, Ograde, Gipsar, Podovi, Staklar, Plinoinstalater, Servis kućanskih aparata, Dimnjačar, Varilac.
+- Finalized categories taxonomy with 50 categories in 15 groups, added missing trades (betoniranje, hidroizolacija, tapetar, kuhinje po mjeri, kupatila ključ u ruke, popločavanje, pergole, pranje fasada/krovova, dizajn eksterijera, statika, energetska obnova), fixed Bosnian names and icons, and seeded `categories` lookup table via `supabase/migration-job-alerts.sql`.
 
 ### Active / In Progress
 - Vercel migration is planned for tonight; paused until then.
