@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
     default: 'Zaposli.ba — Pronađite majstore za vaš posao',
-    template: '%s | Zaposli.ba',
+    template: '%s',
   },
   description: site.description,
   keywords: ['građevinarstvo', 'majstori', 'majstore', 'Bosna', 'Hercegovina', 'renoviranje', 'gradnja', 'ponude', 'zaposli', 'vodoinstalater', 'električar', 'keramičar', 'adaptacija', 'fasada', 'adaptacije'],
