@@ -43,16 +43,25 @@
 - Fixed firm “last active” tracking by adding a global `FirmActivityTracker` component so firm/majstor users are marked active on any page, not just the dashboard.
 - Added missing cities: Bužim, Ključ, Bosanski Petrovac, Drvar, Bosanska Krupa, Bosanski Novi, Tešanj, Kalesije, Kladanj, Srebrenica, Neum.
 - Finalized categories taxonomy with 50 categories in 15 groups, added missing trades (betoniranje, hidroizolacija, tapetar, kuhinje po mjeri, kupatila ključ u ruke, popločavanje, pergole, pranje fasada/krovova, dizajn eksterijera, statika, energetska obnova), fixed Bosnian names and icons, and seeded `categories` lookup table via `supabase/migration-job-alerts.sql`.
+- Fixed the categories migration SQL by removing the invalid `notifications_id_seq` grant that caused the seed to fail.
+- Verified the latest static build generates 2392 pages without errors.
+- Re-checked every link on `/kategorije/zavrsni-radovi/` (164 internal links) and confirmed all return 200; the earlier broken-link report is now resolved.
+- Completed QA round 2 across the public site: ran a full internal crawl of 2,412 unique URLs; with retries GitHub Pages returned 0 broken links and 0 connection errors (two transient 503s were confirmed as CDN rate-limit false positives).
+- Fixed missing page metadata on client-only pages by adding server-side wrappers/layouts with titles and Open Graph tags for `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/`.
+- Refactored `/top-firme/` and `/za-firme/` into server `page.tsx` (metadata + canonical) + client `Content` components so SEO tags are prerendered without changing functionality.
+- Verified the local static export now serves the correct titles for `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/`.
+- Confirmed header mobile menu renders correctly, contact form has required fields, all public static pages return 200, and the 404 page works.
 
 ### Active / In Progress
-- Vercel migration is planned for tonight; paused until then.
+- QA round 2 is complete locally; waiting for the next deploy so the metadata fixes can be verified live before Vercel migration.
 
 ### Blocked
-- Waiting for user to resume Vercel migration (chosen option C).
+- No current blockers.
 
 ## Next Move
-1. Proceed with Vercel migration:
-   - Import repo into Vercel project.
+1. Deploy the latest fixes (push to `main` so GitHub Pages rebuilds and verify live metadata).
+2. Then proceed with the Vercel migration:
+   - Import repo into a Vercel project.
    - Configure env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, etc.).
    - Set DNS A/AAAA records to Vercel.
    - Disable GitHub Pages.
@@ -63,7 +72,10 @@
 - `lib/site.ts`: canonical URL.
 - `lib/date.ts`: deterministic date formatting helpers.
 - `lib/categories.ts`: category definitions and taxonomy.
+- `lib/data.ts`: cities and FAQ data.
 - `app/kategorije/page.tsx`: categories listing page.
+- `app/kategorije/[slug]/page.tsx`: category detail pages.
+- `components/FirmActivityTracker.tsx`: global firm activity heartbeat.
 - `app/not-found.tsx`: custom 404 page.
 - `app/prijava/`, `app/registracija/`, `app/nova-lozinka/`, `app/zaboravljena-lozinka/`: auth pages with metadata wrappers.
 - `app/admin/page.tsx`: admin dashboard (client-side guards).
