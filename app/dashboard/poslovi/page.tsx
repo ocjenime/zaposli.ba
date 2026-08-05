@@ -29,6 +29,7 @@ interface Firm {
   name: string;
   city: string;
   logo_url: string | null;
+  owner_id?: string;
 }
 
 interface Bid {
@@ -182,7 +183,7 @@ function JobDetail() {
     const [{ data: bidsData }, { data: imagesData }, { data: firmData }, { data: reviewData }] = await Promise.all([
       supabase
         .from('bids')
-        .select('*, firms(id,name,city,logo_url)')
+        .select('*, firms(id,name,city,logo_url,owner_id)')
         .eq('job_id', id)
         .order('created_at', { ascending: false }),
       supabase
@@ -212,6 +213,17 @@ function JobDetail() {
     await supabase.from('bids').update({ status: 'rejected' }).eq('job_id', job.id).neq('id', bidId);
     await supabase.from('bids').update({ status: 'accepted' }).eq('id', bidId);
     await supabase.from('jobs').update({ status: 'in_progress', updated_at: new Date().toISOString() }).eq('id', job.id);
+
+    const acceptedBid = bids.find((b) => b.id === bidId);
+    if (acceptedBid?.firms?.owner_id) {
+      await supabase.from('notifications').insert({
+        user_id: acceptedBid.firms.owner_id,
+        type: 'bid_accepted',
+        title: 'Vaša ponuda je prihvaćena',
+        message: `Klijent je prihvatio vašu ponudu od ${acceptedBid.amount.toLocaleString('bs-BA')} KM za "${job.title}".`,
+        job_id: job.id,
+      });
+    }
 
     setActionId(null);
     await fetchData();

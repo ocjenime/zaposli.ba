@@ -19,6 +19,7 @@ interface JobRow {
 interface FirmRow {
   id: string;
   name: string;
+  owner_id?: string;
 }
 
 interface BidRow {
@@ -107,7 +108,7 @@ function ReviewPage() {
 
       const { data: bidData, error: bidError } = await supabase
         .from('bids')
-        .select('id, firm_id, firms(id, name)')
+        .select('id, firm_id, firms(id, name, owner_id)')
         .eq('job_id', jobId)
         .eq('status', 'accepted')
         .maybeSingle();
@@ -214,6 +215,16 @@ function ReviewPage() {
         setError('Greška pri spremanju recenzije.');
         setSubmitting(false);
         return;
+      }
+
+      if (bid?.firms?.owner_id) {
+        await supabase.from('notifications').insert({
+          user_id: bid.firms.owner_id,
+          type: 'review',
+          title: 'Nova recenzija',
+          message: `Klijent je ostavio recenziju (${rating}/5) za posao "${job?.title || ''}".`,
+          job_id: jobId,
+        });
       }
 
       router.push('/dashboard/');

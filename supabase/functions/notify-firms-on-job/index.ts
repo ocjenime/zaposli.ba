@@ -31,6 +31,27 @@ interface WebhookPayload {
   schema: string;
 }
 
+async function insertNotification(
+  supabase: ReturnType<typeof createClient>,
+  userId: string,
+  type: string,
+  title: string,
+  message: string,
+  jobId: string
+) {
+  try {
+    await supabase.from("notifications").insert({
+      user_id: userId,
+      type,
+      title,
+      message,
+      job_id: jobId,
+    });
+  } catch (err) {
+    console.error("Failed to insert notification:", err);
+  }
+}
+
 function formatBudget(mode: string | null, min: number | null, max: number | null) {
   if (mode === "open") return "Klijent želi da majstori predlože cijenu";
   if (min && max) return `${min.toLocaleString("bs-BA")} – ${max.toLocaleString("bs-BA")} KM`;
@@ -178,6 +199,18 @@ Deno.serve(async (req: Request) => {
       }
 
       results.push({ email: firm.email, status: "sent" });
+
+      // In-app notification for firm owner
+      if (firm.owner_id) {
+        await insertNotification(
+          supabase,
+          firm.owner_id,
+          "new_job",
+          "Novi posao u vašoj kategoriji",
+          `Objavljen je novi posao "${job.title}" u ${job.city || "BiH"} za kategoriju ${categoryName}.`,
+          job.id
+        );
+      }
     } catch (err) {
       console.error(`Email failed for ${firm.email}:`, err);
       results.push({ email: firm.email, status: "error", error: String(err) });

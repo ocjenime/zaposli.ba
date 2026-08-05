@@ -401,7 +401,7 @@ function PostProjectContent() {
             </div>
             <h1 className="text-3xl font-extrabold text-gray-900 mb-3">Posao je objavljen!</h1>
             <p className="text-steel mb-8 leading-relaxed">
-              Vaš posao <b className="text-gray-900">"{formData.title || 'Adaptacija'}"</b> je sada vidljiv provjerenim firmama.
+              Vaš posao <b className="text-gray-900">&ldquo;{formData.title || 'Adaptacija'}&rdquo;</b> je sada vidljiv provjerenim firmama.
               {notifiedCount != null && notifiedCount > 0 && (
                 <>
                   {' '}Obavijestili smo <b className="text-gray-900">{notifiedCount} {notifiedCount === 1 ? 'firmu' : notifiedCount < 5 ? 'firme' : 'firmi'}</b> iz kategorije.

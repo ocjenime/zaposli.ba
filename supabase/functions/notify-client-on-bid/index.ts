@@ -42,6 +42,27 @@ interface Profile {
   full_name: string | null;
 }
 
+async function insertNotification(
+  supabase: ReturnType<typeof createClient>,
+  userId: string,
+  type: string,
+  title: string,
+  message: string,
+  jobId: string
+) {
+  try {
+    await supabase.from("notifications").insert({
+      user_id: userId,
+      type,
+      title,
+      message,
+      job_id: jobId,
+    });
+  } catch (err) {
+    console.error("Failed to insert notification:", err);
+  }
+}
+
 function formatDate(iso: string) {
   try {
     return new Date(iso).toLocaleString("bs-BA", {
@@ -124,6 +145,16 @@ Deno.serve(async (req: Request) => {
   const firmCity = firm?.city || "BiH";
   const amount = bid.amount.toLocaleString("bs-BA");
   const message = bid.message?.trim() || "Firma nije ostavila poruku.";
+
+  // In-app notification for the client
+  await insertNotification(
+    supabase,
+    job.client_id,
+    "bid_received",
+    "Nova ponuda za vaš posao",
+    `${firmName} iz ${firmCity} poslala je ponudu od ${amount} KM za "${job.title}".`,
+    job.id
+  );
 
   const html = `
     <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">

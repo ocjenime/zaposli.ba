@@ -184,7 +184,7 @@ export default function CijenaFasadePoM2Page() {
             </ul>
             <p className="text-steel leading-relaxed mb-6">
               Ako ponuda ne navodi armaturu ili završni sloj kao posebne stavke, tražite pojašnjenje
-              : to su najčešće „zaboravljene" stavke koje se kasnije dodaju na fakturu.
+              : to su najčešće „zaboravljene&rdquo; stavke koje se kasnije dodaju na fakturu.
             </p>
 
             <h2 id="greske" className="text-2xl font-bold text-gray-900 mt-10 mb-4">Greške koje poskupljuju fasadu</h2>
@@ -195,7 +195,7 @@ export default function CijenaFasadePoM2Page() {
               </li>
               <li>
                 <strong className="text-gray-900">Premalo tiplova</strong>: propisano je 4-6 tiplova po
-                m², a na uglovima i više; štednja tu znači ploče koje „puštaju" nakon par zima.
+                m², a na uglovima i više; štednja tu znači ploče koje „puštaju&rdquo; nakon par zima.
               </li>
               <li>
                 <strong className="text-gray-900">Jeftina završna malta</strong>: akrilna malta je
@@ -214,7 +214,7 @@ export default function CijenaFasadePoM2Page() {
 
             <p className="text-steel leading-relaxed mb-6">
               Zadnji savjet: fasadu uvijek ugovarajte s cjenikom <strong className="text-gray-900">po
-              kvadratu sa jasno navedenim sistemom</strong>, a ne „za cijelu kuću": razlike u
+              kvadratu sa jasno navedenim sistemom</strong>, a ne „za cijelu kuću&rdquo;: razlike u
               obračunu otvora i uglova znaju iznositi i do 15% ukupne cijene.
             </p>
 

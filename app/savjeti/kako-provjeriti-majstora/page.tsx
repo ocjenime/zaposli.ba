@@ -129,7 +129,7 @@ export default function KakoProvjeritiMajstoraPage() {
             <h2 id="registracija" className="text-2xl font-bold text-gray-900 mt-10 mb-4">1. Provjerite registraciju firme</h2>
             <p className="text-steel leading-relaxed mb-6">
               Tražite ID broj firme i provjerite ga u javnom registru: svaka legalno registrovana
-              firma u BiH mora imati jedinstveni identifikacioni broj. Rad „na crno" ne znači samo
+              firma u BiH mora imati jedinstveni identifikacioni broj. Rad „na crno&rdquo; ne znači samo
               poreznu prevaru: znači i da nemate nikakav pravni osnov za reklamaciju ako nešto krene
               po zlu. Firma koja izbjegava dati ID broj je crvena zastava.
             </p>
@@ -155,7 +155,7 @@ export default function KakoProvjeritiMajstoraPage() {
             <p className="text-steel leading-relaxed mb-6">
               Ugovor ne mora biti komplikovan, ali mora pisano definisati: obim radova, ukupnu
               cijenu ili cijenu po jedinici mjere, rok početka i završetka, dinamiku plaćanja i šta
-              se dešava pri kašnjenju. Usaglašavanje „kako se dogovorimo" je najčešći uzrok sporova.
+              se dešava pri kašnjenju. Usaglašavanje „kako se dogovorimo&rdquo; je najčešći uzrok sporova.
               Ako firma ima obrazac ugovora: odličan znak profesionalnosti.
             </p>
 
@@ -178,7 +178,7 @@ export default function KakoProvjeritiMajstoraPage() {
             <div className="bg-gradient-to-br from-cloud to-white rounded-2xl border border-gray-100 p-6 mt-10 flex gap-4 shadow-card">
               <ShieldCheck className="w-8 h-8 text-brand-orange shrink-0" />
               <p className="text-sm text-steel leading-relaxed">
-                <strong className="text-gray-900">Savjet:</strong> firme sa oznakom „Provjerena firma" na
+                <strong className="text-gray-900">Savjet:</strong> firme sa oznakom „Provjerena firma&rdquo; na
                 Zaposli.ba prošle su provjeru registracije, identiteta i referenci, što ne znači da
                 preskačete ugovor, ali znači da je prva stavka sa liste već odrađena za vas.
               </p>

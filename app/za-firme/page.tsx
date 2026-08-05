@@ -403,7 +403,7 @@ export default function ForCompaniesPage() {
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-4">Značka kvaliteta</h3>
                     <p className="text-white/70 leading-relaxed mb-6">
-                      Verifikovani profili dobijaju značku „Provjerena firma" i bolju poziciju u
+                      Verifikovani profili dobijaju značku „Provjerena firma&rdquo; i bolju poziciju u
                       listi. Klijenti više vjeruju firmama koje su prošle provjeru, što direktno
                       utiče na stopu odabira.
                     </p>
