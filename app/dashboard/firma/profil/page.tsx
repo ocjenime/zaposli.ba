@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
+import NextImage from 'next/image';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   ArrowLeft,
@@ -691,7 +692,14 @@ export default function FirmProfileEditorPage() {
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
                       {portfolioImages.map((img, index) => (
                         <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200">
-                          <img src={img.image_url} alt={`Portfolio firme ${name || ''} - fotografija ${index + 1}`} className="w-full h-full object-cover" />
+                          <NextImage
+                            src={img.image_url}
+                            alt={`Portfolio firme ${name || ''} - fotografija ${index + 1}`}
+                            fill
+                            unoptimized
+                            sizes="(max-width: 640px) 33vw, 25vw"
+                            className="object-cover"
+                          />
                           <button
                             type="button"
                             onClick={() => deletePortfolioImage(img.id)}
