@@ -23,6 +23,7 @@ interface Firm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
+  specialty?: string;
 }
 
 interface FirmCategory {
@@ -63,7 +64,7 @@ export default function TopFirmeContent() {
           return { ...f, specialty: category?.name || 'Razne usluge' };
         });
 
-        setFirms(firmsWithCategory as any);
+        setFirms(firmsWithCategory);
       } catch {
         // keep empty
       } finally {
@@ -84,7 +85,7 @@ export default function TopFirmeContent() {
             data={localBusinessListSchema(
               firms.map((f) => ({
                 name: f.name,
-                specialty: (f as any).specialty || 'Razne usluge',
+                specialty: f.specialty || 'Razne usluge',
                 location: f.city || 'BiH',
                 rating: f.average_rating || 0,
                 reviews: f.review_count || 0,
@@ -165,7 +166,7 @@ export default function TopFirmeContent() {
                         {f.name}
                       </h2>
                       <p className="text-sm text-steel mb-4">
-                        {(f as any).specialty}
+                        {f.specialty}
                       </p>
 
                       <div className="flex items-center gap-2 mb-4">
