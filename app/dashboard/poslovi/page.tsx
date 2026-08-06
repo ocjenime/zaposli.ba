@@ -774,17 +774,27 @@ function JobDetail() {
                 <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
                     <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
-                    <span
-                      className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
-                        job.is_private && job.private_status
-                          ? privateStatusColors[job.private_status]
-                          : publicStatusColors[job.status]
-                      }`}
-                    >
-                      {job.is_private && job.private_status
-                        ? privateStatusLabels[job.private_status]
-                        : publicStatusLabels[job.status]}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      {(job.status === 'open' || job.status === 'bidding') && (
+                        <Link
+                          href={`/dashboard/?editJobId=${job.id}`}
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-brand-orange hover:text-brand-orange-dark bg-orange-50 px-2.5 py-1 rounded-full transition-colors"
+                        >
+                          Uredi posao
+                        </Link>
+                      )}
+                      <span
+                        className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${
+                          job.is_private && job.private_status
+                            ? privateStatusColors[job.private_status]
+                            : publicStatusColors[job.status]
+                        }`}
+                      >
+                        {job.is_private && job.private_status
+                          ? privateStatusLabels[job.private_status]
+                          : publicStatusLabels[job.status]}
+                      </span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-steel mb-4">
                     <MapPin className="w-4 h-4" /> {job.city}

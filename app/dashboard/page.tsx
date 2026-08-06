@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -83,6 +83,7 @@ export default function DashboardPage() {
   const [editError, setEditError] = useState('');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const editParamOpened = useRef(false);
 
   useEffect(() => {
     if (loading) return;
@@ -96,6 +97,22 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user && role === 'client') fetchJobs();
   }, [user, role]);
+
+  useEffect(() => {
+    if (editParamOpened.current || loadingJobs || jobs.length === 0) return;
+    const editJobId = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('editJobId')
+      : null;
+    if (!editJobId) {
+      editParamOpened.current = true;
+      return;
+    }
+    const job = jobs.find((j) => j.id === editJobId);
+    if (job && (job.status === 'open' || job.status === 'bidding')) {
+      openEdit(job);
+    }
+    editParamOpened.current = true;
+  }, [loadingJobs, jobs]);
 
   async function fetchJobs() {
     if (!user) return;
