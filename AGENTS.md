@@ -79,6 +79,7 @@
 - Enabled Next.js image optimization on Vercel (`unoptimized: false` when not on GitHub Pages).
 - Added auto-scroll to job listings when `/poslovi/` is opened with a `category` query parameter.
 - Suppressed `@next/next/no-img-element` lint warnings for local data-URL image previews; the remaining `<img>` tags are intentional.
+- Added backend guard in firm dashboard to prevent duplicate bids for the same job.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
