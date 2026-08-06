@@ -57,7 +57,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
             </div>
             <Link
-              href="/objavi-projekat/"
+              href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
               Objavi posao besplatno
@@ -90,7 +90,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                 Provjerene firme se aktivno registruju u vašem gradu. Objavite posao besplatno i prve ponude stižu u roku od 24 sata.
               </p>
               <Link
-                href="/objavi-projekat/"
+                href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
               >
                 Objavi posao besplatno
@@ -110,7 +110,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               Objavite posao besplatno danas: prve ponude stižu u prosjeku u roku od 24 sata.
             </p>
             <Link
-              href="/objavi-projekat/"
+              href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
               className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
             >
               Objavi posao besplatno

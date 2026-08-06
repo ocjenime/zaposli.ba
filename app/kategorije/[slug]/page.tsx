@@ -88,7 +88,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               ))}
             </div>
             <Link
-              href="/objavi-projekat/"
+              href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}`}
               className={`inline-flex items-center gap-2 bg-gradient-to-r text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl transition-all active:scale-95 ${
                 cat.featured
                   ? 'from-red-600 to-red-700 hover:shadow-red-600/25'
