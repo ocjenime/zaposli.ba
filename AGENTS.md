@@ -60,12 +60,11 @@
 - Successfully deployed to Vercel at `https://zaposli-ba.vercel.app` (and `https://zaposli-l64rhsbbh-ivanovmail92-5730s-projects.vercel.app`).
 - Closed Vercel's auto-generated security PR #1 as the manual upgrade on `main` is newer and includes the same CVE patch.
 - Ran QA round 2 against the Vercel deployment: checked 2,411 unique URLs, 0 broken links, 0 connection errors.
+- Disabled the GitHub Pages workflow by setting `if: false` on both jobs because GitHub UI does not expose a "None" source when Actions is selected.
+- Removed `CNAME` and `public/CNAME` files since the domain is now served by Vercel.
 
 ### Active / In Progress
-- Preparing custom domain cutover from GitHub Pages to Vercel.
-
-### Blocked
-- No current blockers.
+- Finalizing `www` DNS record and `SITE_URL` in Supabase.
 
 ## Next Move
 1. In Vercel dashboard → Project Settings → Domains, add `zaposli.ba` (and `www.zaposli.ba` if desired).
