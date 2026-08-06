@@ -77,6 +77,7 @@
 - Replaced `<img>` tags with Next.js `<Image>` for portfolio images on `/firma-profil/`, job images/firm logo/lightbox in `/dashboard/poslovi/`, portfolio thumbnails in `/dashboard/firma/profil/`, and firm logo on `/zatrazi-ponodu/`.
 - Added proper TypeScript `specialty` typing to `/top-firme/` list and removed `as any` casts.
 - Enabled Next.js image optimization on Vercel (`unoptimized: false` when not on GitHub Pages).
+- Added auto-scroll to job listings when `/poslovi/` is opened with a `category` query parameter.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
