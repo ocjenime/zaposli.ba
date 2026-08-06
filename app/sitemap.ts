@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { categories, cities } from '@/lib/data';
+import { articles } from '@/lib/articles';
 import { site } from '@/lib/site';
 
 export const dynamic = 'force-static';
@@ -44,5 +45,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages];
+  const articlePages = articles.map((a) => ({
+    url: `${site.url}/savjeti/${a.slug}/`,
+    lastModified: now,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...articlePages];
 }
