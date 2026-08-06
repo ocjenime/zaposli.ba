@@ -103,7 +103,11 @@ function ProjectsPageContent() {
 
   useEffect(() => {
     const category = searchParams.get('category');
-    if (category) setCategoryFilter(category);
+    if (category) {
+      setCategoryFilter(category);
+      const section = document.getElementById('listings');
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+    }
     const expandId = searchParams.get('expandId');
     if (expandId) {
       setExpandedJobId(expandId);
