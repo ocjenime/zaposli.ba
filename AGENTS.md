@@ -32,6 +32,13 @@
 - Added `/zaboravljena-lozinka/` to `sitemap.ts`.
 - Added `/savjeti/<slug>/` article pages to `sitemap.ts`.
 - Fixed FAQ trust badge to use dynamic cities count instead of hardcoded "35 gradova".
+- Major SEO pass:
+  - Migrated firm profile URLs from `/firma-profil/?slug=<slug>` to `/firma-profil/<slug>/` for better rankings; old query URLs redirect to the new path.
+  - Added dynamic metadata (title, description, keywords, Open Graph) for each firm profile page.
+  - Enriched metadata on homepage, `/poslovi/`, `/top-firme/`, `/kategorije/`, `/kategorije/[slug]/`, `/usluge/[slug]/`, `/gradovi/`, `/gradovi/[slug]/`.
+  - Added `BreadcrumbList` JSON-LD schema to all major public pages.
+  - Added `SearchAction` (Sitelinks searchbox) to the `WebSite` schema.
+  - Included firm profile pages in `sitemap.ts` with real `lastModified` timestamps.
 - Added admin-page security note for static export.
 - Added `.eslintrc.json` (`next/core-web-vitals`) and fixed all lint errors.
 - Added in-app notifications for `bid_received`, `new_job`, `bid_accepted`, and `review`.
