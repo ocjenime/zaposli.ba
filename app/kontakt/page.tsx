@@ -18,6 +18,7 @@ const contactInfo = [
     icon: Mail,
     title: 'Email',
     value: site.email,
+    href: `mailto:${site.email}`,
     note: 'Odgovaramo u roku od 24 sata',
   },
   ...(site.phone
@@ -26,6 +27,7 @@ const contactInfo = [
           icon: Phone,
           title: 'Telefon',
           value: site.phone,
+          href: `tel:${site.phone.replace(/\s/g, '')}`,
           note: 'Poziv i poruka (Viber / WhatsApp)',
         },
       ]
@@ -125,7 +127,16 @@ export default function KontaktPage() {
                         <item.icon className="w-5 h-5 text-brand-orange" />
                       </div>
                       <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
-                      <p className="text-sm font-medium text-gray-900">{item.value}</p>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="text-sm font-medium text-gray-900 hover:text-brand-orange transition-colors"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm font-medium text-gray-900">{item.value}</p>
+                      )}
                       <p className="text-xs text-steel mt-1">{item.note}</p>
                     </div>
                   ))}
