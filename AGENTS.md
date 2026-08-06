@@ -57,25 +57,22 @@
 - Imported project into Vercel dashboard; initial deploy failed due to vulnerable Next.js 15.1.0 detected by Vercel's security policy.
 - Upgraded `next` to `15.5.22` (latest stable 15.x) and aligned `eslint-config-next` and optional `@next/swc-win32-x64-msvc` to the same version.
 - Verified local build passes with Next.js 15.5.22 (2,392 pages) and pushed the update.
+- Successfully deployed to Vercel at `https://zaposli-ba.vercel.app` (and `https://zaposli-l64rhsbbh-ivanovmail92-5730s-projects.vercel.app`).
+- Closed Vercel's auto-generated security PR #1 as the manual upgrade on `main` is newer and includes the same CVE patch.
+- Ran QA round 2 against the Vercel deployment: checked 2,411 unique URLs, 0 broken links, 0 connection errors.
 
 ### Active / In Progress
-- Monitoring the Vercel deploy after the Next.js security upgrade.
+- Preparing custom domain cutover from GitHub Pages to Vercel.
 
 ### Blocked
-- Need a Vercel access token or an authenticated Vercel CLI session to import the repo and configure the project.
+- No current blockers.
 
 ## Next Move
-1. Obtain Vercel access (token or run `npx vercel login`) and import the repo into a Vercel project.
-2. Configure env vars in Vercel:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `RESEND_API_KEY` (if used by serverless/edge routes)
-   - `WEBHOOK_SECRET=zaposli-webhook-2024-secure-key`
-   - `SITE_URL=https://zaposli.ba`
-3. Set DNS A/AAAA records for `zaposli.ba` to Vercel.
-4. Disable GitHub Pages in the repo settings.
-5. Update `SITE_URL` in Supabase to `https://zaposli.ba`.
+1. In Vercel dashboard → Project Settings → Domains, add `zaposli.ba` (and `www.zaposli.ba` if desired).
+2. Copy the DNS records Vercel provides for the apex domain and `www` into your domain registrar's DNS panel.
+3. Wait for DNS propagation and confirm Vercel shows the domains as **Valid**.
+4. Disable GitHub Pages in the repo settings (or set the Pages workflow to `if: false`).
+5. Update `SITE_URL` in Supabase to `https://zaposli.ba` (if not already set).
 
 ## Relevant Files
 - `CNAME` / `public/CNAME`: apex domain for GitHub Pages.
