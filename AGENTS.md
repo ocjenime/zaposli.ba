@@ -73,6 +73,7 @@
 - Made the mobile menu toggle keyboard accessible by switching from `onPointerDown` to `onClick`.
 - Fixed firm profile breadcrumb: "Firme" now links to `/top-firme/` instead of `/poslovi/`.
 - Made footer email and phone clickable (`mailto:` / `tel:`).
+- Made contact page email and phone clickable.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
