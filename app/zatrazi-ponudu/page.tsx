@@ -9,6 +9,7 @@ import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 import { categories as allCategories, cities as allCities } from '@/lib/data';
 import { Upload, MapPin, Calendar, DollarSign, ArrowLeft, Loader2, X, ImageIcon, MessageSquare, CheckCircle } from 'lucide-react';
+import NextImage from 'next/image';
 
 const categories = allCategories.filter((c) => !c.noSeo);
 const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'bs'));
@@ -295,7 +296,16 @@ function RequestContent() {
             <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
               <div className="flex items-center gap-4 mb-6 pb-6 border-b border-gray-100">
                 {firm.logo_url ? (
-                  <img src={firm.logo_url} alt={firm.name} className="w-14 h-14 rounded-xl object-cover border border-gray-100" />
+                  <div className="relative w-14 h-14 shrink-0">
+                    <NextImage
+                      src={firm.logo_url}
+                      alt={firm.name}
+                      fill
+                      unoptimized
+                      sizes="56px"
+                      className="rounded-xl object-cover border border-gray-100"
+                    />
+                  </div>
                 ) : (
                   <div className="w-14 h-14 rounded-xl bg-cloud flex items-center justify-center text-steel font-bold text-xl">
                     {firm.name.charAt(0).toUpperCase()}
