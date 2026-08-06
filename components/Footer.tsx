@@ -45,6 +45,9 @@ export default function Footer() {
             <p className="text-brand-orange text-sm font-semibold italic">
               Majstor na pravom mjestu. Kad ti treba.
             </p>
+            <p className="text-gray-500 text-xs italic mt-3">
+              powered by Luxari
+            </p>
           </div>
 
           {/* Link columns - navigacijski modul */}
