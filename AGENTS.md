@@ -74,6 +74,7 @@
 - Fixed firm profile breadcrumb: "Firme" now links to `/top-firme/` instead of `/poslovi/`.
 - Made footer email and phone clickable (`mailto:` / `tel:`).
 - Made contact page email and phone clickable.
+- Replaced `<img>` tags with Next.js `<Image>` for portfolio images on `/firma-profil/`.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
