@@ -18,6 +18,7 @@ interface Firm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
+  specialty?: string;
 }
 
 interface FirmCategory {
@@ -67,7 +68,7 @@ export default function FeaturedWorkers() {
           return { ...f, specialty: category?.name || 'Razne usluge' };
         });
 
-        setFirms(firmsWithCategory as any);
+        setFirms(firmsWithCategory);
       } catch {
         // keep empty
       } finally {
@@ -137,7 +138,7 @@ export default function FeaturedWorkers() {
               )}
 
               <h3 className="font-bold text-gray-900 text-sm mb-0.5">{firm.name}</h3>
-              <p className="text-xs text-steel mb-3">{(firm as any).specialty}</p>
+              <p className="text-xs text-steel mb-3">{firm.specialty}</p>
 
               <div className="flex items-center justify-center gap-1 mb-2">
                 <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
