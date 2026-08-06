@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { isFirmRole } from '@/lib/roles';
+import { generateUniqueFirmSlug } from '@/lib/slugify';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -97,11 +98,33 @@ export default function AuthCallback() {
 
       if (isAdmin) {
         router.push('/admin/');
-      } else if (isFirmRole(profile?.role ?? null)) {
-        router.push('/dashboard/firma/');
-      } else {
-        router.push('/dashboard/');
+        return;
       }
+
+      if (isFirmRole(profile?.role ?? null)) {
+        const { data: existingFirm } = await callbackSupabase
+          .from('firms')
+          .select('id')
+          .eq('owner_id', user.id)
+          .maybeSingle();
+        if (!existingFirm) {
+          const meta = user.user_metadata || {};
+          const name = (meta.full_name as string) || (meta.name as string) || 'Firma';
+          const slug = await generateUniqueFirmSlug(callbackSupabase, name);
+          const { error: firmErr } = await callbackSupabase.from('firms').insert({
+            owner_id: user.id,
+            name,
+            slug,
+            email: user.email,
+            phone: (meta.phone as string) || '',
+          });
+          if (firmErr) console.error('Firm creation error in callback:', firmErr);
+        }
+        router.push('/dashboard/firma/');
+        return;
+      }
+
+      router.push('/dashboard/');
     };
     handleAuth();
   }, [router]);
