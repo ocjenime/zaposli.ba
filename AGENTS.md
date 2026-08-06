@@ -30,6 +30,7 @@
 - Added proper metadata to `/prijava/`, `/registracija/`, `/nova-lozinka/`, and `/zaboravljena-lozinka/`.
 - Fixed duplicated `| Zaposli.ba` in `<title>` by changing root template to `'%s'`.
 - Added `/zaboravljena-lozinka/` to `sitemap.ts`.
+- Added `/savjeti/<slug>/` article pages to `sitemap.ts`.
 - Added admin-page security note for static export.
 - Added `.eslintrc.json` (`next/core-web-vitals`) and fixed all lint errors.
 - Added in-app notifications for `bid_received`, `new_job`, `bid_accepted`, and `review`.
