@@ -119,17 +119,17 @@ export default function Footer() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-sm text-gray-500">
-              <div className="flex items-center gap-2">
+              <a href={`mailto:${site.email}`} className="flex items-center gap-2 hover:text-brand-orange transition-colors">
                 <Mail className="w-4 h-4" />
                 <span>{site.email}</span>
-              </div>
+              </a>
               {site.phone && (
                 <>
                   <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
-                  <div className="flex items-center gap-2">
+                  <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:text-brand-orange transition-colors">
                     <Phone className="w-4 h-4" />
                     <span>{site.phone}</span>
-                  </div>
+                  </a>
                 </>
               )}
               <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
