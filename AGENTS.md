@@ -68,6 +68,8 @@
 - Fixed category links from homepage job cards: `/poslovi/?category=<slug>` now initializes the category filter.
 - Added static metadata to `/firma-profil/`.
 - Prefilled service/city on "Objavi posao" CTAs from `/kategorije/[slug]/`, `/usluge/[slug]/`, and `/gradovi/[slug]/` pages.
+- Added an "Uredi posao" link on the client job detail page (`/dashboard/poslovi/`) that opens the edit modal in `/dashboard/?editJobId=<id>`.
+- Updated the outdated admin comment about GitHub Pages static export.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
