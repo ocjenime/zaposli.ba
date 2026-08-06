@@ -64,16 +64,16 @@
 - Added a new `supabase/migration-jobs-delete-policy.sql` migration that adds `jobs_delete_own` RLS policy so clients can delete their own jobs.
 - Updated `/dashboard/` to let clients edit and delete their own jobs when status is `open` or `bidding`.
 - Deleting a job also removes associated `job-images` storage objects before the row is deleted; cascading foreign keys clean up `bids`, `job_images` rows, and `messages.job_id` is set to NULL.
+- `supabase/migration-jobs-delete-policy.sql` applied to production by user.
 
 ### Active
-- Waiting to apply `supabase/migration-jobs-delete-policy.sql` to the live Supabase database.
+- No active tasks; waiting for next user instructions.
 
 ### Blocked
-- Cannot execute the migration locally because `SUPABASE_ACCESS_TOKEN` is not available in the environment. Either the user runs the SQL in the Supabase SQL Editor or provides the access token so `npx supabase` can apply it.
+- No current blockers.
 
 ## Next Move
-- Apply `supabase/migration-jobs-delete-policy.sql` to production (user runs in SQL Editor or provides token).
-- Verify that accepted/cancelled jobs are no longer visible on `/poslovi/` and that edit/delete buttons appear on the client dashboard for open/bidding jobs.
+- Resume next scheduled tasks when user returns or requests them.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
