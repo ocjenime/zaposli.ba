@@ -409,6 +409,10 @@ function FirmDashboardContent() {
 
   async function submitBid(job: Job) {
     if (!firmId) return;
+    if (hasBidForJob(job.id)) {
+      setError('Već ste poslali ponudu za ovaj posao.');
+      return;
+    }
     if (!isCategoryAllowed(job)) {
       const category = getCategory(job.category_slug);
       setError(
