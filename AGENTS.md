@@ -79,6 +79,7 @@
 - Fixed `ServiceCityFirms` typing for `specialty`, removed `as any`, and prefilled empty-state CTA with service/city.
 - Fixed `FeaturedWorkers` typing for `specialty` and removed `as any` casts.
 - Centralized article metadata in `lib/articles.ts` so `/savjeti/` listing and article pages share a single source of truth.
+- Removed all remaining `as any` casts from the codebase.
 - Enabled Next.js image optimization on Vercel (`unoptimized: false` when not on GitHub Pages).
 - Added auto-scroll to job listings when `/poslovi/` is opened with a `category` query parameter.
 - Suppressed `@next/next/no-img-element` lint warnings for local data-URL image previews; the remaining `<img>` tags are intentional.
