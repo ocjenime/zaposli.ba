@@ -57,17 +57,16 @@
 - Upgraded `next` to `15.5.22`, `react`/`react-dom` to `^19.0.1`, aligned `eslint-config-next` and optional `@next/swc-win32-x64-msvc`.
 - Closed Vercel auto-generated security PR #1 (manual upgrade on `main` is newer and includes the same CVE patch).
 - Replaced all em/en dashes (`—` / `–`) with simple ASCII hyphens (`-`) across user-facing UI text in `app`, `components`, and `lib` to eliminate the glyph/symbol issue reported in the “Hitne intervencije” header and other texts.
+- User confirmed the fix is acceptable; no further separator changes needed.
 
 ### Active
-- Waiting for user confirmation: should the hero banner text use a simple hyphen (`-`), a colon (`:`), or have the separator removed entirely? Current text after the fix is `Hitne intervencije - majstori dostupni odmah`.
+- No active tasks; waiting for next user instructions.
 
 ### Blocked
 - No current blockers.
 
 ## Next Move
-- If user confirms the hyphen is acceptable, no further action is needed.
-- If user wants no separator, replace the remaining hyphen in `components/HeroSection.tsx` with a colon or remove it entirely.
-- Otherwise, continue with next scheduled tasks once user returns.
+- Resume next scheduled tasks when user returns or requests them.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
