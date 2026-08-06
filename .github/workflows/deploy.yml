@@ -15,7 +15,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Disabled: site is now hosted on Vercel. GitHub Pages does not offer a "None"
+  # source when Actions is selected, so the workflow is disabled here.
   build:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,6 +46,7 @@ jobs:
           path: ./out
 
   deploy:
+    if: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
