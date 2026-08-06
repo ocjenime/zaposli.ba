@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
 import JobChat from '@/components/JobChat';
+import NextImage from 'next/image';
 import { formatDate } from '@/lib/date';
 import {
   ArrowLeft,
@@ -806,7 +807,16 @@ function JobDetail() {
                   {job.is_private && targetFirm && (
                     <div className="flex items-center gap-3 bg-cloud rounded-xl p-3 mb-4">
                       {targetFirm.logo_url ? (
-                        <img src={targetFirm.logo_url} alt={targetFirm.name} className="w-12 h-12 rounded-lg object-cover" />
+                        <div className="relative w-12 h-12 shrink-0">
+                          <NextImage
+                            src={targetFirm.logo_url}
+                            alt={targetFirm.name}
+                            fill
+                            unoptimized
+                            sizes="48px"
+                            className="rounded-lg object-cover"
+                          />
+                        </div>
                       ) : (
                         <div className="w-12 h-12 rounded-lg bg-brand-orange/10 flex items-center justify-center text-brand-orange font-bold text-lg">
                           {targetFirm.name.charAt(0)}
@@ -861,7 +871,14 @@ function JobDetail() {
                             onClick={() => setSelectedImage(img.image_url)}
                             className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
                           >
-                            <img src={img.image_url} alt="" className="w-full h-full object-cover" />
+                            <NextImage
+                              src={img.image_url}
+                              alt=""
+                              fill
+                              unoptimized
+                              sizes="(max-width: 640px) 33vw, 25vw"
+                              className="object-cover"
+                            />
                           </button>
                         ))}
                       </div>
@@ -955,12 +972,16 @@ function JobDetail() {
                 <X className="w-5 h-5" />
               </button>
               <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
-                <img
-                  src={selectedImage}
-                  alt=""
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                  onClick={(e) => e.stopPropagation()}
-                />
+                <div className="relative max-w-full max-h-[85vh] w-full" onClick={(e) => e.stopPropagation()}>
+                  <NextImage
+                    src={selectedImage}
+                    alt=""
+                    fill
+                    unoptimized
+                    sizes="100vw"
+                    className="object-contain rounded-lg shadow-2xl"
+                  />
+                </div>
               </div>
             </div>
           )}
