@@ -102,6 +102,8 @@ function ProjectsPageContent() {
   }, []);
 
   useEffect(() => {
+    const category = searchParams.get('category');
+    if (category) setCategoryFilter(category);
     const expandId = searchParams.get('expandId');
     if (expandId) {
       setExpandedJobId(expandId);
