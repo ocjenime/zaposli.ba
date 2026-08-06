@@ -7,6 +7,7 @@ import StatsSection from '@/components/StatsSection';
 import RecentProjects from '@/components/RecentProjects';
 import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
+import LazySection from '@/components/LazySection';
 import { JsonLd, organizationSchema, websiteSchema, breadcrumbSchema } from '@/lib/jsonld';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
@@ -49,11 +50,19 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <HeroSection />
-        <HowItWorks />
+        <LazySection minHeight="18rem">
+          <HowItWorks />
+        </LazySection>
         <PopularCategories />
-        <StatsSection />
-        <RecentProjects />
-        <Testimonials />
+        <LazySection minHeight="16rem">
+          <StatsSection />
+        </LazySection>
+        <LazySection minHeight="24rem">
+          <RecentProjects />
+        </LazySection>
+        <LazySection minHeight="20rem">
+          <Testimonials />
+        </LazySection>
         <CTASection />
       </main>
       <Footer />

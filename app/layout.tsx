@@ -1,10 +1,21 @@
 ﻿import type { Metadata, Viewport } from 'next';
+import { Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 import { site } from '@/lib/site';
 import AuthWrapper from '@/components/AuthWrapper';
 import ThemeProvider from '@/components/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { JsonLd, websiteSchema, organizationSchema } from '@/lib/jsonld';
+
+const sans = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
+});
 
 const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '';
 
@@ -56,8 +67,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="bs" suppressHydrationWarning>
-      <body className="min-h-screen">
+    <html lang="bs" suppressHydrationWarning className={sans.variable}>
+      <GoogleAnalytics />
+      <body className={`min-h-screen ${sans.className}`}>
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange={false}>
           <ToastProvider>

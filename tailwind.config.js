@@ -99,8 +99,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
-        display: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-hero': 'linear-gradient(135deg, #021117 0%, #062630 55%, #0a3542 100%)',

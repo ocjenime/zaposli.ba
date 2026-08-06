@@ -17,6 +17,19 @@ const nextConfig = {
     ],
   },
   trailingSlash: true,
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Link',
+            value: '<https://nwgbrvpomjkzkofjknyi.supabase.co>; rel=preconnect',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

@@ -95,15 +95,30 @@
 - Added backend guard in firm dashboard to prevent duplicate bids for the same job.
 - Registration now appends a random suffix if a firm slug already exists, preventing failed firm inserts.
 - Auth callback now creates a missing firm record for firm/majstor users who confirm their email, so they don't land on an empty dashboard.
+- Premium + performance + analytics pass:
+  - Replaced Google Fonts `@import` in CSS with `next/font/google` (`Plus_Jakarta_Sans`) for faster, self-hosted typography.
+  - Added Supabase preconnect via `Link` HTTP header in `next.config.js`.
+  - Added `components/GoogleAnalytics.tsx` and wired it into `app/layout.tsx`; activates when `NEXT_PUBLIC_GA_ID` is set.
+  - Google Search Console verification already supported via `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`.
+  - Created reusable `components/ArticleLayout.tsx` with breadcrumbs, TOC, FAQ, related articles, schema.org `Article` JSON-LD, and a CTA.
+  - Added 5 new `/savjeti/` articles using `ArticleLayout`:
+    - `cijena-molerskih-radova-po-m2`
+    - `cijena-keramike-po-m2`
+    - `adaptacija-stana-50-m2`
+    - `hitne-intervencije-cijene`
+    - `kako-napisati-oglas-za-posao`
+  - Centralized article metadata in `lib/articles.ts` and confirmed sitemap auto-includes new articles.
+  - Created `components/LazySection.tsx` for below-the-fold lazy rendering and applied it to `HowItWorks`, `StatsSection`, `RecentProjects`, and `Testimonials` on the homepage.
+  - Verified `npm run build` succeeds and generates 2403 static pages.
 
 ### Active
-- Performing a site-wide QA review; current focus on public pages and their interactions.
+- Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.
 
 ### Blocked
-- No current blockers.
+- Google Analytics 4 and Search Console are ready but require the user to add `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env vars in Vercel.
 
 ## Next Move
-- Resume next scheduled tasks when user returns or requests them.
+- Push latest changes to `main` and let Vercel auto-deploy; then ask the user for the GA/GSC IDs if they want analytics active.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
@@ -130,3 +145,11 @@
 - `supabase/migration-job-alerts.sql`: `categories` seed + job-alert trigger.
 - `.github/workflows/deploy-supabase-functions.yml`: automated Edge Function deployment.
 - `AGENTS.md`: this state file.
+- `components/ArticleLayout.tsx`: reusable article page shell.
+- `components/LazySection.tsx`: intersection-observer lazy-load wrapper.
+- `components/GoogleAnalytics.tsx`: GA4 loader.
+- `app/layout.tsx`: font loading, analytics, metadata.
+- `app/globals.css` and `tailwind.config.js`: typography stack.
+- `next.config.js`: Supabase preconnect header.
+- `lib/articles.ts`: article metadata source.
+- `app/savjeti/**/page.tsx`: article pages.

@@ -35,6 +35,51 @@ export const articles: ArticleMeta[] = [
     readTime: '6 min čitanja',
     date: '5. juli 2026.',
   },
+  {
+    slug: 'cijena-molerskih-radova-po-m2',
+    category: 'Cijene',
+    title: 'Cijena molerskih radova po m² u BiH 2026',
+    excerpt:
+      'Koliko košta krečenje i farbanje po m² u BiH 2026: cijene radova, materijala, faktori koji utiču na cijenu i savjeti za uštedu.',
+    readTime: '5 min čitanja',
+    date: '20. juli 2026.',
+  },
+  {
+    slug: 'cijena-keramike-po-m2',
+    category: 'Cijene',
+    title: 'Cijena keramičarskih radova po m² u BiH 2026',
+    excerpt:
+      'Koliko košta postavljanje pločica po m² u BiH 2026: cijene radova, uticaj formata pločica, priprema podloge i najčešće greške.',
+    readTime: '6 min čitanja',
+    date: '22. juli 2026.',
+  },
+  {
+    slug: 'adaptacija-stana-50-m2',
+    category: 'Cijene',
+    title: 'Koliko košta adaptacija stana od 50 m² u BiH 2026',
+    excerpt:
+      'Kompletna adaptacija stana od 50 m² u BiH: cijene po fazama, šta uključuje i kako planirati budžet bez skrivenih troškova.',
+    readTime: '7 min čitanja',
+    date: '25. juli 2026.',
+  },
+  {
+    slug: 'hitne-intervencije-cijene',
+    category: 'Cijene',
+    title: 'Cijene hitnih majstorskih intervencija u BiH 2026',
+    excerpt:
+      'Cijene hitnih intervencija - vodoinstalater, električar, bravar - po satnici i po dolasku u BiH 2026.',
+    readTime: '5 min čitanja',
+    date: '27. juli 2026.',
+  },
+  {
+    slug: 'kako-napisati-oglas-za-posao',
+    category: 'Savjeti',
+    title: 'Kako napisati oglas za posao koji privlači majstore',
+    excerpt:
+      'Napišite jasan oglas za majstora i dobijte više kvalitetnih ponuda. Primjer dobro napisanog oglasa i lista grešaka koje izbjegavati.',
+    readTime: '4 min čitanja',
+    date: '28. juli 2026.',
+  },
 ];
 
 export function getArticleMeta(slug: string): ArticleMeta | undefined {
