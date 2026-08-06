@@ -110,7 +110,7 @@
   - Centralized article metadata in `lib/articles.ts` and confirmed sitemap auto-includes new articles.
   - Created `components/LazySection.tsx` for below-the-fold lazy rendering and applied it to `HowItWorks`, `StatsSection`, `RecentProjects`, and `Testimonials` on the homepage.
   - Verified `npm run build` succeeds and generates 2403 static pages.
-- Added `powered by Luxari` credit below the tagline in `components/Footer.tsx`.
+- Added `powered by Luxari` credit in the footer bottom bar, next to the copyright.
 
 ### Active
 - Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.

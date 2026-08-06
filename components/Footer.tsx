@@ -45,9 +45,6 @@ export default function Footer() {
             <p className="text-brand-orange text-sm font-semibold italic">
               Majstor na pravom mjestu. Kad ti treba.
             </p>
-            <p className="text-gray-500 text-xs italic mt-3">
-              powered by Luxari
-            </p>
           </div>
 
           {/* Link columns - navigacijski modul */}
@@ -141,8 +138,11 @@ export default function Footer() {
                 <span>{site.city}</span>
               </div>
             </div>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 text-sm text-center md:text-right">
               &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
+              <span className="block md:inline md:ml-2 text-gray-500 italic">
+                powered by Luxari
+              </span>
             </p>
           </div>
         </div>
