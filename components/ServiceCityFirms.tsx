@@ -18,6 +18,7 @@ interface Firm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
+  specialty?: string;
 }
 
 interface FirmCategory {
@@ -71,7 +72,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
           typed.map((f) => ({
             ...f,
             specialty: category?.name || 'Razne usluge',
-          })) as any
+          }))
         );
       } catch (err: any) {
         setError(err?.message || 'Greška pri učitavanju firmi.');
@@ -122,7 +123,10 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
             <p className="text-steel max-w-xl mx-auto mb-6">
               Firme se aktivno registruju. Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
             </p>
-            <Link href="/objavi-projekat/" className="btn-primary inline-flex items-center gap-2">
+            <Link
+              href={`/objavi-projekat/?service=${encodeURIComponent(getCategory(categorySlug)?.name || profession)}&city=${encodeURIComponent(cityName)}`}
+              className="btn-primary inline-flex items-center gap-2"
+            >
               Objavi posao besplatno
               <ArrowRight className="w-4 h-4" />
             </Link>
@@ -178,7 +182,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
               </div>
 
               <p className="text-sm text-steel line-clamp-2 mb-4 min-h-[2.5rem]">
-                {firm.description || (firm as any).specialty}
+                {firm.description || firm.specialty}
               </p>
 
               <div className="flex items-center justify-between">
