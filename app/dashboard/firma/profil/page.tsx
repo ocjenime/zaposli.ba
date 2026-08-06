@@ -456,7 +456,7 @@ export default function FirmProfileEditorPage() {
                   Profil je uspješno ažuriran.
                 </div>
                 <Link
-                  href={`/firma-profil/?slug=${slug}`}
+                  href={`/firma-profil/${slug}/`}
                   className="text-brand-orange font-medium hover:underline"
                 >
                   Pogledaj javni profil
@@ -513,7 +513,7 @@ export default function FirmProfileEditorPage() {
                     />
                   </div>
                   <p className="text-xs text-steel mt-1">
-                    Profil će biti dostupan na /firma-profil/?slug={slug || 'slug'}
+                    Profil će biti dostupan na /firma-profil/{slug || 'slug'}/
                   </p>
                 </div>
 

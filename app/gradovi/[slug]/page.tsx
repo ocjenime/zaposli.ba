@@ -9,6 +9,7 @@ import { cities, categories } from '@/lib/data';
 import { site } from '@/lib/site';
 import CityCategoriesGrid from '@/components/CityCategoriesGrid';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
+import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 export function generateStaticParams() {
   return cities.map((c) => ({ slug: c.slug }));
@@ -19,8 +20,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const city = cities.find((c) => c.slug === slug);
   if (!city) return {};
   return {
-    title: `Majstori ${city.name}: sve kategorije | Zaposli.ba`,
-    description: `Pronađite provjerene majstore i građevinske firme u gradu ${city.loc}. Sve kategorije usluga, besplatna objava posla, ponude u roku od 24 sata.`,
+    title: `Majstori i firme ${city.name} - sve kategorije usluga | Zaposli.ba`,
+    description: `Pronađite provjerene majstore i građevinske firme u ${city.loc}. Sve kategorije usluga: vodoinstalateri, električari, keramičari i više. Besplatna objava posla, ponude u roku od 24 sata.`,
+    keywords: [
+      `majstori ${city.name.toLowerCase()}`,
+      `firme ${city.name.toLowerCase()}`,
+      `građevinske firme ${city.name.toLowerCase()}`,
+      'objavi posao',
+      'ponude majstora',
+      'sve kategorije',
+    ],
     alternates: { canonical: `${site.url}/gradovi/${city.slug}/` },
   };
 }
@@ -35,6 +44,11 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
+        <JsonLd data={breadcrumbSchema([
+          { name: 'Početna', url: '/' },
+          { name: 'Gradovi', url: '/gradovi/' },
+          { name: city.name },
+        ])} />
 
         {/* Hero */}
         <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">

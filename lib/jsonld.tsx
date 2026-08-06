@@ -37,6 +37,14 @@ export function websiteSchema() {
     name: site.name,
     url: site.url,
     inLanguage: 'bs',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${site.url}/poslovi/?search={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
   };
 }
 

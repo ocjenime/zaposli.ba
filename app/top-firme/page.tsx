@@ -1,20 +1,34 @@
 import type { Metadata } from 'next';
 import TopFirmeContent from './TopFirmeContent';
+import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Top firme | Zaposli.ba',
+  title: 'Top firme i majstori u BiH - provjerene ocjene klijenata | Zaposli.ba',
   description:
-    'Pronađite najbolje ocijenjene građevinske firme i majstore u Bosni i Hercegovini. Sortirano prema stvarnim recenzijama klijenata.',
-  keywords: ['top firme', 'najbolji majstori', 'građevinske firme', 'ocjene', 'recenzije', 'BiH'],
+    'Pronađite najbolje ocijenjene građevinske firme i majstore u Bosni i Hercegovini. Vodoinstalateri, električari, keramičari, molerski radnici i druge struke - sortirano prema stvarnim recenzijama klijenata.',
+  keywords: [
+    'top firme BiH',
+    'najbolji majstori',
+    'provjerene firme',
+    'vodoinstalater',
+    'električar',
+    'keramičar',
+    'moler',
+    'ocjene majstora',
+    'recenzije firmi',
+    'Sarajevo',
+    'Banja Luka',
+    'Mostar',
+  ],
   alternates: {
-    canonical: 'https://zaposli.ba/top-firme/',
+    canonical: `${site.url}/top-firme/`,
   },
   openGraph: {
-    title: 'Top firme | Zaposli.ba',
+    title: 'Top firme i majstori u BiH - provjerene ocjene klijenata',
     description:
       'Pronađite najbolje ocijenjene građevinske firme i majstore u Bosni i Hercegovini. Sortirano prema stvarnim recenzijama klijenata.',
-    url: 'https://zaposli.ba/top-firme/',
-    siteName: 'Zaposli.ba',
+    url: `${site.url}/top-firme/`,
+    siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
   },

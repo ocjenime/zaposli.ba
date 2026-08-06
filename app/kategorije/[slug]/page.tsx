@@ -21,8 +21,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cat = getCategory(slug);
   if (!cat) return {};
   return {
-    title: `${cat.name}: provjerene firme širom BiH | Zaposli.ba`,
-    description: `${cat.description}. Pronađite ${cat.profession.toLowerCase()} širom BiH. Objavite posao besplatno i primite ponude.`,
+    title: `${cat.name} u BiH - pronađite majstora ili objavite posao | Zaposli.ba`,
+    description: `${cat.description}. Pronađite provjerenog ${cat.profession.toLowerCase()} širom BiH ili objavite posao besplatno i primite ponude od firmi i majstora.`,
+    keywords: [
+      `${cat.name.toLowerCase()} BiH`,
+      `${cat.profession.toLowerCase()}`,
+      'majstor BiH',
+      'objavi posao',
+      'ponude majstora',
+      'građevinske firme',
+    ],
     alternates: { canonical: `${site.url}/kategorije/${cat.slug}/` },
   };
 }
@@ -39,6 +47,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije', href: '/kategorije/' }, { name: cat.name }]} />
+        <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Kategorije', url: '/kategorije/' }, { name: cat.name }])} />
         <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/` })} />
 
         {/* Hero */}

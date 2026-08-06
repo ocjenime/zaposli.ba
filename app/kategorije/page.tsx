@@ -8,12 +8,24 @@ import { site } from '@/lib/site';
 import { cities } from '@/lib/data';
 import { ArrowRight, Siren, ShieldCheck, Clock, Star, MapPin, Users, Briefcase, CheckCircle } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
+import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 const seoCategories = categories.filter((c) => !c.noSeo);
 
 export const metadata: Metadata = {
-  title: 'Kategorije usluga: pronađite majstore | Zaposli.ba',
-  description: `Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. ${seoCategories.length} kategorija, od građevine i instalacija do čišćenja, selidbi i hitnih intervencija 24/7.`,
+  title: `Kategorije usluga u BiH - ${seoCategories.length} struka | Pronađite majstora | Zaposli.ba`,
+  description: `Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. ${seoCategories.length} kategorija - od građevine, vodoinstalacije i električara do čišćenja, selidbi i hitnih intervencija 24/7.`,
+  keywords: [
+    'kategorije usluga BiH',
+    'majstori kategorije',
+    'građevinske usluge',
+    'vodoinstalater',
+    'električar',
+    'keramičar',
+    'hitne intervencije',
+    'čišćenje',
+    'selidbe',
+  ],
   alternates: { canonical: `${site.url}/kategorije/` },
 };
 
@@ -38,6 +50,7 @@ export default function CategoriesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Kategorije', url: '/kategorije/' }])} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 

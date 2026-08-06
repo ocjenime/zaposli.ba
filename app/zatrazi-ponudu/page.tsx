@@ -280,7 +280,7 @@ function RequestContent() {
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-2xl mx-auto">
-          <Link href={firm ? `/firma-profil/?slug=${firm.slug}` : '/top-firme/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
+          <Link href={firm ? `/firma-profil/${firm.slug}/` : '/top-firme/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na profil firme
           </Link>
 

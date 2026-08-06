@@ -5,7 +5,7 @@ import { MapPin, ArrowRight, Shield, Clock, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { JsonLd, serviceSchema, faqSchema } from '@/lib/jsonld';
+import { JsonLd, serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/jsonld';
 import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
 import ServiceCityFirms from '@/components/ServiceCityFirms';
@@ -33,8 +33,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!parsed) return {};
   const { cat, city } = parsed;
   return {
-    title: `${cat.profession} ${city.name}: provjerene firme | Zaposli.ba`,
-    description: `Tražite ${cat.profession.toLowerCase()} u gradu ${city.loc}? Pronađite provjerene firme. Objavite posao besplatno i uporedite ponude.`,
+    title: `${cat.profession} ${city.name} - majstori i firme | Zaposli.ba`,
+    description: `Tražite ${cat.profession.toLowerCase()} u ${city.loc}? Pronađite provjerene firme i majstore u ${city.name}. Objavite posao besplatno i uporedite ponude za vaš projekt.`,
+    keywords: [
+      `${cat.profession.toLowerCase()} ${city.name.toLowerCase()}`,
+      `${cat.name.toLowerCase()} ${city.name.toLowerCase()}`,
+      'majstor',
+      'firma',
+      'objavi posao',
+      'ponude',
+    ],
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
 }
@@ -70,6 +78,12 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
           { name: cat.name, href: `/kategorije/${cat.slug}/` },
           { name: city.name },
         ]} />
+        <JsonLd data={breadcrumbSchema([
+          { name: 'Početna', url: '/' },
+          { name: 'Kategorije', url: '/kategorije/' },
+          { name: cat.name, url: `/kategorije/${cat.slug}/` },
+          { name: city.name },
+        ])} />
         <JsonLd data={serviceSchema({ name: `${cat.profession} ${city.name}`, description: cat.description, area: city.name, url: `/usluge/${slug}/` })} />
         <JsonLd data={faqSchema(faqItems)} />
 

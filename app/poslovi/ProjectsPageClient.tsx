@@ -19,7 +19,7 @@ import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory, categories } from '@/lib/data';
 import { formatDate } from '@/lib/date';
-import { JsonLd, jobListSchema } from '@/lib/jsonld';
+import { JsonLd, jobListSchema, breadcrumbSchema } from '@/lib/jsonld';
 
 interface Job {
   id: string;
@@ -260,6 +260,7 @@ function ProjectsPageContent() {
     <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <JsonLd data={jobListSchema(filteredJobs)} />
+      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Poslovi', url: '/poslovi/' }])} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 

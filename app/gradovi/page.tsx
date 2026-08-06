@@ -7,10 +7,21 @@ import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { cities } from '@/lib/data';
 import { site } from '@/lib/site';
+import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
-  title: 'Majstori po gradovima: cijela BiH | Zaposli.ba',
-  description: 'Pronađite provjerene majstore i građevinske firme u 35 gradova širom Bosne i Hercegovine. Federacija, Republika Srpska i Brčko distrikt.',
+  title: `Majstori po gradovima - ${cities.length} gradova u BiH | Zaposli.ba`,
+  description: `Pronađite provjerene majstore i građevinske firme u ${cities.length} gradova širom Bosne i Hercegovine. Sarajevo, Banja Luka, Mostar, Tuzla i ostali - objavite posao besplatno.`,
+  keywords: [
+    'majstori po gradovima',
+    'građevinske firme BiH',
+    'majstor Sarajevo',
+    'majstor Banja Luka',
+    'majstor Mostar',
+    'majstor Tuzla',
+    'objavi posao',
+    'ponude majstora',
+  ],
   alternates: { canonical: `${site.url}/gradovi/` },
 };
 
@@ -18,18 +29,19 @@ const trustBadges = [
   { icon: ShieldCheck, label: 'Provjerene firme', value: 'ID + reference' },
   { icon: Clock, label: 'Brze ponude', value: '24h prosjek' },
   { icon: Star, label: 'Recenzije', value: 'Od stvarnih klijenata' },
-  { icon: Users, label: '35 gradova', value: 'Širom BiH' },
+  { icon: Users, label: `${cities.length} gradova`, value: 'Širom BiH' },
 ];
 
 export default function CitiesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Gradovi', url: '/gradovi/' }])} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
         <PageHero
           title="Majstori po gradovima"
-          subtitle="Provjerene firme i majstori u 35 gradova širom Bosne i Hercegovine"
+          subtitle={`Provjerene firme i majstori u ${cities.length} gradova širom Bosne i Hercegovine`}
         />
 
         {/* SEO intro + trust badges */}

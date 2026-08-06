@@ -850,7 +850,7 @@ export default function AdminPage() {
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
                           <Link
-                            href={`/firma-profil/?slug=${firm.slug}`}
+                            href={`/firma-profil/${firm.slug}/`}
                             className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                           >
                             Profil
@@ -1218,7 +1218,7 @@ export default function AdminPage() {
                               </div>
                               <div className="flex flex-wrap items-center gap-2">
                                 <Link
-                                  href={`/firma-profil/?slug=${v.slug}`}
+                                  href={`/firma-profil/${v.slug}/`}
                                   className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                                 >
                                   Profil
@@ -1335,7 +1335,7 @@ export default function AdminPage() {
                             </div>
                             <div className="flex flex-wrap items-center gap-2">
                               <Link
-                                href={`/firma-profil/?slug=${r.firms?.slug}`}
+                                href={`/firma-profil/${r.firms?.slug}/`}
                                 className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
                               >
                                 Profil

@@ -11,7 +11,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
-import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
+import { JsonLd, localBusinessListSchema, breadcrumbSchema } from '@/lib/jsonld';
 
 interface Firm {
   id: string;
@@ -78,6 +78,7 @@ export default function TopFirmeContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Top firme', url: '/top-firme/' }])} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Top firme' }]} />
         {!loading && firms.length > 0 && (
@@ -89,7 +90,7 @@ export default function TopFirmeContent() {
                 location: f.city || 'BiH',
                 rating: f.average_rating || 0,
                 reviews: f.review_count || 0,
-                url: `/firma-profil/?slug=${f.slug}`,
+                url: `/firma-profil/${f.slug}/`,
                 image: f.logo_url || undefined,
               }))
             )}
@@ -146,7 +147,7 @@ export default function TopFirmeContent() {
                   {firms.map((f) => (
                     <Link
                       key={f.id}
-                      href={`/firma-profil/?slug=${f.slug}`}
+                      href={`/firma-profil/${f.slug}/`}
                       className="group bg-white rounded-3xl p-7 border border-gray-100 hover:border-transparent hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                     >
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />

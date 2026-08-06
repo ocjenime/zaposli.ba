@@ -4,21 +4,33 @@ import { Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ProjectsPageClient from './ProjectsPageClient';
+import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Poslovi | Zaposli.ba',
+  title: 'Poslovi i projekti u BiH - ponude majstora i firmi | Zaposli.ba',
   description:
-    'Pronađite aktuelne građevinske i uslužne poslove širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu. Pošaljite ponudu kao provjerena firma ili majstor.',
-  keywords: ['poslovi', 'građevinski poslovi', 'majstor', 'firma', 'ponude', 'Bosna i Hercegovina'],
+    'Aktuelni građevinski poslovi, majstorski poslovi i projekti u Bosni i Hercegovini. Filtrirajte po gradu, kategoriji i budžetu. Pošaljite ponudu kao provjerena firma ili majstor - besplatna registracija.',
+  keywords: [
+    'poslovi BiH',
+    'građevinski poslovi',
+    'majstorski poslovi',
+    'projekti BiH',
+    'ponude majstora',
+    'posao majstor',
+    'građevinske firme',
+    'Sarajevo',
+    'Banja Luka',
+    'Mostar',
+  ],
   alternates: {
-    canonical: 'https://zaposli.ba/poslovi/',
+    canonical: `${site.url}/poslovi/`,
   },
   openGraph: {
-    title: 'Poslovi | Zaposli.ba',
+    title: 'Poslovi i projekti u BiH - ponude majstora i firmi',
     description:
-      'Pronađite aktuelne građevinske i uslužne poslove širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu.',
-    url: 'https://zaposli.ba/poslovi/',
-    siteName: 'Zaposli.ba',
+      'Aktuelni građevinski poslovi i majstorski projekti širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu.',
+    url: `${site.url}/poslovi/`,
+    siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
   },

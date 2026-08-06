@@ -117,7 +117,7 @@ export default function FeaturedWorkers() {
             firms.slice(0, 5).map((firm) => (
               <Link
                 key={firm.id}
-                href={`/firma-profil/?slug=${firm.slug}`}
+                href={`/firma-profil/${firm.slug}/`}
                 className="group bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center cursor-pointer block"
               >
               {firm.logo_url ? (

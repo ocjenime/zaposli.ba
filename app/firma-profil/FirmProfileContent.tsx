@@ -73,9 +73,9 @@ interface FirmCategoryRow {
   category_slug: string;
 }
 
-export default function FirmProfileContent() {
+export default function FirmProfileContent({ slug: propSlug }: { slug?: string }) {
   const searchParams = useSearchParams();
-  const slug = searchParams.get('slug') || '';
+  const slug = propSlug || searchParams.get('slug') || '';
   const { user } = useAuth();
 
   const [firm, setFirm] = useState<FirmRow | null>(null);
@@ -300,7 +300,7 @@ export default function FirmProfileContent() {
           location: firm.city || 'BiH',
           rating,
           reviews: reviewCount,
-          url: `/firma-profil/?slug=${firm.slug}`,
+          url: `/firma-profil/${firm.slug}/`,
           image: firm.logo_url || `${site.url}/images/logo-mark.png`,
           telephone: firm.phone,
           email: firm.email,

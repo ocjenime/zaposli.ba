@@ -1,11 +1,12 @@
 import type { MetadataRoute } from 'next';
+import { createClient } from '@supabase/supabase-js';
 import { categories, cities } from '@/lib/data';
 import { articles } from '@/lib/articles';
 import { site } from '@/lib/site';
 
 export const dynamic = 'force-static';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -52,5 +53,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...articlePages];
+  let firmPages: MetadataRoute.Sitemap = [];
+  try {
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { auth: { persistSession: false, autoRefreshToken: false } }
+    );
+    const { data } = await supabase.from('firms').select('slug,updated_at');
+    const rows = (data as { slug: string; updated_at: string | null }[]) || [];
+    firmPages = rows.map((f) => ({
+      url: `${site.url}/firma-profil/${f.slug}/`,
+      lastModified: f.updated_at ? new Date(f.updated_at) : now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }));
+  } catch {
+    // If Supabase is unreachable during build, skip firm pages.
+  }
+
+  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...articlePages, ...firmPages];
 }

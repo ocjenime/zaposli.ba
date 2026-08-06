@@ -161,7 +161,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
           {firms.map((firm) => (
             <Link
               key={firm.id}
-              href={`/firma-profil/?slug=${firm.slug}`}
+              href={`/firma-profil/${firm.slug}/`}
               className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 cursor-pointer block"
             >
               <div className="flex items-start gap-4 mb-4">
