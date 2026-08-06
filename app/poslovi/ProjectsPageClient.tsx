@@ -584,6 +584,9 @@ function ProjectsPageContent() {
                               <span className="hidden sm:inline">Rok: </span>{formatDate(job.deadline)}
                             </span>
                           )}
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-100 text-sm font-semibold text-gray-600">
+                            {job.bids_count} {job.bids_count === 1 ? 'ponuda' : job.bids_count >= 2 && job.bids_count <= 4 ? 'ponude' : 'ponuda'}
+                          </span>
                         </div>
 
                         {isExpanded && (
