@@ -4,23 +4,22 @@
 - Complete, deploy, and harden a Werkspot-style marketplace (Zaposli.ba) so every page, link, and flow works smoothly, looks premium, and is free of bugs; then migrate to Vercel for proper Next.js runtime support.
 
 ## Important Details
-- Canonical domain: `https://zaposli.ba` (apex). `https://www.zaposli.ba` redirects to apex.
-- GitHub Pages deploys via `Build and deploy to GitHub Pages` workflow on pushes to `main`.
-- `CNAME` and `public/CNAME` contain `zaposli.ba`.
-- SSL/TLS certificate is issued and HTTPS is enforced.
-- Static export on GitHub Pages cannot provide true server-side route protection; `/admin` and `/dashboard/*` use client-side guards plus Supabase RLS.
-- `SITE_URL` in Supabase should be `https://zaposli.ba` so emails use the canonical domain.
+- Canonical domain: `https://zaposli.ba` (apex). `https://www.zaposli.ba` redirects to apex via Vercel.
+- Site is now hosted on Vercel; every push to `main` auto-deploys.
+- GitHub Pages workflow `.github/workflows/deploy.yml` is disabled (`if: false` on jobs); `CNAME` and `public/CNAME` removed.
+- `next.config.js` uses conditional export: `output: 'export'` only when `GITHUB_PAGES=true` (set in the disabled workflow).
+- `SITE_URL` in Supabase is set to `https://zaposli.ba`.
 - Supabase project ref: `nwgbrvpomjkzkofjknyi`.
 - Edge Functions env vars: `SB_SERVICE_ROLE_KEY`, `SB_URL`, `RESEND_API_KEY`, `FROM_EMAIL`, `ADMIN_EMAIL`, `SITE_URL`, `WEBHOOK_SECRET=zaposli-webhook-2024-secure-key`.
 - Private job statuses: `pending`, `accepted`, `in_progress`, `done_pending`, `completed`, `declined`, `cancelled`.
 - Date formatting uses deterministic `lib/date.ts` helpers because Node.js `toLocaleDateString('bs-BA')` produced malformed month output like `M08` on the build machine.
 - In-app notifications are emitted for `bid_received`, `new_job`, `bid_accepted`, and `review`.
+- Em dash (`—`) and en dash (`–`) characters are not used in user-facing UI text; they are replaced with simple ASCII hyphens (`-`) or removed to avoid font/glyph rendering issues.
 
 ## Work State
 ### Completed
-- Switched canonical domain from `www.zaposli.ba` to `zaposli.ba` (CNAME, `lib/site.ts`, metadata, email fallbacks, Edge Functions).
+- Switched canonical domain from `www.zaposli.ba` to `zaposli.ba`.
 - Fixed broken “back to firm profile” link in `app/zatrazi-ponudu/page.tsx`.
-- Ran multiple QA rounds; fixed bugs across auth, dashboard, admin, and public pages.
 - Fixed `NotificationBell.tsx` and `dashboard/notifications/page.tsx` RLS filters by `user_id`.
 - Fixed `admin/page.tsx` typo `ODGOBRENA` → `ODOBRENA`.
 - Fixed `Footer.tsx` privacy link text to `Politika privatnosti`.
@@ -45,50 +44,50 @@
 - Finalized categories taxonomy with 50 categories in 15 groups, added missing trades (betoniranje, hidroizolacija, tapetar, kuhinje po mjeri, kupatila ključ u ruke, popločavanje, pergole, pranje fasada/krovova, dizajn eksterijera, statika, energetska obnova), fixed Bosnian names and icons, and seeded `categories` lookup table via `supabase/migration-job-alerts.sql`.
 - Fixed the categories migration SQL by removing the invalid `notifications_id_seq` grant that caused the seed to fail.
 - Verified the latest static build generates 2392 pages without errors.
-- Re-checked every link on `/kategorije/zavrsni-radovi/` (164 internal links) and confirmed all return 200; the earlier broken-link report is now resolved.
+- Re-checked every link on `/kategorije/zavrsni-radovi/` (164 internal links) and confirmed all return 200.
 - Completed QA round 2 across the public site: ran a full internal crawl of 2,412 unique URLs; with retries GitHub Pages returned 0 broken links and 0 connection errors (two transient 503s were confirmed as CDN rate-limit false positives).
 - Fixed missing page metadata on client-only pages by adding server-side wrappers/layouts with titles and Open Graph tags for `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/`.
-- Refactored `/top-firme/` and `/za-firme/` into server `page.tsx` (metadata + canonical) + client `Content` components so SEO tags are prerendered without changing functionality.
-- Verified the local static export now serves the correct titles for `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/`.
-- Confirmed header mobile menu renders correctly, contact form has required fields, all public static pages return 200, and the 404 page works.
-- Pushed the metadata fixes and verified live titles: `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/` all return 200 with correct `<title>` tags.
-- Prepared the project for Vercel migration by making `output: 'export'` conditional on `GITHUB_PAGES=true` in `next.config.js` and updating `.github/workflows/deploy.yml` so GitHub Pages still exports while Vercel uses the default Next.js runtime.
-- Verified both the static export build (2392 pages) and the default Next.js build (2392 pages) succeed locally.
-- Imported project into Vercel dashboard; initial deploy failed due to vulnerable Next.js 15.1.0 detected by Vercel's security policy.
-- Upgraded `next` to `15.5.22` (latest stable 15.x) and aligned `eslint-config-next` and optional `@next/swc-win32-x64-msvc` to the same version.
-- Verified local build passes with Next.js 15.5.22 (2,392 pages) and pushed the update.
-- Successfully deployed to Vercel at `https://zaposli-ba.vercel.app` (and `https://zaposli-l64rhsbbh-ivanovmail92-5730s-projects.vercel.app`).
-- Closed Vercel's auto-generated security PR #1 as the manual upgrade on `main` is newer and includes the same CVE patch.
-- Ran QA round 2 against the Vercel deployment: checked 2,411 unique URLs, 0 broken links, 0 connection errors.
-- Disabled the GitHub Pages workflow by setting `if: false` on both jobs because GitHub UI does not expose a "None" source when Actions is selected.
-- Removed `CNAME` and `public/CNAME` files since the domain is now served by Vercel.
-- Updated the `www.zaposli.ba` CNAME to the Vercel-provided value (`a914dc9ffe22997f.vercel-dns-017.com`) and confirmed global DNS resolvers (Cloudflare 1.1.1.1) see the change.
-- Confirmed `https://zaposli.ba` and `https://www.zaposli.ba` both load the Vercel deployment.
+- Prepared `next.config.js` for Vercel: `output: 'export'` only when `GITHUB_PAGES=true`.
+- Updated `.github/workflows/deploy.yml` to set `GITHUB_PAGES=true` and disabled the GitHub Pages workflow.
+- Migrated the project to Vercel (`zaposli-ba` project) and deployed successfully.
+- Added custom domains to Vercel: `zaposli.ba` (primary) and `www.zaposli.ba` (redirects to apex).
+- Updated DNS at registrar: `zaposli.ba` A record → `216.198.79.1`; `www.zaposli.ba` CNAME → `a914dc9ffe22997f.vercel-dns-017.com`.
+- Removed `CNAME` and `public/CNAME` files.
 - Updated Supabase `SITE_URL` to `https://zaposli.ba`.
+- Upgraded `next` to `15.5.22`, `react`/`react-dom` to `^19.0.1`, aligned `eslint-config-next` and optional `@next/swc-win32-x64-msvc`.
+- Closed Vercel auto-generated security PR #1 (manual upgrade on `main` is newer and includes the same CVE patch).
+- Replaced all em/en dashes (`—` / `–`) with simple ASCII hyphens (`-`) across user-facing UI text in `app`, `components`, and `lib` to eliminate the glyph/symbol issue reported in the “Hitne intervencije” header and other texts.
 
-### Active / In Progress
-- Migration to Vercel is complete. Monitoring Vercel dashboard for the `www.zaposli.ba` status to turn fully Valid as DNS cache expires.
+### Active
+- Waiting for user confirmation: should the hero banner text use a simple hyphen (`-`), a colon (`:`), or have the separator removed entirely? Current text after the fix is `Hitne intervencije - majstori dostupni odmah`.
+
+### Blocked
+- No current blockers.
 
 ## Next Move
-1. Wait for Vercel to mark `www.zaposli.ba` as **Valid** (some resolvers still cache the old CNAME with TTL ~3.5h).
-2. Once both domains are Valid, the Vercel migration is fully complete.
-3. Future pushes to `main` will auto-deploy to Vercel.
+- If user confirms the hyphen is acceptable, no further action is needed.
+- If user wants no separator, replace the remaining hyphen in `components/HeroSection.tsx` with a colon or remove it entirely.
+- Otherwise, continue with next scheduled tasks once user returns.
 
 ## Relevant Files
-- `CNAME` / `public/CNAME`: apex domain for GitHub Pages.
+- `components/HeroSection.tsx`: hero banner text and emergency badge.
+- `app/layout.tsx`: site metadata titles.
+- `app/admin/page.tsx`: admin placeholders and separators.
+- `app/admin/SubscriptionEditModal.tsx`: subscription details.
+- `app/dashboard/firma/page.tsx` and `app/dashboard/poslovi/page.tsx`: dashboard labels and budget ranges.
+- `app/dashboard/razgovor/page.tsx`: admin preview label.
+- `app/firma-profil/FirmProfileContent.tsx`: private request label.
+- `app/objavi-projekat/page.tsx`: optional deadline label and budget display.
+- `app/poslovi/ProjectsPageClient.tsx`: project listings and filters.
+- `components/EmergencyProcessAnimation.tsx`, `components/Footer.tsx`, `components/Header.tsx`, `components/ui/LiveStatsSection.tsx`: UI labels and comments.
+- `lib/categories.ts`: category names and descriptions.
+- `next.config.js`: conditional static export for Vercel/GitHub Pages.
+- `.github/workflows/deploy.yml`: disabled GitHub Pages workflow.
 - `lib/site.ts`: canonical URL.
-- `lib/date.ts`: deterministic date formatting helpers.
-- `lib/categories.ts`: category definitions and taxonomy.
+- `lib/date.ts`: deterministic date formatting.
 - `lib/data.ts`: cities and FAQ data.
-- `app/kategorije/page.tsx`: categories listing page.
-- `app/kategorije/[slug]/page.tsx`: category detail pages.
 - `components/FirmActivityTracker.tsx`: global firm activity heartbeat.
-- `app/not-found.tsx`: custom 404 page.
-- `app/prijava/`, `app/registracija/`, `app/nova-lozinka/`, `app/zaboravljena-lozinka/`: auth pages with metadata wrappers.
-- `app/admin/page.tsx`: admin dashboard (client-side guards).
-- `components/NotificationBell.tsx`, `app/dashboard/notifications/page.tsx`: notification UI.
-- `lib/notifications.ts`: notification routing.
-- `supabase/functions/notify-admin/index.ts`: admin email formatting.
-- `supabase/functions/notify-client-on-bid/index.ts`: bid notification formatting.
+- `lib/hooks/useFirmActivityHeartbeat.ts`: `last_active_at` update logic.
+- `supabase/migration-job-alerts.sql`: `categories` seed + job-alert trigger.
 - `.github/workflows/deploy-supabase-functions.yml`: automated Edge Function deployment.
-- `.eslintrc.json`: ESLint config.
+- `AGENTS.md`: this state file.
