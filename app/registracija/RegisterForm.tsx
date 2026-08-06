@@ -127,10 +127,15 @@ export default function RegisterForm() {
     }
 
     if (isFirmRole(userType)) {
+      let slug = slugify(formData.name);
+      const { data: existing } = await supabase.from('firms').select('slug').eq('slug', slug).maybeSingle();
+      if (existing) {
+        slug = `${slug}-${Math.random().toString(36).slice(2, 7)}`;
+      }
       const { error: firmError } = await supabase.from('firms').upsert({
         owner_id: authData.user.id,
         name: formData.name,
-        slug: slugify(formData.name),
+        slug,
         email: formData.email,
         phone: formData.phone,
       }, { ignoreDuplicates: true });
