@@ -62,16 +62,17 @@
 - Ran QA round 2 against the Vercel deployment: checked 2,411 unique URLs, 0 broken links, 0 connection errors.
 - Disabled the GitHub Pages workflow by setting `if: false` on both jobs because GitHub UI does not expose a "None" source when Actions is selected.
 - Removed `CNAME` and `public/CNAME` files since the domain is now served by Vercel.
+- Updated the `www.zaposli.ba` CNAME to the Vercel-provided value (`a914dc9ffe22997f.vercel-dns-017.com`) and confirmed global DNS resolvers (Cloudflare 1.1.1.1) see the change.
+- Confirmed `https://zaposli.ba` and `https://www.zaposli.ba` both load the Vercel deployment.
+- Updated Supabase `SITE_URL` to `https://zaposli.ba`.
 
 ### Active / In Progress
-- Finalizing `www` DNS record and `SITE_URL` in Supabase.
+- Migration to Vercel is complete. Monitoring Vercel dashboard for the `www.zaposli.ba` status to turn fully Valid as DNS cache expires.
 
 ## Next Move
-1. In Vercel dashboard → Project Settings → Domains, add `zaposli.ba` (and `www.zaposli.ba` if desired).
-2. Copy the DNS records Vercel provides for the apex domain and `www` into your domain registrar's DNS panel.
-3. Wait for DNS propagation and confirm Vercel shows the domains as **Valid**.
-4. Disable GitHub Pages in the repo settings (or set the Pages workflow to `if: false`).
-5. Update `SITE_URL` in Supabase to `https://zaposli.ba` (if not already set).
+1. Wait for Vercel to mark `www.zaposli.ba` as **Valid** (some resolvers still cache the old CNAME with TTL ~3.5h).
+2. Once both domains are Valid, the Vercel migration is fully complete.
+3. Future pushes to `main` will auto-deploy to Vercel.
 
 ## Relevant Files
 - `CNAME` / `public/CNAME`: apex domain for GitHub Pages.
