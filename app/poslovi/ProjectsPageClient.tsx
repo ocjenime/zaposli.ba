@@ -59,7 +59,7 @@ function relativeTime(iso: string) {
 
 function formatBudget(job: Job) {
   if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
-  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')} – ${job.budget_max.toLocaleString('bs')} KM`;
+  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')} - ${job.budget_max.toLocaleString('bs')} KM`;
   if (job.budget_min) return `Od ${job.budget_min.toLocaleString('bs')} KM`;
   if (job.budget_max) return `Do ${job.budget_max.toLocaleString('bs')} KM`;
   return 'Budžet po dogovoru';
@@ -67,7 +67,7 @@ function formatBudget(job: Job) {
 
 function formatBudgetShort(job: Job) {
   if (job.budget_mode === 'open') return 'po dogovoru';
-  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')}–${job.budget_max.toLocaleString('bs')} KM`;
+  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')}-${job.budget_max.toLocaleString('bs')} KM`;
   if (job.budget_min) return `od ${job.budget_min.toLocaleString('bs')} KM`;
   if (job.budget_max) return `do ${job.budget_max.toLocaleString('bs')} KM`;
   return 'po dogovoru';
@@ -257,7 +257,7 @@ function ProjectsPageContent() {
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 
-        {/* Hero — light, clean, search-first */}
+        {/* Hero - light, clean, search-first */}
         <section className="relative bg-white border-b border-gray-100">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,115,22,0.08),_transparent_55%)]" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 md:pt-36 pb-12 md:pb-24">
@@ -319,7 +319,7 @@ function ProjectsPageContent() {
 
         <section id="listings" className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Filter bar — sticky, pill-style */}
+            {/* Filter bar - sticky, pill-style */}
             <div className="sticky top-16 md:top-20 z-30 bg-[#f8f7f4]/95 backdrop-blur-md -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60">
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
@@ -456,7 +456,7 @@ function ProjectsPageContent() {
                         )}
                         {(minBudget || maxBudget) && (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                            {minBudget || '0'} – {maxBudget || '∞'} KM
+                            {minBudget || '0'} - {maxBudget || '∞'} KM
                             <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} aria-label="Ukloni filter budžeta" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
                           </span>
                         )}

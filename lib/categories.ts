@@ -180,7 +180,7 @@ export const categories: Category[] = [
   {
     name: 'Adaptacije stanova i kuća', slug: 'adaptacije', seoSlug: 'adaptacije',
     profession: 'Majstor za adaptacije', icon: Home,
-    description: 'Kompletne adaptacije stanova, kuća, kupatila i kuhinja – od srušenog do ključa u ruke',
+    description: 'Kompletne adaptacije stanova, kuća, kupatila i kuhinja - od srušenog do ključa u ruke',
     count: 0, priceRange: '150-400 KM/m²', priceNote: 'ključ u ruke',
     group: 'Kupatila, kuhinje i adaptacije',
     services: ['Adaptacije stanova', 'Adaptacije kuća', 'Kupatila ključ u ruke', 'Kuhinje po mjeri', 'Stan za izdavanje'],

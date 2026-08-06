@@ -11,7 +11,7 @@ const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Zaposli.ba — Pronađite majstore za vaš posao',
+    default: 'Zaposli.ba - Pronađite majstore za vaš posao',
     template: '%s',
   },
   description: site.description,
@@ -22,17 +22,17 @@ export const metadata: Metadata = {
   publisher: site.name,
   alternates: { canonical: site.url },
   openGraph: {
-    title: 'Zaposli.ba — Pronađite majstore za vaš posao',
+    title: 'Zaposli.ba - Pronađite majstore za vaš posao',
     description: site.description,
     url: site.url,
     siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
-    images: [{ url: 'images/og-cover.webp', width: 1200, height: 630, alt: 'Zaposli.ba — Pronađite majstora za vaš posao' }],
+    images: [{ url: 'images/og-cover.webp', width: 1200, height: 630, alt: 'Zaposli.ba - Pronađite majstora za vaš posao' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Zaposli.ba — Pronađite majstore za vaš posao',
+    title: 'Zaposli.ba - Pronađite majstore za vaš posao',
     description: site.description,
     images: ['images/og-cover.webp'],
   },

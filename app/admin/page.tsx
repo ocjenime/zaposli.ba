@@ -791,7 +791,7 @@ export default function AdminPage() {
                       <div key={profile.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
                           <p className="font-medium text-gray-900">{profile.full_name || profile.email}</p>
-                          <p className="text-sm text-steel">{profile.email} · {profile.phone || '—'}</p>
+                          <p className="text-sm text-steel">{profile.email} · {profile.phone || '-'}</p>
                           <p className="text-xs text-steel mt-1">
                             {roleLabel(profile.role)} · {formatDate(profile.created_at)}
                           </p>
@@ -845,7 +845,7 @@ export default function AdminPage() {
                             <p className="font-medium text-gray-900">{firm.name}</p>
                             {firm.verified && <CheckCircle className="w-4 h-4 text-green-600" />}
                           </div>
-                          <p className="text-sm text-steel">{firm.email} · {firm.city || '—'} · {firm.review_count} recenzija</p>
+                          <p className="text-sm text-steel">{firm.email} · {firm.city || '-'} · {firm.review_count} recenzija</p>
                           <p className="text-xs text-steel mt-1">{formatDate(firm.created_at)}</p>
                         </div>
                         <div className="flex flex-wrap items-center gap-2">
@@ -1210,7 +1210,7 @@ export default function AdminPage() {
                                   )}
                                 </div>
                                 <p className="text-sm text-steel">
-                                  {v.city || '—'} · {v.email || '—'} · {formatDate(v.verification_submitted_at || v.created_at)}
+                                  {v.city || '-'} · {v.email || '-'} · {formatDate(v.verification_submitted_at || v.created_at)}
                                 </p>
                                 {v.verification_notes && (
                                   <p className="text-xs text-steel mt-1">Napomena: {v.verification_notes}</p>
@@ -1306,7 +1306,7 @@ export default function AdminPage() {
                           >
                             <div className="flex-1">
                               <div className="flex flex-wrap items-center gap-2 mb-1">
-                                <p className="font-medium text-gray-900">Firma: {r.firms?.name || '—'}</p>
+                                <p className="font-medium text-gray-900">Firma: {r.firms?.name || '-'}</p>
                                 {r.status === 'pending' && (
                                   <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
                                     NA ČEKANJU
@@ -1324,7 +1324,7 @@ export default function AdminPage() {
                                 )}
                               </div>
                               <p className="text-sm text-steel">
-                                Klijent: {r.profiles?.full_name || '—'} · Ocjena: {r.rating}/5 · {formatDate(r.created_at)}
+                                Klijent: {r.profiles?.full_name || '-'} · Ocjena: {r.rating}/5 · {formatDate(r.created_at)}
                               </p>
                               {r.comment && (
                                 <p className="text-xs text-steel mt-1 line-clamp-2">{r.comment}</p>
@@ -1394,7 +1394,7 @@ export default function AdminPage() {
                               )}
                             </div>
                             <p className="text-sm text-steel">
-                              Firma: {n.firms?.name || '—'} · {formatDate(n.created_at)}
+                              Firma: {n.firms?.name || '-'} · {formatDate(n.created_at)}
                             </p>
                             {n.metadata && (
                               <p className="text-xs text-steel mt-1">{JSON.stringify(n.metadata)}</p>
@@ -1441,7 +1441,7 @@ export default function AdminPage() {
                               )}
                             </div>
                             <p className="text-sm text-steel">
-                              Firma: {n.firms?.name || '—'} · {formatDate(n.created_at)}
+                              Firma: {n.firms?.name || '-'} · {formatDate(n.created_at)}
                             </p>
                             {n.metadata && (
                               <p className="text-xs text-steel mt-1">

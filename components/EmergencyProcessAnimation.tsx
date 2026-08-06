@@ -1,4 +1,4 @@
-/* Premium animirana scena hitne intervencije — custom SVG za /kategorije/hitne-intervencije */
+/* Premium animirana scena hitne intervencije - custom SVG za /kategorije/hitne-intervencije */
 
 const INK = '#021117';
 const RED = '#DC2626';
@@ -55,7 +55,7 @@ export function EmergencyProcessAnimation() {
 
         {/* ========== KORAK 1: PROBLEM ========== */}
         <g>
-          {/* Kuća — moderan, zaobljen oblik */}
+          {/* Kuća - moderan, zaobljen oblik */}
           <rect x="98" y="88" width="76" height="74" rx="10" fill={WHITE} stroke={INK} strokeWidth="2" />
           <path d="M96 100 L136 66 L176 100" fill={INK} />
           <rect x="104" y="104" width="20" height="20" rx="4" fill={CLOUD} stroke={INK} strokeWidth="1.5" />
@@ -72,7 +72,7 @@ export function EmergencyProcessAnimation() {
           <circle cx="165" cy="156" r="4" fill={WATER} className="anim-water-drop-1" />
           <circle cx="165" cy="148" r="3" fill={WATER} className="anim-water-drop-2" />
 
-          {/* Osoba s telefonom — panični korisnik */}
+          {/* Osoba s telefonom - panični korisnik */}
           <g className="anim-float-subtle" transform="translate(0, 0)">
             {/* Telo */}
             <rect x="184" y="112" width="28" height="42" rx="12" fill={ORANGE} stroke={INK} strokeWidth="2" />
@@ -85,7 +85,7 @@ export function EmergencyProcessAnimation() {
             {/* Oči */}
             <circle cx="194" cy="96" r="2" fill={INK} />
             <circle cx="204" cy="96" r="2" fill={INK} />
-            {/* Usta — zabrinut izraz */}
+            {/* Usta - zabrinut izraz */}
             <path d="M195 104 Q199 100 203 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
             {/* Ruka + telefon */}
             <rect x="176" y="116" width="12" height="22" rx="4" fill={WHITE} stroke={INK} strokeWidth="2" transform="rotate(-15 182 127)" />
@@ -191,7 +191,7 @@ export function EmergencyProcessAnimation() {
             <path d="M760 104 Q765 108 770 104" stroke={INK} strokeWidth="1.5" strokeLinecap="round" fill="none" />
             {/* Ruka */}
             <rect x="742" y="122" width="8" height="18" rx="4" fill={SKIN} stroke={INK} strokeWidth="1.5" />
-            {/* Alat — ključ */}
+            {/* Alat - ključ */}
             <g transform="rotate(-35 746 132)">
               <rect x="740" y="118" width="6" height="28" rx="2" fill="#94A3B8" stroke={INK} strokeWidth="1.5" />
               <circle cx="743" cy="116" r="7" fill="#94A3B8" stroke={INK} strokeWidth="1.5" />

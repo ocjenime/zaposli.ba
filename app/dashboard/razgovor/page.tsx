@@ -305,7 +305,7 @@ function Conversation() {
 
           {isAdmin && (
             <div className="bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-xl px-4 py-3 mb-3 text-sm font-medium">
-              Pregled administratora — možete slati poruke u ovaj razgovor
+              Pregled administratora - možete slati poruke u ovaj razgovor
             </div>
           )}
 

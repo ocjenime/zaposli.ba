@@ -101,7 +101,7 @@ const privateStatusLabels: Record<PrivateStatus, string> = {
   pending: 'Zahtjev poslan',
   accepted: 'Ponuda prihvaćena',
   in_progress: 'Rad u toku',
-  done_pending: 'Gotovo — čeka potvrdu',
+  done_pending: 'Gotovo - čeka potvrdu',
   completed: 'Završen',
   declined: 'Odbijeno',
   cancelled: 'Otkazano',
@@ -824,7 +824,7 @@ function JobDetail() {
                       {job.budget_mode === 'open'
                         ? 'Majstori predlažu cijenu'
                         : job.budget_min != null && job.budget_max != null
-                        ? `${job.budget_min} – ${job.budget_max} KM`
+                        ? `${job.budget_min} - ${job.budget_max} KM`
                         : job.budget_min != null
                         ? `od ${job.budget_min} KM`
                         : job.budget_max != null

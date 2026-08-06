@@ -197,7 +197,7 @@ export default function Header() {
         </nav>
       </header>
 
-      {/* Mobile menu — rendered outside fixed header to avoid iOS Safari stacking issues */}
+      {/* Mobile menu - rendered outside fixed header to avoid iOS Safari stacking issues */}
       {mobileMenuOpen && (
         <div
           ref={mobileMenuRef}

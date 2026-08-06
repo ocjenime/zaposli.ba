@@ -550,7 +550,7 @@ function PostProjectContent() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja <span className="text-gray-400 font-normal">— opcionalno</span></label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja <span className="text-gray-400 font-normal">- opcionalno</span></label>
                     <input type="date" name="deadline" value={formData.deadline} onChange={handleInputChange} className="input-field" />
                   </div>
                   <div>
@@ -618,7 +618,7 @@ function PostProjectContent() {
                           {formData.budgetMode === 'open'
                             ? 'Majstori predlažu cijenu'
                             : formData.budgetMin && formData.budgetMax
-                            ? `${formData.budgetMin} – ${formData.budgetMax} KM`
+                            ? `${formData.budgetMin} - ${formData.budgetMax} KM`
                             : formData.budgetMin
                             ? `od ${formData.budgetMin} KM`
                             : formData.budgetMax

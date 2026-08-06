@@ -47,7 +47,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Link columns — navigacijski modul */}
+          {/* Link columns - navigacijski modul */}
           <div className="md:col-span-3 border-t border-[#ffffff]/5 md:border-t-0 pt-8 md:pt-0">
             <div className="grid grid-cols-3 gap-4 md:gap-0 md:divide-x md:divide-[#ffffff]/5">
               {Object.entries(footerLinks).map(([category, links], index) => (

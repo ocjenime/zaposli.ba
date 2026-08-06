@@ -3,12 +3,12 @@
 import { useLiveStats } from '@/hooks/useLiveStats';
 
 function formatRealCount(value: number | null): string {
-  if (value === null || value === undefined || value < 0) return '—';
+  if (value === null || value === undefined || value < 0) return '-';
   return value.toLocaleString('bs');
 }
 
 function formatRealRating(value: number | null): string {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return '-';
   return value.toFixed(1);
 }
 

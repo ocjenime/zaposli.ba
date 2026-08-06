@@ -273,7 +273,7 @@ export default function SubscriptionEditModal({
               <div className="text-sm text-steel dark:text-gray-400 space-y-1">
                 <p>Status: <span className={`font-medium ${isExpired ? 'text-red-600' : subscription.status === 'active' ? 'text-green-600' : 'text-steel'}`}>{subscription.status}{isExpired ? ' (istekla)' : ''}</span></p>
                 <p>Početak: {formatDateTime(subscription.starts_at)}</p>
-                <p>Istek: {subscription.ends_at ? formatDateTime(subscription.ends_at) : '—'}</p>
+                <p>Istek: {subscription.ends_at ? formatDateTime(subscription.ends_at) : '-'}</p>
                 {subscription.notes && <p>Napomena: {subscription.notes}</p>}
               </div>
             </div>

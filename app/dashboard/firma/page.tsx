@@ -148,7 +148,7 @@ const statusBadgeClasses: Record<BidStatus, string> = {
 function formatBudget(job: Job) {
   if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
   if (job.budget_min != null && job.budget_max != null) {
-    return `${job.budget_min}–${job.budget_max} KM`;
+    return `${job.budget_min}-${job.budget_max} KM`;
   }
   if (job.budget_min != null) return `od ${job.budget_min} KM`;
   if (job.budget_max != null) return `do ${job.budget_max} KM`;
@@ -591,7 +591,7 @@ function FirmDashboardContent() {
               />
               <DashboardStat
                 label="Pretplata aktivna do"
-                value={loadingPlan ? 'Učitavanje...' : planActiveDate || '—'}
+                value={loadingPlan ? 'Učitavanje...' : planActiveDate || '-'}
                 sub={planActiveDate ? 'Nakon toga se podrazumijeva besplatni paket' : 'Besplatan paket'}
                 icon={Calendar}
                 tone="neutral"
@@ -959,7 +959,7 @@ function FirmDashboardContent() {
                                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-steel">
                                     <span className="inline-flex items-center gap-1">
                                       <MapPin className="w-3.5 h-3.5" />
-                                      {bid.jobs?.city || '—'}
+                                      {bid.jobs?.city || '-'}
                                     </span>
                                     <span className="inline-flex items-center gap-1">
                                       <Calendar className="w-3.5 h-3.5" />

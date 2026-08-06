@@ -686,7 +686,7 @@ export default function FirmProfileContent() {
                     Pitaj prije ponude
                   </Link>
                   <p className="text-[#ffffff]/40 text-xs text-center mt-3">
-                    Privatni zahtjev — vidi ga samo {firm.name}
+                    Privatni zahtjev - vidi ga samo {firm.name}
                   </p>
                 </div>
               </div>

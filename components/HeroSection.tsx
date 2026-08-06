@@ -54,7 +54,7 @@ export default function HeroSection() {
                 <Siren className="w-2.5 h-2.5" />
                 24/7
               </span>
-              <span className="truncate">Hitne intervencije — majstori dostupni odmah</span>
+              <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
               <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
             </Link>
             <button
@@ -78,7 +78,7 @@ export default function HeroSection() {
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 sm:pt-14 lg:pt-16 pb-14 sm:pb-18 lg:pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Text & form — first on mobile, second on desktop */}
+          {/* Text & form - first on mobile, second on desktop */}
           <div className="lg:col-span-6 order-1 lg:order-2 animate-fade-in">
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
               <span className="inline-flex items-center rounded-full bg-orange-50 px-3 py-1 text-xs font-semibold text-brand-orange tracking-wide uppercase mb-5 sm:mb-6">
@@ -135,7 +135,7 @@ export default function HeroSection() {
                 </div>
               </form>
 
-              {/* Trust signal — real feature, not fake stats */}
+              {/* Trust signal - real feature, not fake stats */}
               <div className="mt-5 sm:mt-6 flex items-center gap-2 text-sm text-gray-500">
                 <CheckCircle2 className="w-5 h-5 text-brand-orange" />
                 <span>Provjereni majstori s ocjenama i recenzijama klijenata</span>
@@ -143,7 +143,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Hero image — first on desktop, second on mobile */}
+          {/* Hero image - first on desktop, second on mobile */}
           <div className="lg:col-span-6 order-2 lg:order-1 animate-fade-in" style={{ animationDelay: '0.15s' }}>
             <div className="relative mx-auto max-w-xl lg:max-w-none">
               {/* Decorative brand shape behind image */}
