@@ -81,6 +81,7 @@
 - Suppressed `@next/next/no-img-element` lint warnings for local data-URL image previews; the remaining `<img>` tags are intentional.
 - Added backend guard in firm dashboard to prevent duplicate bids for the same job.
 - Registration now appends a random suffix if a firm slug already exists, preventing failed firm inserts.
+- Auth callback now creates a missing firm record for firm/majstor users who confirm their email, so they don't land on an empty dashboard.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
