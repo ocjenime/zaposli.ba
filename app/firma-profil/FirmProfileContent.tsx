@@ -11,6 +11,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
+import Image from 'next/image';
 import { formatDate, formatMonthYear } from '@/lib/date';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
 import { isOnline, formatLastActive } from '@/lib/hooks/useFirmActivityHeartbeat';
@@ -482,10 +483,13 @@ export default function FirmProfileContent() {
                           onClick={() => setSelectedPortfolioImage(url)}
                           className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
                         >
-                          <img
+                          <Image
                             src={url}
                             alt={`Portfolio firme ${firm.name} - fotografija ${index + 1}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            fill
+                            unoptimized
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-cover group-hover:scale-105 transition-transform"
                           />
                         </button>
                       ))}
@@ -707,12 +711,16 @@ export default function FirmProfileContent() {
               <X className="w-5 h-5" />
             </button>
             <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
-              <img
-                src={selectedPortfolioImage}
-                alt={`Uvećana fotografija portfolioa firme ${firm.name}`}
-                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              />
+              <div className="relative max-w-full max-h-[85vh] w-full" onClick={(e) => e.stopPropagation()}>
+                <Image
+                  src={selectedPortfolioImage}
+                  alt={`Uvećana fotografija portfolioa firme ${firm.name}`}
+                  fill
+                  unoptimized
+                  sizes="100vw"
+                  className="object-contain rounded-lg shadow-2xl"
+                />
+              </div>
             </div>
           </div>
         )}
