@@ -65,9 +65,11 @@
 - Updated `/dashboard/` to let clients edit and delete their own jobs when status is `open` or `bidding`.
 - Deleting a job also removes associated `job-images` storage objects before the row is deleted; cascading foreign keys clean up `bids`, `job_images` rows, and `messages.job_id` is set to NULL.
 - `supabase/migration-jobs-delete-policy.sql` applied to production by user.
+- Fixed category links from homepage job cards: `/poslovi/?category=<slug>` now initializes the category filter.
+- Added static metadata to `/firma-profil/`.
 
 ### Active
-- No active tasks; waiting for next user instructions.
+- Performing a site-wide QA review; current focus on public pages and their interactions.
 
 ### Blocked
 - No current blockers.
