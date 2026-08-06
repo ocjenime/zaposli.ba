@@ -658,7 +658,8 @@ function JobDetail() {
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-3">
               {reviewPreviews.map((preview, index) => (
                 <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
-                  <img src={preview} alt={`Recenzija ${index + 1}`} className="w-full h-full object-cover" />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={preview} alt={`Recenzija ${index + 1}`} className="w-full h-full object-cover" />
                   <button
                     type="button"
                     onClick={() => removeReviewImage(index)}

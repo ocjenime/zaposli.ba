@@ -574,7 +574,8 @@ function PostProjectContent() {
                       <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
                         {imagePreviews.map((preview, index) => (
                           <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
-                            <img src={preview} alt={`Pregled fotografije ${index + 1} za posao`} className="w-full h-full object-cover" />
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={preview} alt={`Pregled fotografije ${index + 1} za posao`} className="w-full h-full object-cover" />
                             <button
                               type="button"
                               onClick={() => removeImage(index)}

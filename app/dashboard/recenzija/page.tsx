@@ -337,6 +337,7 @@ function ReviewPage() {
 
                   {imagePreview ? (
                     <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={imagePreview}
                         alt="Pregled fotografije za recenziju"

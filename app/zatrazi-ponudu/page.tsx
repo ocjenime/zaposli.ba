@@ -478,6 +478,7 @@ function RequestContent() {
                     <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-3">
                       {imagePreviews.map((preview, index) => (
                         <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={preview} alt={`Preview ${index + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
