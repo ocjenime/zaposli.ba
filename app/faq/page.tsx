@@ -4,7 +4,7 @@ import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Link from 'next/link';
 import { ChevronDown, MessageCircleQuestion, ShieldCheck, Clock, Star, Users, ArrowRight } from 'lucide-react';
-import { faqs } from '@/lib/data';
+import { faqs, cities } from '@/lib/data';
 import { JsonLd, faqSchema } from '@/lib/jsonld';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
@@ -20,7 +20,7 @@ const trustBadges = [
   { icon: ShieldCheck, label: 'Provjerene firme', value: 'ID + reference' },
   { icon: Clock, label: 'Brze ponude', value: '24h prosjek' },
   { icon: Star, label: 'Recenzije', value: 'Stvarni klijenti' },
-  { icon: Users, label: '35 gradova', value: 'Širom BiH' },
+  { icon: Users, label: `${cities.length} gradova`, value: 'Širom BiH' },
 ];
 
 export default function FaqPage() {
