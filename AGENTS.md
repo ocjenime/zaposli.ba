@@ -80,6 +80,7 @@
 - Added auto-scroll to job listings when `/poslovi/` is opened with a `category` query parameter.
 - Suppressed `@next/next/no-img-element` lint warnings for local data-URL image previews; the remaining `<img>` tags are intentional.
 - Added backend guard in firm dashboard to prevent duplicate bids for the same job.
+- Registration now appends a random suffix if a firm slug already exists, preventing failed firm inserts.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
