@@ -67,6 +67,7 @@
 - `supabase/migration-jobs-delete-policy.sql` applied to production by user.
 - Fixed category links from homepage job cards: `/poslovi/?category=<slug>` now initializes the category filter.
 - Added static metadata to `/firma-profil/`.
+- Prefilled service/city on "Objavi posao" CTAs from `/kategorije/[slug]/`, `/usluge/[slug]/`, and `/gradovi/[slug]/` pages.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
