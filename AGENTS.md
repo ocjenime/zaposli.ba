@@ -58,15 +58,18 @@
 - Closed Vercel auto-generated security PR #1 (manual upgrade on `main` is newer and includes the same CVE patch).
 - Replaced all em/en dashes (`—` / `–`) with simple ASCII hyphens (`-`) across user-facing UI text in `app`, `components`, and `lib` to eliminate the glyph/symbol issue reported in the “Hitne intervencije” header and other texts.
 - User confirmed the fix is acceptable; no further separator changes needed.
+- Added `bids_count` auto-maintenance migration (`supabase/migration-bids-count-autoupdate.sql`) with triggers for INSERT, DELETE, and UPDATE of `bids`, plus a recalculation of existing counts.
+- Updated `/poslovi/` (`ProjectsPageClient.tsx`) to always display the bids count badge in the job card, matching the homepage behavior.
 
 ### Active
-- No active tasks; waiting for next user instructions.
+- Waiting to apply `supabase/migration-bids-count-autoupdate.sql` to the live Supabase database.
 
 ### Blocked
-- No current blockers.
+- Cannot execute the migration locally because `SUPABASE_ACCESS_TOKEN` is not available in the environment. Either the user runs the SQL in the Supabase SQL Editor or provides the access token so `npx supabase` can apply it.
 
 ## Next Move
-- Resume next scheduled tasks when user returns or requests them.
+- Apply `supabase/migration-bids-count-autoupdate.sql` to production (user runs in SQL Editor or provides token).
+- After migration, verify live `/poslovi/` shows `0 ponuda` / `N ponuda` consistently and that counts update when a firm submits a bid.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
