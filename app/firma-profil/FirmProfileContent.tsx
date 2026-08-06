@@ -309,7 +309,7 @@ export default function FirmProfileContent() {
       <main className="flex-grow">
         <Breadcrumbs
           items={[
-            { name: 'Firme', href: '/poslovi/' },
+            { name: 'Top firme', href: '/top-firme/' },
             { name: firm.name },
           ]}
         />
