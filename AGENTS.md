@@ -54,9 +54,12 @@
 - Pushed the metadata fixes and verified live titles: `/top-firme/`, `/za-firme/`, `/objavi-projekat/` and `/zatrazi-ponudu/` all return 200 with correct `<title>` tags.
 - Prepared the project for Vercel migration by making `output: 'export'` conditional on `GITHUB_PAGES=true` in `next.config.js` and updating `.github/workflows/deploy.yml` so GitHub Pages still exports while Vercel uses the default Next.js runtime.
 - Verified both the static export build (2392 pages) and the default Next.js build (2392 pages) succeed locally.
+- Imported project into Vercel dashboard; initial deploy failed due to vulnerable Next.js 15.1.0 detected by Vercel's security policy.
+- Upgraded `next` to `15.5.22` (latest stable 15.x) and aligned `eslint-config-next` and optional `@next/swc-win32-x64-msvc` to the same version.
+- Verified local build passes with Next.js 15.5.22 (2,392 pages) and pushed the update.
 
 ### Active / In Progress
-- Vercel migration preparation is complete; waiting for Vercel credentials to import the project.
+- Monitoring the Vercel deploy after the Next.js security upgrade.
 
 ### Blocked
 - Need a Vercel access token or an authenticated Vercel CLI session to import the repo and configure the project.
