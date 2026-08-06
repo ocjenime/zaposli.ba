@@ -182,10 +182,7 @@ export default function Header() {
                 ref={mobileButtonRef}
                 type="button"
                 className="p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800 touch-manipulation cursor-pointer"
-                onPointerDown={(e) => {
-                  e.preventDefault();
-                  setMobileMenuOpen((v) => !v);
-                }}
+                onClick={() => setMobileMenuOpen((v) => !v)}
                 aria-label={mobileMenuOpen ? 'Zatvori meni' : 'Otvori meni'}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
