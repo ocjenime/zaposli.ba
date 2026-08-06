@@ -70,6 +70,7 @@
 - Prefilled service/city on "Objavi posao" CTAs from `/kategorije/[slug]/`, `/usluge/[slug]/`, and `/gradovi/[slug]/` pages.
 - Added an "Uredi posao" link on the client job detail page (`/dashboard/poslovi/`) that opens the edit modal in `/dashboard/?editJobId=<id>`.
 - Updated the outdated admin comment about GitHub Pages static export.
+- Made the mobile menu toggle keyboard accessible by switching from `onPointerDown` to `onClick`.
 
 ### Active
 - Performing a site-wide QA review; current focus on public pages and their interactions.
