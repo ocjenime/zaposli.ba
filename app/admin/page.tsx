@@ -1,8 +1,8 @@
 'use client';
 
-// NOTE: This project is exported as a static site on GitHub Pages, so there is
-// no server-side route protection here. Admin access is enforced by the
-// client-side auth check below plus Supabase RLS policies on all sensitive data.
+// NOTE: Admin access is enforced by the client-side auth check below plus
+// Supabase RLS policies on all sensitive data. The site runs on Vercel, but
+// dashboard routes still rely on client-side guards because they are client components.
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
