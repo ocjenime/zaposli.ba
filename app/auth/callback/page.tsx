@@ -53,7 +53,7 @@ export default function AuthCallback() {
 
       // Email change / magiclink / invite: verify OTP and redirect normally
       const otpTypes: Array<'signup' | 'magiclink' | 'email_change' | 'invite'> = ['signup', 'magiclink', 'email_change', 'invite'];
-      const otpType = type && otpTypes.includes(type as any) ? (type as 'signup' | 'magiclink' | 'email_change' | 'invite') : null;
+      const otpType = type && otpTypes.includes(type as typeof otpTypes[number]) ? type : null;
       if (otpType && (token || tokenHash)) {
         const { error } = await callbackSupabase.auth.verifyOtp({
           type: otpType,

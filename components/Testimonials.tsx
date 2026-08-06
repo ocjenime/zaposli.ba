@@ -13,6 +13,15 @@ interface Review {
   firm_name?: string;
 }
 
+interface RawReviewRow {
+  id: string;
+  rating: number;
+  comment: string | null;
+  created_at: string;
+  profiles?: { full_name: string | null } | null;
+  firms?: { name: string | null } | null;
+}
+
 function getInitials(name: string | null | undefined) {
   if (!name) return 'K';
   return name
@@ -38,7 +47,7 @@ export default function Testimonials() {
 
         if (error || !data || data.length === 0) return;
 
-        const mapped = (data as any[]).map((r) => ({
+        const mapped = (data as unknown as RawReviewRow[]).map((r) => ({
           id: r.id,
           rating: r.rating,
           comment: r.comment,
