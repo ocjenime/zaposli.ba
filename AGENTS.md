@@ -127,15 +127,16 @@
 - Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
 - Redesigned `/o-nama/` in premium Higgsfield style: cinematic hero with a large glowing logo badge, a full "Značka kvaliteta" trust section with the logo as a seal of quality, manifesto-style mission statement, large-year dark timeline, bento-style values grid, and premium CTA. Added `Organization` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kategorije/` and `/gradovi/` list pages with full-bleed cinematic `PageHero` using the homepage hero image (`/images/herozaposli.png`), centered CTAs, premium trust-badge intro, grouped category cards with shadow wrappers, a prominent hitne-intervencije card, and a pastel-gradient city bento grid. Both pages keep `BreadcrumbList` JSON-LD.
+- Redesigned `/firma-profil/[slug]/` in premium Higgsfield style: full-bleed dark `PageHero` with firm logo, verified/premium/online badges, rating, city, and the two main CTAs; two-column layout with "O firmi", category chips, business-info cards, portfolio grid, and reviews with histogram; sticky dark-glass sidebar with quick stats and CTAs; premium loading skeleton and error state. Kept all data fetching, `ReviewReplyForm`, portfolio lightbox, owner reply logic, JSON-LD `LocalBusiness` schema, and `generateMetadata`/`generateStaticParams`.
 
 ### Active
-- Monitoring Vercel deployment of the latest `/kako-radi/` redesign; waiting for user to request the next page.
+- Monitoring Vercel build/deployment of the latest `/firma-profil/[slug]/` redesign; waiting for user to request the next page.
 
 ### Blocked
 - Google Analytics 4 and Search Console are ready but require the user to add `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env vars in Vercel.
 
 ## Next Move
-- Wait for user feedback on `/kako-radi/` and proceed with the next requested page (e.g., `/kontakt/`, `/o-nama/`, `/faq/`).
+- Wait for user feedback on `/firma-profil/[slug]/` and proceed with the next requested page or task.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
