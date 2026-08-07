@@ -57,7 +57,6 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           subtitle={`Provjerene građevinske firme i majstore u gradu ${city.loc}. Objavite posao besplatno i primite ponude u roku od 24 sata.`}
           eyebrow={`${city.name} · BiH`}
           icon={MapPin}
-          gradient="bg-gradient-to-br from-ink via-blue-950 to-slate-900"
           size="lg"
         >
           <div className="flex flex-wrap gap-5 text-sm text-white/80 mb-8">

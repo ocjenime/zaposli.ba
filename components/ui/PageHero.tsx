@@ -19,7 +19,7 @@ export default function PageHero({
   subtitle,
   eyebrow,
   children,
-  image,
+  image = '/images/herozaposli.png',
   icon: Icon,
   overlay = true,
   gradient,

@@ -101,7 +101,6 @@ export default function TopFirmeContent() {
           subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata. Izaberite firmu sa povjerenjem."
           eyebrow="Najbolje ocijenjeni majstori"
           icon={Trophy}
-          gradient="bg-gradient-to-br from-ink via-amber-950 to-slate-900"
           size="md"
         />
 
