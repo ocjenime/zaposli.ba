@@ -130,13 +130,14 @@
 - Redesigned `/firma-profil/[slug]/` in premium Higgsfield style: full-bleed dark `PageHero` with firm logo, verified/premium/online badges, rating, city, and the two main CTAs; two-column layout with "O firmi", category chips, business-info cards, portfolio grid, and reviews with histogram; sticky dark-glass sidebar with quick stats and CTAs; premium loading skeleton and error state. Kept all data fetching, `ReviewReplyForm`, portfolio lightbox, owner reply logic, JSON-LD `LocalBusiness` schema, and `generateMetadata`/`generateStaticParams`.
 - Fixed all remaining `react-hooks/exhaustive-deps` warnings across `app/admin/`, `app/dashboard/**`, `app/firma-profil/`, `app/poslovi/`, `components/JobChat.tsx`, and `components/NotificationBell.tsx` by wrapping loader functions in `useCallback` and adding them to `useEffect` dependency arrays. `npm run lint` now reports zero warnings/errors.
 - Identified three test/demo firms (`test-firma-1785361713179`, `test-firma-1785362252075`, `test-admin-firma-1785548748322`) and excluded them from public listings, sitemap, and static generation by adding `.not('slug', 'like', 'test-%')` filters. Added `supabase/migration-remove-test-firms.sql` to permanently delete them from the database. Static build dropped from 2403 to 2400 pages.
+- Google Search Console domain-level verification succeeded automatically after adding the property; removed the hardcoded fallback token from `app/layout.tsx` since the env var is sufficient if needed later.
 
 ### Active
-- All planned premium redesigns pushed to `main` and deployed on Vercel. Waiting for user feedback on the latest `/firma-profil/[slug]/`, `/faq/`, and `/zatrazi-ponudu/` changes.
+- All planned premium redesigns pushed to `main` and deployed on Vercel. Google Search Console auto-verified via domain-level ownership; waiting for sitemap submission confirmation.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
-- Google Search Console verification token is now embedded in `app/layout.tsx`; the user still needs to click **Verify** in Search Console and submit the sitemap (`https://zaposli.ba/sitemap.xml`).
+- Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
 - Wait for user feedback on `/firma-profil/[slug]/` and proceed with the next requested page or task.
