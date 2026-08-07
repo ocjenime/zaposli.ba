@@ -113,6 +113,13 @@
 - Added `powered by Luxari` credit in the footer bottom bar, next to the copyright.
 - Removed phone and location from footer to avoid implying a single regional presence; kept only email.
 - Redesigned homepage hero (`components/HeroSection.tsx`) into a full-bleed cinematic layout using the new `public/images/herozaposli.png` image with gradient overlays for readability, glassmorphism search form, trust badges, and quick stats.
+- Upgraded `components/ui/PageHero.tsx` to a premium full-bleed hero with gradient/image background, overlay, icon, eyebrow, and children support.
+- Added `lib/hero.ts` with group-based gradient presets for all 15 category groups.
+- Redesigned dynamic page heroes:
+  - `/kategorije/[slug]/` uses category-specific gradient, icon, services, and CTA.
+  - `/gradovi/[slug]/` uses a city-focused dark-blue gradient with trust badges.
+  - `/usluge/[slug]/` combines category gradient with city context.
+- Updated static list pages `/kategorije/`, `/gradovi/`, `/savjeti/`, and `/top-firme/` to use the new premium `PageHero`.
 
 ### Active
 - Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.

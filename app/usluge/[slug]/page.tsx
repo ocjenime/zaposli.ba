@@ -5,9 +5,11 @@ import { MapPin, ArrowRight, Shield, Clock, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import PageHero from '@/components/ui/PageHero';
 import { JsonLd, serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/jsonld';
 import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
+import { getGroupHeroStyle } from '@/lib/hero';
 import ServiceCityFirms from '@/components/ServiceCityFirms';
 
 function parseSlug(slug: string): { cat: Category; city: City } | null {
@@ -88,34 +90,27 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <JsonLd data={faqSchema(faqItems)} />
 
         {/* Hero */}
-        <section className="relative bg-cloud py-14 md:py-20 overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-72 h-72 bg-brand-orange/10 rounded-full blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="inline-flex items-center gap-2 bg-white border border-gray-100 shadow-sm rounded-full px-4 py-2 mb-6">
-              <MapPin className="w-4 h-4 text-brand-orange" />
-              <span className="text-gray-900/80 text-sm font-medium">{city.name}</span>
-            </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-5 tracking-tight">
-              {cat.profession} <span className="bg-gradient-to-r from-brand-amber via-brand-orange to-brand-orange-dark bg-clip-text text-transparent">{city.name}</span>
-            </h1>
-            <p className="text-lg text-steel max-w-2xl mb-4">
-              {cat.description} u gradu {city.name}. Objavite posao besplatno i primite ponude od provjerenih firmi iz vašeg grada.
-            </p>
-            <div className="flex flex-wrap gap-5 text-sm text-steel mb-8">
-              <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
-              <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
-              <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
-            </div>
-            <Link
-              href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-            >
-              Objavi posao besplatno
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+        <PageHero
+          title={`${cat.profession} ${city.name}`}
+          subtitle={`${cat.description} u gradu ${city.name}. Objavite posao besplatno i primite ponude od provjerenih firmi iz vašeg grada.`}
+          eyebrow={`${city.name} · ${getGroupHeroStyle(cat.group).eyebrow}`}
+          icon={Icon}
+          gradient={getGroupHeroStyle(cat.group).gradient}
+          size="lg"
+        >
+          <div className="flex flex-wrap gap-5 text-sm text-white/80 mb-8">
+            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
+            <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
+            <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
           </div>
-        </section>
+          <Link
+            href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+          >
+            Objavi posao besplatno
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </PageHero>
 
         {/* Firme iz kategorije i grada */}
         <ServiceCityFirms

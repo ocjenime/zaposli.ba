@@ -3,6 +3,7 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import PageHero from '@/components/ui/PageHero';
 import { categories, type Category } from '@/lib/data';
 import { site } from '@/lib/site';
 import { cities } from '@/lib/data';
@@ -54,26 +55,22 @@ export default function CategoriesPage() {
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
-        {/* Compact header */}
-        <section className="pt-8 pb-6 md:pt-12 md:pb-8 bg-white border-b border-gray-100">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mb-1">Kategorije usluga</h1>
-                <p className="text-steel text-sm md:text-base">
-                  Pronađite majstora u {cities.length} gradova i {visible.length} kategorija
-                </p>
-              </div>
-              <Link
-                href="/objavi-projekat/"
-                className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm shadow-brand-orange/20"
-              >
-                Objavi posao
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
+        {/* Hero */}
+        <PageHero
+          title="Kategorije usluga"
+          subtitle={`Pronađite majstora u ${cities.length} gradova i ${visible.length} kategorija. Od građevine do čišćenja - sve na jednom mjestu.`}
+          eyebrow="Sve usluge u BiH"
+          gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
+          size="md"
+        >
+          <Link
+            href="/objavi-projekat/"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+          >
+            Objavi posao besplatno
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </PageHero>
 
         {/* SEO intro + trust badges */}
         <section className="py-8 md:py-10 bg-cloud">

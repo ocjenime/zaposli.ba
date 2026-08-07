@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Star, MapPin, ArrowRight, Shield, TrendingUp } from 'lucide-react';
+import { Star, MapPin, ArrowRight, Shield, TrendingUp, Trophy } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
@@ -98,7 +98,11 @@ export default function TopFirmeContent() {
         )}
         <PageHero
           title="Top firme"
-          subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata na našoj platformi"
+          subtitle="Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata. Izaberite firmu sa povjerenjem."
+          eyebrow="Najbolje ocijenjeni majstori"
+          icon={Trophy}
+          gradient="bg-gradient-to-br from-ink via-amber-950 to-slate-900"
+          size="md"
         />
 
         {/* Trust traka */}

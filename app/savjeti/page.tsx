@@ -46,7 +46,10 @@ export default function SavjetiPage() {
         <Breadcrumbs items={[{ name: 'Savjeti' }]} />
         <PageHero
           title="Savjeti"
-          subtitle="Praktični vodiči i stvarne cijene za vaše građevinske poslove u BiH"
+          subtitle="Praktični vodiči i stvarne cijene za vaše građevinske poslove u BiH. Naučite kako odabrati majstora i platiti poštenu cijenu."
+          eyebrow="Blog i cjenici"
+          gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
+          size="md"
         />
 
         {/* SEO intro + value cards */}

@@ -41,7 +41,11 @@ export default function CitiesPage() {
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
         <PageHero
           title="Majstori po gradovima"
-          subtitle={`Provjerene firme i majstori u ${cities.length} gradova širom Bosne i Hercegovine`}
+          subtitle={`Provjerene firme i majstori u ${cities.length} gradova širom Bosne i Hercegovine. Od Sarajeva do Banja Luke, Mostara i Tuzle.`}
+          eyebrow="Svi gradovi u BiH"
+          icon={MapPin}
+          gradient="bg-gradient-to-br from-ink via-blue-950 to-slate-900"
+          size="md"
         />
 
         {/* SEO intro + trust badges */}
