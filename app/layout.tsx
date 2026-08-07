@@ -17,7 +17,9 @@ const sans = Plus_Jakarta_Sans({
   fallback: ['system-ui', 'sans-serif'],
 });
 
-const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '';
+const googleVerification =
+  process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+  'oHI34GDrONTMFzspGR-gFQ-2c1lkGbHBcX-YtuaRwK8';
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
