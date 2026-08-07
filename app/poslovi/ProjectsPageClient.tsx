@@ -266,7 +266,16 @@ function ProjectsPageContent() {
 
         {/* Hero - premium dark Higgsfield style */}
         <section className="relative overflow-hidden border-b border-white/5">
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
+          <Image
+            src="/images/herozaposli.png"
+            alt="Poslovi"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
           <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.5),transparent_40%),radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.2),transparent_40%)]" />
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-16 md:pb-28">
