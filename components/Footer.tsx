@@ -125,7 +125,7 @@ export default function Footer() {
             <p className="text-gray-600 text-sm text-center md:text-right">
               &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
               <span className="block md:inline md:ml-1">
-                · powered by Luxari
+                Powered by Luxari
               </span>
             </p>
           </div>
