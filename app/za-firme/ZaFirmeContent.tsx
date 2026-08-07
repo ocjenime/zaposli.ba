@@ -355,7 +355,7 @@ export default function ZaFirmeContent() {
                     </div>
                   </div>
                 </div>
-                <div className="absolute -bottom-4 -left-2 md:bottom-8 md:-left-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl hidden sm:block">
+                <div className="absolute -bottom-4 -right-2 md:bottom-8 md:-right-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl hidden sm:block">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center">
                       <Briefcase className="w-5 h-5 text-brand-orange" />
