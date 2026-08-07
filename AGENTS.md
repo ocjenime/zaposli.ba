@@ -111,6 +111,8 @@
   - Created `components/LazySection.tsx` for below-the-fold lazy rendering and applied it to `HowItWorks`, `StatsSection`, `RecentProjects`, and `Testimonials` on the homepage.
   - Verified `npm run build` succeeds and generates 2403 static pages.
 - Added `powered by Luxari` credit in the footer bottom bar, next to the copyright.
+- Removed phone and location from footer to avoid implying a single regional presence; kept only email.
+- Redesigned homepage hero (`components/HeroSection.tsx`) into a full-bleed cinematic layout using the new `public/images/herozaposli.png` image with gradient overlays for readability, glassmorphism search form, trust badges, and quick stats.
 
 ### Active
 - Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.
