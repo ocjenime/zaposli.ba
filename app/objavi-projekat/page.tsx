@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon } from 'lucide-react';
+import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon, ClipboardList, Clock, ShieldCheck, Users } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
@@ -428,8 +428,34 @@ function PostProjectContent() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow pt-28 pb-12">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow pb-16">
+        <section className="relative overflow-hidden pt-28 md:pt-36 pb-20 md:pb-28">
+          <div className="absolute inset-0 bg-gradient-to-br from-ink via-orange-950 to-slate-900" />
+          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
+                Besplatno i neobavezujuće
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-5">
+                {targetProvider ? 'Zatraži ponudu' : 'Objavite posao besplatno'}
+              </h1>
+              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-8 max-w-2xl">
+                {targetProvider ? `Pošaljite zahtjev firmi ${targetProvider.name}. U par koraka do ponude.` : 'U 3 koraka do ponuda provjerenih majstora i firmi iz vašeg grada.'}
+              </p>
+              <div className="flex flex-wrap gap-4 text-sm text-white/80">
+                <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
+                <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
+                <span className="flex items-center gap-2"><Users className="w-4 h-4 text-brand-orange" /> 50+ kategorija</span>
+              </div>
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cloud to-transparent z-10" />
+        </section>
+
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
           <div className="mb-8">
             <div className="flex items-center justify-between">
               {[
@@ -439,23 +465,23 @@ function PostProjectContent() {
               ].map((s, idx) => (
                 <div key={s.n} className="flex items-center flex-1">
                   <div className="flex flex-col items-center text-center flex-1">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm ${step >= s.n ? 'bg-primary-600 text-[#ffffff]' : 'bg-gray-200 text-gray-500'}`}>
-                      {s.n}
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm border-2 transition-colors ${step >= s.n ? 'bg-brand-orange border-brand-orange text-white' : 'bg-white border-gray-200 text-gray-400'}`}>
+                      {step > s.n ? '✓' : s.n}
                     </div>
-                    <span className={`mt-1.5 text-xs font-medium ${step >= s.n ? 'text-primary-600' : 'text-gray-400'}`}>
+                    <span className={`mt-1.5 text-xs font-medium ${step >= s.n ? 'text-brand-orange' : 'text-gray-400'}`}>
                       {s.label}
                     </span>
                   </div>
                   {idx < 2 && (
-                    <div className={`flex-1 h-1 mx-2 sm:mx-4 rounded-full ${step > s.n ? 'bg-primary-600' : 'bg-gray-200'}`} />
+                    <div className={`flex-1 h-1 mx-2 sm:mx-4 rounded-full ${step > s.n ? 'bg-brand-orange' : 'bg-gray-200'}`} />
                   )}
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 p-6 md:p-10">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {targetProvider ? 'Zatraži ponudu' : 'Objavite novi posao'}
             </h1>
             {targetProvider && (
