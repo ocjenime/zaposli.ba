@@ -45,6 +45,7 @@ export default function FeaturedWorkers() {
         const { data: firmData } = await supabase
           .from('firms')
           .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
+          .not('slug', 'like', 'test-%')
           .order('review_count', { ascending: false })
           .limit(10);
 

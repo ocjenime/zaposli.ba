@@ -20,18 +20,21 @@ export function useCategoryCounts(): {
   useEffect(() => {
     async function load() {
       try {
-        const { data, error } = await supabase
-          .from('firm_categories')
-          .select('category_slug');
+        const [{ data: firmData }, { data: catData, error }] = await Promise.all([
+          supabase.from('firms').select('id').not('slug', 'like', 'test-%'),
+          supabase.from('firm_categories').select('firm_id, category_slug'),
+        ]);
 
-        if (error || !data) {
+        if (error || !catData) {
           setError(true);
           setLoading(false);
           return;
         }
 
+        const validFirmIds = new Set((firmData || []).map((f) => (f as { id: string }).id));
         const map: Record<string, number> = {};
-        (data as { category_slug: string }[]).forEach((row) => {
+        (catData as { firm_id: string; category_slug: string }[]).forEach((row) => {
+          if (!validFirmIds.has(row.firm_id)) return;
           map[row.category_slug] = (map[row.category_slug] || 0) + 1;
         });
         setCounts(map);

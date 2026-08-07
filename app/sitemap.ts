@@ -60,7 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       { auth: { persistSession: false, autoRefreshToken: false } }
     );
-    const { data } = await supabase.from('firms').select('slug,updated_at');
+    const { data } = await supabase.from('firms').select('slug,updated_at').not('slug', 'like', 'test-%');
     const rows = (data as { slug: string; updated_at: string | null }[]) || [];
     firmPages = rows.map((f) => ({
       url: `${site.url}/firma-profil/${f.slug}/`,

@@ -35,7 +35,7 @@ export function useLiveStats(): LiveStats {
           { data: reviews },
         ] = await Promise.all([
           supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'client'),
-          supabase.from('firms').select('*', { count: 'exact', head: true }),
+          supabase.from('firms').select('*', { count: 'exact', head: true }).not('slug', 'like', 'test-%'),
           supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
           supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'open'),
           supabase.from('reviews').select('rating'),

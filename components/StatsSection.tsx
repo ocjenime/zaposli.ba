@@ -43,7 +43,7 @@ export default function StatsSection() {
           { count: completedJobsCount },
         ] = await Promise.all([
           supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'client'),
-          supabase.from('firms').select('*', { count: 'exact', head: true }),
+          supabase.from('firms').select('*', { count: 'exact', head: true }).not('slug', 'like', 'test-%'),
           supabase.from('reviews').select('rating'),
           supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
         ]);

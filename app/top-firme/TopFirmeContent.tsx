@@ -41,6 +41,7 @@ export default function TopFirmeContent() {
         const { data: firmData } = await supabase
           .from('firms')
           .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
+          .not('slug', 'like', 'test-%')
           .order('average_rating', { ascending: false })
           .limit(50);
 

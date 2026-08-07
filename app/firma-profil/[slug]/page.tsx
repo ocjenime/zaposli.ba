@@ -27,7 +27,7 @@ function createServerSupabase() {
 export async function generateStaticParams() {
   try {
     const supabase = createServerSupabase();
-    const { data } = await supabase.from('firms').select('slug');
+    const { data } = await supabase.from('firms').select('slug').not('slug', 'like', 'test-%');
     return ((data as { slug: string }[]) || []).map((f) => ({ slug: f.slug }));
   } catch {
     return [];

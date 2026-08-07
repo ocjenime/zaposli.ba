@@ -61,6 +61,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
           .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
           .in('id', firmIds)
           .eq('city', cityName)
+          .not('slug', 'like', 'test-%')
           .order('verified', { ascending: false })
           .order('average_rating', { ascending: false });
 
