@@ -95,6 +95,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
           subtitle={`${cat.description} u gradu ${city.name}. Objavite posao besplatno i primite ponude od provjerenih firmi iz vašeg grada.`}
           eyebrow={`${city.name} · ${getGroupHeroStyle(cat.group).eyebrow}`}
           icon={Icon}
+          gradient={getGroupHeroStyle(cat.group).gradient}
           size="lg"
         >
           <div className="flex flex-wrap gap-5 text-sm text-white/80 mb-8">

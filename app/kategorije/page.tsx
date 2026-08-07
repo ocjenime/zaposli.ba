@@ -75,7 +75,6 @@ export default function CategoriesPage() {
           subtitle={`Pronađite majstora u ${cities.length} gradova i ${visible.length} kategorija. Od građevine do čišćenja - sve na jednom mjestu.`}
           eyebrow="Sve usluge u BiH"
           icon={LayoutGrid}
-          image="/images/herozaposli.png"
           align="center"
           size="lg"
         >

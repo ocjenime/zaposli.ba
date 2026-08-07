@@ -70,7 +70,6 @@ export default function CitiesPage() {
           subtitle={`Provjerene firme i majstori u ${cities.length} gradova širom Bosne i Hercegovine. Od Sarajeva do Banja Luke, Mostara i Tuzle.`}
           eyebrow="Svi gradovi u BiH"
           icon={MapPin}
-          image="/images/herozaposli.png"
           align="center"
           size="lg"
         >
