@@ -122,6 +122,7 @@
 - Updated static list pages `/kategorije/`, `/gradovi/`, `/savjeti/`, and `/top-firme/` to use the new premium `PageHero`.
 - Redesigned `/poslovi/` hero to dark Higgsfield style with glassmorphism search and trust badges.
 - Redesigned `/objavi-projekat/` with a premium dark hero, overlapping form card, and an improved stepper.
+- Redesigned `/za-firme/` with premium dark gradient sections, glassmorphism benefit/pricing cards, improved FAQ, and gradient-accented CTAs.
 
 ### Active
 - Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.

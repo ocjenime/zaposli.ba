@@ -217,10 +217,11 @@ export default function ZaFirmeContent() {
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-gradient-hero pt-28 pb-16 md:pt-40 md:pb-24">
+        <section className="relative overflow-hidden bg-gradient-hero pt-28 pb-16 md:pt-40 md:pb-28">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-orange/5 rounded-full blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div className="max-w-2xl">
@@ -228,8 +229,8 @@ export default function ZaFirmeContent() {
                   <Building2 className="h-4 w-4 text-brand-orange" />
                   Marketplace za majstore i firme u BiH
                 </div>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-5 text-balance">
-                  Novi poslovi, direktno u vaš inbox
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6 text-balance">
+                  Novi poslovi, <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">direktno u vaš inbox</span>
                 </h1>
                 <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-xl">
                   Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i
@@ -307,16 +308,18 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Benefits */}
-        <section className="py-16 md:py-20 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+        <section className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-ink" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-brand-orange/10 rounded-full blur-[100px]" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
                 <Building2 className="h-4 w-4" /> Prednosti platforme
               </span>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
                 Zašto se profesionalci pridružuju Zaposli.ba?
               </h2>
-              <p className="text-steel text-lg">
+              <p className="text-white/70 text-lg">
                 Platforma koja vam donosi klijente, pomaže da gradite reputaciju i rastete bez
                 velikih početnih ulaganja.
               </p>
@@ -326,13 +329,13 @@ export default function ZaFirmeContent() {
               {benefits.map((benefit) => (
                 <div
                   key={benefit.title}
-                  className="bg-white rounded-2xl border border-gray-100 p-6 hover:border-orange-200 hover:shadow-card transition-all duration-200"
+                  className="group bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 hover:bg-white/10 hover:border-white/20 hover:-translate-y-1 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 mb-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-100 flex items-center justify-center">
+                  <div className="w-12 h-12 mb-4 bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 rounded-xl border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
                     <benefit.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{benefit.title}</h3>
-                  <p className="text-sm text-steel leading-relaxed">{benefit.description}</p>
+                  <h3 className="text-lg font-bold text-white mb-2">{benefit.title}</h3>
+                  <p className="text-sm text-white/70 leading-relaxed">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -449,19 +452,21 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Pricing */}
-        <section id="cijene" className="py-16 md:py-20 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4">
+        <section id="cijene" className="relative py-16 md:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/4 translate-y-1/4" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
                 <Wallet className="h-4 w-4" /> Cijene
               </span>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4">
                 Jednostavne cijene, bez iznenađenja
               </h2>
-              <p className="text-steel text-lg mb-6">
+              <p className="text-white/70 text-lg mb-6">
                 Počnite besplatno. Nadogradite kada platforma počne da vam donosi poslove.
               </p>
-              <p className="inline-flex items-center gap-2 text-sm font-semibold text-green-700 bg-green-50 px-4 py-2 rounded-full">
+              <p className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
                 Godišnje plaćanje: 10% popusta
               </p>
             </div>
@@ -470,30 +475,30 @@ export default function ZaFirmeContent() {
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative bg-white rounded-2xl p-6 flex flex-col transition-shadow duration-200 ${
+                  className={`relative rounded-2xl p-6 flex flex-col transition-all duration-300 ${
                     plan.popular
-                      ? 'ring-2 ring-brand-orange shadow-card-hover'
-                      : 'border border-gray-100 shadow-sm hover:shadow-card'
+                      ? 'bg-white/10 backdrop-blur-md border border-brand-orange/50 shadow-2xl shadow-brand-orange/20 scale-[1.02]'
+                      : 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-brand-orange text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-sm">
+                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
                         Preporučeno
                       </span>
                     </div>
                   )}
 
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{plan.name}</h3>
-                    <p className="text-sm text-steel mb-4">{plan.description}</p>
+                    <h3 className="text-lg font-bold text-white mb-1">{plan.name}</h3>
+                    <p className="text-sm text-white/60 mb-4">{plan.description}</p>
                     <div className="flex items-end justify-center gap-1">
-                      <span className="text-4xl font-extrabold text-gray-900 leading-none">
+                      <span className="text-4xl font-extrabold text-white leading-none">
                         {plan.price}
                       </span>
-                      <span className="text-steel font-semibold mb-1">KM</span>
+                      <span className="text-white/60 font-semibold mb-1">KM</span>
                     </div>
-                    <p className="text-sm text-steel mt-1">{plan.period}</p>
+                    <p className="text-sm text-white/60 mt-1">{plan.period}</p>
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-1">
@@ -501,12 +506,12 @@ export default function ZaFirmeContent() {
                       <li key={feature} className="flex items-start gap-3">
                         <div
                           className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
-                            plan.popular ? 'bg-brand-orange text-white' : 'bg-orange-100 text-brand-orange'
+                            plan.popular ? 'bg-brand-orange text-white' : 'bg-white/10 text-brand-orange'
                           }`}
                         >
                           <CheckCircle className="w-3.5 h-3.5" />
                         </div>
-                        <span className="text-gray-900/80 text-sm">{feature}</span>
+                        <span className="text-white/80 text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -518,7 +523,7 @@ export default function ZaFirmeContent() {
               ))}
             </div>
 
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-10 text-sm text-steel">
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-10 text-sm text-white/70">
               <span className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-brand-orange" /> Bez ugovorne obaveze
               </span>
@@ -533,13 +538,13 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* FAQ */}
-        <section className="py-16 md:py-20 bg-cloud">
+        <section className="py-16 md:py-24 bg-cloud">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
                 Često postavljana pitanja
               </h2>
               <p className="text-steel text-lg">Sve što trebate znati prije registracije.</p>
@@ -549,13 +554,16 @@ export default function ZaFirmeContent() {
               {faqs.map((faq, index) => (
                 <details
                   key={index}
-                  className="group bg-white rounded-2xl border border-gray-100 overflow-hidden open:border-brand-orange/20 open:shadow-sm transition-all duration-200"
+                  className="group bg-white rounded-2xl border border-gray-100 overflow-hidden open:border-brand-orange/30 open:shadow-lg transition-all duration-300"
                 >
-                  <summary className="flex items-center justify-between gap-4 cursor-pointer p-6 list-none">
-                    <span className="font-bold text-gray-900">{faq.question}</span>
-                    <ChevronDown className="w-5 h-5 text-steel flex-shrink-0 transition-transform duration-200 group-open:rotate-180" />
+                  <summary className="flex items-center gap-4 cursor-pointer p-6 list-none">
+                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-orange-50 text-brand-orange text-sm font-bold flex items-center justify-center">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="flex-1 font-bold text-gray-900">{faq.question}</span>
+                    <ChevronDown className="w-5 h-5 text-steel flex-shrink-0 transition-transform duration-300 group-open:rotate-180" />
                   </summary>
-                  <div className="px-6 pb-6 text-steel leading-relaxed">{faq.answer}</div>
+                  <div className="px-6 pb-6 pl-14 text-steel leading-relaxed">{faq.answer}</div>
                 </details>
               ))}
             </div>
@@ -563,18 +571,19 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Final CTA */}
-        <section className="relative py-16 md:py-20 bg-gradient-hero overflow-hidden">
+        <section className="relative py-20 md:py-28 bg-gradient-hero overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.4),transparent_40%),radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.2),transparent_40%)]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
               <Target className="h-4 w-4 text-brand-orange" />
               Počnite već danas
             </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight mb-4">
-              Spremni ste da rastete?
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5">
+              Spremni ste da <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">rastete?</span>
             </h2>
-            <p className="text-lg text-white/70 mb-10 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
               Registrujte firmu besplatno i počnite da primate nove poslove već sutra. Bez rizika,
               bez ugovorne obaveze.
             </p>
