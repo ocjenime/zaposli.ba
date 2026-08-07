@@ -124,6 +124,7 @@
 - Redesigned `/objavi-projekat/` with a premium dark hero, overlapping form card, and an improved stepper.
 - Redesigned `/za-firme/` with a luxury Higgsfield-style layout: cinematic two-column hero with floating stat pills, 2x2 dark glass benefit cards with stats, alternating timeline for the three-step process, bento-style category cards with unique gradients, glass trust-signal rows, premium dark pricing cards with stronger popular-card glow, improved FAQ, and gradient-accented CTA. Added `FAQPage` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
+- Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
 
 ### Active
 - Monitoring Vercel deployment of the latest `/kako-radi/` redesign; waiting for user to request the next page.
@@ -168,3 +169,4 @@
 - `lib/articles.ts`: article metadata source.
 - `app/savjeti/**/page.tsx`: article pages.
 - `app/kako-radi/page.tsx`: redesigned how-it-works page.
+- `app/kontakt/page.tsx`: redesigned contact page.
