@@ -125,6 +125,7 @@
 - Redesigned `/za-firme/` with a luxury Higgsfield-style layout: cinematic two-column hero with floating stat pills, 2x2 dark glass benefit cards with stats, alternating timeline for the three-step process, bento-style category cards with unique gradients, a prominent full-width "Ostale kategorije" link card showing the full category count, glass trust-signal rows, premium dark pricing cards with stronger popular-card glow, improved FAQ, and gradient-accented CTA. Added `FAQPage` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
+- Redesigned `/o-nama/` in Higgsfield style with a prominent "Značka kvaliteta" section featuring the Zaposli.ba logo, dark glass mission card with the white logo, premium alternating timeline, bento-style values grid, and improved CTA. Added `Organization` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kategorije/` and `/gradovi/` list pages with full-bleed cinematic `PageHero` using the homepage hero image (`/images/herozaposli.png`), centered CTAs, premium trust-badge intro, grouped category cards with shadow wrappers, a prominent hitne-intervencije card, and a pastel-gradient city bento grid. Both pages keep `BreadcrumbList` JSON-LD.
 
 ### Active
@@ -171,5 +172,6 @@
 - `app/savjeti/**/page.tsx`: article pages.
 - `app/kako-radi/page.tsx`: redesigned how-it-works page.
 - `app/kontakt/page.tsx`: redesigned contact page.
+- `app/o-nama/page.tsx`: redesigned about page.
 - `app/kategorije/page.tsx`: redesigned categories list page.
 - `app/gradovi/page.tsx`: redesigned cities list page.
