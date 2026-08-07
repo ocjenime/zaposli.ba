@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
+import { categories } from '@/lib/data';
 
 import {
   CheckCircle,
@@ -32,6 +33,7 @@ import {
   Award,
   BarChart3,
   UserPlus,
+  LayoutGrid,
 } from 'lucide-react';
 
 const benefits = [
@@ -145,6 +147,8 @@ const projectCards = [
     gradient: 'from-violet-50 to-white border-violet-100',
   },
 ];
+
+const categoryCount = categories.filter((c) => !c.noSeo).length;
 
 const pricingPlans = [
   {
@@ -494,7 +498,8 @@ export default function ZaFirmeContent() {
                 Pronađite projekte u svojoj oblasti
               </h2>
               <p className="text-steel text-lg">
-                Od adaptacija stanova do kuhinja, kupatila, farbanja i završnih radova. Klijenti svakodnevno objavljuju nove poslove.
+                Klijenti svakodnevno objavljuju nove poslove u {categoryCount} kategorija. Od adaptacija stanova do kuhinja,
+                kupatila, farbanja, završnih radova i mnogih drugi usluga.
               </p>
             </div>
 
@@ -511,6 +516,24 @@ export default function ZaFirmeContent() {
                   <p className="text-sm text-steel leading-relaxed">{card.description}</p>
                 </div>
               ))}
+              <Link
+                href="/kategorije/"
+                className="group md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-6 shadow-card hover:shadow-xl transition-all duration-300 flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <LayoutGrid className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 text-lg">Ostale kategorije</h3>
+                    <p className="text-sm text-steel leading-relaxed">
+                      Još {categoryCount - projectCards.length} oblasti - selidbe, čišćenje, hidroizolacija, energetska obnova,
+                      dizajn eksterijera i mnoge druge.
+                    </p>
+                  </div>
+                </div>
+                <ArrowRight className="w-6 h-6 text-brand-orange shrink-0 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </div>
         </section>
