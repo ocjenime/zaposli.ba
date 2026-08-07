@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -154,12 +154,8 @@ function JobDetail() {
     if (!loading && !user) router.push('/prijava/');
   }, [user, loading, router]);
 
-  useEffect(() => {
-    if (id && user) fetchData();
-  }, [id, user]);
-
-  async function fetchData() {
-    if (!id) return;
+  const fetchData = useCallback(async () => {
+    if (!id || !user) return;
     setLoadingData(true);
     setError('');
 
@@ -167,7 +163,7 @@ function JobDetail() {
       .from('jobs')
       .select('*')
       .eq('id', id)
-      .eq('client_id', user!.id)
+      .eq('client_id', user.id)
       .single();
 
     if (jobErr || !jobData) {
@@ -201,7 +197,11 @@ function JobDetail() {
     setReview((reviewData as Review) || null);
 
     setLoadingData(false);
-  }
+  }, [id, user]);
+
+  useEffect(() => {
+    if (id && user) fetchData();
+  }, [id, user, fetchData]);
 
   async function acceptBid(bidId: string) {
     if (!job) return;

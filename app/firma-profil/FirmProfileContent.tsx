@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -91,16 +91,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (!slug) {
-      setLoading(false);
-      setError('Nedostaje naziv firme.');
-      return;
-    }
-    loadFirm();
-  }, [slug]);
-
-  async function loadFirm() {
+  const loadFirm = useCallback(async () => {
     setLoading(true);
     setError('');
 
@@ -148,7 +139,16 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     } finally {
       setLoading(false);
     }
-  }
+  }, [slug]);
+
+  useEffect(() => {
+    if (!slug) {
+      setLoading(false);
+      setError('Nedostaje naziv firme.');
+      return;
+    }
+    loadFirm();
+  }, [slug, loadFirm]);
 
   function formatYear(date: string | null) {
     if (!date) return null;

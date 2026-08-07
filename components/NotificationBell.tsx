@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { Bell, Check, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
@@ -23,7 +23,7 @@ export default function NotificationBell() {
     setMounted(true);
   }, []);
 
-  async function loadNotifications() {
+  const loadNotifications = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     try {
@@ -43,12 +43,12 @@ export default function NotificationBell() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [user]);
 
   useEffect(() => {
     if (!mounted || !user) return;
     loadNotifications();
-  }, [mounted, user]);
+  }, [mounted, user, loadNotifications]);
 
   useEffect(() => {
     if (!mounted || !user) return;
@@ -86,7 +86,7 @@ export default function NotificationBell() {
     return () => {
       if (channel) supabase.removeChannel(channel);
     };
-  }, [mounted, user]);
+  }, [mounted, user, role]);
 
   useEffect(() => {
     if (!mounted || !open) return;

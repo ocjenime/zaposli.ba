@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Send, Loader2 } from 'lucide-react';
 import { formatDate as formatDateHelper } from '@/lib/date';
@@ -44,9 +44,37 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
   const [error, setError] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const markAsRead = useCallback(async () => {
+    if (!jobId || !userId) return;
+    await supabase
+      .from('messages')
+      .update({ read: true })
+      .eq('job_id', jobId)
+      .neq('sender_id', userId)
+      .eq('read', false);
+  }, [jobId, userId]);
+
+  const fetchMessages = useCallback(async () => {
+    if (!jobId) return;
+    setLoading(true);
+    const { data, error: err } = await supabase
+      .from('messages')
+      .select('*, sender:profiles!sender_id(id, full_name, is_admin)')
+      .eq('job_id', jobId)
+      .order('created_at', { ascending: true });
+
+    if (err) {
+      setError('Greška prilikom učitavanja poruka.');
+    } else {
+      setMessages((data as Message[]) || []);
+    }
+    setLoading(false);
+    markAsRead();
+  }, [jobId, markAsRead]);
+
   useEffect(() => {
     fetchMessages();
-  }, [jobId, userId]);
+  }, [jobId, userId, fetchMessages]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -80,35 +108,7 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [jobId, userId]);
-
-  async function fetchMessages() {
-    if (!jobId) return;
-    setLoading(true);
-    const { data, error: err } = await supabase
-      .from('messages')
-      .select('*, sender:profiles!sender_id(id, full_name, is_admin)')
-      .eq('job_id', jobId)
-      .order('created_at', { ascending: true });
-
-    if (err) {
-      setError('Greška prilikom učitavanja poruka.');
-    } else {
-      setMessages((data as Message[]) || []);
-    }
-    setLoading(false);
-    markAsRead();
-  }
-
-  async function markAsRead() {
-    if (!jobId || !userId) return;
-    await supabase
-      .from('messages')
-      .update({ read: true })
-      .eq('job_id', jobId)
-      .neq('sender_id', userId)
-      .eq('read', false);
-  }
+  }, [jobId, userId, markAsRead]);
 
   function getSenderLabel(msg: Message, isMe: boolean) {
     if (isMe) return 'Vi';

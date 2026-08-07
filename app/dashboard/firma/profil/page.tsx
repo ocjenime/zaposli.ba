@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -100,16 +100,7 @@ export default function FirmProfileEditorPage() {
   const [uploadingPortfolio, setUploadingPortfolio] = useState(false);
   const [deletingPortfolioId, setDeletingPortfolioId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user || !isFirmRole(role)) {
-      router.push('/prijava/');
-      return;
-    }
-    loadFirm();
-  }, [authLoading, user, role, router]);
-
-  async function loadFirm() {
+  const loadFirm = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError('');
@@ -159,7 +150,16 @@ export default function FirmProfileEditorPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [user]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user || !isFirmRole(role)) {
+      router.push('/prijava/');
+      return;
+    }
+    loadFirm();
+  }, [authLoading, user, role, router, loadFirm]);
 
   async function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;

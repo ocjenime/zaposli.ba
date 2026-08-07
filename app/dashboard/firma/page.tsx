@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -155,6 +155,11 @@ function formatBudget(job: Job) {
   return 'Budžet po dogovoru';
 }
 
+function isActiveFeatured(job: Job) {
+  if (!job.is_featured || !job.featured_until) return false;
+  return new Date(job.featured_until).getTime() > Date.now();
+}
+
 function FirmDashboardContent() {
   const { user, loading, role } = useAuth();
   const router = useRouter();
@@ -215,50 +220,7 @@ function FirmDashboardContent() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    if (user && isFirmRole(role)) fetchFirm();
-  }, [user, role]);
-
-  async function fetchFirm() {
-    if (!user) return;
-    setLoadingFirm(true);
-    setError('');
-
-    const { data, error: err } = await supabase
-      .from('firms')
-      .select('id')
-      .eq('owner_id', user.id)
-      .single();
-
-    if (err || !data) {
-      setError('Nije pronađena firma povezana sa vašim nalogom. Registrujte firmu.');
-      setLoadingFirm(false);
-      return;
-    }
-
-    setFirmId(data.id);
-    setLoadingFirm(false);
-
-    const { data: catData } = await supabase
-      .from('firm_categories')
-      .select('category_slug, notify_enabled, email_enabled')
-      .eq('firm_id', data.id);
-    const rows = (catData as { category_slug: string; notify_enabled: boolean; email_enabled: boolean }[] | null) || [];
-    setFirmCategories(rows.map((c) => c.category_slug));
-    setCategoryPrefs(
-      rows.reduce((acc, c) => {
-        acc[c.category_slug] = {
-          notify_enabled: c.notify_enabled !== false,
-          email_enabled: c.email_enabled !== false,
-        };
-        return acc;
-      }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
-    );
-
-    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id)]);
-  }
-
-  async function fetchDirectJobs(id: string) {
+  const fetchDirectJobs = useCallback(async (id: string) => {
     setLoadingDirect(true);
     const { data, error: err } = await supabase
       .from('jobs')
@@ -290,9 +252,9 @@ function FirmDashboardContent() {
       setDirectJobs(jobs);
     }
     setLoadingDirect(false);
-  }
+  }, []);
 
-  async function loadPlan(id: string) {
+  const loadPlan = useCallback(async (id: string) => {
     setLoadingPlan(true);
     try {
       const usage = await getPlanAndUsage(id);
@@ -305,7 +267,7 @@ function FirmDashboardContent() {
     } finally {
       setLoadingPlan(false);
     }
-  }
+  }, []);
 
   async function saveCategoryPrefs() {
     if (!firmId) return;
@@ -345,12 +307,7 @@ function FirmDashboardContent() {
     }));
   }
 
-  function isActiveFeatured(job: Job) {
-    if (!job.is_featured || !job.featured_until) return false;
-    return new Date(job.featured_until).getTime() > Date.now();
-  }
-
-  async function fetchOpenJobs() {
+  const fetchOpenJobs = useCallback(async () => {
     setLoadingJobs(true);
     const { data, error: err } = await supabase
       .from('jobs')
@@ -385,9 +342,9 @@ function FirmDashboardContent() {
       setOpenJobs(sortedJobs);
     }
     setLoadingJobs(false);
-  }
+  }, []);
 
-  async function fetchMyBids(id: string) {
+  const fetchMyBids = useCallback(async (id: string) => {
     setLoadingBids(true);
     const { data, error: err } = await supabase
       .from('bids')
@@ -401,7 +358,50 @@ function FirmDashboardContent() {
       setMyBids((data as Bid[]) || []);
     }
     setLoadingBids(false);
-  }
+  }, []);
+
+  const fetchFirm = useCallback(async () => {
+    if (!user) return;
+    setLoadingFirm(true);
+    setError('');
+
+    const { data, error: err } = await supabase
+      .from('firms')
+      .select('id')
+      .eq('owner_id', user.id)
+      .single();
+
+    if (err || !data) {
+      setError('Nije pronađena firma povezana sa vašim nalogom. Registrujte firmu.');
+      setLoadingFirm(false);
+      return;
+    }
+
+    setFirmId(data.id);
+    setLoadingFirm(false);
+
+    const { data: catData } = await supabase
+      .from('firm_categories')
+      .select('category_slug, notify_enabled, email_enabled')
+      .eq('firm_id', data.id);
+    const rows = (catData as { category_slug: string; notify_enabled: boolean; email_enabled: boolean }[] | null) || [];
+    setFirmCategories(rows.map((c) => c.category_slug));
+    setCategoryPrefs(
+      rows.reduce((acc, c) => {
+        acc[c.category_slug] = {
+          notify_enabled: c.notify_enabled !== false,
+          email_enabled: c.email_enabled !== false,
+        };
+        return acc;
+      }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
+    );
+
+    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id)]);
+  }, [user, fetchOpenJobs, fetchMyBids, fetchDirectJobs, loadPlan]);
+
+  useEffect(() => {
+    if (user && isFirmRole(role)) fetchFirm();
+  }, [user, role, fetchFirm]);
 
   function isCategoryAllowed(job: Job) {
     return firmCategories.length > 0 && firmCategories.includes(job.category_slug);

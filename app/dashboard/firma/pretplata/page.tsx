@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -40,26 +40,7 @@ function FirmSubscriptionContent() {
   const [interval, setInterval] = useState<BillingInterval>('monthly');
   const [instructionsPlanId, setInstructionsPlanId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user || !isFirmRole(role)) {
-      router.push('/prijava/');
-      return;
-    }
-    loadData();
-  }, [authLoading, user, role, router]);
-
-  useEffect(() => {
-    const status = searchParams.get('payment');
-    if (status === 'success') {
-      setSuccess('Hvala na uplati. Vaša pretplata će biti aktivirana nakon potvrde plaćanja.');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (status === 'cancel') {
-      setError('Plaćanje je otkazano. Možete pokušati ponovo.');
-    }
-  }, [searchParams]);
-
-  async function loadData() {
+  const loadData = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError('');
@@ -97,7 +78,26 @@ function FirmSubscriptionContent() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [user]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user || !isFirmRole(role)) {
+      router.push('/prijava/');
+      return;
+    }
+    loadData();
+  }, [authLoading, user, role, router, loadData]);
+
+  useEffect(() => {
+    const status = searchParams.get('payment');
+    if (status === 'success') {
+      setSuccess('Hvala na uplati. Vaša pretplata će biti aktivirana nakon potvrde plaćanja.');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (status === 'cancel') {
+      setError('Plaćanje je otkazano. Možete pokušati ponovo.');
+    }
+  }, [searchParams]);
 
   async function requestUpgrade(planId: string) {
     if (!firmId) return;

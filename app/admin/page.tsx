@@ -4,7 +4,7 @@
 // Supabase RLS policies on all sensitive data. The site runs on Vercel, but
 // dashboard routes still rely on client-side guards because they are client components.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -191,62 +191,39 @@ export default function AdminPage() {
   const [editingSubscription, setEditingSubscription] = useState<FirmPlan | null>(null);
   const [promoCount, setPromoCount] = useState(0);
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (user && isAdmin) loadAll();
-  }, [authLoading, user, isAdmin]);
-
-  async function loadAll() {
-    setLoading(true);
-    setError('');
-    try {
-      await Promise.all([
-        loadProfiles(),
-        loadFirms(),
-        loadPlans(),
-        loadRequests(),
-        loadStats(),
-      ]);
-    } catch (err) {
-      setError('Greška prilikom učitavanja admin podataka.');
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function loadProfiles() {
+  const loadProfiles = useCallback(async () => {
     const { data, error: err } = await supabase
       .from('profiles')
       .select('*')
       .order('created_at', { ascending: false });
     if (err) throw err;
     setProfiles((data as AdminProfile[]) || []);
-  }
+  }, []);
 
-  async function loadFirms() {
+  const loadFirms = useCallback(async () => {
     const { data, error: err } = await supabase
       .from('firms')
       .select('*')
       .order('created_at', { ascending: false });
     if (err) throw err;
     setFirms((data as AdminFirm[]) || []);
-  }
+  }, []);
 
-  async function loadPlans() {
+  const loadPlans = useCallback(async () => {
     const data = await getPlans();
     setPlans(data);
-  }
+  }, []);
 
-  async function loadRequests() {
+  const loadRequests = useCallback(async () => {
     const { data, error: err } = await supabase
       .from('admin_requests')
       .select('*, firms(*)')
       .order('created_at', { ascending: false });
     if (err) throw err;
     setRequests((data as AdminRequest[]) || []);
-  }
+  }, []);
 
-  async function loadPayments() {
+  const loadPayments = useCallback(async () => {
     const { data, error: err } = await supabase
       .from('payments')
       .select('*, firms(name), plans(name)')
@@ -254,9 +231,9 @@ export default function AdminPage() {
       .limit(100);
     if (err) throw err;
     setPayments((data as unknown as PaymentRow[]) || []);
-  }
+  }, []);
 
-  async function loadFirmPlans() {
+  const loadFirmPlans = useCallback(async () => {
     setLoadingSubscriptions(true);
     const combined: FirmPlan[] = [];
     for (const firm of firms) {
@@ -265,9 +242,9 @@ export default function AdminPage() {
     }
     setFirmPlans(combined);
     setLoadingSubscriptions(false);
-  }
+  }, [firms]);
 
-  async function loadPromoCount() {
+  const loadPromoCount = useCallback(async () => {
     const { data, error } = await supabase
       .from('admin_settings')
       .select('value')
@@ -276,9 +253,9 @@ export default function AdminPage() {
     if (!error && data) {
       setPromoCount(parseInt(data.value) || 0);
     }
-  }
+  }, []);
 
-  async function loadStats() {
+  const loadStats = useCallback(async () => {
     const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
     const { count: clients } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'client');
     const { count: firmsCount } = await supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'firm');
@@ -326,9 +303,32 @@ export default function AdminPage() {
       recentJobs: (recentJobs as AdminStats['recentJobs']) || [],
       recentBids: (recentBids as unknown as AdminStats['recentBids']) || [],
     });
-  }
+  }, []);
 
-  async function loadConversations() {
+  const loadAll = useCallback(async () => {
+    setLoading(true);
+    setError('');
+    try {
+      await Promise.all([
+        loadProfiles(),
+        loadFirms(),
+        loadPlans(),
+        loadRequests(),
+        loadStats(),
+      ]);
+    } catch (err) {
+      setError('Greška prilikom učitavanja admin podataka.');
+    } finally {
+      setLoading(false);
+    }
+  }, [loadProfiles, loadFirms, loadPlans, loadRequests, loadStats]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (user && isAdmin) loadAll();
+  }, [authLoading, user, isAdmin, loadAll]);
+
+  const loadConversations = useCallback(async () => {
     const { data, error } = await supabase
       .from('bids')
       .select('created_at, jobs(id,title,city), firms(id,name)')
@@ -348,9 +348,9 @@ export default function AdminPage() {
         created_at: row.created_at,
       }))
     );
-  }
+  }, []);
 
-  async function loadJobs() {
+  const loadJobs = useCallback(async () => {
     setLoadingJobs(true);
     try {
       const { data, error } = await supabase
@@ -365,9 +365,9 @@ export default function AdminPage() {
     } finally {
       setLoadingJobs(false);
     }
-  }
+  }, []);
 
-  async function loadReports() {
+  const loadReports = useCallback(async () => {
     setLoadingReports(true);
     try {
       const { data, error } = await supabase
@@ -382,9 +382,9 @@ export default function AdminPage() {
     } finally {
       setLoadingReports(false);
     }
-  }
+  }, []);
 
-  async function loadVerifications() {
+  const loadVerifications = useCallback(async () => {
     setLoadingVerifications(true);
     try {
       const { data, error } = await supabase
@@ -398,9 +398,9 @@ export default function AdminPage() {
     } finally {
       setLoadingVerifications(false);
     }
-  }
+  }, []);
 
-  async function loadReviews() {
+  const loadReviews = useCallback(async () => {
     setLoadingReviews(true);
     try {
       const { data, error } = await supabase
@@ -415,7 +415,7 @@ export default function AdminPage() {
     } finally {
       setLoadingReviews(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
@@ -440,7 +440,7 @@ export default function AdminPage() {
     if (activeTab === 'reviews') {
       loadReviews();
     }
-  }, [activeTab, firms]);
+  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews]);
 
   async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);

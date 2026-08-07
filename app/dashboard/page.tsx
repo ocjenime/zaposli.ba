@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -95,10 +95,6 @@ export default function DashboardPage() {
   }, [user, role, loading, router]);
 
   useEffect(() => {
-    if (user && role === 'client') fetchJobs();
-  }, [user, role]);
-
-  useEffect(() => {
     if (editParamOpened.current || loadingJobs || jobs.length === 0) return;
     const editJobId = typeof window !== 'undefined'
       ? new URLSearchParams(window.location.search).get('editJobId')
@@ -114,7 +110,7 @@ export default function DashboardPage() {
     editParamOpened.current = true;
   }, [loadingJobs, jobs]);
 
-  async function fetchJobs() {
+  const fetchJobs = useCallback(async () => {
     if (!user) return;
     setLoadingJobs(true);
     setError('');
@@ -130,7 +126,11 @@ export default function DashboardPage() {
     }
     setJobs((data as Job[]) || []);
     setLoadingJobs(false);
-  }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && role === 'client') fetchJobs();
+  }, [user, role, fetchJobs]);
 
   function openEdit(job: Job) {
     const cat = getCategory(job.category_slug);

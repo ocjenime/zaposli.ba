@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -50,20 +50,7 @@ export default function ClientProfilePage() {
   const [passwordSuccess, setPasswordSuccess] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      router.push('/prijava/');
-      return;
-    }
-    if (isFirmRole(role)) {
-      router.push('/dashboard/firma/profil/');
-      return;
-    }
-    loadProfile();
-  }, [authLoading, user, role, router]);
-
-  async function loadProfile() {
+  const loadProfile = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError('');
@@ -85,7 +72,20 @@ export default function ClientProfilePage() {
     setFullName(typed.full_name || '');
     setPhone(typed.phone || '');
     setLoading(false);
-  }
+  }, [user]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/prijava/');
+      return;
+    }
+    if (isFirmRole(role)) {
+      router.push('/dashboard/firma/profil/');
+      return;
+    }
+    loadProfile();
+  }, [authLoading, user, role, router, loadProfile]);
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();

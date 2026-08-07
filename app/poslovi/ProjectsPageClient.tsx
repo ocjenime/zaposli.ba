@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -96,10 +96,54 @@ function ProjectsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const loadFirmCategories = useCallback(async () => {
+    if (!user) return;
+    const { data: firmData } = await supabase
+      .from('firms')
+      .select('id')
+      .eq('owner_id', user.id)
+      .single();
+    if (!firmData) return;
+    const { data: catData } = await supabase
+      .from('firm_categories')
+      .select('category_slug')
+      .eq('firm_id', firmData.id);
+    setFirmCategories((catData as { category_slug: string }[] | null)?.map((c) => c.category_slug) || []);
+  }, [user]);
+
+  const loadJobs = useCallback(async () => {
+    setLoading(true);
+    const { data, error: err } = await supabase
+      .from('jobs')
+      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count,is_featured,featured_until')
+      .eq('status', 'open')
+      .order('created_at', { ascending: false });
+    if (err) {
+      setError('Greška prilikom učitavanja poslova.');
+    } else {
+      setJobs((data as Job[]) || []);
+    }
+    setLoading(false);
+  }, []);
+
+  const fetchImages = useCallback(async (jobId: string) => {
+    if (jobImages[jobId]) return;
+    setLoadingImages(jobId);
+    const { data, error: err } = await supabase
+      .from('job_images')
+      .select('id, image_url')
+      .eq('job_id', jobId)
+      .order('created_at', { ascending: true });
+    if (!err) {
+      setJobImages((prev) => ({ ...prev, [jobId]: (data as JobImage[]) || [] }));
+    }
+    setLoadingImages(null);
+  }, [jobImages]);
+
   useEffect(() => {
     setMounted(true);
     loadJobs();
-  }, []);
+  }, [loadJobs]);
 
   useEffect(() => {
     const category = searchParams.get('category');
@@ -113,58 +157,15 @@ function ProjectsPageContent() {
       setExpandedJobId(expandId);
       fetchImages(expandId);
     }
-  }, [searchParams]);
+  }, [searchParams, fetchImages]);
 
   useEffect(() => {
     if (user && isFirmRole(role)) loadFirmCategories();
-  }, [user, role]);
-
-  async function loadFirmCategories() {
-    const { data: firmData } = await supabase
-      .from('firms')
-      .select('id')
-      .eq('owner_id', user!.id)
-      .single();
-    if (!firmData) return;
-    const { data: catData } = await supabase
-      .from('firm_categories')
-      .select('category_slug')
-      .eq('firm_id', firmData.id);
-    setFirmCategories((catData as { category_slug: string }[] | null)?.map((c) => c.category_slug) || []);
-  }
+  }, [user, role, loadFirmCategories]);
 
   function isActiveFeatured(job: Job) {
     if (!job.is_featured || !job.featured_until) return false;
     return new Date(job.featured_until).getTime() > Date.now();
-  }
-
-  async function loadJobs() {
-    setLoading(true);
-    const { data, error: err } = await supabase
-      .from('jobs')
-      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count,is_featured,featured_until')
-      .eq('status', 'open')
-      .order('created_at', { ascending: false });
-    if (err) {
-      setError('Greška prilikom učitavanja poslova.');
-    } else {
-      setJobs((data as Job[]) || []);
-    }
-    setLoading(false);
-  }
-
-  async function fetchImages(jobId: string) {
-    if (jobImages[jobId]) return;
-    setLoadingImages(jobId);
-    const { data, error: err } = await supabase
-      .from('job_images')
-      .select('id, image_url')
-      .eq('job_id', jobId)
-      .order('created_at', { ascending: true });
-    if (!err) {
-      setJobImages((prev) => ({ ...prev, [jobId]: (data as JobImage[]) || [] }));
-    }
-    setLoadingImages(null);
   }
 
   function toggleExpand(jobId: string) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useState, useRef } from 'react';
+import { Suspense, useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -47,21 +47,7 @@ function ReviewPage() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      router.push('/prijava/');
-      return;
-    }
-    if (!jobId) {
-      setLoading(false);
-      setError('Nedostaje ID posla.');
-      return;
-    }
-    loadReviewData();
-  }, [authLoading, user, jobId, router]);
-
-  async function loadReviewData() {
+  const loadReviewData = useCallback(async () => {
     if (!jobId || !user) return;
     setLoading(true);
     setError('');
@@ -125,7 +111,21 @@ function ReviewPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [user, jobId]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/prijava/');
+      return;
+    }
+    if (!jobId) {
+      setLoading(false);
+      setError('Nedostaje ID posla.');
+      return;
+    }
+    loadReviewData();
+  }, [authLoading, user, jobId, router, loadReviewData]);
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;

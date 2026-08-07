@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState, useCallback } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
@@ -59,49 +59,17 @@ function Conversation() {
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!loading && !user) router.push('/prijava/');
-  }, [user, loading, router]);
-
-  useEffect(() => {
-    if (jobId && user) fetchData();
+  const markAsRead = useCallback(async () => {
+    if (!jobId || !user) return;
+    await supabase
+      .from('messages')
+      .update({ read: true })
+      .eq('job_id', jobId)
+      .neq('sender_id', user.id)
+      .eq('read', false);
   }, [jobId, user]);
 
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  useEffect(() => {
-    if (!jobId) return;
-    const channel = supabase
-      .channel(`messages:${jobId}`)
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'messages', filter: `job_id=eq.${jobId}` },
-        async (payload) => {
-          const newMessage = payload.new as Message;
-          if (newMessage.sender_id && newMessage.sender_id !== user?.id) {
-            const { data: senderProfile } = await supabase
-              .from('profiles')
-              .select('id, full_name, is_admin')
-              .eq('id', newMessage.sender_id)
-              .single();
-            newMessage.sender = senderProfile as Profile | undefined;
-          }
-          setMessages((prev) => {
-            if (prev.some((m) => m.id === newMessage.id)) return prev;
-            return [...prev, newMessage];
-          });
-          if (newMessage.sender_id !== user?.id) markAsRead();
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [jobId, user]);
-
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     if (!jobId || !user) return;
     setLoadingData(true);
     setError('');
@@ -243,17 +211,49 @@ function Conversation() {
 
     markAsRead();
     setLoadingData(false);
-  }
+  }, [jobId, user, role, isAdmin, markAsRead]);
 
-  async function markAsRead() {
-    if (!jobId || !user) return;
-    await supabase
-      .from('messages')
-      .update({ read: true })
-      .eq('job_id', jobId)
-      .neq('sender_id', user.id)
-      .eq('read', false);
-  }
+  useEffect(() => {
+    if (!loading && !user) router.push('/prijava/');
+  }, [user, loading, router]);
+
+  useEffect(() => {
+    if (jobId && user) fetchData();
+  }, [jobId, user, fetchData]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  useEffect(() => {
+    if (!jobId) return;
+    const channel = supabase
+      .channel(`messages:${jobId}`)
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages', filter: `job_id=eq.${jobId}` },
+        async (payload) => {
+          const newMessage = payload.new as Message;
+          if (newMessage.sender_id && newMessage.sender_id !== user?.id) {
+            const { data: senderProfile } = await supabase
+              .from('profiles')
+              .select('id, full_name, is_admin')
+              .eq('id', newMessage.sender_id)
+              .single();
+            newMessage.sender = senderProfile as Profile | undefined;
+          }
+          setMessages((prev) => {
+            if (prev.some((m) => m.id === newMessage.id)) return prev;
+            return [...prev, newMessage];
+          });
+          if (newMessage.sender_id !== user?.id) markAsRead();
+        }
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [jobId, user, markAsRead]);
 
   function getSenderLabel(msg: Message, isMe: boolean) {
     if (isMe) return isAdmin ? 'Vi (admin)' : 'Vi';
