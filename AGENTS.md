@@ -113,7 +113,7 @@
 - Added `powered by Luxari` credit in the footer bottom bar, next to the copyright.
 - Removed phone and location from footer to avoid implying a single regional presence; kept only email.
 - Redesigned homepage hero (`components/HeroSection.tsx`) into a full-bleed cinematic layout using the new `public/images/herozaposli.png` image with gradient overlays for readability, glassmorphism search form, trust badges, and quick stats.
-- Upgraded `components/ui/PageHero.tsx` to a premium full-bleed hero with gradient/image background, overlay, icon, eyebrow, and children support. Default background is now the homepage hero image (`/images/herozaposli.png`), so every page using `PageHero` shares the same cinematic Higgsfield header.
+- Upgraded `components/ui/PageHero.tsx` to a premium full-bleed hero with gradient/image background, overlay, icon, eyebrow, and children support. Default background is now the homepage hero image (`/images/herozaposli.png`), so every page using `PageHero` shares the same cinematic Higgsfield header. The same homepage hero image was also applied as background to custom hero sections on `/poslovi/`, `/objavi-projekat/`, and `/za-firme/` with dark overlays for readability.
 - Added `lib/hero.ts` with group-based gradient presets for all 15 category groups.
 - Redesigned dynamic page heroes:
   - `/kategorije/[slug]/` uses category-specific gradient, icon, services, and CTA.
