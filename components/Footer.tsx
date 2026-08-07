@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react';
+import { Mail, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { categories, cities } from '@/lib/data';
 import { site } from '@/lib/site';
@@ -118,26 +118,10 @@ export default function Footer() {
       <div className="border-t border-[#ffffff]/5">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-7">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
-            <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-sm text-gray-500">
-              <a href={`mailto:${site.email}`} className="flex items-center gap-2 hover:text-brand-orange transition-colors">
-                <Mail className="w-4 h-4" />
-                <span>{site.email}</span>
-              </a>
-              {site.phone && (
-                <>
-                  <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
-                  <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 hover:text-brand-orange transition-colors">
-                    <Phone className="w-4 h-4" />
-                    <span>{site.phone}</span>
-                  </a>
-                </>
-              )}
-              <div className="hidden md:block w-1 h-1 bg-gray-600 rounded-full" />
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                <span>{site.city}</span>
-              </div>
-            </div>
+            <a href={`mailto:${site.email}`} className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-orange transition-colors">
+              <Mail className="w-4 h-4" />
+              <span>{site.email}</span>
+            </a>
             <p className="text-gray-600 text-sm text-center md:text-right">
               &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
               <span className="block md:inline md:ml-1">
