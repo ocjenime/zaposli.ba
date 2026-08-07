@@ -264,39 +264,41 @@ function ProjectsPageContent() {
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 
-        {/* Hero - light, clean, search-first */}
-        <section className="relative bg-white border-b border-gray-100">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,115,22,0.08),_transparent_55%)]" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 md:pt-36 pb-12 md:pb-24">
+        {/* Hero - premium dark Higgsfield style */}
+        <section className="relative overflow-hidden border-b border-white/5">
+          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
+          <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.5),transparent_40%),radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.2),transparent_40%)]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-16 md:pb-28">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-orange-50 text-brand-orange text-[11px] md:text-xs font-semibold tracking-wide uppercase mb-5 md:mb-6">
-                <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
+                <Sparkles className="w-4 h-4 text-brand-orange" />
                 Uživo objavljeni poslovi
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.05] mb-5 md:mb-6">
-                Pronađite svoj <span className="text-brand-orange">sljedeći posao</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6">
+                Pronađite svoj <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">sljedeći posao</span>
               </h1>
-              <p className="text-base md:text-lg lg:text-xl text-steel max-w-2xl mx-auto leading-relaxed mb-8 md:mb-10">
+              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-10">
                 Stvarni klijenti širom Bosne i Hercegovine svakodnevno objavljuju poslove.
                 Filtrirajte, sortirajte i pošaljite ponudu za manje od minuta.
               </p>
 
               <div className="max-w-2xl mx-auto">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 bg-gray-50 rounded-2xl border border-gray-200 p-2 shadow-sm focus-within:ring-4 focus-within:ring-brand-orange/10 focus-within:border-brand-orange transition-all">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl shadow-black/30">
                   <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
                     <input
                       type="text"
                       value={heroSearch}
                       onChange={(e) => setHeroSearch(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && applyHeroSearch()}
                       placeholder="npr. adaptacija kupatila u Sarajevu"
-                      className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 outline-none text-base"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/50 outline-none text-base focus:bg-white/20 transition-all"
                     />
                   </div>
                   <button
                     onClick={applyHeroSearch}
-                    className="shrink-0 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-semibold transition-all active:scale-95"
+                    className="shrink-0 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-semibold transition-all active:scale-95 shadow-lg shadow-brand-orange/30"
                   >
                     Pretraži
                   </button>
@@ -312,9 +314,9 @@ function ProjectsPageContent() {
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
-                      <div key={item.label} className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-gray-50 border border-gray-100">
+                      <div key={item.label} className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-white/5 border border-white/10 text-white/90">
                         <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-orange shrink-0" />
-                        <p className="text-xs md:text-sm text-steel font-medium text-left leading-tight">{item.label}</p>
+                        <p className="text-xs md:text-sm font-medium text-left leading-tight">{item.label}</p>
                       </div>
                     );
                   })}
