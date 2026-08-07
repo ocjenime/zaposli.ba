@@ -130,7 +130,7 @@
 - Redesigned `/firma-profil/[slug]/` in premium Higgsfield style: full-bleed dark `PageHero` with firm logo, verified/premium/online badges, rating, city, and the two main CTAs; two-column layout with "O firmi", category chips, business-info cards, portfolio grid, and reviews with histogram; sticky dark-glass sidebar with quick stats and CTAs; premium loading skeleton and error state. Kept all data fetching, `ReviewReplyForm`, portfolio lightbox, owner reply logic, JSON-LD `LocalBusiness` schema, and `generateMetadata`/`generateStaticParams`.
 
 ### Active
-- Monitoring Vercel build/deployment of the latest `/firma-profil/[slug]/` redesign; waiting for user to request the next page.
+- All planned premium redesigns pushed to `main` and deployed on Vercel. Waiting for user feedback on the latest `/firma-profil/[slug]/`, `/faq/`, and `/zatrazi-ponudu/` changes.
 
 ### Blocked
 - Google Analytics 4 and Search Console are ready but require the user to add `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env vars in Vercel.
@@ -148,7 +148,11 @@
 - `supabase/migration-bids-count-autoupdate.sql`: keep `jobs.bids_count` accurate automatically.
 - `supabase/migration-jobs-delete-policy.sql`: RLS delete policy for `jobs`.
 - `app/dashboard/razgovor/page.tsx`: admin preview label.
-- `app/firma-profil/FirmProfileContent.tsx`: private request label.
+- `app/firma-profil/FirmProfileContent.tsx`: redesigned firm profile content (hero, sidebar, reviews, portfolio).
+- `app/firma-profil/[slug]/page.tsx`: dynamic metadata and static params for firm profiles.
+- `app/faq/page.tsx`: redesigned FAQ page with grouped accordions and FAQPage schema.
+- `app/zatrazi-ponodu/page.tsx`: redesigned private request form with premium hero and sticky sidebar.
+- `app/zatrazi-ponodu/layout.tsx`: server layout with metadata and breadcrumbs.
 - `app/objavi-projekat/page.tsx`: optional deadline label and budget display.
 - `app/poslovi/ProjectsPageClient.tsx`: project listings and filters.
 - `components/EmergencyProcessAnimation.tsx`, `components/Footer.tsx`, `components/Header.tsx`, `components/ui/LiveStatsSection.tsx`: UI labels and comments.
