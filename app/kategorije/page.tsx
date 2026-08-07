@@ -7,7 +7,17 @@ import PageHero from '@/components/ui/PageHero';
 import { categories, type Category } from '@/lib/data';
 import { site } from '@/lib/site';
 import { cities } from '@/lib/data';
-import { ArrowRight, Siren, ShieldCheck, Clock, Star, MapPin, Users, Briefcase, CheckCircle } from 'lucide-react';
+import {
+  ArrowRight,
+  Siren,
+  ShieldCheck,
+  Clock,
+  Star,
+  Users,
+  Briefcase,
+  CheckCircle,
+  LayoutGrid,
+} from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
 import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
@@ -51,17 +61,23 @@ export default function CategoriesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Kategorije', url: '/kategorije/' }])} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Početna', url: '/' },
+          { name: 'Kategorije', url: '/kategorije/' },
+        ])}
+      />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
-        {/* Hero */}
         <PageHero
           title="Kategorije usluga"
           subtitle={`Pronađite majstora u ${cities.length} gradova i ${visible.length} kategorija. Od građevine do čišćenja - sve na jednom mjestu.`}
           eyebrow="Sve usluge u BiH"
-          gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
-          size="md"
+          icon={LayoutGrid}
+          image="/images/herozaposli.png"
+          align="center"
+          size="lg"
         >
           <Link
             href="/objavi-projekat/"
@@ -72,103 +88,124 @@ export default function CategoriesPage() {
           </Link>
         </PageHero>
 
-        {/* SEO intro + trust badges */}
-        <section className="py-8 md:py-10 bg-cloud">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-8 items-center mb-8">
-              <div>
-                <h2 className="text-xl font-bold text-gray-900 mb-3">Pronađite pouzdanog majstora za svaku potrebu</h2>
-                <p className="text-steel leading-relaxed text-sm md:text-base">
-                  Zaposli.ba okuplja provjerene građevinske firme, majstore i uslužne djelatnosti iz
-                  cijele Bosne i Hercegovine. Bilo da vam treba vodoinstalater, električar, keramičar,
-                  moler, bravar ili kompletna adaptacija: objavite posao besplatno i uporedite ponude
-                  od firma iz vašeg grada.
-                </p>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {trustBadges.map((badge) => (
-                  <div
-                    key={badge.label}
-                    className="bg-white rounded-xl border border-gray-100 p-4 shadow-card flex items-center gap-3"
-                  >
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0">
-                      <badge.icon className="w-5 h-5 text-brand-orange" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-steel">{badge.label}</p>
-                      <p className="text-sm font-bold text-gray-900">{badge.value}</p>
-                    </div>
+        {/* Trust intro */}
+        <section className="relative py-16 md:py-20 bg-cloud overflow-hidden">
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
+                <ShieldCheck className="h-4 w-4" /> Pouzdani majstori
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
+                Pronađite pouzdanog majstora za svaku potrebu
+              </h2>
+              <p className="text-steel text-lg">
+                Zaposli.ba okuplja provjerene građevinske firme, majstore i uslužne djelatnosti iz cijele Bosne i Hercegovine.
+                Bilo da vam treba vodoinstalater, električar, keramičar, moler, bravar ili kompletna adaptacija: objavite posao
+                besplatno i uporedite ponude od firma iz vašeg grada.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {trustBadges.map((badge) => (
+                <div
+                  key={badge.label}
+                  className="bg-white rounded-2xl border border-gray-100 p-5 shadow-card hover:shadow-lg transition-all duration-300 text-center"
+                >
+                  <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center mb-3">
+                    <badge.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                   </div>
-                ))}
-              </div>
+                  <p className="font-bold text-gray-900">{badge.value}</p>
+                  <p className="text-xs text-steel">{badge.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Featured: hitne intervencije 24/7 */}
-        <section className="pt-8 md:pt-10">
+        <section className="py-10 md:py-14 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Link
               href={`/kategorije/${featured[0]?.slug}/`}
-              className="group flex items-center gap-4 rounded-xl border border-red-100 bg-red-50 px-5 py-4 hover:border-red-200 hover:shadow-sm transition-all"
+              className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 px-6 py-6 md:px-8 md:py-7 text-white shadow-xl shadow-red-600/20 overflow-hidden"
             >
-              <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-600 text-white flex items-center justify-center">
-                <Siren className="w-6 h-6" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.15),transparent_40%)]" />
+              <div className="relative w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                <Siren className="w-7 h-7" />
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-lg font-bold text-gray-900">Hitne intervencije</h2>
-                  <span className="inline-flex items-center gap-1 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                    <span className="w-1 h-1 bg-white rounded-full animate-pulse" />
+              <div className="relative flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <h2 className="text-xl md:text-2xl font-bold">Hitne intervencije</h2>
+                  <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
+                    <span className="w-1 h-1 bg-red-600 rounded-full animate-pulse" />
                     24/7
                   </span>
                 </div>
-                <p className="text-sm text-steel truncate">Vodoinstalater, električar i bravar dostupni odmah</p>
+                <p className="text-white/80 text-sm md:text-base">
+                  Vodoinstalater, električar i bravar dostupni odmah - danju i noću.
+                </p>
               </div>
-              <ArrowRight className="w-5 h-5 text-red-600 group-hover:translate-x-1 transition-transform shrink-0" />
+              <ArrowRight className="relative w-6 h-6 group-hover:translate-x-1 transition-transform shrink-0 ml-auto" />
             </Link>
           </div>
         </section>
 
         {/* Grupe kategorija */}
-        <section className="py-8 md:py-10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
-            {groups.map((group) => (
-              <div key={group.name}>
-                <h2 className="text-sm font-bold text-steel uppercase tracking-wider mb-3 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-brand-orange" />
-                  {group.name}
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                  {group.cats.map((category) => (
-                    <CategoryCard key={category.slug} slug={category.slug} />
-                  ))}
+        <section className="py-16 md:py-20 bg-cloud">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
+                <Briefcase className="h-4 w-4" /> Kategorije
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
+                Pretražite po struci
+              </h2>
+              <p className="text-steel text-lg">
+                Odaberite oblast i pronađite majstore koji rade upravo ono što vam treba.
+              </p>
+            </div>
+
+            <div className="space-y-10">
+              {groups.map((group) => (
+                <div key={group.name} className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card">
+                  <h3 className="text-sm font-bold text-steel uppercase tracking-wider mb-4 flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-brand-orange" />
+                    {group.name}
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                    {group.cats.map((category) => (
+                      <CategoryCard key={category.slug} slug={category.slug} />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-8 bg-cloud">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-hero rounded-2xl p-6 md:p-10 text-white relative overflow-hidden flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-3xl" />
-              <div className="relative">
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Ne pronalazite traženu kategoriju?</h2>
-                <p className="text-white/60 text-sm md:text-base">
-                  Objavite posao i majstori će vam se javiti sa ponudama. Besplatno i neobavezujuće.
-                </p>
-              </div>
-              <Link
-                href="/objavi-projekat/"
-                className="relative inline-flex items-center justify-center gap-2 bg-white text-brand-orange hover:bg-white/90 px-6 py-3 rounded-xl font-bold transition-colors shadow-lg shrink-0"
-              >
-                <CheckCircle className="w-4 h-4" />
-                Objavi posao
-              </Link>
+        <section className="relative py-16 md:py-20 bg-gradient-hero overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-3xl" />
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 text-balance">
+                Ne pronalazite traženu kategoriju?
+              </h2>
+              <p className="text-white/70 text-base md:text-lg">
+                Objavite posao i majstori će vam se javiti sa ponudama. Besplatno i neobavezujuće.
+              </p>
             </div>
+            <Link
+              href="/objavi-projekat/"
+              className="inline-flex items-center justify-center gap-2 bg-white text-brand-orange hover:bg-white/90 px-8 py-4 rounded-xl font-bold transition-colors shadow-lg shrink-0"
+            >
+              <CheckCircle className="w-5 h-5" />
+              Objavi posao besplatno
+            </Link>
           </div>
         </section>
       </main>
