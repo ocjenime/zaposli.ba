@@ -6,12 +6,27 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { JsonLd, organizationSchema } from '@/lib/jsonld';
 import { supabase } from '@/lib/supabase';
 import { site } from '@/lib/site';
-import { Mail, Phone, MapPin, Clock, Send, Loader2, CheckCircle, AlertCircle, MessageCircleQuestion, ShieldCheck, Users, Sparkles } from 'lucide-react';
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  Loader2,
+  CheckCircle,
+  AlertCircle,
+  MessageCircleQuestion,
+  ShieldCheck,
+  Users,
+  Sparkles,
+  ArrowRight,
+} from 'lucide-react';
 
 const inputClass =
-  'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none text-gray-900 text-sm';
+  'w-full px-4 py-3.5 bg-cloud/60 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none text-gray-900 text-sm transition-all placeholder:text-gray-400';
 
 const contactInfo = [
   {
@@ -93,199 +108,259 @@ export default function KontaktPage() {
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kontakt' }]} />
-        <PageHero
-          title="Kontakt"
-          subtitle="Imate pitanje ili prijedlog? Pišite nam: tu smo da pomognemo."
-        />
 
-        <section className="py-16 bg-cloud">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* SEO intro */}
-            <div className="max-w-3xl mx-auto text-center mb-10">
-              <p className="text-steel leading-relaxed">
-                Naš tim je dostupan putem emaila, telefona ili kontakt forme. Ako tražite majstora,
-                najbrži put je da{' '}
+        <PageHero
+          title="Kontaktirajte nas"
+          subtitle="Imate pitanje, prijedlog ili trebate pomoć? Naš tim odgovara u roku od 24 sata."
+          eyebrow="Tu smo za vas"
+          icon={Mail}
+          align="center"
+          size="lg"
+        >
+          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+            <a
+              href={`mailto:${site.email}`}
+              className="btn-primary text-lg px-8 py-4 inline-flex items-center justify-center gap-2"
+            >
+              <Mail className="w-5 h-5" />
+              {site.email}
+            </a>
+            {site.phone && (
+              <a
+                href={`tel:${site.phone.replace(/\s/g, '')}`}
+                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
+              >
+                <Phone className="w-5 h-5" />
+                Pozovite nas
+              </a>
+            )}
+          </div>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-white/70">
+            <span className="inline-flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-brand-orange" />
+              Odgovor u 24 sata
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-brand-orange" />
+              Zaštićeni podaci
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Users className="h-4 w-4 text-brand-orange" />
+              Podrška na bosanskom
+            </span>
+          </div>
+        </PageHero>
+
+        <section className="relative py-20 md:py-28 bg-cloud overflow-hidden">
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
+                <Sparkles className="h-4 w-4" /> Brzi odgovor
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
+                Imate pitanje? Tu smo.
+              </h2>
+              <p className="text-steel text-lg">
+                Najbrži put do majstora je da{' '}
                 <Link href="/objavi-projekat/" className="text-brand-orange font-semibold hover:underline">
                   objavite posao
                 </Link>{' '}
-                i primite ponude direktno od provjerenih firmi. Ako imate pitanje o platformi,
-                profilu ili suradnji: pišite nam, odgovaramo u najkraćem roku.
+                i primite ponude direktno od provjerenih firmi. Ako imate pitanje o platformi, profilu
+                ili suradnji: pišite nam.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-10">
-              {/* Kontakt informacije */}
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Kako nas možete kontaktirati</h2>
-                <div className="grid sm:grid-cols-2 gap-5">
-                  {contactInfo.map((item) => (
-                    <div
-                      key={item.title}
-                      className="bg-white rounded-2xl border border-gray-100 p-6 shadow-card hover:shadow-lg transition-shadow"
-                    >
-                      <div className="w-11 h-11 bg-gradient-to-br from-primary-50 to-orange-100 rounded-xl flex items-center justify-center mb-4">
-                        <item.icon className="w-5 h-5 text-brand-orange" />
-                      </div>
-                      <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
-                      {item.href ? (
+            <div className="grid lg:grid-cols-12 gap-8 items-start">
+              {/* Contact panel */}
+              <div className="lg:col-span-5">
+                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-slate-800 p-8 md:p-10 shadow-2xl shadow-black/20 border border-white/10">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
+
+                  <div className="relative">
+                    <h3 className="text-2xl font-bold text-white mb-8">Podaci za kontakt</h3>
+                    <div className="space-y-4">
+                      {contactInfo.map((item) => (
                         <a
-                          href={item.href}
-                          className="text-sm font-medium text-gray-900 hover:text-brand-orange transition-colors"
+                          key={item.title}
+                          href={item.href || '#'}
+                          className="group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                         >
-                          {item.value}
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <item.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
+                          </div>
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">{item.title}</p>
+                            <p className="text-white font-semibold">{item.value}</p>
+                            <p className="text-white/60 text-sm mt-0.5">{item.note}</p>
+                          </div>
                         </a>
-                      ) : (
-                        <p className="text-sm font-medium text-gray-900">{item.value}</p>
-                      )}
-                      <p className="text-xs text-steel mt-1">{item.note}</p>
+                      ))}
                     </div>
-                  ))}
+
+                    <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">
+                      {trustBadges.map((badge) => (
+                        <div key={badge.label} className="text-center">
+                          <badge.icon className="w-6 h-6 text-brand-orange mx-auto mb-2" strokeWidth={1.5} />
+                          <p className="text-white font-bold text-sm">{badge.value}</p>
+                          <p className="text-white/50 text-xs">{badge.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
-                {/* Trust badges */}
-                <div className="mt-6 grid grid-cols-3 gap-4">
-                  {trustBadges.map((badge) => (
-                    <div
-                      key={badge.label}
-                      className="bg-white rounded-xl border border-gray-100 p-4 text-center shadow-card"
-                    >
-                      <badge.icon className="w-6 h-6 text-brand-orange mx-auto mb-2" />
-                      <p className="text-xs font-bold text-gray-900">{badge.value}</p>
-                      <p className="text-[10px] text-steel">{badge.label}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-8 bg-white rounded-2xl border border-gray-100 p-6 shadow-card">
+                <div className="mt-6 bg-white rounded-2xl border border-gray-100 p-6 shadow-card">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
-                      <MessageCircleQuestion className="w-5 h-5 text-brand-orange" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center shrink-0">
+                      <MessageCircleQuestion className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-2">Prije nego što nam pišete</h3>
+                      <h4 className="font-bold text-gray-900 mb-1">Prije nego što nam pišete</h4>
                       <p className="text-sm text-steel leading-relaxed">
                         Možda je odgovor već na stranici{' '}
                         <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
                           Česta pitanja
                         </Link>
-                        . Ako tražite majstora za posao, najbrži put je da{' '}
+                        . Ako tražite majstora, najbrži put je da{' '}
                         <Link href="/objavi-projekat/" className="text-brand-orange font-medium hover:underline">
                           objavite posao
-                        </Link>{' '}
-                        i primite ponude direktno od firmi.
+                        </Link>
+                        .
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Kontakt forma */}
-              <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/5 rounded-full blur-3xl" />
-                <div className="relative">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Pošaljite nam poruku</h2>
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <label htmlFor="ime" className="block text-sm font-medium text-gray-900 mb-1.5">
-                        Ime i prezime <span className="text-brand-orange">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="ime"
-                        name="ime"
-                        required
-                        value={formData.ime}
-                        onChange={handleChange}
-                        placeholder="npr. Amila Softić"
-                        className={inputClass}
-                      />
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-1.5">
-                          Email <span className="text-brand-orange">*</span>
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="vas@email.com"
-                          className={inputClass}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="telefon" className="block text-sm font-medium text-gray-900 mb-1.5">
-                          Telefon <span className="text-steel font-normal">(opcionalno)</span>
-                        </label>
-                        <input
-                          type="tel"
-                          id="telefon"
-                          name="telefon"
-                          value={formData.telefon}
-                          onChange={handleChange}
-                          placeholder="+387 6x xxx xxx"
-                          className={inputClass}
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label htmlFor="poruka" className="block text-sm font-medium text-gray-900 mb-1.5">
-                        Poruka <span className="text-brand-orange">*</span>
-                      </label>
-                      <textarea
-                        id="poruka"
-                        name="poruka"
-                        required
-                        rows={6}
-                        value={formData.poruka}
-                        onChange={handleChange}
-                        placeholder="Kako vam možemo pomoći?"
-                        className={`${inputClass} resize-none`}
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      disabled={status === 'loading'}
-                      className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                      {status === 'loading' ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          Šaljem...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-4 h-4" />
-                          Pošalji poruku
-                        </>
-                      )}
-                    </button>
+              {/* Contact form */}
+              <div className="lg:col-span-7">
+                <div className="relative bg-white rounded-3xl border border-gray-100 p-8 md:p-10 shadow-float overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full blur-3xl" />
+                  <div className="relative">
+                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Pošaljite nam poruku</h3>
+                    <p className="text-steel mb-8">Popunite formu i odgovaramo u roku od 24 sata.</p>
 
                     {status === 'success' && (
-                      <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-                        <CheckCircle className="w-5 h-5 text-green-600 mx-auto mb-1" />
-                        <p className="text-sm text-green-800 font-medium">Hvala! Poruka je poslana. Odgovaramo u roku od 24 sata.</p>
+                      <div className="mb-6 bg-green-50 border border-green-100 rounded-xl p-4 flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-green-800 font-semibold">Hvala! Poruka je poslana.</p>
+                          <p className="text-sm text-green-700">Odgovaramo u roku od 24 sata.</p>
+                        </div>
                       </div>
                     )}
 
                     {status === 'error' && (
-                      <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-                        <AlertCircle className="w-5 h-5 text-red-600 mx-auto mb-1" />
-                        <p className="text-sm text-red-800 font-medium">Došlo je do greške. Molimo pokušajte ponovo ili pošaljite email direktno.</p>
+                      <div className="mb-6 bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                        <div>
+                          <p className="text-sm text-red-800 font-semibold">Došlo je do greške.</p>
+                          <p className="text-sm text-red-700">
+                            Molimo pokušajte ponovo ili pošaljite email direktno na{' '}
+                            <a href={`mailto:${site.email}`} className="underline">
+                              {site.email}
+                            </a>
+                            .
+                          </p>
+                        </div>
                       </div>
                     )}
 
-                    <p className="text-xs text-steel text-center">
-                      Slanjem poruke prihvatate našu{' '}
-                      <Link href="/privacy/" className="text-brand-orange hover:underline">
-                        politiku privatnosti
-                      </Link>
-                      .
-                    </p>
-                  </form>
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                      <div>
+                        <label htmlFor="ime" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                          Ime i prezime <span className="text-brand-orange">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="ime"
+                          name="ime"
+                          required
+                          value={formData.ime}
+                          onChange={handleChange}
+                          placeholder="npr. Amila Softić"
+                          className={inputClass}
+                        />
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-5">
+                        <div>
+                          <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                            Email <span className="text-brand-orange">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="vas@email.com"
+                            className={inputClass}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="telefon" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                            Telefon <span className="text-steel font-normal">(opcionalno)</span>
+                          </label>
+                          <input
+                            type="tel"
+                            id="telefon"
+                            name="telefon"
+                            value={formData.telefon}
+                            onChange={handleChange}
+                            placeholder="+387 6x xxx xxx"
+                            className={inputClass}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label htmlFor="poruka" className="block text-sm font-semibold text-gray-900 mb-1.5">
+                          Poruka <span className="text-brand-orange">*</span>
+                        </label>
+                        <textarea
+                          id="poruka"
+                          name="poruka"
+                          required
+                          rows={6}
+                          value={formData.poruka}
+                          onChange={handleChange}
+                          placeholder="Kako vam možemo pomoći?"
+                          className={`${inputClass} resize-none`}
+                        />
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={status === 'loading'}
+                        className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed py-4 text-lg"
+                      >
+                        {status === 'loading' ? (
+                          <>
+                            <Loader2 className="w-5 h-5 animate-spin" />
+                            Šaljem...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-5 h-5" />
+                            Pošalji poruku
+                          </>
+                        )}
+                      </button>
+
+                      <p className="text-xs text-steel text-center">
+                        Slanjem poruke prihvatate našu{' '}
+                        <Link href="/privacy/" className="text-brand-orange hover:underline">
+                          politiku privatnosti
+                        </Link>
+                        .
+                      </p>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
@@ -293,6 +368,16 @@ export default function KontaktPage() {
         </section>
       </main>
       <Footer />
+
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'ContactPage',
+          name: 'Kontakt | Zaposli.ba',
+          url: `${site.url}/kontakt/`,
+          mainEntity: organizationSchema(),
+        }}
+      />
     </div>
   );
 }
