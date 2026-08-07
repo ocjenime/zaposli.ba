@@ -135,7 +135,8 @@
 - All planned premium redesigns pushed to `main` and deployed on Vercel. Waiting for user feedback on the latest `/firma-profil/[slug]/`, `/faq/`, and `/zatrazi-ponudu/` changes.
 
 ### Blocked
-- Google Analytics 4 and Search Console are ready but require the user to add `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env vars in Vercel.
+- Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
+- Google Search Console verification token is now embedded in `app/layout.tsx`; the user still needs to click **Verify** in Search Console and submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
 - Wait for user feedback on `/firma-profil/[slug]/` and proceed with the next requested page or task.
