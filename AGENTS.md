@@ -122,7 +122,7 @@
 - Updated static list pages `/kategorije/`, `/gradovi/`, `/savjeti/`, and `/top-firme/` to use the new premium `PageHero`.
 - Redesigned `/poslovi/` hero to dark Higgsfield style with glassmorphism search and trust badges.
 - Redesigned `/objavi-projekat/` with a premium dark hero, overlapping form card, and an improved stepper.
-- Redesigned `/za-firme/` with premium dark gradient sections, glassmorphism benefit/pricing cards, improved FAQ, and gradient-accented CTAs.
+- Redesigned `/za-firme/` with a luxury Higgsfield-style layout: cinematic two-column hero with floating stat pills, 2x2 dark glass benefit cards with stats, alternating timeline for the three-step process, bento-style category cards with unique gradients, glass trust-signal rows, premium dark pricing cards with stronger popular-card glow, improved FAQ, and gradient-accented CTA. Added `FAQPage` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
 
 ### Active
