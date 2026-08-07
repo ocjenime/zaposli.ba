@@ -123,15 +123,16 @@
 - Redesigned `/poslovi/` hero to dark Higgsfield style with glassmorphism search and trust badges.
 - Redesigned `/objavi-projekat/` with a premium dark hero, overlapping form card, and an improved stepper.
 - Redesigned `/za-firme/` with premium dark gradient sections, glassmorphism benefit/pricing cards, improved FAQ, and gradient-accented CTAs.
+- Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
 
 ### Active
-- Monitoring Vercel deployment after the latest push; no open development tasks until user requests the next feature.
+- Monitoring Vercel deployment of the latest `/kako-radi/` redesign; waiting for user to request the next page.
 
 ### Blocked
 - Google Analytics 4 and Search Console are ready but require the user to add `NEXT_PUBLIC_GA_ID` and `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env vars in Vercel.
 
 ## Next Move
-- Push latest changes to `main` and let Vercel auto-deploy; then ask the user for the GA/GSC IDs if they want analytics active.
+- Wait for user feedback on `/kako-radi/` and proceed with the next requested page (e.g., `/kontakt/`, `/o-nama/`, `/faq/`).
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
@@ -166,3 +167,4 @@
 - `next.config.js`: Supabase preconnect header.
 - `lib/articles.ts`: article metadata source.
 - `app/savjeti/**/page.tsx`: article pages.
+- `app/kako-radi/page.tsx`: redesigned how-it-works page.
