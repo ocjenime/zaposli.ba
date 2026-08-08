@@ -126,7 +126,8 @@
 - Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
 - Redesigned `/o-nama/` in premium Higgsfield style: cinematic hero with a large glowing logo badge, a full "Značka kvaliteta" trust section with the logo as a seal of quality, manifesto-style mission statement, large-year dark timeline, bento-style values grid, and premium CTA. Added `Organization` and `BreadcrumbList` JSON-LD schemas.
-- Redesigned `/kategorije/` and `/gradovi/` list pages with full-bleed cinematic `PageHero` using the homepage hero image (`/images/herozaposli.png`), centered CTAs, premium trust-badge intro, grouped category cards with shadow wrappers, a prominent hitne-intervencije card, and a pastel-gradient city bento grid. Both pages keep `BreadcrumbList` JSON-LD.
+- Redesigned `/gradovi/` list page with full-bleed cinematic `PageHero`, centered CTAs, premium trust-badge intro, and a pastel-gradient city bento grid. Keeps `BreadcrumbList` JSON-LD.
+- Redesigned `/kategorije/` as a premium Higgsfield/Pentagram-style discovery page: full-bleed cinematic hero with the homepage image and live search/filter, animated stats row, featured bento grid with "Hitne intervencije" and quick-link cards, grouped category cards with premium hover effects, and a strong final CTA. Split into server `page.tsx` for metadata and client `CategoriesContent.tsx` for interactivity.
 - Redesigned `/firma-profil/[slug]/` in premium Higgsfield style: full-bleed dark `PageHero` with firm logo, verified/premium/online badges, rating, city, and the two main CTAs; two-column layout with "O firmi", category chips, business-info cards, portfolio grid, and reviews with histogram; sticky dark-glass sidebar with quick stats and CTAs; premium loading skeleton and error state. Kept all data fetching, `ReviewReplyForm`, portfolio lightbox, owner reply logic, JSON-LD `LocalBusiness` schema, and `generateMetadata`/`generateStaticParams`.
 - Fixed all remaining `react-hooks/exhaustive-deps` warnings across `app/admin/`, `app/dashboard/**`, `app/firma-profil/`, `app/poslovi/`, `components/JobChat.tsx`, and `components/NotificationBell.tsx` by wrapping loader functions in `useCallback` and adding them to `useEffect` dependency arrays. `npm run lint` now reports zero warnings/errors.
 - Identified three test/demo firms (`test-firma-1785361713179`, `test-firma-1785362252075`, `test-admin-firma-1785548748322`) and excluded them from public listings, sitemap, and static generation by adding `.not('slug', 'like', 'test-%')` filters. Added `supabase/migration-remove-test-firms.sql` to permanently delete them from the database. Static build dropped from 2403 to 2400 pages.
@@ -182,5 +183,7 @@
 - `app/kako-radi/page.tsx`: redesigned how-it-works page.
 - `app/kontakt/page.tsx`: redesigned contact page.
 - `app/o-nama/page.tsx`: redesigned about page.
-- `app/kategorije/page.tsx`: redesigned categories list page.
+- `app/kategorije/page.tsx`: server wrapper with metadata for redesigned categories page.
+- `app/kategorije/CategoriesContent.tsx`: client-side hero search, stats, bento grid and grouped category cards.
+- `components/CategoryCard.tsx`: premium category card component.
 - `app/gradovi/page.tsx`: redesigned cities list page.
