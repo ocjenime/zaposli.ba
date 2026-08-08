@@ -127,7 +127,8 @@
 - Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
 - Redesigned `/o-nama/` in premium Higgsfield style: cinematic hero with a large glowing logo badge, a full "Značka kvaliteta" trust section with the logo as a seal of quality, manifesto-style mission statement, large-year dark timeline, bento-style values grid, and premium CTA. Added `Organization` and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/gradovi/` list page with full-bleed cinematic `PageHero`, centered CTAs, premium trust-badge intro, and a pastel-gradient city bento grid. Keeps `BreadcrumbList` JSON-LD.
-- Kept the previous `/kategorije/` list design after user feedback; added a cinematic full-bleed hero photograph (`public/images/kategorije-hero.jpg`) to the `PageHero` for a stronger first impression.
+- Kept the previous `/kategorije/` list design after user feedback; replaced the hero photograph with a Sarajevo cityscape panorama (`public/images/kategorije-hero.jpg`) so the visual context is clearly Bosnian.
+- Added a compact sticky CTA bar to `/kategorije/hitne-intervencije/` (and any other featured category) with a red gradient, siren icon, and a direct "Objavi" button so it stays visible while scrolling without taking up page space.
 - Redesigned `/poslovi/` job cards into compact, Higgsfield-style list rows: removed large image band, condensed header with category icon, title, city, time, budget and bid count; clicking the row expands details, description, photos and a "Pošalji ponudu" button. Updated loading skeleton to match.
 - Hidden visible breadcrumbs on desktop (`md:hidden`) while keeping JSON-LD schema for SEO.
 - Redesigned `/firma-profil/[slug]/` in premium Higgsfield style: full-bleed dark `PageHero` with firm logo, verified/premium/online badges, rating, city, and the two main CTAs; two-column layout with "O firmi", category chips, business-info cards, portfolio grid, and reviews with histogram; sticky dark-glass sidebar with quick stats and CTAs; premium loading skeleton and error state. Kept all data fetching, `ReviewReplyForm`, portfolio lightbox, owner reply logic, JSON-LD `LocalBusiness` schema, and `generateMetadata`/`generateStaticParams`.
@@ -136,14 +137,14 @@
 - Google Search Console domain-level verification succeeded automatically after adding the property; removed the hardcoded fallback token from `app/layout.tsx` since the env var is sufficient if needed later.
 
 ### Active
-- All planned premium redesigns pushed to `main` and deployed on Vercel. Google Search Console auto-verified via domain-level ownership; waiting for sitemap submission confirmation.
+- All planned premium redesigns pushed to `main` and deployed on Vercel. Google Search Console auto-verified via domain-level ownership; waiting for sitemap submission confirmation. Waiting for user feedback on the new Bosnian `/kategorije/` hero image and the sticky hitna-intervencija CTA bar.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- Wait for user feedback on `/firma-profil/[slug]/` and proceed with the next requested page or task.
+- Wait for user feedback and proceed with the next requested page or task.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
