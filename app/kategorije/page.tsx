@@ -77,6 +77,7 @@ export default function CategoriesPage() {
           icon={LayoutGrid}
           align="center"
           size="lg"
+          image="/images/kategorije-hero.jpg"
         >
           <Link
             href="/objavi-projekat/"
