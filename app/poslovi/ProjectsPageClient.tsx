@@ -483,25 +483,18 @@ function ProjectsPageContent() {
             </div>
 
             {loading ? (
-              <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-12">
+              <div className="space-y-3 mb-12">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-2xl md:rounded-3xl border border-gray-100 overflow-hidden animate-pulse">
-                    <div className="h-40 sm:h-48 md:h-56 bg-gray-200" />
-                    <div className="p-4 md:p-6">
-                      <div className="flex justify-between mb-3">
-                        <div className="w-24 h-5 bg-gray-200 rounded-full" />
-                        <div className="w-16 h-5 bg-gray-200 rounded-full" />
+                  <div key={i} className="bg-white rounded-2xl border border-gray-100 p-4 md:p-5 animate-pulse">
+                    <div className="flex flex-col md:flex-row md:items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-gray-200 shrink-0" />
+                      <div className="flex-1 space-y-2">
+                        <div className="w-2/3 h-5 bg-gray-200 rounded" />
+                        <div className="w-1/2 h-4 bg-gray-200 rounded" />
                       </div>
-                      <div className="w-3/4 h-6 bg-gray-200 rounded mb-3" />
-                      <div className="w-full h-4 bg-gray-200 rounded mb-2" />
-                      <div className="w-2/3 h-4 bg-gray-200 rounded mb-4" />
-                      <div className="flex gap-3 mb-4">
-                        <div className="w-28 h-8 bg-gray-200 rounded-lg" />
-                        <div className="w-32 h-8 bg-gray-200 rounded-lg" />
-                      </div>
-                      <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                        <div className="w-24 h-4 bg-gray-200 rounded" />
-                        <div className="w-20 h-4 bg-gray-200 rounded" />
+                      <div className="flex gap-2">
+                        <div className="w-24 h-8 bg-gray-200 rounded-lg" />
+                        <div className="w-20 h-8 bg-gray-200 rounded-lg" />
                       </div>
                     </div>
                   </div>
@@ -538,7 +531,7 @@ function ProjectsPageContent() {
                 </div>
               </div>
             ) : (
-              <div className="grid md:grid-cols-2 gap-6 mb-12">
+              <div className="space-y-3 mb-12">
                 {filteredJobs.map((job) => {
                   const category = getCategory(job.category_slug);
                   const isExpanded = expandedJobId === job.id;
@@ -546,116 +539,109 @@ function ProjectsPageContent() {
                   return (
                     <article
                       key={job.id}
-                      className={`group bg-white rounded-2xl md:rounded-3xl border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-gray-200/40 ${
-                        isExpanded ? 'ring-2 ring-brand-orange/20 shadow-xl shadow-gray-200/50' : ''
+                      className={`bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md ${
+                        isExpanded ? 'ring-1 ring-brand-orange/20 shadow-lg' : ''
                       }`}
                     >
-                      {/* Card header image band */}
-                      <div className="relative h-40 sm:h-48 md:h-56 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(249,115,22,0.08),_transparent_60%)]" />
-                        <div className="absolute top-3 left-3 md:top-4 md:left-4 right-3 md:right-4 flex items-start justify-between gap-2">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-semibold text-gray-700 shadow-sm border border-gray-100">
-                            <Tag className="w-3 h-3 text-brand-orange" />
-                            {category?.name || job.category_slug}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            {isActiveFeatured(job) && <FeaturedBadge />}
-                            {job.bids_count > 0 && (
-                              <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-brand-orange text-white text-xs font-semibold shadow-sm">
-                                {job.bids_count} {job.bids_count === 1 ? 'ponuda' : 'ponude'}
-                              </span>
-                            )}
+                      <button
+                        onClick={() => toggleExpand(job.id)}
+                        className="w-full text-left p-4 md:p-5"
+                      >
+                        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+                              <Tag className="w-5 h-5 text-brand-orange" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h3 className="text-base md:text-lg font-bold text-gray-900 truncate">{job.title}</h3>
+                                {isActiveFeatured(job) && <FeaturedBadge />}
+                              </div>
+                              <div className="flex items-center gap-3 text-xs md:text-sm text-steel mt-0.5 flex-wrap">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3.5 h-3.5" /> {job.city}{job.address ? `, ${job.address}` : ''}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-3.5 h-3.5" /> {relativeTime(job.created_at)}
+                                </span>
+                                <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
+                                  {category?.name || job.category_slug}
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 right-3 md:right-4 flex items-end justify-between gap-2">
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium text-gray-600 shadow-sm border border-gray-100 min-w-0">
-                            <MapPin className="w-3.5 h-3.5 text-brand-orange shrink-0" />
-                            <span className="truncate">{job.city}{job.address ? `, ${job.address}` : ''}</span>
-                          </div>
-                          <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-full bg-white/95 backdrop-blur-sm text-xs font-medium text-gray-600 shadow-sm border border-gray-100 whitespace-nowrap">
-                            <Clock className="w-3.5 h-3.5 text-brand-orange" />
-                            {relativeTime(job.created_at)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="p-4 md:p-6">
-                        <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 group-hover:text-brand-orange transition-colors">{job.title}</h3>
-                        <p className={`text-steel text-sm leading-relaxed mb-4 md:mb-5 ${isExpanded ? '' : 'line-clamp-2'}`}>{job.description}</p>
-
-                        <div className="flex flex-wrap gap-2 mb-4 md:mb-5">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 text-sm font-semibold text-brand-orange">
-                            <Banknote className="w-4 h-4" />
-                            {formatBudgetShort(job)}
-                          </span>
-                          {job.deadline && (
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 text-sm text-gray-600">
-                              <Calendar className="w-4 h-4" />
-                              <span className="hidden sm:inline">Rok: </span>{formatDate(job.deadline)}
+                          <div className="flex items-center gap-2 md:justify-end shrink-0">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-orange-50 text-sm font-semibold text-brand-orange">
+                              <Banknote className="w-4 h-4" />
+                              {formatBudgetShort(job)}
                             </span>
-                          )}
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-100 text-sm font-semibold text-gray-600">
-                            {job.bids_count} {job.bids_count === 1 ? 'ponuda' : job.bids_count >= 2 && job.bids_count <= 4 ? 'ponude' : 'ponuda'}
-                          </span>
-                        </div>
-
-                        {isExpanded && (
-                          <div className="mb-4 md:mb-5 animate-in fade-in slide-in-from-top-2 duration-200">
-                            {loadingImages === job.id ? (
-                              <div className="flex items-center gap-2 text-sm text-steel py-3">
-                                <Loader2 className="w-4 h-4 animate-spin" /> Učitavanje fotografija...
-                              </div>
-                            ) : images.length > 0 ? (
-                              <div>
-                                <h4 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                  <ImageIcon className="w-4 h-4 text-brand-orange" /> Fotografije posla
-                                </h4>
-                                <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-                                  {images.map((img) => (
-                                    <button
-                                      key={img.id}
-                                      onClick={() => setSelectedImage({ url: img.image_url, title: job.title })}
-                                      className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
-                                      aria-label={`Pogledaj fotografiju posla: ${job.title}`}
-                                    >
-                                      <Image
-                                        src={img.image_url}
-                                        alt={`Fotografija posla: ${job.title}`}
-                                        fill
-                                        sizes="(max-width: 640px) 33vw, 25vw"
-                                        className="object-cover"
-                                        unoptimized
-                                      />
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                            ) : null}
-
-                            <button
-                              onClick={() => handleBidClick(job)}
-                              className="mt-4 md:mt-5 inline-flex items-center justify-center gap-2 w-full bg-brand-orange text-white px-6 py-3.5 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors active:scale-95 min-h-[48px]"
-                            >
-                              <Send className="w-4 h-4" />
-                              {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
-                            </button>
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white border border-gray-100 text-sm font-semibold text-gray-600">
+                              {job.bids_count} {job.bids_count === 1 ? 'ponuda' : job.bids_count >= 2 && job.bids_count <= 4 ? 'ponude' : 'ponuda'}
+                            </span>
+                            <span className={`inline-flex items-center text-brand-orange transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
+                              <ChevronDown className="w-5 h-5" />
+                            </span>
                           </div>
-                        )}
+                        </div>
+                      </button>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                          <span className="text-xs text-steel">{formatDate(job.created_at)}</span>
+                      {isExpanded && (
+                        <div className="px-4 md:px-5 pb-5 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                          <p className="text-steel text-sm leading-relaxed py-4">{job.description}</p>
+
+                          {job.deadline && (
+                            <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                              <Calendar className="w-4 h-4 text-brand-orange" />
+                              Rok: {formatDate(job.deadline)}
+                            </div>
+                          )}
+
+                          {loadingImages === job.id ? (
+                            <div className="flex items-center gap-2 text-sm text-steel py-2 mb-4">
+                              <Loader2 className="w-4 h-4 animate-spin" /> Učitavanje fotografija...
+                            </div>
+                          ) : images.length > 0 ? (
+                            <div className="mb-4">
+                              <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                <ImageIcon className="w-4 h-4 text-brand-orange" /> Fotografije
+                              </h4>
+                              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+                                {images.map((img) => (
+                                  <button
+                                    key={img.id}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setSelectedImage({ url: img.image_url, title: job.title });
+                                    }}
+                                    className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
+                                    aria-label={`Pogledaj fotografiju posla: ${job.title}`}
+                                  >
+                                    <Image
+                                      src={img.image_url}
+                                      alt={`Fotografija posla: ${job.title}`}
+                                      fill
+                                      sizes="96px"
+                                      className="object-cover"
+                                      unoptimized
+                                    />
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ) : null}
+
                           <button
-                            onClick={() => toggleExpand(job.id)}
-                            className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors min-h-[44px] px-2 -mr-2"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleBidClick(job);
+                            }}
+                            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-brand-orange text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors active:scale-95"
                           >
-                            {isExpanded ? (
-                              <><ChevronUp className="w-4 h-4" /> Manje</>
-                            ) : (
-                              <><ChevronDown className="w-4 h-4" /> Više</>
-                            )}
+                            <Send className="w-4 h-4" />
+                            {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
                           </button>
                         </div>
-                      </div>
+                      )}
                     </article>
                   );
                 })}
