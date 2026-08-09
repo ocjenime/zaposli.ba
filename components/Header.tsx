@@ -107,7 +107,7 @@ export default function Header() {
           <div className="grid grid-cols-[1fr_auto_1fr] lg:flex h-16 md:h-20 items-center lg:justify-between">
             <Link
               href="/"
-              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200"
+              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-[1.2]"
             >
               <Logo variant="dark" />
             </Link>
