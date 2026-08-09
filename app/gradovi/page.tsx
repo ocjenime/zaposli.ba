@@ -72,6 +72,7 @@ export default function CitiesPage() {
           icon={MapPin}
           align="center"
           size="lg"
+          image="/images/gradovi-hero.jpg"
         >
           <Link
             href="/objavi-projekat/"

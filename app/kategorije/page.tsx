@@ -9,7 +9,6 @@ import { site } from '@/lib/site';
 import { cities } from '@/lib/data';
 import {
   ArrowRight,
-  Siren,
   ShieldCheck,
   Clock,
   Star,
@@ -19,6 +18,7 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
+import EmergencyBottomBar from '@/components/EmergencyBottomBar';
 import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 const seoCategories = categories.filter((c) => !c.noSeo);
@@ -166,30 +166,10 @@ export default function CategoriesPage() {
           </div>
         </section>
 
-        {/* Sticky hitne intervencije CTA bar */}
-        <div className="h-16" />
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
-                  <Siren className="w-5 h-5" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-bold truncate">Hitna intervencija?</p>
-                  <p className="text-xs text-white/80 truncate">Majstori su dostupni 24/7 - objavite odmah.</p>
-                </div>
-              </div>
-              <Link
-                href="/objavi-projekat/?service=Hitne%20intervencije"
-                className="shrink-0 inline-flex items-center gap-1.5 bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/90 transition-colors active:scale-95"
-              >
-                Objavi <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
       </main>
+
+      <EmergencyBottomBar showOnScroll />
+
       <Footer />
     </div>
   );
