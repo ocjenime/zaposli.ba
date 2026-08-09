@@ -49,7 +49,6 @@ const trustBadges = [
 
 export default function CategoriesPage() {
   const visible = categories.filter((c) => !c.noSeo);
-  const featured = visible.filter((c) => c.featured);
 
   const groups: { name: string; cats: Category[] }[] = [];
   for (const c of visible.filter((c) => !c.featured)) {
@@ -88,25 +87,11 @@ export default function CategoriesPage() {
           </Link>
         </PageHero>
 
-        {/* Trust intro */}
-        <section className="relative py-16 md:py-20 bg-cloud overflow-hidden">
+        {/* Trust badges */}
+        <section className="relative py-10 md:py-12 bg-cloud overflow-hidden">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <ShieldCheck className="h-4 w-4" /> Pouzdani majstori
-              </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Pronađite pouzdanog majstora za svaku potrebu
-              </h2>
-              <p className="text-steel text-lg">
-                Zaposli.ba okuplja provjerene građevinske firme, majstore i uslužne djelatnosti iz cijele Bosne i Hercegovine.
-                Bilo da vam treba vodoinstalater, električar, keramičar, moler, bravar ili kompletna adaptacija: objavite posao
-                besplatno i uporedite ponude od firma iz vašeg grada.
-              </p>
-            </div>
-
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {trustBadges.map((badge) => (
                 <div
@@ -121,34 +106,6 @@ export default function CategoriesPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* Featured: hitne intervencije 24/7 */}
-        <section className="py-10 md:py-14 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Link
-              href={`/kategorije/${featured[0]?.slug}/`}
-              className="group relative flex flex-col sm:flex-row items-start sm:items-center gap-5 rounded-2xl bg-gradient-to-r from-red-600 to-red-500 px-6 py-6 md:px-8 md:py-7 text-white shadow-xl shadow-red-600/20 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(255,255,255,0.15),transparent_40%)]" />
-              <div className="relative w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
-                <Siren className="w-7 h-7" />
-              </div>
-              <div className="relative flex-1 min-w-0">
-                <div className="flex flex-wrap items-center gap-2 mb-1">
-                  <h2 className="text-xl md:text-2xl font-bold">Hitne intervencije</h2>
-                  <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-                    <span className="w-1 h-1 bg-red-600 rounded-full animate-pulse" />
-                    24/7
-                  </span>
-                </div>
-                <p className="text-white/80 text-sm md:text-base">
-                  Vodoinstalater, električar i bravar dostupni odmah - danju i noću.
-                </p>
-              </div>
-              <ArrowRight className="relative w-6 h-6 group-hover:translate-x-1 transition-transform shrink-0 ml-auto" />
-            </Link>
           </div>
         </section>
 
@@ -208,6 +165,30 @@ export default function CategoriesPage() {
             </Link>
           </div>
         </section>
+
+        {/* Sticky hitne intervencije CTA bar */}
+        <div className="h-16" />
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white shadow-[0_-4px_20px_rgba(0,0,0,0.15)]">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
+                  <Siren className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-bold truncate">Hitna intervencija?</p>
+                  <p className="text-xs text-white/80 truncate">Majstori su dostupni 24/7 - objavite odmah.</p>
+                </div>
+              </div>
+              <Link
+                href="/objavi-projekat/?service=Hitne%20intervencije"
+                className="shrink-0 inline-flex items-center gap-1.5 bg-white text-red-600 px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/90 transition-colors active:scale-95"
+              >
+                Objavi <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>
