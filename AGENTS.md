@@ -131,7 +131,8 @@
 - Added a compact sticky CTA bar to `/kategorije/hitne-intervencije/` (and any other featured category) with a red gradient, siren icon, and a direct "Objavi" button so it stays visible while scrolling without taking up page space.
 - Removed the large "Hitne intervencije" featured card from `/kategorije/` and replaced it with a compact scroll-aware red CTA bar (`components/EmergencyBottomBar.tsx`) that slides up when the user starts scrolling and hides again near the top, freeing up vertical space while keeping the emergency entry point accessible.
 - Reused `EmergencyBottomBar` on `/kategorije/hitne-intervencije/` so it stays always visible there.
-- Centered the logo on mobile in `components/Header.tsx` while keeping the hamburger menu button on the right, matching the Fashion and Friends mobile nav pattern.
+- Centered the logo on mobile in `components/Header.tsx` while keeping the hamburger menu button on the right, matching the Fashion and Friends mobile nav pattern. Later enlarged the whole header logo by 20% via `scale-[1.2]`.
+- Converted the `/poslovi/` hero (`app/poslovi/ProjectsPageClient.tsx`) to a full-bleed background image (`public/images/poslovi-hero.jpg`) with dark gradient overlays, matching the cinematic `PageHero` treatment used on `/kategorije/` and `/gradovi/`.
 - Moved the Sarajevo cityscape hero image from `/kategorije/` to `/gradovi/` (`public/images/gradovi-hero.jpg`) and set a new Bosnia/work-related construction-site hero image for `/kategorije/` (`public/images/kategorije-hero.jpg`).
 - Added `viewport-fit: cover` to the viewport meta tag so bottom fixed bars can respect mobile safe-area insets.
 - Redesigned `/poslovi/` job cards into compact, Higgsfield-style list rows: removed large image band, condensed header with category icon, title, city, time, budget and bid count; clicking the row expands details, description, photos and a "Pošalji ponudu" button. Updated loading skeleton to match.
