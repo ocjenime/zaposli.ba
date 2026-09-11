@@ -180,7 +180,8 @@ export default function Header() {
             </div>
 
             {/* Mobile actions */}
-            <div className="flex items-center lg:hidden col-start-3 justify-self-end">
+            <div className="flex items-center gap-1.5 lg:hidden col-start-3 justify-self-end">
+              <ThemeToggle />
               <button
                 ref={mobileButtonRef}
                 type="button"
