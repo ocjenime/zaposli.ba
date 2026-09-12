@@ -88,7 +88,7 @@ export default function HeroSection() {
       {/* Hero content */}
       <div className="relative z-20 flex-1 flex items-center">
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-20">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl mx-auto text-center">
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white/90 mb-6 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
@@ -112,7 +112,7 @@ export default function HeroSection() {
             {/* Search form - glass */}
             <form
               onSubmit={handleSearch}
-              className="w-full max-w-2xl bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-2 sm:p-3 shadow-2xl shadow-black/30 animate-fade-in"
+              className="w-full max-w-2xl mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl sm:rounded-3xl p-2 sm:p-3 shadow-2xl shadow-black/30 animate-fade-in"
             >
               <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
                 <div className="flex-1 relative min-w-0">
@@ -158,7 +158,7 @@ export default function HeroSection() {
                 { value: '45+', label: 'Gradova' },
                 { value: '0 KM', label: 'Objava posla' },
               ].map((stat) => (
-                <div key={stat.label} className="text-center sm:text-left">
+                <div key={stat.label} className="text-center">
                   <div className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</div>
                   <div className="text-xs sm:text-sm text-white/60">{stat.label}</div>
                 </div>
