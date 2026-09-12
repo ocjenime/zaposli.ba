@@ -186,6 +186,15 @@
   - Updated `lib/types.ts` and `lib/notifications.ts` with the new `mediation_requested` notification type.
   - Wrapped `/admin/` in a `Suspense` boundary because it now reads the `?tab=` query parameter. `npm run lint` and `npm run build` both pass (2405 pages).
 - Fixed the `/za-firme/` pricing CTA flow: clicking a subscription plan now takes firm/majstor users to `/dashboard/firma/pretplata/` and everyone else (guests or logged-in clients) to a new `/pretplata-auth/` gateway page. The gateway page offers login/registration for guests and explains that a firm/majstor account is required for logged-in clients. `npm run lint` and `npm run build` both pass (2408 pages).
+- Added launch offer pricing and paid job ads as a second revenue stream:
+  - New `plans` columns `launch_price_monthly`, `launch_price_yearly`, `launch_offer_months` and `included_featured_ads` via `supabase/migration-launch-offer.sql` and `supabase/migration-paid-job-ads.sql`.
+  - New `job_promotions` table for one-time paid featured ads; default prices: Start 19→29 KM, Pro 49→79 KM, Premium 99→149 KM for the first 3 months; paid single ad price 39 KM.
+  - Updated `/za-firme/` pricing cards to show launch prices with "Launch ponuda" badges and struck-through regular prices.
+  - Updated `/dashboard/firma/pretplata/` to display launch pricing and store launch/regular price metadata in `admin_requests`.
+  - Updated admin `SubscriptionEditModal` to optionally apply launch discount (sets `subscriptions.discount_ends_at`).
+  - Added new "Oglasi" tab to `/dashboard/firma/` (`components/FirmPromotionsTab.tsx`) where firms can request promoted ads using included plan credits or paying 39 KM per ad.
+  - Added new "Oglasi" tab to `/admin/` for approving/rejecting `job_promotions`; approval sets `jobs.is_featured = true` and `jobs.featured_until` to 30 days.
+  - Updated `lib/subscriptions.ts` with helpers for launch pricing and included ads accounting. `npm run lint` and `npm run build` both pass (2408 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
