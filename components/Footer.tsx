@@ -28,6 +28,9 @@ const footerLinks = {
 
 export default function Footer() {
   const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
+  const sortedCategories = [...categories]
+    .filter((cat) => !cat.noSeo)
+    .sort((a, b) => a.name.localeCompare(b.name, 'bs'));
 
   return (
     <footer className="bg-ink text-[#ffffff]">
@@ -87,9 +90,9 @@ export default function Footer() {
                 Majstori po kategorijama
               </h3>
               <ul className="grid grid-cols-2 gap-x-6 gap-y-2">
-                {categories.filter((cat) => !cat.noSeo).map((cat) => (
+                {sortedCategories.map((cat) => (
                   <li key={cat.slug}>
-                    <Link href={`/kategorije/${cat.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
+                    <Link href={`/kategorije/${cat.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm leading-5 transition-colors">
                       {cat.name}
                     </Link>
                   </li>
@@ -103,7 +106,7 @@ export default function Footer() {
               <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2">
                 {sortedCities.map((city) => (
                   <li key={city.slug}>
-                    <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm transition-colors">
+                    <Link href={`/gradovi/${city.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm leading-5 transition-colors">
                       {city.name}
                     </Link>
                   </li>
