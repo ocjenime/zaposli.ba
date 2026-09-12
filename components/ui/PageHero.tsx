@@ -47,8 +47,9 @@ export default function PageHero({
             priority
             sizes="100vw"
           />
-          {overlay && <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />}
-          {overlay && <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />}
+          {overlay && <div className="absolute inset-0 bg-black/45" />}
+          {overlay && <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />}
+          {overlay && <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/40" />}
         </>
       ) : (
         <>
