@@ -81,8 +81,8 @@ export default function ProfileEditModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-800">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+      <div className="bg-white dark:bg-gray-900 sm:rounded-2xl rounded-t-2xl sm:shadow-xl shadow-2xl w-full max-w-lg sm:max-h-[90vh] h-[92vh] sm:h-auto overflow-y-auto border-t sm:border border-gray-100 dark:border-gray-800">
         <div className="p-6">
           <div className="flex items-center justify-between mb-5">
             <div>

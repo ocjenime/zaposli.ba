@@ -673,24 +673,27 @@ export default function AdminPage() {
             </div>
           )}
 
-          <div className="flex gap-2 mb-6 border-b border-gray-200 pb-2 overflow-x-auto md:flex-wrap md:overflow-visible no-scrollbar">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors shrink-0 ${
-                    activeTab === tab.id
-                      ? 'bg-brand-orange text-[#ffffff]'
-                      : 'text-steel hover:bg-gray-100'
-                  }`}
-                >
-                  <Icon className="w-4 h-4" />
-                  {tab.label}
-                </button>
-              );
-            })}
+          <div className="relative mb-6">
+            <div className="flex gap-2 border-b border-gray-200 pb-2 overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible pr-8 md:pr-0">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-3.5 sm:px-4 py-3 sm:py-2.5 rounded-xl text-sm font-medium transition-colors shrink-0 min-h-[44px] ${
+                      activeTab === tab.id
+                        ? 'bg-brand-orange text-[#ffffff] shadow-md shadow-brand-orange/20'
+                        : 'text-steel hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-cloud to-transparent md:hidden" />
           </div>
 
           {loading && activeTab !== 'subscriptions' ? (
@@ -701,7 +704,7 @@ export default function AdminPage() {
             <>
               {activeTab === 'overview' && (
                 <div className="space-y-6">
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <StatCard label="Korisnici" value={stats?.users ?? profiles.length} icon={Users} />
                     <StatCard label="Firme / Majstori" value={stats ? stats.firms + stats.majstors : firms.length} icon={Building2} />
                     <StatCard label="Poslovi" value={stats?.jobs ?? 0} icon={Briefcase} />
@@ -1532,15 +1535,15 @@ function StatCard({
   isCurrency?: boolean;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-5 flex items-center gap-4">
-      <div className="p-3 bg-orange-50 rounded-xl">
-        <Icon className="w-6 h-6 text-brand-orange" />
+    <div className="bg-white rounded-xl border border-gray-100 p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4">
+      <div className="p-2.5 sm:p-3 bg-orange-50 rounded-xl shrink-0">
+        <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
       </div>
-      <div>
-        <p className="text-2xl font-bold text-gray-900">
+      <div className="min-w-0">
+        <p className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
           {isCurrency ? `${value.toLocaleString('bs-BA')} KM` : value.toLocaleString('bs-BA')}
         </p>
-        <p className="text-sm text-steel">{label}</p>
+        <p className="text-xs sm:text-sm text-steel">{label}</p>
       </div>
     </div>
   );
