@@ -23,7 +23,7 @@ export function organizationSchema() {
     telephone: site.phone,
     address: {
       '@type': 'PostalAddress',
-      addressLocality: 'Sarajevo',
+      addressLocality: site.city,
       addressCountry: 'BA',
     },
     sameAs: site.sameAs ?? [],

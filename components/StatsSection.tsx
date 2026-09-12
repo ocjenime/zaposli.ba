@@ -1,9 +1,20 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Users, Building2, Star, CheckCircle, Shield, CreditCard, MessageSquare } from 'lucide-react';
+import {
+  Users,
+  Building2,
+  Star,
+  CheckCircle,
+  Shield,
+  CreditCard,
+  MessageSquare,
+  TrendingUp,
+  ArrowRight,
+} from 'lucide-react';
 import Counter from '@/components/ui/Counter';
 import { supabase } from '@/lib/supabase';
+import Link from 'next/link';
 
 interface StatData {
   value: string;
@@ -15,17 +26,22 @@ const trustCards = [
   {
     icon: Shield,
     title: 'Verificirane firme',
-    description: 'Sve firme prolaze provjeru identiteta i poslovanja prije odobravanja profila.',
+    description: 'Svaka firma prolazi provjeru identiteta i poslovanja prije odobravanja profila.',
   },
   {
     icon: CreditCard,
     title: 'Besplatno za klijente',
-    description: 'Objavljivanje poslova i primanje ponuda je potpuno besplatno.',
+    description: 'Objavljivanje poslova i primanje ponuda je potpuno besplatno, bez skrivenih troškova.',
   },
   {
     icon: MessageSquare,
     title: 'Ocjene i recenzije',
     description: 'Pročitajte iskustva drugih klijenata prije nego što odaberete firmu.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Više ponuda',
+    description: 'Uporedite cijene, rokove i reference - birajte najbolju ponudu za svoj projekat.',
   },
 ];
 
@@ -54,14 +70,17 @@ export default function StatsSection() {
           (reviewData?.length ?? 0) > 0 ||
           (completedJobsCount ?? 0) > 0;
 
-        if (!hasAnyData) return;
+        if (!hasAnyData) {
+          setLoading(false);
+          return;
+        }
 
         const avgRating = reviewData?.length
           ? (reviewData.reduce((sum, r) => sum + (r.rating || 0), 0) / reviewData.length).toFixed(1)
           : undefined;
 
         const formatCount = (count: number | null | undefined) => {
-          if (count === null || count === undefined || count < 10) return null;
+          if (count === null || count === undefined || count < 1) return null;
           return count.toLocaleString('bs');
         };
 
@@ -83,68 +102,122 @@ export default function StatsSection() {
       }
     }
 
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      setLoading(false);
-      return;
-    }
     loadStats();
   }, []);
 
+  const featuredStat = stats[0];
+  const extraStats = stats.slice(1);
+
   return (
-    <section className="hidden md:block py-10 md:py-14 bg-white relative overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
+    <section className="relative overflow-hidden bg-ink-950 py-20 md:py-28">
+      {/* ambient glows */}
+      <div className="pointer-events-none absolute -left-32 top-0 h-[28rem] w-[28rem] rounded-full bg-brand-orange/5 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-32 bottom-0 h-[24rem] w-[24rem] rounded-full bg-brand-amber/5 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(249,115,22,0.08),transparent_50%)]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
+        {/* header */}
+        <div className="mx-auto mb-14 max-w-2xl text-center">
+          <span className="mb-4 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-semibold text-brand-orange backdrop-blur-sm">
             Zašto baš mi?
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-white md:text-4xl lg:text-5xl">
             Zašto Zaposli.ba?
           </h2>
-          <p className="text-lg text-gray-500">
+          <p className="text-base text-white/60 md:text-lg">
             Platforma koja povezuje klijente sa provjerenim firmama širom Bosne i Hercegovine
           </p>
         </div>
 
-        {stats.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <div
-                key={stat.label}
-                className={`text-center p-6 rounded-2xl bg-cloud hover:bg-white hover:shadow-xl transition-all duration-300 border border-transparent hover:border-gray-100 ${
-                  loading ? 'opacity-70' : ''
-                }`}
-              >
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-4">
-                  <stat.icon className="w-7 h-7 text-brand-orange" />
+        {/* main bento */}
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
+          {/* featured stat / value prop */}
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-8 backdrop-blur-sm lg:col-span-5">
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/10 blur-[60px]" />
+
+            {featuredStat ? (
+              <>
+                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                  <featuredStat.icon className="h-8 w-8" />
                 </div>
-                <div className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
-                  {loading && index === 0 ? (
-                    <span className="inline-block w-20 h-8 bg-gray-200 rounded animate-pulse" />
+                <div className="mb-2 text-5xl font-extrabold tracking-tight text-white md:text-6xl">
+                  {loading ? (
+                    <span className="inline-block h-14 w-32 animate-pulse rounded-lg bg-white/10" />
                   ) : (
-                    <Counter value={stat.value} />
+                    <Counter value={featuredStat.value} />
                   )}
                 </div>
-                <div className="text-sm text-steel">{stat.label}</div>
+                <div className="mb-6 text-lg font-semibold text-brand-orange">{featuredStat.label}</div>
+              </>
+            ) : (
+              <>
+                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                  <Users className="h-8 w-8" />
+                </div>
+                <div className="mb-2 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+                  Pridružite se
+                </div>
+                <div className="mb-6 text-lg font-semibold text-brand-orange">Rastućoj zajednici</div>
+              </>
+            )}
+
+            <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/60">
+              Od objave posla do završetka projekta - pratite ponude, komunicirajte i ocjenjujte firme, sve na jednom mjestu.
+            </p>
+
+            <Link
+              href="/objavi-projekat"
+              className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-orange/20 transition-all hover:shadow-brand-orange/30 active:scale-95"
+            >
+              Objavite posao besplatno
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+
+          {/* trust cards grid */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-7">
+            {trustCards.map((card, idx) => (
+              <div
+                key={card.title}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05]"
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+
+                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20">
+                  <card.icon className="h-6 w-6" />
+                </div>
+                <h3 className="mb-2 text-lg font-bold text-white">{card.title}</h3>
+                <p className="text-sm leading-relaxed text-white/55">{card.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* extra stats row */}
+        {extraStats.length > 0 && (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            {extraStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm"
+              >
+                <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10">
+                  <stat.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <div className="text-2xl font-extrabold text-white">
+                    {loading ? (
+                      <span className="inline-block h-6 w-16 animate-pulse rounded bg-white/10" />
+                    ) : (
+                      <Counter value={stat.value} />
+                    )}
+                  </div>
+                  <div className="text-sm text-white/55">{stat.label}</div>
+                </div>
               </div>
             ))}
           </div>
         )}
-
-        <div className={`grid md:grid-cols-3 gap-6 ${stats.length > 0 ? 'mt-10' : ''}`}>
-          {trustCards.map((card) => (
-            <div key={card.title} className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 text-center relative overflow-hidden group">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />
-
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary-50 mb-5">
-                <card.icon className="w-7 h-7 text-brand-orange" />
-              </div>
-              <h3 className="font-bold text-gray-900 mb-2 text-lg">{card.title}</h3>
-              <p className="text-sm text-steel leading-relaxed">{card.description}</p>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

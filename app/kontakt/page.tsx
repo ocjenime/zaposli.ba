@@ -49,9 +49,9 @@ const contactInfo = [
     : []),
   {
     icon: MapPin,
-    title: 'Adresa',
+    title: 'Regija',
     value: site.city,
-    note: 'Radimo u cijeloj BiH',
+    note: 'Online platforma za cijelu BiH',
   },
   {
     icon: Clock,
