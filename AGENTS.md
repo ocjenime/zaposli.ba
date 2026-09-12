@@ -179,6 +179,7 @@
 - Shifted the homepage hero background image to the right (`object-center` → `object-[60%_center]`) to hide a floating worker artifact in the bottom-right corner of the AI-generated image; briefly tested 75% and 90% but reverted to 60% per user feedback. `npm run lint` and `npm run build` both pass (2405 pages).
 - Added `public/images/kontakt-hero.jpg` (optimized from Desktop `kontakt.png`: 2.2MB PNG → 251KB JPG, 1536x1024) and updated `/kontakt/` `PageHero` to use it as a full-bleed background image with dark cinematic overlays, matching the homepage hero treatment. Also added an `imagePosition` prop to `PageHero` and set `/kontakt/` to `object-[55%_center]` so mobile crops show the office/logo area instead of cutting into the designed text on the left. `npm run lint` and `npm run build` both pass (2405 pages).
 - Cropped `kontakt-hero.jpg` to remove the designed text on the left side of the original image (kept the office/logo area), reduced overlay intensity from `dark` to `medium`, and adjusted `imagePosition` to `object-[50%_35%]` so the Zaposli.ba logo on the wall is better visible. `npm run lint` and `npm run build` both pass (2405 pages).
+- Restored the full `kontakt-hero.jpg` (no crop) and adjusted `imagePosition` to `object-[70%_35%]` with `overlayIntensity="medium"` to avoid the designed text on the left while keeping the logo/office area visible. `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
