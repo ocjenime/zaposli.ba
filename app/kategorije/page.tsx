@@ -19,7 +19,6 @@ import {
 } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
 import EmergencyBottomBar from '@/components/EmergencyBottomBar';
-import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 const seoCategories = categories.filter((c) => !c.noSeo);
 
@@ -60,12 +59,6 @@ export default function CategoriesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: 'Početna', url: '/' },
-          { name: 'Kategorije', url: '/kategorije/' },
-        ])}
-      />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 

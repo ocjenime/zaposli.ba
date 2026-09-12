@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Star, MapPin, ArrowRight, Shield, TrendingUp, Trophy } from 'lucide-react';
 import Header from '@/components/Header';
+import { plural } from '@/lib/plural';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -11,7 +12,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
-import { JsonLd, localBusinessListSchema, breadcrumbSchema } from '@/lib/jsonld';
+import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
   id: string;
@@ -79,7 +80,6 @@ export default function TopFirmeContent() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Top firme', url: '/top-firme/' }])} />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Top firme' }]} />
         {!loading && firms.length > 0 && (
@@ -185,7 +185,7 @@ export default function TopFirmeContent() {
                           ))}
                         </div>
                         <span className="font-extrabold text-gray-900">{(f.average_rating || 0).toFixed(1)}</span>
-                        <span className="text-xs text-steel">({f.review_count || 0} recenzija)</span>
+                        <span className="text-xs text-steel">({f.review_count || 0} {plural(f.review_count || 0, ['recenzija', 'recenzije', 'recenzija'])})</span>
                       </div>
 
                       <p className="text-sm text-steel leading-relaxed mb-5 line-clamp-2">

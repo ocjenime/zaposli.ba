@@ -36,17 +36,16 @@ export default function EmergencyBottomBar({
 
       <div
         className={`
-          fixed bottom-0 left-0 right-0 z-[60]
+          fixed bottom-0 left-0 right-0 z-40
           bg-gradient-to-r from-red-600 to-red-700
           text-white
           shadow-[0_-4px_20px_rgba(0,0,0,0.15)]
           pb-[env(safe-area-inset-bottom)]
           transition-transform duration-300 ease-out
-          ${visible ? 'translate-y-0' : 'translate-y-full'}
+          ${visible ? 'translate-y-0' : 'translate-y-full pointer-events-none'}
         `}
-        aria-hidden={!visible}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
+        <div {...(!visible && { inert: true })} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3">
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center shrink-0">
@@ -65,7 +64,7 @@ export default function EmergencyBottomBar({
             </Link>
           </div>
         </div>
-      </div>
+        </div>
     </>
   );
 }

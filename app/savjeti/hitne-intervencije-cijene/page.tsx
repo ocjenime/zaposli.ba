@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: 'Da li se plaća dolazak majstora ako se ne uradi ništa?',
-    a: 'Većina majstora naplaćuje dolazak na teren čak i kada je problem sitan, zato jer gube vrijeme i gorivo. Provjerite unaprijed.',
+    a: 'Većina majstora naplaćuje dolazak na teren čak i kada je problem sitan, zato što gube vrijeme i gorivo. Provjerite unaprijed.',
   },
   {
     q: 'Koliko traje dolazak hitnog majstora?',

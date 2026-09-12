@@ -46,7 +46,7 @@ export default function ForgotPasswordForm() {
             <div className="text-center mb-8">
               <h1 className="text-2xl font-bold text-gray-900">Zaboravili ste lozinku?</h1>
               <p className="text-gray-600 mt-2">
-                Unesite email adresu i poslat ćemo vam link za resetovanje lozinke.
+                Unesite email adresu i poslan ćemo vam link za resetovanje lozinke.
               </p>
             </div>
 

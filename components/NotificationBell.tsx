@@ -149,8 +149,8 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="fixed inset-x-0 top-16 mx-2 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:mx-0 sm:w-96 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800">
+        <div className="fixed inset-x-0 top-16 mx-2 sm:absolute sm:right-0 sm:top-full sm:mt-2 sm:mx-0 sm:w-96 bg-white dark:bg-ink-800 rounded-xl shadow-xl border border-gray-100 dark:border-ink-700 overflow-hidden z-50">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-ink-700">
             <p className="font-semibold text-gray-900 dark:text-white text-sm">Obavještenja</p>
             <div className="flex items-center gap-2">
               {unreadCount > 0 && (
@@ -213,7 +213,7 @@ export default function NotificationBell() {
               })
             )}
           </div>
-          <div className="border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 px-4 py-2.5">
+          <div className="border-t border-gray-100 dark:border-ink-700 bg-gray-50/50 dark:bg-ink-900/50 px-4 py-2.5">
             <Link
               href="/dashboard/notifications/"
               onClick={() => setOpen(false)}

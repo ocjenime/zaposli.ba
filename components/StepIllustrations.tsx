@@ -10,7 +10,7 @@ const WHITE = '#FFFFFF';
 
 export function StepOneIllustration() {
   return (
-    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" aria-hidden="true">
       <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
       {/* Phone with form */}
@@ -57,7 +57,7 @@ export function StepOneIllustration() {
 
 export function StepTwoIllustration() {
   return (
-    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" aria-hidden="true">
       <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
       {/* Professional 1 (left) */}
@@ -118,7 +118,7 @@ export function StepTwoIllustration() {
 
 export function StepThreeIllustration() {
   return (
-    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+    <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full" aria-hidden="true">
       <circle cx="100" cy="75" r="62" fill={CLOUD} />
 
       {/* Client (left) */}

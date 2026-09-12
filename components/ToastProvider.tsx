@@ -46,16 +46,6 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (toasts.length === 0) return;
-    const timers = toasts.map((toast) =>
-      setTimeout(() => removeToast(toast.id), 6000)
-    );
-    return () => {
-      timers.forEach(clearTimeout);
-    };
-  }, [toasts, removeToast]);
-
   return (
     <ToastContext.Provider value={{ toasts, showToast, removeToast }}>
       {children}
@@ -69,8 +59,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 }
 
 function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
+  /* each toast owns its own 6s auto-dismiss timer (set once on mount) */
+  useEffect(() => {
+    const timer = setTimeout(onClose, 6000);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const content = (
-      <div className="flex items-start gap-3 p-4 pr-10 bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-100 dark:border-gray-800 pointer-events-auto relative">
+      <div className="flex items-start gap-3 p-4 pr-10 bg-white dark:bg-ink-800 rounded-xl shadow-xl border border-gray-100 dark:border-ink-700 pointer-events-auto relative">
       <div className="shrink-0 w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-brand-orange">
         <Bell className="w-4 h-4" />
       </div>
@@ -86,7 +83,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
           e.stopPropagation();
           onClose();
         }}
-        className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-ink-700 transition-colors"
         aria-label="Zatvori obavještenje"
       >
         <X className="w-4 h-4" />

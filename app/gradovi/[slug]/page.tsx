@@ -45,11 +45,6 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
-        <JsonLd data={breadcrumbSchema([
-          { name: 'Početna', url: '/' },
-          { name: 'Gradovi', url: '/gradovi/' },
-          { name: city.name },
-        ])} />
 
         {/* Hero */}
         <PageHero

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MapPin, Clock, ArrowRight, Sparkles, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { plural } from '@/lib/plural';
 import { getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
@@ -101,7 +102,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col h-full"
+              className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group flex flex-col h-full"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-2">
@@ -147,7 +148,7 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 <div className="flex items-center gap-3">
                   <div className="font-bold text-brand-orange text-sm">{formatBudget(job)}</div>
                   <div className="flex items-center gap-1.5 text-xs text-steel bg-white px-2.5 py-1 rounded-lg border border-gray-100">
-                    <span>{job.bids_count} ponuda</span>
+                    <span>{job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}</span>
                   </div>
                 </div>
                 <Link

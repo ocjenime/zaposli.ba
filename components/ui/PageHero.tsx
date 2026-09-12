@@ -68,7 +68,7 @@ export default function PageHero({
         )}
 
         {eyebrow && (
-          <span className="inline-flex items-center gap-2 self-start rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5 text-sm font-medium text-white/90 mb-5">
+          <span className={`inline-flex items-center gap-2 ${align === 'center' ? 'self-center' : 'self-start'} rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5 text-sm font-medium text-white/90 mb-5`}>
             {eyebrow}
           </span>
         )}

@@ -919,7 +919,7 @@ function JobDetail() {
                               </div>
                             </div>
                             {bid.message && <p className="text-sm text-gray-900 mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>}
-                            <p className="text-xs text-steel mt-2">Poslato {formatDate(bid.created_at)}</p>
+                            <p className="text-xs text-steel mt-2">Poslano {formatDate(bid.created_at)}</p>
                             {(job.status === 'open' || job.status === 'bidding') && bid.status === 'pending' && (
                               <button
                                 onClick={() => acceptBid(bid.id)}

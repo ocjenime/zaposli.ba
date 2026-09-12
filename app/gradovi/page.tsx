@@ -16,7 +16,6 @@ import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { cities } from '@/lib/data';
 import { site } from '@/lib/site';
-import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: `Majstori po gradovima - ${cities.length} gradova u BiH | Zaposli.ba`,
@@ -56,12 +55,6 @@ export default function CitiesPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <JsonLd
-        data={breadcrumbSchema([
-          { name: 'Početna', url: '/' },
-          { name: 'Gradovi', url: '/gradovi/' },
-        ])}
-      />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
 
@@ -129,7 +122,7 @@ export default function CitiesPage() {
                 Svi gradovi u Bosni i Hercegovini
               </h2>
               <p className="text-steel text-lg">
-                Kliknite na grad i pronađite provjerene majstori koji rade u vašem kraju.
+                Kliknite na grad i pronađite provjerene majstore koji rade u vašem kraju.
               </p>
             </div>
 

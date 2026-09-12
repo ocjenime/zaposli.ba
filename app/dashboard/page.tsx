@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { plural } from '@/lib/plural';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
@@ -351,7 +352,7 @@ export default function DashboardPage() {
                       <div className="flex items-center gap-2 text-sm text-steel mt-1">
                         <MapPin className="w-4 h-4" /> {job.city}
                         <span className="w-1 h-1 bg-steel rounded-full" />
-                        <span>{job.bids?.length || 0} ponuda</span>
+                        <span>{job.bids?.length || 0} {plural(job.bids?.length || 0, ['ponuda', 'ponude', 'ponuda'])}</span>
                       </div>
                     </div>
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${statusColors[job.status]}`}>

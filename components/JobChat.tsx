@@ -186,12 +186,14 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Napišite poruku..."
+          aria-label="Poruka"
           className="flex-grow rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange"
           disabled={sending}
         />
         <button
           type="submit"
           disabled={!input.trim() || sending}
+          aria-label="Pošalji poruku"
           className="bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-4 rounded-xl font-semibold hover:shadow-md transition-all disabled:opacity-50 inline-flex items-center justify-center"
         >
           {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}

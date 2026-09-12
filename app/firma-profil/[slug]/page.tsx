@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import FirmProfileContent from '../FirmProfileContent';

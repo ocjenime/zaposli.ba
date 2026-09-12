@@ -182,22 +182,26 @@ export default function KontaktPage() {
                   <div className="relative">
                     <h3 className="text-2xl font-bold text-white mb-8">Podaci za kontakt</h3>
                     <div className="space-y-4">
-                      {contactInfo.map((item) => (
-                        <a
-                          key={item.title}
-                          href={item.href || '#'}
-                          className="group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                        >
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                            <item.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                          </div>
-                          <div>
-                            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">{item.title}</p>
-                            <p className="text-white font-semibold">{item.value}</p>
-                            <p className="text-white/60 text-sm mt-0.5">{item.note}</p>
-                          </div>
-                        </a>
-                      ))}
+                      {contactInfo.map((item) => {
+                        const inner = (
+                          <>
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                              <item.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
+                            </div>
+                            <div>
+                              <p className="text-xs uppercase tracking-wider text-white/50 mb-1">{item.title}</p>
+                              <p className="text-white font-semibold">{item.value}</p>
+                              <p className="text-white/60 text-sm mt-0.5">{item.note}</p>
+                            </div>
+                          </>
+                        );
+                        const cls = "group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300";
+                        return item.href ? (
+                          <a key={item.title} href={item.href} className={cls}>{inner}</a>
+                        ) : (
+                          <div key={item.title} className={cls}>{inner}</div>
+                        );
+                      })}
                     </div>
 
                     <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">

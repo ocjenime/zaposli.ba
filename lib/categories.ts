@@ -54,10 +54,10 @@ export const categories: Category[] = [
   {
     name: 'Tesarski radovi', slug: 'tesarski-radovi', seoSlug: 'tesar',
     profession: 'Tesar', icon: Hammer,
-    description: 'Drvene konstrukcije, skele, podovi, stropovi i krovne stanje',
+    description: 'Drvene konstrukcije, skele, podovi, stropovi i krovišta',
     count: 0, priceRange: '20-50 KM/h', priceNote: 'ili po poslu',
     group: 'Građevina i zidarski radovi',
-    services: ['Drvene konstrukcije', 'Skele', 'Drveni podovi', 'Stropovi', 'Krovne stanje', 'Tesarska montaža'],
+    services: ['Drvene konstrukcije', 'Skele', 'Drveni podovi', 'Stropovi', 'Krovišta', 'Tesarska montaža'],
   },
   {
     name: 'Betoniranje i armatura', slug: 'betoniranje-i-armatura', seoSlug: 'betoniranje-armatura',
@@ -243,7 +243,7 @@ export const categories: Category[] = [
     description: 'Plinske instalacije, zamjena plinskih peći, spojevi za kuhinju i grijanje na plin',
     count: 0, priceRange: '40-80 KM/h', priceNote: 'sa materijalom',
     group: 'Instalacije',
-    services: ['Plinske instalacije', 'Montaža plinskih peći', 'Plinski razvod', 'Servis plinskih uređaja', 'Isptivanje zaptivnosti'],
+    services: ['Plinske instalacije', 'Montaža plinskih peći', 'Plinski razvod', 'Servis plinskih uređaja', 'Ispitivanje zaptivnosti'],
   },
   {
     name: 'Solarne instalacije', slug: 'solarne-instalacije', seoSlug: 'solarne-instalacije',
@@ -364,7 +364,7 @@ export const categories: Category[] = [
     services: ['Rušenje visokih stabala', 'Orezivanje grana', 'Uklanjanje panjeva', 'Drvoredi', 'Hitan rad'],
   },
   {
-    name: 'Ograde i ograde', slug: 'ograde', seoSlug: 'ograde',
+    name: 'Ograde', slug: 'ograde', seoSlug: 'ograde',
     profession: 'Ogradač / Ogradžija', icon: Fence,
     description: 'Izrada i montaža ograda, kapija, gelendera i zaštitnih ograda',
     count: 0, priceRange: 'po dogovoru', priceNote: 'zavisno od materijala',

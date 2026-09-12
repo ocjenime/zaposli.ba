@@ -141,7 +141,7 @@ export default function ArticleLayout({
             {faqs && faqs.length > 0 && (
               <>
                 <h2 id="faq" className="text-2xl font-bold text-gray-900 mt-10 mb-4">
-                  Često pitanja
+                  Česta pitanja
                 </h2>
                 <div className="space-y-3 mb-10">
                   {faqs.map((faq, i) => (

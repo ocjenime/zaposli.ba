@@ -79,6 +79,7 @@ export default function CijenaFasadePoM2Page() {
               'Koliko košta fasada po m² u BiH 2026: stiropor vs kamena vuna, cijene po sistemu, šta ulazi u cijenu i greške koje poskupljuju radove.',
             slug: 'cijena-fasade-po-m2',
             datePublished: '2026-07-05',
+            dateModified: '2026-07-30',
           })}
         />
         <PageHero

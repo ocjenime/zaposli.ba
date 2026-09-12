@@ -14,13 +14,7 @@ export default function VerifiedBadge({ size = 'md', className = '' }: VerifiedB
 
   return (
     <span
-      className={`inline-flex items-center rounded-full font-bold tracking-wide border ${sizes[size]} ${className}`}
-      style={{
-        background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-        borderColor: 'rgba(217, 119, 6, 0.25)',
-        color: '#92400e',
-        boxShadow: '0 1px 2px rgba(180, 83, 9, 0.08), inset 0 1px 0 rgba(255,255,255,0.6)',
-      }}
+      className={`inline-flex items-center rounded-full font-bold tracking-wide border ${sizes[size]} ${className} verified-badge`}
       title="Ova firma je lično provjerena od strane Zaposli.ba tima"
     >
       <svg

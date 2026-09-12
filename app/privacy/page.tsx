@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Politika privatnosti. Zaposli.ba',
+  title: 'Politika privatnosti | Zaposli.ba',
   description:
     'Kako Zaposli.ba prikuplja, koristi i štiti vaše lične podatke: kolačići, dijeljenje s firmama, vaša prava i rokovi čuvanja podataka.',
   alternates: { canonical: 'https://zaposli.ba/privacy/' },

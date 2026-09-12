@@ -276,6 +276,9 @@ function PostProjectContent() {
 
     const cat = categories.find((c) => c.name === formData.category);
     if (!cat) { setError('Odaberite kategoriju'); return; }
+    if (formData.title.trim().length < 5) { setError('Naslov mora imati najmanje 5 znakova'); return; }
+    if (formData.description.trim().length < 20) { setError('Opis mora imati najmanje 20 znakova'); return; }
+    if (!formData.city.trim()) { setError('Unesite grad'); return; }
     if (!validateBudget()) return;
 
     setSubmitting(true);
@@ -522,7 +525,12 @@ function PostProjectContent() {
                     <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Opišite detaljno šta vam je potrebno..." rows={5} className="input-field" required />
                     <p className="mt-1 text-sm text-gray-500">Što detaljniji opis, to ćete preciznije ponude dobiti.</p>
                   </div>
-                  <button type="button" onClick={() => setStep(2)} className="w-full btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
+                  <button type="button" onClick={() => {
+                    if (formData.title.trim().length < 5) { setError('Naslov mora imati najmanje 5 znakova'); return; }
+                    if (!formData.category) { setError('Odaberite kategoriju'); return; }
+                    if (formData.description.trim().length < 20) { setError('Opis mora imati najmanje 20 znakova'); return; }
+                    setError(''); setStep(2);
+                  }} className="w-full btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
                 </div>
               )}
 
@@ -617,7 +625,7 @@ function PostProjectContent() {
                   </div>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <button type="button" onClick={() => setStep(1)} className="flex-1 btn-secondary">Nazad</button>
-                    <button type="button" onClick={() => { if (validateBudget()) setStep(3); }} className="flex-1 btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
+                    <button type="button" onClick={() => { if (!formData.city.trim()) { setError('Odaberite grad'); return; } if (validateBudget()) { setError(''); setStep(3); } }} className="flex-1 btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
                   </div>
                 </div>
               )}

@@ -154,8 +154,12 @@ export default function FirmProfileEditorPage() {
 
   useEffect(() => {
     if (authLoading) return;
-    if (!user || !isFirmRole(role)) {
+    if (!user) {
       router.push('/prijava/');
+      return;
+    }
+    if (!isFirmRole(role)) {
+      router.push('/dashboard/');
       return;
     }
     loadFirm();

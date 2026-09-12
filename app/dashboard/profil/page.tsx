@@ -43,7 +43,6 @@ export default function ClientProfilePage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [changingPassword, setChangingPassword] = useState(false);
@@ -134,7 +133,6 @@ export default function ClientProfilePage() {
     }
 
     setPasswordSuccess('Lozinka je uspješno promijenjena.');
-    setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
   }
@@ -222,7 +220,7 @@ export default function ClientProfilePage() {
                     className="w-full bg-gray-100 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-500 cursor-not-allowed"
                   />
                 </div>
-                <p className="text-xs text-steel mt-1">Email za prijavu ne može se mijenjati ovde.</p>
+                <p className="text-xs text-steel mt-1">Email za prijavu ne može se mijenjati ovdje.</p>
               </div>
 
               <div>

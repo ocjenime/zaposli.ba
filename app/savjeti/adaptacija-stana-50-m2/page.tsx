@@ -104,7 +104,7 @@ export default function AdaptacijaStanaPage() {
       <h2 id="ušteda" className="text-2xl font-bold text-gray-900 mt-10 mb-4">Savjeti za uštedu</h2>
       <p className="text-steel leading-relaxed mb-4">
         Kupujte materijal van sezone kada su popusti veći. Raspitajte se o kompletnim paketima za kupatilo.
-        Ako imate vještina, možete sami uraditi demontažu i čišćenje, čime štedite na prvoj fazi.
+        Ako imate vještine, možete sami uraditi demontažu i čišćenje, čime štedite na prvoj fazi.
       </p>
     </ArticleLayout>
   );

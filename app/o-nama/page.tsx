@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
-import { JsonLd, organizationSchema, breadcrumbSchema } from '@/lib/jsonld';
+import { JsonLd, organizationSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'O nama | Zaposli.ba',
@@ -77,7 +77,7 @@ const timeline = [
     year: '2023',
     title: 'Ideja se rodila',
     description:
-      'Nakon vlastite frustracije prilikom renoviranja stana u Sarajevu, osnovali smo ideju da pronađemo pouzdane majstore trebalo biti jednostavno kao naručiti hranu.',
+      'Nakon vlastite frustracije prilikom renoviranja stana u Sarajevu, rodila se ideja: pronalaženje pouzdanih majstora mora biti jednostavno kao naručivanje hrane.',
   },
   {
     icon: Rocket,
@@ -362,15 +362,7 @@ export default function ONamaPage() {
       </main>
       <Footer />
 
-      <JsonLd
-        data={[
-          breadcrumbSchema([
-            { name: 'Početna', url: '/' },
-            { name: 'O nama', url: '/o-nama/' },
-          ]),
-          organizationSchema(),
-        ]}
-      />
+      <JsonLd data={organizationSchema()} />
     </div>
   );
 }

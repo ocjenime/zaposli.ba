@@ -29,7 +29,7 @@ const benefits = [
   {
     icon: ShieldCheck,
     title: 'Bez rizika',
-    description: 'Naučite kako prepoznati pouzdane izvođače i izbjeći uobičajene prevaru.',
+    description: 'Naučite kako prepoznati pouzdane izvođače i izbjeći uobičajene prevare.',
   },
   {
     icon: Lightbulb,

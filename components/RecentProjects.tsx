@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { plural } from '@/lib/plural';
 import Link from 'next/link';
 import { MapPin, Clock, ArrowRight, TrendingUp, Sparkles, Send } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
@@ -53,7 +54,7 @@ function timeAgo(dateString: string) {
 
   if (diffMins < 5) return 'Upravo sada';
   if (diffHours < 1) return `Prije ${diffMins} min`;
-  if (diffHours < 24) return `Prije ${diffHours} sati`;
+  if (diffHours < 24) return `Prije ${diffHours} ${plural(diffHours, ['sat', 'sata', 'sati'])}`;
   if (diffDays === 1) return 'Prije 1 dan';
   return `Prije ${diffDays} dana`;
 }
@@ -168,7 +169,7 @@ export default function RecentProjects() {
 
 function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean }) {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group cursor-pointer flex flex-col h-full">
+    <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group flex flex-col h-full">
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
           <Link

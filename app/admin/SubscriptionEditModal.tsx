@@ -23,7 +23,7 @@ const durations = [
   { label: '3 mjeseca', months: 3 },
   { label: '6 mjeseci', months: 6 },
   { label: '12 mjeseci', months: 12 },
-  { label: 'Custom', months: 0 },
+  { label: 'Prilagođeno', months: 0 },
 ];
 
 export default function SubscriptionEditModal({

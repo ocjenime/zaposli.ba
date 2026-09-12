@@ -72,7 +72,7 @@ export default function ProfileEditModal({
     setSuccess('');
     try {
       await onResetPassword(profile!.email);
-      setSuccess('Email za reset lozinke je poslat korisniku.');
+      setSuccess('Email za reset lozinke je poslan korisniku.');
     } catch (err: any) {
       setError(err?.message || 'Greška prilikom slanja emaila za reset lozinke.');
     } finally {

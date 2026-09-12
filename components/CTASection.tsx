@@ -1,16 +1,18 @@
 import Link from 'next/link';
+import { useId } from 'react';
 import { ArrowRight, Building2, CheckCircle, Sparkles, Wrench } from 'lucide-react';
 
 export default function CTASection() {
+  const patternId = `ctaGrid-${useId().replace(/:/g, '')}`;
   return (
     <section className="py-8 md:py-14 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <pattern id="ctaGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <svg className="w-full h-full" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <pattern id={patternId} width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5"/>
           </pattern>
-          <rect width="100%" height="100%" fill="url(#ctaGrid)" />
+          <rect width="100%" height="100%" fill={`url(#${patternId})`} />
         </svg>
       </div>
       <div className="absolute top-10 right-10 w-80 h-80 bg-brand-orange/15 rounded-full blur-3xl" />

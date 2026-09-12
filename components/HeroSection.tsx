@@ -122,6 +122,7 @@ export default function HeroSection() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Šta vam treba? (npr. keramičar, moler...)"
+                    aria-label="Šta vam treba? Pretraga usluga"
                     className="w-full pl-12 pr-4 py-3.5 sm:py-4 bg-white/10 rounded-xl sm:rounded-2xl border border-white/10 focus:bg-white/20 focus:ring-2 focus:ring-brand-orange/40 outline-none text-white placeholder:text-white/50 text-sm transition-all"
                   />
                 </div>
@@ -130,6 +131,7 @@ export default function HeroSection() {
                   <select
                     value={selectedCity}
                     onChange={(e) => setSelectedCity(e.target.value)}
+                    aria-label="Odaberite grad"
                     className="w-full pl-12 pr-8 py-3.5 sm:py-4 bg-white/10 rounded-xl sm:rounded-2xl border border-white/10 focus:bg-white/20 focus:ring-2 focus:ring-brand-orange/40 outline-none text-white appearance-none text-sm transition-all cursor-pointer"
                   >
                     <option value="" className="text-gray-900">Svi gradovi</option>

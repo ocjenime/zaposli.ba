@@ -546,7 +546,7 @@ export default function AdminPage() {
     await loadVerifications();
     await loadFirms();
     await loadFirmPlans();
-    setSuccess(`Verifikacija ${action === 'approve' ? 'odgovrena' : 'odbijena'}.`);
+    setSuccess(`Verifikacija ${action === 'approve' ? 'odobrena' : 'odbijena'}.`);
   }
 
   async function updateReviewStatus(review: AdminReview, action: 'approve' | 'reject') {
@@ -563,7 +563,7 @@ export default function AdminPage() {
       return;
     }
     await loadReviews();
-    setSuccess(`Recenzija ${action === 'approve' ? 'odgovrena' : 'odbijena'}.`);
+    setSuccess(`Recenzija ${action === 'approve' ? 'odobrena' : 'odbijena'}.`);
   }
 
   async function markRequestRead(id: string) {
@@ -1205,7 +1205,7 @@ export default function AdminPage() {
                                   )}
                                   {v.verification_status === 'unverified' && (
                                     <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
-                                      NEPOZNATO
+                                      NEVERIFICIRANO
                                     </span>
                                   )}
                                 </div>
@@ -1233,7 +1233,11 @@ export default function AdminPage() {
                                       {savingVerification === v.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Odobri'}
                                     </button>
                                     <button
-                                      onClick={() => updateVerification(v, 'reject', prompt('Razlog odbijanja (obavezno):') || undefined)}
+                                      onClick={() => {
+                                        const reason = prompt('Razlog odbijanja (obavezno):');
+                                        if (!reason || !reason.trim()) return;
+                                        updateVerification(v, 'reject', reason.trim());
+                                      }}
                                       disabled={savingVerification === v.id}
                                       className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
                                     >
@@ -1476,7 +1480,7 @@ export default function AdminPage() {
               }}
               onResetPassword={async (email) => {
                 await resetPassword(email);
-                setSuccess(`Email za reset lozinke poslat na ${email}.`);
+                setSuccess(`Email za reset lozinke poslan na ${email}.`);
               }}
             />
           )}

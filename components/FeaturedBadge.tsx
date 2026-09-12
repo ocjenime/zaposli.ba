@@ -13,8 +13,8 @@ export default function FeaturedBadge({ className = '', label = 'Istaknuto' }: F
       className={[
         'inline-flex items-center gap-1',
         'px-2 py-0.5 rounded-md',
-        'bg-amber-50 text-amber-700',
-        'border border-amber-100',
+        'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300',
+        'border border-amber-100 dark:border-amber-800/50',
         'text-xs font-semibold',
         'shadow-sm',
         className,

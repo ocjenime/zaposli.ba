@@ -12,12 +12,18 @@ export default class ErrorBoundary extends Component<Props, State> {
     return { error };
   }
 
+  componentDidCatch(error: Error) {
+    console.error('ErrorBoundary caught:', error);
+  }
+
   render() {
     if (this.state.error) {
       return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-cloud px-4">
           <p className="text-red-600 font-bold mb-2">Došlo je do greške</p>
-          <pre className="text-sm text-steel max-w-md text-center">{this.state.error.message}</pre>
+          <p className="text-sm text-steel max-w-md text-center">
+            Nešto nije radilo kako treba. Osvježite stranicu ili pokušajte ponovo za par trenutaka.
+          </p>
           <button
             onClick={() => { this.setState({ error: null }); window.location.reload(); }}
             className="mt-4 px-4 py-2 bg-brand-orange text-[#ffffff] rounded-lg"

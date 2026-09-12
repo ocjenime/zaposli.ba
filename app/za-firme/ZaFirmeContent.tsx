@@ -243,7 +243,7 @@ const faqs = [
   {
     question: 'Kako se plaćaju paketi?',
     answer:
-      'Paketi se plaćaju mjesečno ili godišnje. Godišnje plaćanje donosi 10% popusta. Dostupni su Stripe, PayPal i bankovna uplata.',
+      'Paketi se plaćaju mjesečno ili godišnje, a godišnje plaćanje donosi 10% popusta. Uplata se vrši bankovnom uplatom preko platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
   },
 ];
 

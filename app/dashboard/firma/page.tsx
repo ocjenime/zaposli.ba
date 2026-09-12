@@ -543,7 +543,7 @@ function FirmDashboardContent() {
           )}
 
           <DashboardHeader
-            label="Firm dashboard"
+            label="Panel firme"
             title="Dobro došli natrag"
             email={user.email || ''}
             planName={firmId && !loadingPlan ? planName : undefined}

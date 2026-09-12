@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
+import { plural } from '@/lib/plural';
 import Footer from '@/components/Footer';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -401,7 +402,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1">
                   <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
                   <span className="font-bold text-white">{rating.toFixed(1)}</span>
-                  <span>({reviewCount} recenzija)</span>
+                  <span>({reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])})</span>
                 </span>
                 {firm.city && (
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1">
@@ -546,7 +547,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                 />
                               ))}
                             </div>
-                            <div className="text-xs text-steel">{reviewCount} recenzija</div>
+                            <div className="text-xs text-steel">{reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])}</div>
                           </div>
                           <div className="flex-1 space-y-2">
                             {histogram.map(({ star, count }) => (

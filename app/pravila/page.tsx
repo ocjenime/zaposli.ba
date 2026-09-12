@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Pravila. Zaposli.ba',
+  title: 'Pravila | Zaposli.ba',
   description:
     'Pravila korištenja platforme Zaposli.ba: prava i obaveze korisnika i firmi, plaćanje, odgovornost platforme i mjerodavno pravo BiH.',
   alternates: { canonical: 'https://zaposli.ba/pravila/' },

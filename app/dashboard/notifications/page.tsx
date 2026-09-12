@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { plural } from '@/lib/plural';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
@@ -127,7 +128,7 @@ export default function NotificationsPage() {
               <h1 className="text-2xl font-bold text-gray-900">Obavještenja</h1>
               <p className="text-steel text-sm">
                 {unreadCount > 0
-                  ? `${unreadCount} nepročitanih obavještenja`
+                  ? `${unreadCount} ${plural(unreadCount, ['nepročitano obavještenje', 'nepročitana obavještenja', 'nepročitanih obavještenja'])}`
                   : 'Sva obavještenja su pročitana'}
               </p>
             </div>

@@ -8,7 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PageHero from '@/components/ui/PageHero';
-import { JsonLd, breadcrumbSchema, serviceSchema } from '@/lib/jsonld';
+import { JsonLd, serviceSchema } from '@/lib/jsonld';
 import { categories, getCategory, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
@@ -50,7 +50,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije', href: '/kategorije/' }, { name: cat.name }]} />
-        <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }, { name: 'Kategorije', url: '/kategorije/' }, { name: cat.name }])} />
         <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/` })} />
 
         {/* Hero */}

@@ -384,6 +384,7 @@ function Conversation() {
                 <button
                   type="submit"
                   disabled={!input.trim() || sending}
+                  aria-label="Pošalji poruku"
                   className="btn-primary px-4 disabled:opacity-50 inline-flex items-center gap-2"
                 >
                   {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}

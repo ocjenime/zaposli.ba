@@ -51,7 +51,6 @@ const groups: FaqGroup[] = [
       [
         'Koliko košta korištenje Zaposli.ba za klijente?',
         'Jesam li obavezan odabrati neku ponudu?',
-        'Šta ako nisam zadovoljan izvedenim radovima?',
         'Mogu li objaviti hitan posao?',
       ].includes(f.question)
     ),

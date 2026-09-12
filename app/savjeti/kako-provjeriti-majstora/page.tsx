@@ -73,6 +73,7 @@ export default function KakoProvjeritiMajstoraPage() {
               'Kontrolna lista prije nego date avans majstoru: registracija firme, recenzije, fotografije radova, ugovor i plaćanje po fazama.',
             slug: 'kako-provjeriti-majstora',
             datePublished: '2026-07-10',
+            dateModified: '2026-07-30',
           })}
         />
         <PageHero

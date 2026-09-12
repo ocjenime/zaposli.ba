@@ -234,7 +234,7 @@ function RequestContent() {
       .from('jobs')
       .insert({
         client_id: user.id,
-        category_slug: askMode ? 'savjetovanje' : cat?.slug || 'ostalo',
+        category_slug: askMode ? 'ostale-usluge' : cat?.slug || 'ostale-usluge',
         title: askMode ? `Upit: ${firm.name}` : formData.title,
         description: askMode ? formData.question : formData.description,
         city: formData.city,
@@ -630,7 +630,7 @@ function RequestContent() {
                         rows={3}
                         placeholder={
                           askMode
-                            ? 'npr. Kada biste mogli doći na pogled?'
+                            ? 'npr. Kada biste mogli doći na uvid?'
                             : 'npr. Imate li iskustva s ovakvim poslovima?'
                         }
                         className="input-field pl-10 resize-none"

@@ -84,6 +84,31 @@
 .dark .text-white {
   color: rgb(255 255 255);
 }
+/* Alpha variants keep their designed opacity but must use real white too */
+.dark .text-white\/40 {
+  color: rgb(255 255 255 / 0.4);
+}
+.dark .text-white\/50 {
+  color: rgb(255 255 255 / 0.5);
+}
+.dark .text-white\/60 {
+  color: rgb(255 255 255 / 0.6);
+}
+.dark .text-white\/70 {
+  color: rgb(255 255 255 / 0.7);
+}
+.dark .text-white\/75 {
+  color: rgb(255 255 255 / 0.75);
+}
+.dark .text-white\/80 {
+  color: rgb(255 255 255 / 0.8);
+}
+.dark .text-white\/90 {
+  color: rgb(255 255 255 / 0.9);
+}
+.dark .placeholder\:text-white\/50::placeholder {
+  color: rgb(255 255 255 / 0.5);
+}
 
 /* Dark scrollbar */
 .dark ::-webkit-scrollbar-track {
@@ -118,6 +143,20 @@
 ::selection {
   background: rgba(249, 115, 22, 0.28);
   color: inherit;
+}
+
+/* Verified badge - light by default, adapted for dark mode */
+.verified-badge {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border-color: rgba(217, 119, 6, 0.25);
+  color: #92400e;
+  box-shadow: 0 1px 2px rgba(180, 83, 9, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.dark .verified-badge {
+  background: linear-gradient(135deg, rgba(120, 53, 15, 0.35) 0%, rgba(120, 53, 15, 0.2) 100%);
+  border-color: rgba(251, 191, 36, 0.35);
+  color: #fcd34d;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 @layer base {

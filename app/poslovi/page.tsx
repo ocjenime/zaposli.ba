@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     locale: 'bs_BA',
     type: 'website',
+    images: [{ url: `${site.url}/images/og-cover.webp`, width: 1200, height: 630, alt: 'Zaposli.ba - Poslovi i projekti' }],
   },
 };
 

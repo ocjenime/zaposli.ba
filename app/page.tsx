@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     description:
       'Besplatno objavite posao i primite ponude od provjerenih građevinskih firmi i majstora širom Bosne i Hercegovine.',
     url: site.url,
+    images: [{ url: `${site.url}/images/og-cover.webp`, width: 1200, height: 630, alt: 'Zaposli.ba - Pronađite majstora za vaš posao' }],
   },
 };
 

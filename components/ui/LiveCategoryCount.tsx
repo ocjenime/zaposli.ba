@@ -1,6 +1,7 @@
 'use client';
 
 import { useCategoryCount } from '@/hooks/useCategoryCounts';
+import { plural } from '@/lib/plural';
 
 interface LiveCategoryCountProps {
   slug: string;
@@ -10,14 +11,13 @@ interface LiveCategoryCountProps {
 
 export default function LiveCategoryCount({
   slug,
-  suffix = 'firmi',
   className = '',
 }: LiveCategoryCountProps) {
   const count = useCategoryCount(slug);
   if (count === null) return <span className={className}>...</span>;
   return (
     <span className={className}>
-      {count} {suffix}
+      {count} {plural(count, ['firma', 'firme', 'firmi'])}
     </span>
   );
 }
