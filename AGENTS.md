@@ -185,6 +185,7 @@
   - Added new "Sporovi" tab in `/admin/` listing all mediation requests, with direct links to conversations and a form for admins to mark disputes as resolved with a resolution note.
   - Updated `lib/types.ts` and `lib/notifications.ts` with the new `mediation_requested` notification type.
   - Wrapped `/admin/` in a `Suspense` boundary because it now reads the `?tab=` query parameter. `npm run lint` and `npm run build` both pass (2405 pages).
+- Fixed the `/za-firme/` pricing CTA flow: clicking a subscription plan now takes firm/majstor users to `/dashboard/firma/pretplata/` and everyone else (guests or logged-in clients) to a new `/pretplata-auth/` gateway page. The gateway page offers login/registration for guests and explains that a firm/majstor account is required for logged-in clients. `npm run lint` and `npm run build` both pass (2408 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
