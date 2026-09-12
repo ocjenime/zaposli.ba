@@ -176,7 +176,7 @@
 - Centered homepage hero content (headline, subheadline, search form, quick stats) on all breakpoints after removing the trust-signal row left the content aligned to the left; later reverted back to the original left alignment per user request. `npm run lint` and `npm run build` both pass (2405 pages).
 - Slimmed down the site header (`components/Header.tsx`) from `h-16 md:h-20` to `h-14 md:h-16` and reduced the logo scale from `scale-[1.2]` to `scale-110` for a more premium Higgsfield look; updated the homepage emergency banner top margin (`mt-16 md:mt-20` → `mt-14 md:mt-16`) to match the new header height. `npm run lint` and `npm run build` both pass (2405 pages).
 - Slimmed down the homepage emergency intervention banner by reducing vertical padding from `py-2.5` to `py-1.5`. `npm run lint` and `npm run build` both pass (2405 pages).
-- Shifted the homepage hero background image further to the right (`object-center` → `object-[90%_center]`) to hide a floating worker artifact in the bottom-right corner of the AI-generated image. `npm run lint` and `npm run build` both pass (2405 pages).
+- Shifted the homepage hero background image to the right (`object-center` → `object-[60%_center]`) to hide a floating worker artifact in the bottom-right corner of the AI-generated image; briefly tested 75% and 90% but reverted to 60% per user feedback. `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
