@@ -9,6 +9,7 @@ export interface PageHeroProps {
   image?: string;
   icon?: LucideIcon;
   overlay?: boolean;
+  overlayIntensity?: 'dark' | 'medium' | 'light';
   gradient?: string;
   size?: 'sm' | 'md' | 'lg';
   align?: 'left' | 'center';
@@ -22,6 +23,7 @@ export default function PageHero({
   image,
   icon: Icon,
   overlay = true,
+  overlayIntensity = 'dark',
   gradient,
   size = 'md',
   align = 'left',
@@ -35,6 +37,24 @@ export default function PageHero({
   const alignClass = align === 'center' ? 'text-center items-center mx-auto' : 'text-left items-start';
   const gradientClass = gradient || 'bg-gradient-to-br from-ink via-slate-900 to-slate-800';
 
+  const overlayClasses = {
+    dark: {
+      base: 'bg-black/45',
+      left: 'from-black/85 via-black/60 to-black/40',
+      top: 'from-black/70 via-black/25 to-black/40',
+    },
+    medium: {
+      base: 'bg-black/35',
+      left: 'from-black/70 via-black/45 to-black/25',
+      top: 'from-black/55 via-black/15 to-black/30',
+    },
+    light: {
+      base: 'bg-black/25',
+      left: 'from-black/55 via-black/35 to-black/15',
+      top: 'from-black/45 via-black/10 to-black/20',
+    },
+  }[overlayIntensity];
+
   return (
     <section className={`relative overflow-hidden ${height} flex items-center`}>
       {image ? (
@@ -47,9 +67,9 @@ export default function PageHero({
             priority
             sizes="100vw"
           />
-          {overlay && <div className="absolute inset-0 bg-black/45" />}
-          {overlay && <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />}
-          {overlay && <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/40" />}
+          {overlay && <div className={`absolute inset-0 ${overlayClasses.base}`} />}
+          {overlay && <div className={`absolute inset-0 bg-gradient-to-r ${overlayClasses.left}`} />}
+          {overlay && <div className={`absolute inset-0 bg-gradient-to-t ${overlayClasses.top}`} />}
         </>
       ) : (
         <>

@@ -70,6 +70,7 @@ export default function CategoriesPage() {
           align="center"
           size="lg"
           image="/images/kategorije-hero.jpg"
+          overlayIntensity="medium"
         >
           <Link
             href="/objavi-projekat/"
