@@ -61,7 +61,7 @@ export default function HeroSection() {
       {/* Emergency banner */}
       {mounted && emergencyBannerVisible && (
         <div className="relative z-30 mt-14 md:mt-16 bg-[#111] text-white border-b border-white/10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-3">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between gap-3">
             <Link
               href="/kategorije/hitne-intervencije/"
               className="flex items-center gap-2 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity min-w-0"
