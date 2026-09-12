@@ -171,6 +171,7 @@
 - Removed the cartoon illustration from `/kako-funkcionise/` per user feedback; deleted `components/HowItWorksHeroIllustration.tsx` and reverted the hero to text-only. `npm run lint` and `npm run build` both pass (2405 pages).
 - Expanded the FAQ content in `lib/data.ts` from 8 to 28 questions, added `FaqCategory` (`client` | `firm` | `general`) to `FaqItem`, and grouped questions by audience. Updated `/faq/` to use category-based grouping and `/kako-funkcionise/` to show category filter tabs (`Sva pitanja` / `Za klijente` / `Za firme`) with a link to the full FAQ page. `npm run lint` and `npm run build` both pass (2405 pages).
 - Limited the FAQ list on `/kako-funkcionise/` to 6 visible questions by default with a "Prikaži još X" / "Prikaži manje" toggle, so mobile users are not overwhelmed by scrolling. The dedicated `/faq/` page keeps all questions expanded by category. `npm run lint` and `npm run build` both pass (2405 pages).
+- Fixed homepage `StatsSection` showing only 5 cards instead of 6 when fewer than 2 dynamic stats had data: added two new trust cards ("Brze ponude" and "Dostupni širom BiH") so the 3×2 bento grid always fills exactly 6 slots regardless of how many stats are returned from Supabase. `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
