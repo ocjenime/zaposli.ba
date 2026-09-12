@@ -8,10 +8,14 @@ export interface Plan {
   description: string | null;
   price_monthly: number;
   price_yearly: number;
+  launch_price_monthly: number | null;
+  launch_price_yearly: number | null;
+  launch_offer_months: number | null;
   bids_per_month: number;
   featured: boolean;
   verified_badge: boolean;
   priority_support: boolean;
+  included_featured_ads: number;
   payment_provider?: string | null;
   stripe_price_id?: string | null;
   stripe_product_id?: string | null;
@@ -27,6 +31,7 @@ export interface Subscription {
   status: 'active' | 'cancelled' | 'expired' | 'paused';
   starts_at: string;
   ends_at: string | null;
+  discount_ends_at: string | null;
   is_promo: boolean;
   notes: string | null;
   created_at: string;
@@ -122,4 +127,47 @@ export function getResetCountdownText() {
   const diff = next.getTime() - now.getTime();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
   return `Reset za ${days} dan${days === 1 ? '' : 'a'}`;
+}
+
+export function getLaunchPrice(plan: Plan | null, interval: 'monthly' | 'yearly'): number | null {
+  if (!plan) return null;
+  if (interval === 'yearly') {
+    return plan.launch_price_yearly ?? null;
+  }
+  return plan.launch_price_monthly ?? null;
+}
+
+export function hasActiveLaunchDiscount(subscription: Subscription | null): boolean {
+  if (!subscription?.discount_ends_at) return false;
+  return new Date(subscription.discount_ends_at).getTime() > Date.now();
+}
+
+export function getCurrentSubscriptionPrice(
+  subscription: Subscription | null,
+  interval: 'monthly' | 'yearly'
+): number {
+  const plan = subscription?.plans;
+  if (!plan) return 0;
+  if (hasActiveLaunchDiscount(subscription)) {
+    return getLaunchPrice(plan, interval) ?? plan.price_monthly;
+  }
+  return interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
+}
+
+export async function getFeaturedAdsUsedThisMonth(firmId: string): Promise<number> {
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const { count, error } = await supabase
+    .from('job_promotions')
+    .select('*', { count: 'exact', head: true })
+    .eq('firm_id', firmId)
+    .eq('source', 'included')
+    .gte('created_at', startOfMonth);
+  if (error) throw error;
+  return count ?? 0;
+}
+
+export function getIncludedAdsRemaining(subscription: Subscription | null, used: number): number {
+  const limit = subscription?.plans?.included_featured_ads ?? 0;
+  return Math.max(0, limit - used);
 }

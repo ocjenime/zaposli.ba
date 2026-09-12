@@ -19,7 +19,7 @@ import {
   Loader2, Check, Crown, AlertCircle, Search,
   Star, CheckCircle, XCircle, Pencil,
   MessageSquare, Briefcase, TrendingUp, DollarSign,
-  ShieldCheck, Flag, Gavel, ListFilter, Scale,
+  ShieldCheck, Flag, Gavel, ListFilter, Scale, Megaphone,
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
@@ -136,6 +136,19 @@ interface AdminMediation {
   firm: { name: string | null; email: string | null; owner_id: string | null } | null;
 }
 
+interface AdminPromotion {
+  id: string;
+  job_id: string;
+  firm_id: string;
+  amount: number;
+  status: 'pending' | 'active' | 'expired';
+  source: 'included' | 'paid';
+  created_at: string;
+  ends_at: string | null;
+  jobs: { title: string; city: string | null } | null;
+  firms: { name: string | null; email: string | null } | null;
+}
+
 interface AdminStats {
   users: number;
   clients: number;
@@ -168,6 +181,7 @@ const tabs = [
   { id: 'plans', label: 'Paketi', icon: FileText },
   { id: 'reports', label: 'Prijave', icon: Flag },
   { id: 'mediations', label: 'Sporovi', icon: Scale },
+  { id: 'promotions', label: 'Oglasi', icon: Megaphone },
   { id: 'requests', label: 'Zahtjevi', icon: Bell },
 ];
 
@@ -178,7 +192,7 @@ function AdminPage() {
   const tabParam = searchParams.get('tab');
   const validTabs = [
     'overview', 'users', 'firms', 'verifications', 'reviews', 'conversations',
-    'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'requests',
+    'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'promotions', 'requests',
   ];
   const [activeTab, setActiveTab] = useState(tabParam && validTabs.includes(tabParam) ? tabParam : 'overview');
 
@@ -194,6 +208,7 @@ function AdminPage() {
   const [verifications, setVerifications] = useState<AdminVerification[]>([]);
   const [reviews, setReviews] = useState<AdminReview[]>([]);
   const [mediations, setMediations] = useState<AdminMediation[]>([]);
+  const [promotions, setPromotions] = useState<AdminPromotion[]>([]);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -209,6 +224,7 @@ function AdminPage() {
   const [loadingVerifications, setLoadingVerifications] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(false);
   const [loadingMediations, setLoadingMediations] = useState(false);
+  const [loadingPromotions, setLoadingPromotions] = useState(false);
   const [savingVerification, setSavingVerification] = useState<string | null>(null);
   const [savingReview, setSavingReview] = useState<string | null>(null);
   const [savingJob, setSavingJob] = useState<string | null>(null);
@@ -465,6 +481,23 @@ function AdminPage() {
     }
   }, []);
 
+  const loadPromotions = useCallback(async () => {
+    setLoadingPromotions(true);
+    try {
+      const { data, error } = await supabase
+        .from('job_promotions')
+        .select('*, jobs(title, city), firms(name, email)')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      setPromotions((data as unknown as AdminPromotion[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja oglasa.');
+    } finally {
+      setLoadingPromotions(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
@@ -491,7 +524,10 @@ function AdminPage() {
     if (activeTab === 'mediations') {
       loadMediations();
     }
-  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews, loadMediations]);
+    if (activeTab === 'promotions') {
+      loadPromotions();
+    }
+  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews, loadMediations, loadPromotions]);
 
   async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);
@@ -654,6 +690,63 @@ function AdminPage() {
     setMediationResolution('');
     await loadMediations();
     setSuccess('Spor je označen kao riješen.');
+  }
+
+  const [savingPromotion, setSavingPromotion] = useState<string | null>(null);
+
+  async function approvePromotion(promotion: AdminPromotion) {
+    setSavingPromotion(promotion.id);
+    setError('');
+    setSuccess('');
+
+    const endsAt = new Date();
+    endsAt.setDate(endsAt.getDate() + 30);
+
+    const { error: promotionErr } = await supabase
+      .from('job_promotions')
+      .update({
+        status: 'active',
+        starts_at: new Date().toISOString(),
+        ends_at: endsAt.toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', promotion.id);
+
+    if (promotionErr) {
+      setSavingPromotion(null);
+      setError(promotionErr.message);
+      return;
+    }
+
+    await supabase
+      .from('jobs')
+      .update({
+        is_featured: true,
+        featured_until: endsAt.toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', promotion.job_id);
+
+    setSavingPromotion(null);
+    await loadPromotions();
+    setSuccess('Oglas je odobren i istaknut na 30 dana.');
+  }
+
+  async function rejectPromotion(promotion: AdminPromotion) {
+    setSavingPromotion(promotion.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('job_promotions')
+      .update({ status: 'expired', updated_at: new Date().toISOString() })
+      .eq('id', promotion.id);
+    setSavingPromotion(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadPromotions();
+    setSuccess('Oglas je odbijen.');
   }
 
   function filteredFirms() {
@@ -1577,6 +1670,69 @@ function AdminPage() {
                               </button>
                             </div>
                           )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'promotions' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100">
+                    <p className="text-sm text-steel">Promovisani oglasi i zahtjevi firmi</p>
+                  </div>
+                  {loadingPromotions ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje oglasa...
+                    </div>
+                  ) : promotions.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema oglasa.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {promotions.map((p) => (
+                        <div key={p.id} className="p-4">
+                          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <p className="font-medium text-gray-900">{p.jobs?.title || 'Nepoznati posao'}</p>
+                                {p.status === 'pending' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">NA ČEKANJU</span>
+                                )}
+                                {p.status === 'active' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">AKTIVAN</span>
+                                )}
+                                {p.status === 'expired' && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">ISTEKAO/ODBIJEN</span>
+                                )}
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
+                                  {p.source === 'included' ? 'Uključen u paket' : `Plaćeno ${p.amount} KM`}
+                                </span>
+                              </div>
+                              <p className="text-sm text-steel">
+                                Firma: {p.firms?.name || '-'} · {p.jobs?.city || ''} · {formatDate(p.created_at)}
+                              </p>
+                            </div>
+                            {p.status === 'pending' && (
+                              <div className="flex flex-wrap items-center gap-2 lg:shrink-0">
+                                <button
+                                  onClick={() => approvePromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  {savingPromotion === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
+                                  Odobri
+                                </button>
+                                <button
+                                  onClick={() => rejectPromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  <XCircle className="w-3.5 h-3.5" /> Odbij
+                                </button>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Plan, Subscription, addMonths, formatDateTime } from '@/lib/subscriptions';
+import { Plan, Subscription, addMonths, formatDateTime, formatPrice, getLaunchPrice } from '@/lib/subscriptions';
 import {
   X, Loader2, AlertCircle, Check, Crown, Calendar, Clock, Gift, Pause, Play, Trash2,
 } from 'lucide-react';
@@ -39,6 +39,7 @@ export default function SubscriptionEditModal({
   const [customMonths, setCustomMonths] = useState(1);
   const [startsAt, setStartsAt] = useState(() => new Date().toISOString().slice(0, 10));
   const [isPromo, setIsPromo] = useState(false);
+  const [applyLaunchDiscount, setApplyLaunchDiscount] = useState(false);
   const [notes, setNotes] = useState('');
   const [extendMonths, setExtendMonths] = useState(1);
 
@@ -65,6 +66,14 @@ export default function SubscriptionEditModal({
   }
 
   const selectedPlan = plans.find((p) => p.id === planId);
+
+  useEffect(() => {
+    if (selectedPlan?.launch_price_monthly) {
+      setApplyLaunchDiscount(true);
+    } else {
+      setApplyLaunchDiscount(false);
+    }
+  }, [selectedPlan?.id, selectedPlan?.launch_price_monthly]);
 
   const computedEndDate = useMemo(() => {
     const months = durationMonths === 0 ? customMonths : durationMonths;
@@ -110,12 +119,18 @@ export default function SubscriptionEditModal({
     const starts = new Date(startsAt + 'T00:00:00');
     const ends = addMonths(starts, months);
 
+    const launchMonths = selectedPlan?.launch_offer_months ?? 3;
+    const discountEnds = applyLaunchDiscount && selectedPlan?.launch_price_monthly
+      ? addMonths(starts, launchMonths).toISOString()
+      : null;
+
     const { error: err } = await supabase.from('subscriptions').insert({
       firm_id: firmId,
       plan_id: planId,
       status: 'active',
       starts_at: starts.toISOString(),
       ends_at: ends.toISOString(),
+      discount_ends_at: discountEnds,
       is_promo: isPromo,
       notes: notes.trim() || null,
     });
@@ -274,6 +289,14 @@ export default function SubscriptionEditModal({
                 <p>Status: <span className={`font-medium ${isExpired ? 'text-red-600' : subscription.status === 'active' ? 'text-green-600' : 'text-steel'}`}>{subscription.status}{isExpired ? ' (istekla)' : ''}</span></p>
                 <p>Početak: {formatDateTime(subscription.starts_at)}</p>
                 <p>Istek: {subscription.ends_at ? formatDateTime(subscription.ends_at) : '-'}</p>
+                {subscription.discount_ends_at && (
+                  <p>
+                    Launch popust do:{' '}
+                    <span className={new Date(subscription.discount_ends_at) > new Date() ? 'text-green-600 font-medium' : 'text-steel'}>
+                      {formatDateTime(subscription.discount_ends_at)}
+                    </span>
+                  </p>
+                )}
                 {subscription.notes && <p>Napomena: {subscription.notes}</p>}
               </div>
             </div>
@@ -369,6 +392,35 @@ export default function SubscriptionEditModal({
                   </p>
                 )}
               </div>
+
+              {selectedPlan?.launch_price_monthly && (
+                <div className="flex flex-col gap-2 mb-3 p-3 bg-green-50 dark:bg-green-950/20 rounded-xl border border-green-100 dark:border-green-900">
+                  <button
+                    type="button"
+                    onClick={() => setApplyLaunchDiscount((v) => !v)}
+                    className={`inline-flex items-center gap-1.5 self-start px-3 py-2 rounded-xl text-xs font-medium border transition-colors ${
+                      applyLaunchDiscount
+                        ? 'bg-green-100 text-green-700 border-green-200'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700'
+                    }`}
+                  >
+                    <Clock className="w-3.5 h-3.5" />
+                    {applyLaunchDiscount ? 'Launch popust uključen' : 'Uključi launch popust'}
+                  </button>
+                  {applyLaunchDiscount && (
+                    <div className="text-xs text-green-800 dark:text-green-300">
+                      <p>
+                        Prvih {selectedPlan.launch_offer_months ?? 3} mjeseca:{' '}
+                        <strong>
+                          {formatPrice(getLaunchPrice(selectedPlan, 'monthly') ?? 0)} KM/mj
+                        </strong>{' '}
+                        (umjesto {formatPrice(selectedPlan.price_monthly)} KM/mj)
+                      </p>
+                      <p>Popust ističe: {addMonths(new Date(startsAt + 'T00:00:00'), selectedPlan.launch_offer_months ?? 3).toLocaleDateString('bs-BA')}</p>
+                    </div>
+                  )}
+                </div>
+              )}
 
               <label className="block text-xs font-medium text-steel dark:text-gray-400 mb-1.5">Napomena</label>
               <input

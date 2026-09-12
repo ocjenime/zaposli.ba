@@ -154,6 +154,7 @@ const pricingPlans = [
   {
     name: 'Besplatno',
     price: '0',
+    regularPrice: '0',
     period: 'KM/mj',
     description: 'Idealno za početak i testiranje tržišta.',
     features: [
@@ -164,10 +165,12 @@ const pricingPlans = [
     ],
     cta: 'Počnite besplatno',
     popular: false,
+    launch: false,
   },
   {
     name: 'Start',
-    price: '29',
+    price: '19',
+    regularPrice: '29',
     period: 'KM/mj',
     description: 'Za početnike koji žele više poslova.',
     features: [
@@ -179,10 +182,12 @@ const pricingPlans = [
     ],
     cta: 'Odaberite Start',
     popular: false,
+    launch: true,
   },
   {
     name: 'Pro',
-    price: '79',
+    price: '49',
+    regularPrice: '79',
     period: 'KM/mj',
     description: 'Za aktivne firme i majstore koji žele rasti.',
     features: [
@@ -195,10 +200,12 @@ const pricingPlans = [
     ],
     cta: 'Odaberite Pro',
     popular: true,
+    launch: true,
   },
   {
     name: 'Premium',
-    price: '149',
+    price: '99',
+    regularPrice: '149',
     period: 'KM/mj',
     description: 'Za najzahtjevnije profesionalce i firme.',
     features: [
@@ -211,6 +218,7 @@ const pricingPlans = [
     ],
     cta: 'Odaberite Premium',
     popular: false,
+    launch: true,
   },
 ];
 
@@ -647,13 +655,29 @@ export default function ZaFirmeContent() {
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-bold text-white mb-1">{plan.name}</h3>
                     <p className="text-sm text-white/60 mb-4">{plan.description}</p>
+                    {plan.launch && (
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-bold uppercase tracking-wide mb-3">
+                        Launch ponuda
+                      </span>
+                    )}
                     <div className="flex items-end justify-center gap-1">
                       <span className="text-4xl font-extrabold text-white leading-none">
                         {plan.price}
                       </span>
                       <span className="text-white/60 font-semibold mb-1">KM</span>
                     </div>
-                    <p className="text-sm text-white/60 mt-1">{plan.period}</p>
+                    {plan.launch ? (
+                      <div className="mt-1 space-y-0.5">
+                        <p className="text-sm text-white/60 line-through">
+                          {plan.regularPrice} KM/mj
+                        </p>
+                        <p className="text-sm text-green-300 font-medium">
+                          Prvih 3 mjeseca · zatim {plan.regularPrice} KM/mj
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-white/60 mt-1">{plan.period}</p>
+                    )}
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-1">

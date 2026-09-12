@@ -15,6 +15,8 @@ import {
   Plan,
   Subscription,
   formatPrice,
+  getLaunchPrice,
+  hasActiveLaunchDiscount,
 } from '@/lib/subscriptions';
 import {
   ArrowLeft, Check, Crown, Loader2, AlertCircle,
@@ -111,13 +113,21 @@ function FirmSubscriptionContent() {
     setSuccess('');
 
     const plan = plans.find((p) => p.id === planId);
+    const regularPrice = interval === 'yearly' ? plan?.price_yearly : plan?.price_monthly;
+    const launchPrice = getLaunchPrice(plan || null, interval);
+    // Launch offer applies to new paid subscriptions (no active paid subscription)
+    const isLaunchEligible = !subscription || subscription.plans?.price_monthly === 0;
+    const requestedPrice = isLaunchEligible && launchPrice != null ? launchPrice : regularPrice;
     const { error: err } = await supabase.from('admin_requests').insert({
       type: 'subscription_request',
       firm_id: firmId,
       metadata: {
         requested_plan_id: planId,
         requested_interval: interval,
-        requested_price: interval === 'yearly' ? plan?.price_yearly : plan?.price_monthly,
+        requested_price: requestedPrice,
+        regular_price: regularPrice,
+        is_launch_offer: isLaunchEligible && launchPrice != null,
+        launch_offer_months: plan?.launch_offer_months,
         requested_at: new Date().toISOString(),
       },
     });
@@ -217,9 +227,13 @@ function FirmSubscriptionContent() {
               </div>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {plans.map((plan) => {
-                  const price = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
-                  return (
+                  {plans.map((plan) => {
+                    const regularPrice = interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
+                    const launchPrice = getLaunchPrice(plan, interval);
+                    const isCurrentPlan = subscription?.plan_id === plan.id;
+                    const isLaunchEligible = !isCurrentPlan && launchPrice != null;
+                    const displayPrice = isLaunchEligible ? launchPrice : regularPrice;
+                    return (
                     <div
                       key={plan.id}
                       className={`relative bg-white rounded-2xl border p-5 flex flex-col transition-all hover:shadow-md ${
@@ -240,22 +254,40 @@ function FirmSubscriptionContent() {
                       </div>
 
                       <div className="mb-4">
+                        {isLaunchEligible && (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wide mb-2">
+                            Launch ponuda
+                          </span>
+                        )}
                         <p className="text-3xl font-bold text-gray-900">
-                          {formatPrice(price)}
+                          {formatPrice(displayPrice)}
                           <span className="text-sm font-normal text-steel">
                             {' '}
                             KM/{interval === 'yearly' ? 'god' : 'mj'}
                           </span>
                         </p>
-                        {interval === 'yearly' && plan.price_monthly > 0 && (
-                          <p className="text-xs text-green-700 font-medium">
-                            Uštedite 10% · umjesto {formatPrice(plan.price_monthly * 12)} KM
-                          </p>
-                        )}
-                        {interval === 'monthly' && plan.price_yearly > 0 && (
-                          <p className="text-xs text-green-700 font-medium">
-                            Godišnje {formatPrice(plan.price_yearly)} KM (ušteda 10%)
-                          </p>
+                        {isLaunchEligible ? (
+                          <div className="space-y-0.5">
+                            <p className="text-xs text-steel line-through">
+                              {formatPrice(regularPrice)} KM/{interval === 'yearly' ? 'god' : 'mj'}
+                            </p>
+                            <p className="text-xs text-green-700 font-medium">
+                              Prvih {plan.launch_offer_months} mjeseca · zatim regularna cijena
+                            </p>
+                          </div>
+                        ) : (
+                          <>
+                            {interval === 'yearly' && plan.price_monthly > 0 && (
+                              <p className="text-xs text-green-700 font-medium">
+                                Uštedite 10% · umjesto {formatPrice(plan.price_monthly * 12)} KM
+                              </p>
+                            )}
+                            {interval === 'monthly' && plan.price_yearly > 0 && (
+                              <p className="text-xs text-green-700 font-medium">
+                                Godišnje {formatPrice(plan.price_yearly)} KM (ušteda 10%)
+                              </p>
+                            )}
+                          </>
                         )}
                       </div>
 

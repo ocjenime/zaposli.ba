@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import DashboardHeader from '@/components/ui/DashboardHeader';
 import DashboardStat from '@/components/ui/DashboardStat';
 import EmptyState from '@/components/ui/EmptyState';
+import FirmPromotionsTab from '@/components/FirmPromotionsTab';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
 import { useAuth } from '@/lib/auth-context';
@@ -46,6 +47,7 @@ import {
   Save,
   User,
   AlertCircle,
+  Megaphone,
 } from 'lucide-react';
 
 interface Job {
@@ -193,7 +195,7 @@ function FirmDashboardContent() {
   const [savingPrefs, setSavingPrefs] = useState(false);
   const [prefsSaved, setPrefsSaved] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct'>('jobs');
+  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads'>('jobs');
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
   const [loadingDirect, setLoadingDirect] = useState(true);
   const [expandedDirectJob, setExpandedDirectJob] = useState<string | null>(null);
@@ -699,6 +701,17 @@ function FirmDashboardContent() {
                       {myBids.length}
                     </span>
                   </button>
+                  <button
+                    onClick={() => setActiveTab('ads')}
+                    className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                      activeTab === 'ads'
+                        ? 'bg-brand-orange text-white shadow-sm'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
+                    }`}
+                  >
+                    <Megaphone className="w-4 h-4" />
+                    Oglasi
+                  </button>
                 </div>
 
                 <p className="text-sm text-steel">
@@ -706,7 +719,9 @@ function FirmDashboardContent() {
                     ? 'Pronađite nove poslove i pošaljite ponudu.'
                     : activeTab === 'direct'
                     ? 'Upravljajte direktnim zahtjevima klijenata.'
-                    : 'Pregledajte sve ponude koje ste poslali.'}
+                    : activeTab === 'bids'
+                    ? 'Pregledajte sve ponude koje ste poslali.'
+                    : 'Plaćeni oglasi i promovisani poslovi.'}
                 </p>
               </div>
 
@@ -1298,6 +1313,10 @@ function FirmDashboardContent() {
                 )}
               </section>
             </>
+          )}
+
+          {activeTab === 'ads' && (
+            <FirmPromotionsTab firmId={firmId || ''} subscription={subscription} />
           )}
         </div>
       </main>
