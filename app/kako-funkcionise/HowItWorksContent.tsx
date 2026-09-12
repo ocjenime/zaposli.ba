@@ -133,27 +133,30 @@ export default function HowItWorksContent() {
   return (
     <>
       <main className="flex-grow">
-        {/* Animated Higgsfield hero with role selector */}
-        <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden">
-          {/* Abstract animated background - gradient flows into the steps section */}
-          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink-900 to-ink-800" />
+        {/* Shared Higgsfield background wrapper: one continuous canvas for hero + steps */}
+        <div className="relative">
+          {/* Continuous gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink-900 via-ink-800 via-ink-950 to-cloud" />
 
-          {/* Subtle mesh/noise pattern */}
+          {/* Subtle mesh/noise pattern spanning both sections */}
           <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(249,115,22,0.5),transparent_35%),radial-gradient(circle_at_70%_70%,rgba(251,191,36,0.4),transparent_35%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_40%)]" />
 
-          {/* Animated gradient orbs */}
+          {/* Animated gradient orbs spanning both sections */}
           {mounted && (
             <>
-              <div className="pointer-events-none absolute -left-20 top-1/4 h-[28rem] w-[28rem] rounded-full bg-brand-orange/15 blur-[120px] animate-float-orb" />
-              <div className="pointer-events-none absolute right-0 top-0 h-[24rem] w-[24rem] rounded-full bg-brand-amber/10 blur-[100px] animate-float-orb-slow" style={{ animationDelay: '-5s' }} />
-              <div className="pointer-events-none absolute bottom-0 left-1/3 h-[32rem] w-[32rem] rounded-full bg-orange-600/10 blur-[140px] animate-float-orb-reverse" style={{ animationDelay: '-10s' }} />
-              <div className="pointer-events-none absolute top-1/2 right-1/4 h-64 w-64 rounded-full bg-amber-500/8 blur-[90px] animate-float-orb" style={{ animationDelay: '-15s' }} />
+              <div className="pointer-events-none absolute -left-20 top-[10%] h-[28rem] w-[28rem] rounded-full bg-brand-orange/15 blur-[120px] animate-float-orb" />
+              <div className="pointer-events-none absolute right-0 top-[5%] h-[24rem] w-[24rem] rounded-full bg-brand-amber/10 blur-[100px] animate-float-orb-slow" style={{ animationDelay: '-5s' }} />
+              <div className="pointer-events-none absolute top-[45%] left-1/3 h-[32rem] w-[32rem] rounded-full bg-orange-600/10 blur-[140px] animate-float-orb-reverse" style={{ animationDelay: '-10s' }} />
+              <div className="pointer-events-none absolute top-[35%] right-1/4 h-64 w-64 rounded-full bg-amber-500/8 blur-[90px] animate-float-orb" style={{ animationDelay: '-15s' }} />
             </>
           )}
 
-          {/* Cinematic vignette overlays */}
+          {/* Cinematic vignette overlays spanning both sections */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,17,23,0.6)_100%)]" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-black/40" />
+
+          {/* Animated Higgsfield hero with role selector */}
+          <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden bg-transparent">
 
           {/* Hero content */}
           <div className="relative z-20 flex-1 flex items-center">
@@ -291,19 +294,17 @@ export default function HowItWorksContent() {
             </div>
           </div>
 
-          {/* Soft bottom glow that melts into the steps section */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 md:h-56 bg-gradient-to-t from-ink-800/60 via-transparent to-transparent z-10" />
-        </section>
+          </section>
 
-        {/* Steps - continues hero gradient and flows into Benefits */}
-        <section
-          ref={stepsRef}
-          id="koraci"
-          className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-b from-ink-800 via-ink-950 to-cloud"
-        >
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
+          {/* Steps - transparent so shared background flows through */}
+          <section
+            ref={stepsRef}
+            id="koraci"
+            className="relative py-20 md:py-28 overflow-hidden bg-transparent"
+          >
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
 
-          <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span
                 className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-sm font-semibold mb-4 ${
@@ -361,9 +362,8 @@ export default function HowItWorksContent() {
             </div>
           </div>
 
-          {/* Soft fade into Benefits section */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 md:h-48 bg-gradient-to-t from-cloud to-transparent pointer-events-none" />
         </section>
+        </div>
 
         {/* Benefits */}
         <section className="relative py-20 md:py-28 overflow-hidden bg-cloud">
