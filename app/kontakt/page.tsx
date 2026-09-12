@@ -107,6 +107,8 @@ export default function KontaktPage() {
           icon={Mail}
           align="center"
           size="lg"
+          image="/images/kontakt-hero.jpg"
+          overlayIntensity="dark"
         >
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
             <a
