@@ -178,6 +178,13 @@
 - Slimmed down the homepage emergency intervention banner by reducing vertical padding from `py-2.5` to `py-1.5`. `npm run lint` and `npm run build` both pass (2405 pages).
 - Shifted the homepage hero background image to the right (`object-center` → `object-[60%_center]`) to hide a floating worker artifact in the bottom-right corner of the AI-generated image; briefly tested 75% and 90% but reverted to 60% per user feedback. `npm run lint` and `npm run build` both pass (2405 pages).
 - Added an `imagePosition` prop to `PageHero` for finer control over background-image cropping. Briefly tested a `kontakt.png`-based hero image on `/kontakt/` with several crops/positions, then reverted to the original dark gradient hero and deleted `public/images/kontakt-hero.jpg` per user feedback. `npm run lint` and `npm run build` both pass (2405 pages).
+- Added admin mediation / dispute resolution feature for jobs:
+  - New `jobs` columns (`mediation_requested`, `mediation_requested_at`, `mediation_requested_by`, `mediation_reason`, `mediation_resolved`, `mediation_resolved_at`, `mediation_resolution`, `mediation_admin_id`) via `supabase/migration-mediation.sql`.
+  - New Supabase Edge Function `request-mediation` that verifies the caller is a job participant (client or accepted firm), checks the deadline has passed and status is active/completed, updates the job, sends email to admin, and inserts in-app notifications for all admins.
+  - Added "Zatraži pomoć administratora" UI in `/dashboard/razgovor/` (conversation page) and `/dashboard/poslovi/` (client job detail), visible only when the job deadline has passed and work is in progress/done pending/completed.
+  - Added new "Sporovi" tab in `/admin/` listing all mediation requests, with direct links to conversations and a form for admins to mark disputes as resolved with a resolution note.
+  - Updated `lib/types.ts` and `lib/notifications.ts` with the new `mediation_requested` notification type.
+  - Wrapped `/admin/` in a `Suspense` boundary because it now reads the `?tab=` query parameter. `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
