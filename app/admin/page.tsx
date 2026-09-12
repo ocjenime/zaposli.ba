@@ -1476,6 +1476,8 @@ export default function AdminPage() {
               onClose={() => setEditingProfile(null)}
               onSaved={() => {
                 loadProfiles();
+                loadFirms();
+                loadFirmPlans();
                 setSuccess('Korisnički profil ažuriran.');
               }}
               onResetPassword={async (email) => {

@@ -10,11 +10,9 @@ import {
   CreditCard,
   MessageSquare,
   TrendingUp,
-  ArrowRight,
 } from 'lucide-react';
 import Counter from '@/components/ui/Counter';
 import { supabase } from '@/lib/supabase';
-import Link from 'next/link';
 
 interface StatData {
   value: string;
@@ -105,8 +103,9 @@ export default function StatsSection() {
     loadStats();
   }, []);
 
-  const featuredStat = stats[0];
-  const extraStats = stats.slice(1);
+  const visibleStats = stats.slice(0, 3);
+  const extraStats = stats.slice(3);
+  const visibleTrust = trustCards.slice(0, Math.max(0, 6 - visibleStats.length));
 
   return (
     <section className="relative overflow-hidden bg-ink-950 py-20 md:py-28">
@@ -129,71 +128,51 @@ export default function StatsSection() {
           </p>
         </div>
 
-        {/* main bento */}
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
-          {/* featured stat / value prop */}
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-8 backdrop-blur-sm lg:col-span-5">
-            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/10 blur-[60px]" />
-
-            {featuredStat ? (
-              <>
-                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
-                  <featuredStat.icon className="h-8 w-8" />
-                </div>
-                <div className="mb-2 text-5xl font-extrabold tracking-tight text-white md:text-6xl">
-                  {loading ? (
-                    <span className="inline-block h-14 w-32 animate-pulse rounded-lg bg-white/10" />
-                  ) : (
-                    <Counter value={featuredStat.value} />
-                  )}
-                </div>
-                <div className="mb-6 text-lg font-semibold text-brand-orange">{featuredStat.label}</div>
-              </>
-            ) : (
-              <>
-                <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
-                  <Users className="h-8 w-8" />
-                </div>
-                <div className="mb-2 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                  Pridružite se
-                </div>
-                <div className="mb-6 text-lg font-semibold text-brand-orange">Rastućoj zajednici</div>
-              </>
-            )}
-
-            <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/60">
-              Od objave posla do završetka projekta - pratite ponude, komunicirajte i ocjenjujte firme, sve na jednom mjestu.
-            </p>
-
-            <Link
-              href="/objavi-projekat"
-              className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-orange to-brand-orange-dark px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-orange/20 transition-all hover:shadow-brand-orange/30 active:scale-95"
+        {/* 3x2 bento grid */}
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {visibleStats.map((stat, index) => (
+            <div
+              key={stat.label}
+              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06]"
             >
-              Objavite posao besplatno
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-          </div>
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-orange/5 blur-[50px] transition-opacity group-hover:opacity-70" />
 
-          {/* trust cards grid */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:col-span-7">
-            {trustCards.map((card, idx) => (
-              <div
-                key={card.title}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05]"
-              >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-
-                <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20">
-                  <card.icon className="h-6 w-6" />
+              <div className="relative flex items-start gap-5">
+                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20 transition-colors group-hover:from-brand-orange/25 group-hover:to-brand-orange/10">
+                  <stat.icon className="h-7 w-7" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-white">{card.title}</h3>
-                <p className="text-sm leading-relaxed text-white/55">{card.description}</p>
+                <div>
+                  <div className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+                    {loading && index === 0 ? (
+                      <span className="inline-block h-9 w-24 animate-pulse rounded-lg bg-white/10" />
+                    ) : (
+                      <Counter value={stat.value} />
+                    )}
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-brand-orange">{stat.label}</div>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+
+          {visibleTrust.map((card) => (
+            <div
+              key={card.title}
+              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05]"
+            >
+              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20">
+                <card.icon className="h-6 w-6" />
+              </div>
+              <h3 className="mb-1.5 text-lg font-bold text-white">{card.title}</h3>
+              <p className="text-sm leading-relaxed text-white/55">{card.description}</p>
+            </div>
+          ))}
         </div>
 
-        {/* extra stats row */}
+        {/* extra stats row (if more than 3 stats) */}
         {extraStats.length > 0 && (
           <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
             {extraStats.map((stat) => (
@@ -206,11 +185,7 @@ export default function StatsSection() {
                 </div>
                 <div>
                   <div className="text-2xl font-extrabold text-white">
-                    {loading ? (
-                      <span className="inline-block h-6 w-16 animate-pulse rounded bg-white/10" />
-                    ) : (
-                      <Counter value={stat.value} />
-                    )}
+                    <Counter value={stat.value} />
                   </div>
                   <div className="text-sm text-white/55">{stat.label}</div>
                 </div>
