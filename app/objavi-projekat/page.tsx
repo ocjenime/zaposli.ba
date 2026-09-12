@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon, ClipboardList, Clock, ShieldCheck, Users } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 
 const categories = allCategories.filter((c) => !c.noSeo);
@@ -161,7 +162,8 @@ function PostProjectContent() {
 
   useEffect(() => {
     if (!loading && !user) router.push('/prijava/');
-  }, [user, loading, router]);
+    if (!loading && user && isFirmRole(role)) router.push('/dashboard/firma/');
+  }, [user, loading, role, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
