@@ -159,6 +159,7 @@
 - Added `overlayIntensity` prop to `components/ui/PageHero.tsx` (`dark` | `medium` | `light`) and applied `overlayIntensity="medium"` on `/kategorije/` so the category hero image is a shade lighter while keeping text readable and the premium look. Other pages keep the default `dark` overlay. `npm run lint` and `npm run build` both pass (2404 pages).
 - Updated homepage `StatsSection` firm count label from "Prijavljenih firmi" to "Prijavljenih firmi i majstora" so the stat accurately reflects both company and individual worker profiles.
 - Moved mobile `ThemeToggle` to the left of the logo in `components/Header.tsx`; hamburger menu stays on the right. Desktop layout unchanged. `npm run lint` and `npm run build` both pass (2404 pages).
+- De-emphasized phone number on `/kontakt/`: hero secondary CTA changed from "Pozovite nas" to "Pošaljite poruku" (anchors to the contact form); contact panel now shows a "Prikaži broj" button that reveals the actual phone number only after a click, with helper text "Prvo pošaljite email ili poruku". Email and contact form remain the primary channels. `npm run lint` and `npm run build` both pass (2404 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.

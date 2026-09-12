@@ -36,17 +36,6 @@ const contactInfo = [
     href: `mailto:${site.email}`,
     note: 'Odgovaramo u roku od 24 sata',
   },
-  ...(site.phone
-    ? [
-        {
-          icon: Phone,
-          title: 'Telefon',
-          value: site.phone,
-          href: `tel:${site.phone.replace(/\s/g, '')}`,
-          note: 'Poziv i poruka (Viber / WhatsApp)',
-        },
-      ]
-    : []),
   {
     icon: MapPin,
     title: 'Regija',
@@ -68,6 +57,8 @@ const trustBadges = [
 ];
 
 export default function KontaktPage() {
+  const [phoneRevealed, setPhoneRevealed] = useState(false);
+
   const [formData, setFormData] = useState({
     ime: '',
     email: '',
@@ -125,15 +116,13 @@ export default function KontaktPage() {
               <Mail className="w-5 h-5" />
               {site.email}
             </a>
-            {site.phone && (
-              <a
-                href={`tel:${site.phone.replace(/\s/g, '')}`}
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
-              >
-                <Phone className="w-5 h-5" />
-                Pozovite nas
-              </a>
-            )}
+            <a
+              href="#kontakt-forma"
+              className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
+            >
+              <Send className="w-5 h-5" />
+              Pošaljite poruku
+            </a>
           </div>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-white/70">
             <span className="inline-flex items-center gap-2">
@@ -202,6 +191,44 @@ export default function KontaktPage() {
                           <div key={item.title} className={cls}>{inner}</div>
                         );
                       })}
+
+                      {site.phone && (
+                        <div className="group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <Phone className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">Telefon</p>
+                            {phoneRevealed ? (
+                              <>
+                                <a
+                                  href={`tel:${site.phone.replace(/\s/g, '')}`}
+                                  className="text-white font-semibold hover:text-brand-orange transition-colors"
+                                >
+                                  {site.phone}
+                                </a>
+                                <p className="text-white/60 text-sm mt-0.5">Poziv i poruka (Viber / WhatsApp)</p>
+                              </>
+                            ) : (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => setPhoneRevealed(true)}
+                                  className="inline-flex items-center gap-2 text-white font-semibold hover:text-brand-orange transition-colors"
+                                >
+                                  Prikaži broj
+                                  <span className="inline-flex gap-0.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                  </span>
+                                </button>
+                                <p className="text-white/60 text-sm mt-0.5">Prvo pošaljite email ili poruku</p>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">
@@ -240,7 +267,7 @@ export default function KontaktPage() {
               </div>
 
               {/* Contact form */}
-              <div className="lg:col-span-7">
+              <div id="kontakt-forma" className="lg:col-span-7 scroll-mt-28">
                 <div className="relative bg-white rounded-3xl border border-gray-100 p-8 md:p-10 shadow-float overflow-hidden">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full blur-3xl" />
                   <div className="relative">
