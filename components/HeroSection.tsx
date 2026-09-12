@@ -51,7 +51,7 @@ export default function HeroSection() {
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover object-[90%_center]"
+          className="object-cover object-[60%_center]"
         />
         {/* Cinematic overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
