@@ -108,6 +108,7 @@ export default function KontaktPage() {
           align="center"
           size="lg"
           image="/images/kontakt-hero.jpg"
+          imagePosition="object-[55%_center]"
           overlayIntensity="dark"
         >
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">

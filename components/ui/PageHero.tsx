@@ -7,6 +7,7 @@ export interface PageHeroProps {
   eyebrow?: string;
   children?: React.ReactNode;
   image?: string;
+  imagePosition?: string;
   icon?: LucideIcon;
   overlay?: boolean;
   overlayIntensity?: 'dark' | 'medium' | 'light';
@@ -21,6 +22,7 @@ export default function PageHero({
   eyebrow,
   children,
   image,
+  imagePosition = 'object-center',
   icon: Icon,
   overlay = true,
   overlayIntensity = 'dark',
@@ -63,7 +65,7 @@ export default function PageHero({
             src={image}
             alt={title}
             fill
-            className="object-cover"
+            className={`object-cover ${imagePosition}`}
             priority
             sizes="100vw"
           />
