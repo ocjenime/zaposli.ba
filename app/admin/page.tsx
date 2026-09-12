@@ -4,8 +4,8 @@
 // Supabase RLS policies on all sensitive data. The site runs on Vercel, but
 // dashboard routes still rely on client-side guards because they are client components.
 
-import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState, useCallback } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -19,7 +19,7 @@ import {
   Loader2, Check, Crown, AlertCircle, Search,
   Star, CheckCircle, XCircle, Pencil,
   MessageSquare, Briefcase, TrendingUp, DollarSign,
-  ShieldCheck, Flag, Gavel, ListFilter,
+  ShieldCheck, Flag, Gavel, ListFilter, Scale,
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
@@ -117,6 +117,25 @@ interface AdminReview {
   profiles: { full_name: string | null } | null;
 }
 
+interface AdminMediation {
+  id: string;
+  title: string;
+  city: string | null;
+  status: string;
+  private_status: string | null;
+  is_private: boolean;
+  deadline: string | null;
+  mediation_requested: boolean;
+  mediation_requested_at: string | null;
+  mediation_reason: string | null;
+  mediation_resolved: boolean;
+  mediation_resolution: string | null;
+  client_id: string;
+  target_firm_id: string | null;
+  client: { full_name: string | null; email: string | null } | null;
+  firm: { name: string | null; email: string | null; owner_id: string | null } | null;
+}
+
 interface AdminStats {
   users: number;
   clients: number;
@@ -148,13 +167,20 @@ const tabs = [
   { id: 'payments', label: 'Plaćanja', icon: DollarSign },
   { id: 'plans', label: 'Paketi', icon: FileText },
   { id: 'reports', label: 'Prijave', icon: Flag },
+  { id: 'mediations', label: 'Sporovi', icon: Scale },
   { id: 'requests', label: 'Zahtjevi', icon: Bell },
 ];
 
-export default function AdminPage() {
+function AdminPage() {
   const { user, loading: authLoading, isAdmin } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState('overview');
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get('tab');
+  const validTabs = [
+    'overview', 'users', 'firms', 'verifications', 'reviews', 'conversations',
+    'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'requests',
+  ];
+  const [activeTab, setActiveTab] = useState(tabParam && validTabs.includes(tabParam) ? tabParam : 'overview');
 
   const [profiles, setProfiles] = useState<AdminProfile[]>([]);
   const [firms, setFirms] = useState<AdminFirm[]>([]);
@@ -167,6 +193,7 @@ export default function AdminPage() {
   const [reports, setReports] = useState<AdminReport[]>([]);
   const [verifications, setVerifications] = useState<AdminVerification[]>([]);
   const [reviews, setReviews] = useState<AdminReview[]>([]);
+  const [mediations, setMediations] = useState<AdminMediation[]>([]);
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -181,6 +208,7 @@ export default function AdminPage() {
   const [loadingReports, setLoadingReports] = useState(false);
   const [loadingVerifications, setLoadingVerifications] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(false);
+  const [loadingMediations, setLoadingMediations] = useState(false);
   const [savingVerification, setSavingVerification] = useState<string | null>(null);
   const [savingReview, setSavingReview] = useState<string | null>(null);
   const [savingJob, setSavingJob] = useState<string | null>(null);
@@ -417,6 +445,26 @@ export default function AdminPage() {
     }
   }, []);
 
+  const loadMediations = useCallback(async () => {
+    setLoadingMediations(true);
+    try {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select(
+          'id, title, city, status, private_status, is_private, deadline, mediation_requested, mediation_requested_at, mediation_reason, mediation_resolved, mediation_resolution, client_id, target_firm_id, client:profiles!client_id(full_name, email), firm:firms!target_firm_id(name, email, owner_id)'
+        )
+        .eq('mediation_requested', true)
+        .order('mediation_requested_at', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      setMediations((data as unknown as AdminMediation[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja sporova.');
+    } finally {
+      setLoadingMediations(false);
+    }
+  }, []);
+
   useEffect(() => {
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
@@ -440,7 +488,10 @@ export default function AdminPage() {
     if (activeTab === 'reviews') {
       loadReviews();
     }
-  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews]);
+    if (activeTab === 'mediations') {
+      loadMediations();
+    }
+  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews, loadMediations]);
 
   async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);
@@ -576,6 +627,33 @@ export default function AdminPage() {
       return;
     }
     await loadRequests();
+  }
+
+  const [savingMediation, setSavingMediation] = useState<string | null>(null);
+  const [mediationResolution, setMediationResolution] = useState('');
+
+  async function resolveMediation(mediation: AdminMediation) {
+    if (!mediationResolution.trim()) return;
+    setSavingMediation(mediation.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('jobs')
+      .update({
+        mediation_resolved: true,
+        mediation_resolved_at: new Date().toISOString(),
+        mediation_resolution: mediationResolution.trim(),
+        mediation_admin_id: user?.id,
+      })
+      .eq('id', mediation.id);
+    setSavingMediation(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    setMediationResolution('');
+    await loadMediations();
+    setSuccess('Spor je označen kao riješen.');
   }
 
   function filteredFirms() {
@@ -1422,6 +1500,90 @@ export default function AdminPage() {
                 </div>
               )}
 
+              {activeTab === 'mediations' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100">
+                    <p className="text-sm text-steel">Nesuglasice između klijenata i firmi koje čekaju intervenciju administratora</p>
+                  </div>
+                  {loadingMediations ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje sporova...
+                    </div>
+                  ) : mediations.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema otvorenih sporova.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {mediations.map((m) => (
+                        <div key={m.id} className="p-4">
+                          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-1">
+                                <p className="font-medium text-gray-900">{m.title}</p>
+                                {m.mediation_resolved ? (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">RIJEŠEN</span>
+                                ) : (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">OTVOREN</span>
+                                )}
+                              </div>
+                              <p className="text-sm text-steel">
+                                Klijent: {m.client?.full_name || m.client?.email || '-'} ·
+                                {m.is_private
+                                  ? ` Firma: ${m.firm?.name || '-'} ·`
+                                  : ' Javni oglas ·'}
+                                {m.city && ` ${m.city} ·`}
+                                {m.deadline && ` Rok: ${formatDate(m.deadline)} ·`}
+                                {' Zatraženo: ' + formatDate(m.mediation_requested_at || new Date().toISOString())}
+                              </p>
+                              {m.mediation_reason && (
+                                <div className="mt-2 bg-red-50 text-red-700 rounded-lg p-3 text-sm">
+                                  <p className="font-semibold mb-1">Razlog nesuglasice:</p>
+                                  <p>{m.mediation_reason}</p>
+                                </div>
+                              )}
+                              {m.mediation_resolved && m.mediation_resolution && (
+                                <div className="mt-2 bg-green-50 text-green-700 rounded-lg p-3 text-sm">
+                                  <p className="font-semibold mb-1">Odluka administratora:</p>
+                                  <p>{m.mediation_resolution}</p>
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap items-start gap-2 lg:shrink-0">
+                              <Link
+                                href={`/dashboard/razgovor/?job_id=${m.id}`}
+                                className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-brand-orange text-white hover:bg-brand-orange-dark transition-colors"
+                              >
+                                Uđi u razgovor
+                              </Link>
+                            </div>
+                          </div>
+
+                          {!m.mediation_resolved && (
+                            <div className="mt-4 bg-cloud rounded-xl p-4">
+                              <p className="text-sm font-medium text-gray-900 mb-2">Riješi spor</p>
+                              <textarea
+                                value={mediationResolution}
+                                onChange={(e) => setMediationResolution(e.target.value)}
+                                rows={2}
+                                placeholder="Unesite odluku ili komentar (vidljivo klijentu i firmi)..."
+                                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange resize-none mb-2"
+                              />
+                              <button
+                                onClick={() => resolveMediation(m)}
+                                disabled={!mediationResolution.trim() || savingMediation === m.id}
+                                className="text-xs font-medium px-3 py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                              >
+                                {savingMediation === m.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
+                                Označi kao riješen
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {activeTab === 'requests' && (
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
                   <div className="p-4 border-b border-gray-100">
@@ -1573,5 +1735,23 @@ function StatusBar({
         <div className={`h-full ${color} rounded-full transition-all`} style={{ width: `${pct}%` }} />
       </div>
     </div>
+  );
+}
+
+export default function AdminPageWrapper() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col bg-cloud">
+          <Header />
+          <main className="flex-grow flex items-center justify-center">
+            <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <AdminPage />
+    </Suspense>
   );
 }

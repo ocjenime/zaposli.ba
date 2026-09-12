@@ -14,7 +14,8 @@ export type NotificationType =
   | 'direct_request_completed'
   | 'direct_request_declined'
   | 'direct_request_cancelled'
-  | 'direct_request_problem';
+  | 'direct_request_problem'
+  | 'mediation_requested';
 
 export interface Notification {
   id: string;

@@ -59,6 +59,10 @@ export function getNotificationHref(notification: Notification, role: string | n
       : `/dashboard/poslovi/?id=${job_id}`;
   }
 
+  if (type === 'mediation_requested') {
+    return '/admin/?tab=mediations';
+  }
+
   if (type === 'payment') {
     return role === 'firm' || role === 'majstor'
       ? '/dashboard/firma/pretplata/'

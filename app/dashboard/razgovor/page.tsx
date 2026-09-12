@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
-import { ArrowLeft, MapPin, Send, Loader2 } from 'lucide-react';
+import { ArrowLeft, MapPin, Send, Loader2, ShieldAlert, ShieldCheck } from 'lucide-react';
 import { formatDate as formatDateHelper } from '@/lib/date';
 
 interface Profile {
@@ -32,8 +32,16 @@ interface Job {
   city: string;
   client_id: string;
   status: string;
+  private_status: string | null;
   is_private: boolean;
   target_firm_id: string | null;
+  deadline: string | null;
+  mediation_requested: boolean;
+  mediation_requested_at: string | null;
+  mediation_requested_by: string | null;
+  mediation_reason: string | null;
+  mediation_resolved: boolean;
+  mediation_resolution: string | null;
 }
 
 function formatTime(iso: string) {
@@ -57,6 +65,11 @@ function Conversation() {
   const [error, setError] = useState('');
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [showMediationForm, setShowMediationForm] = useState(false);
+  const [mediationReason, setMediationReason] = useState('');
+  const [mediationLoading, setMediationLoading] = useState(false);
+  const [mediationError, setMediationError] = useState('');
+  const [mediationSuccess, setMediationSuccess] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const markAsRead = useCallback(async () => {
@@ -76,7 +89,7 @@ function Conversation() {
 
     const { data: jobData, error: jobErr } = await supabase
       .from('jobs')
-      .select('id,title,city,client_id,status,is_private,target_firm_id')
+      .select('id,title,city,client_id,status,private_status,is_private,target_firm_id,deadline,mediation_requested,mediation_requested_at,mediation_requested_by,mediation_reason,mediation_resolved,mediation_resolution')
       .eq('id', jobId)
       .single();
 
@@ -280,6 +293,45 @@ function Conversation() {
     setInput('');
   }
 
+  function canRequestMediation() {
+    if (!job || isAdmin || job.mediation_requested) return false;
+    const activeStatuses = ['in_progress', 'done_pending', 'completed'];
+    const currentStatus = job.is_private && job.private_status ? job.private_status : job.status;
+    if (!activeStatuses.includes(currentStatus)) return false;
+    if (!job.deadline) return false;
+    if (new Date() <= new Date(job.deadline)) return false;
+    return true;
+  }
+
+  async function requestMediation() {
+    if (!job || !user || !mediationReason.trim()) return;
+    setMediationLoading(true);
+    setMediationError('');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/request-mediation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+        body: JSON.stringify({ job_id: job.id, reason: mediationReason.trim() }),
+      });
+      const data = await res.json().catch(() => ({ error: 'Nepoznata greška' }));
+      if (!res.ok) {
+        setMediationError(data.error || 'Greška prilikom slanja zahtjeva.');
+      } else {
+        setMediationSuccess(true);
+        setShowMediationForm(false);
+        setMediationReason('');
+        await fetchData();
+      }
+    } catch (err) {
+      setMediationError(err instanceof Error ? err.message : 'Greška prilikom slanja zahtjeva.');
+    } finally {
+      setMediationLoading(false);
+    }
+  }
+
   if (loading || !user) {
     return (
       <div className="min-h-screen flex flex-col bg-cloud">
@@ -318,23 +370,94 @@ function Conversation() {
           ) : (
             <>
               <div className="bg-white rounded-xl border border-gray-100 p-4 mb-3 shadow-sm">
-                <h1 className="font-bold text-gray-900">{job.title}</h1>
-                <div className="flex items-center gap-2 text-sm text-steel mt-1">
-                  <MapPin className="w-4 h-4" /> {job.city}
-                  {adminInfo && (
-                    <>
-                      <span className="w-1 h-1 bg-steel rounded-full" />
-                      <span className="text-brand-orange font-medium">{adminInfo}</span>
-                    </>
-                  )}
-                  {!adminInfo && partner?.full_name && (
-                    <>
-                      <span className="w-1 h-1 bg-steel rounded-full" />
-                      <span>{role === 'client' ? 'Firma' : 'Klijent'}: {partner.full_name}</span>
-                    </>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                  <div>
+                    <h1 className="font-bold text-gray-900">{job.title}</h1>
+                    <div className="flex items-center gap-2 text-sm text-steel mt-1">
+                      <MapPin className="w-4 h-4" /> {job.city}
+                      {adminInfo && (
+                        <>
+                          <span className="w-1 h-1 bg-steel rounded-full" />
+                          <span className="text-brand-orange font-medium">{adminInfo}</span>
+                        </>
+                      )}
+                      {!adminInfo && partner?.full_name && (
+                        <>
+                          <span className="w-1 h-1 bg-steel rounded-full" />
+                          <span>{role === 'client' ? 'Firma' : 'Klijent'}: {partner.full_name}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  {!isAdmin && canRequestMediation() && (
+                    <button
+                      onClick={() => setShowMediationForm(true)}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-full transition-colors"
+                    >
+                      <ShieldAlert className="w-4 h-4" /> Zatraži pomoć administratora
+                    </button>
                   )}
                 </div>
+
+                {job.mediation_requested && (
+                  <div className={`mt-3 rounded-xl px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                    <div className="flex items-start gap-2">
+                      {job.mediation_resolved ? <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0" /> : <ShieldAlert className="w-4 h-4 mt-0.5 shrink-0" />}
+                      <div>
+                        <p className="font-semibold">
+                          {job.mediation_resolved
+                            ? 'Spor je riješen'
+                            : 'Zatražena je pomoć administratora'}
+                        </p>
+                        {job.mediation_reason && (
+                          <p className="mt-1 text-red-700/80">{job.mediation_reason}</p>
+                        )}
+                        {job.mediation_resolution && (
+                          <p className="mt-1 text-green-700/80"><strong>Odluka:</strong> {job.mediation_resolution}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {showMediationForm && (
+                <div className="bg-white rounded-xl border border-red-100 p-4 mb-3 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-1">Zatražite pomoć administratora</h3>
+                  <p className="text-sm text-steel mb-3">
+                    Opcija je dostupna jer je rok za ovaj posao istekao i postoji nesuglasica. Admin će se uključiti u razgovor i pomoći u rješavanju spora.
+                  </p>
+                  {mediationError && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
+                  {mediationSuccess && (
+                    <p className="text-green-700 text-sm bg-green-50 rounded-lg px-3 py-2 mb-3">
+                      Zahtjev je poslan. Administrator će pregledati slučaj i kontaktirati vas.
+                    </p>
+                  )}
+                  <textarea
+                    value={mediationReason}
+                    onChange={(e) => setMediationReason(e.target.value)}
+                    rows={3}
+                    placeholder="Opišite u čemu je problem i šta očekujete..."
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={requestMediation}
+                      disabled={mediationReason.trim().length < 10 || mediationLoading}
+                      className="bg-red-600 text-white text-sm px-4 py-2 rounded-xl font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 inline-flex items-center gap-2"
+                    >
+                      {mediationLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
+                      Pošalji zahtjev
+                    </button>
+                    <button
+                      onClick={() => { setShowMediationForm(false); setMediationReason(''); setMediationError(''); }}
+                      className="btn-secondary text-sm px-4 py-2"
+                    >
+                      Odustani
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="flex-grow bg-white rounded-xl border border-gray-100 p-4 shadow-sm overflow-y-auto">
                 {messages.length === 0 ? (

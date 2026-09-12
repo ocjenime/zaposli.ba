@@ -24,6 +24,8 @@ import {
   Upload,
   AlertCircle,
   AlertTriangle,
+  ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface Firm {
@@ -75,6 +77,11 @@ interface Job {
   budget_min: number | null;
   budget_max: number | null;
   deadline: string | null;
+  mediation_requested: boolean;
+  mediation_requested_at: string | null;
+  mediation_reason: string | null;
+  mediation_resolved: boolean;
+  mediation_resolution: string | null;
 }
 
 interface JobImage {
@@ -149,6 +156,12 @@ function JobDetail() {
   // Problem report
   const [showProblemForm, setShowProblemForm] = useState(false);
   const [problemText, setProblemText] = useState('');
+
+  // Mediation
+  const [showMediationForm, setShowMediationForm] = useState(false);
+  const [mediationReason, setMediationReason] = useState('');
+  const [mediationLoading, setMediationLoading] = useState(false);
+  const [mediationError, setMediationError] = useState('');
 
   useEffect(() => {
     if (!loading && !user) router.push('/prijava/');
@@ -271,6 +284,106 @@ function JobDetail() {
     setShowProblemForm(false);
     setProblemText('');
     await fetchData();
+  }
+
+  function canRequestMediation() {
+    if (!job || job.mediation_requested) return false;
+    const currentStatus = job.is_private && job.private_status ? job.private_status : job.status;
+    if (!['in_progress', 'done_pending', 'completed'].includes(currentStatus)) return false;
+    if (!job.deadline) return false;
+    return new Date() > new Date(job.deadline);
+  }
+
+  async function requestMediation() {
+    if (!job || !mediationReason.trim()) return;
+    setMediationLoading(true);
+    setMediationError('');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/request-mediation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`,
+        },
+        body: JSON.stringify({ job_id: job.id, reason: mediationReason.trim() }),
+      });
+      const data = await res.json().catch(() => ({ error: 'Nepoznata greška' }));
+      if (!res.ok) {
+        setMediationError(data.error || 'Greška prilikom slanja zahtjeva.');
+      } else {
+        setShowMediationForm(false);
+        setMediationReason('');
+        await fetchData();
+      }
+    } catch (err) {
+      setMediationError(err instanceof Error ? err.message : 'Greška prilikom slanja zahtjeva.');
+    } finally {
+      setMediationLoading(false);
+    }
+  }
+
+  function renderMediationSection() {
+    if (!job) return null;
+    if (job.mediation_requested) {
+      return (
+        <div className={`mt-4 rounded-lg px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+          <div className="flex items-start gap-2">
+            {job.mediation_resolved ? <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0" /> : <ShieldAlert className="w-4 h-4 mt-0.5 shrink-0" />}
+            <div>
+              <p className="font-semibold">
+                {job.mediation_resolved ? 'Spor je riješen' : 'Zatražena je pomoć administratora'}
+              </p>
+              {job.mediation_reason && <p className="mt-1 opacity-80">{job.mediation_reason}</p>}
+              {job.mediation_resolution && <p className="mt-1"><strong>Odluka:</strong> {job.mediation_resolution}</p>}
+            </div>
+          </div>
+        </div>
+      );
+    }
+    if (!canRequestMediation()) return null;
+    return (
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        {!showMediationForm ? (
+          <button
+            onClick={() => setShowMediationForm(true)}
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-full transition-colors"
+          >
+            <ShieldAlert className="w-4 h-4" /> Zatraži pomoć administratora
+          </button>
+        ) : (
+          <div className="bg-white rounded-xl border border-red-100 p-4 shadow-sm">
+            <h3 className="font-bold text-gray-900 mb-1">Zatražite pomoć administratora</h3>
+            <p className="text-sm text-steel mb-3">
+              Rok za ovaj posao je istekao i imate nesuglasicu s drugom stranom. Admin će se uključiti u razgovor i pomoći u rješavanju spora.
+            </p>
+            {mediationError && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
+            <textarea
+              value={mediationReason}
+              onChange={(e) => setMediationReason(e.target.value)}
+              rows={3}
+              placeholder="Opišite u čemu je problem..."
+              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
+            />
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={requestMediation}
+                disabled={mediationReason.trim().length < 10 || mediationLoading}
+                className="bg-red-600 text-white text-sm px-4 py-2 rounded-xl font-semibold hover:bg-red-700 transition-colors disabled:opacity-50 inline-flex items-center gap-2"
+              >
+                {mediationLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
+                Pošalji zahtjev
+              </button>
+              <button
+                onClick={() => { setShowMediationForm(false); setMediationReason(''); setMediationError(''); }}
+                className="btn-secondary text-sm px-4 py-2"
+              >
+                Odustani
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   async function cancelPrivateJob() {
@@ -474,6 +587,7 @@ function JobDetail() {
       return (
         <div className="mt-4 pt-4 border-t border-gray-100">
           <p className="text-sm text-steel">Rad je u toku. Možete komunicirati s firmom putem chat-a.</p>
+          {renderMediationSection()}
         </div>
       );
     }
@@ -509,6 +623,7 @@ function JobDetail() {
               </div>
             </>
           )}
+          {renderMediationSection()}
         </div>
       );
     }
@@ -530,6 +645,7 @@ function JobDetail() {
           {(review || reviewSuccess) && (
             <p className="text-sm text-steel">Hvala na recenziji. Objavljena je na profilu firme.</p>
           )}
+          {renderMediationSection()}
         </div>
       );
     }
@@ -558,15 +674,18 @@ function JobDetail() {
 
     if (job.status === 'in_progress') {
       return (
-        <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
-          <button
-            onClick={completeJob}
-            disabled={actionId === 'complete'}
-            className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2 disabled:opacity-50"
-          >
-            <CheckCircle className="w-4 h-4" />
-            {actionId === 'complete' ? 'Obrada...' : 'Označi kao završen'}
-          </button>
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={completeJob}
+              disabled={actionId === 'complete'}
+              className="btn-secondary text-sm py-2 px-4 inline-flex items-center gap-2 disabled:opacity-50"
+            >
+              <CheckCircle className="w-4 h-4" />
+              {actionId === 'complete' ? 'Obrada...' : 'Označi kao završen'}
+            </button>
+          </div>
+          {renderMediationSection()}
         </div>
       );
     }
@@ -577,6 +696,7 @@ function JobDetail() {
           <p className="text-green-700 text-sm font-medium flex items-center gap-2">
             <CheckCircle className="w-4 h-4" /> Posao je uspješno završen.
           </p>
+          {renderMediationSection()}
         </div>
       );
     }
