@@ -437,6 +437,33 @@ textarea:focus-visible {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
+@keyframes floatOrb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -40px) scale(1.05);
+  }
+  50% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(40px, 30px) scale(1.02);
+  }
+}
+
+.animate-float-orb {
+  animation: floatOrb 20s ease-in-out infinite;
+}
+
+.animate-float-orb-slow {
+  animation: floatOrb 28s ease-in-out infinite;
+}
+
+.animate-float-orb-reverse {
+  animation: floatOrb 24s ease-in-out infinite reverse;
+}
+
 @keyframes slideIn {
   from {
     opacity: 0;

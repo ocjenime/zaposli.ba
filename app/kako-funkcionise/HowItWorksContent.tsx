@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
   Users,
   Briefcase,
@@ -134,32 +133,27 @@ export default function HowItWorksContent() {
   return (
     <>
       <main className="flex-grow">
-        {/* Cinematic hero with role selector */}
+        {/* Animated Higgsfield hero with role selector */}
         <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden">
-          {/* Background image */}
-          <div className="absolute inset-0">
-            <Image
-              src="/images/poslovi-hero.jpg"
-              alt="Majstor pri radu"
-              fill
-              priority
-              fetchPriority="high"
-              sizes="100vw"
-              className="object-cover object-center"
-            />
-            {/* Cinematic overlays for readability */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-black/20 to-black/40" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(249,115,22,0.15),transparent_50%)]" />
-          </div>
+          {/* Abstract animated background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
 
-          {/* Animated glass orbs */}
+          {/* Subtle mesh/noise pattern */}
+          <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_30%_30%,rgba(249,115,22,0.5),transparent_35%),radial-gradient(circle_at_70%_70%,rgba(251,191,36,0.4),transparent_35%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_40%)]" />
+
+          {/* Animated gradient orbs */}
           {mounted && (
             <>
-              <div className="pointer-events-none absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-brand-orange/10 blur-[100px] animate-pulse-slow" />
-              <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-72 w-72 rounded-full bg-brand-amber/10 blur-[120px] animate-pulse-slow" style={{ animationDelay: '1s' }} />
+              <div className="pointer-events-none absolute -left-20 top-1/4 h-[28rem] w-[28rem] rounded-full bg-brand-orange/15 blur-[120px] animate-float-orb" />
+              <div className="pointer-events-none absolute right-0 top-0 h-[24rem] w-[24rem] rounded-full bg-brand-amber/10 blur-[100px] animate-float-orb-slow" style={{ animationDelay: '-5s' }} />
+              <div className="pointer-events-none absolute bottom-0 left-1/3 h-[32rem] w-[32rem] rounded-full bg-orange-600/10 blur-[140px] animate-float-orb-reverse" style={{ animationDelay: '-10s' }} />
+              <div className="pointer-events-none absolute top-1/2 right-1/4 h-64 w-64 rounded-full bg-amber-500/8 blur-[90px] animate-float-orb" style={{ animationDelay: '-15s' }} />
             </>
           )}
+
+          {/* Cinematic vignette overlays */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(2,17,23,0.6)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-black/40" />
 
           {/* Hero content */}
           <div className="relative z-20 flex-1 flex items-center">
