@@ -174,6 +174,7 @@
 - Fixed homepage `StatsSection` showing only 5 cards instead of 6 when fewer than 2 dynamic stats had data: added two new trust cards ("Brze ponude" and "Dostupni širom BiH") so the 3×2 bento grid always fills exactly 6 slots regardless of how many stats are returned from Supabase. `npm run lint` and `npm run build` both pass (2405 pages).
 - Removed the duplicate trust-signal row ("Provjereni majstori", "Ocjene i recenzije", "50+ kategorija") from below the homepage hero search form because the same value propositions already appear in the `StatsSection` directly beneath the hero. `npm run lint` and `npm run build` both pass (2405 pages).
 - Centered homepage hero content (headline, subheadline, search form, quick stats) on all breakpoints after removing the trust-signal row left the content aligned to the left; later reverted back to the original left alignment per user request. `npm run lint` and `npm run build` both pass (2405 pages).
+- Slimmed down the site header (`components/Header.tsx`) from `h-16 md:h-20` to `h-14 md:h-16` and reduced the logo scale from `scale-[1.2]` to `scale-110` for a more premium Higgsfield look; updated the homepage emergency banner top margin (`mt-16 md:mt-20` → `mt-14 md:mt-16`) to match the new header height. `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
