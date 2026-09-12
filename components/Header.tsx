@@ -104,7 +104,11 @@ export default function Header() {
         }`}
       >
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[1fr_auto_1fr] lg:flex h-16 md:h-20 items-center lg:justify-between">
+          <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-16 md:h-20 items-center lg:justify-between">
+            <div className="lg:hidden col-start-1 justify-self-start">
+              <ThemeToggle />
+            </div>
+
             <Link
               href="/"
               className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-[1.2]"
@@ -181,7 +185,6 @@ export default function Header() {
 
             {/* Mobile actions */}
             <div className="flex items-center gap-1.5 lg:hidden col-start-3 justify-self-end">
-              <ThemeToggle />
               <button
                 ref={mobileButtonRef}
                 type="button"

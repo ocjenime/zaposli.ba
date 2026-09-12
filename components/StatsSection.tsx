@@ -90,7 +90,7 @@ export default function StatsSection() {
         const jobsDisplay = formatCount(completedJobsCount);
 
         if (clientDisplay) nextStats.push({ icon: Users, value: clientDisplay, label: 'Zadovoljnih klijenata' });
-        if (firmsDisplay) nextStats.push({ icon: Building2, value: firmsDisplay, label: 'Prijavljenih firmi' });
+        if (firmsDisplay) nextStats.push({ icon: Building2, value: firmsDisplay, label: 'Prijavljenih firmi i majstora' });
         if (avgRating) nextStats.push({ icon: Star, value: avgRating, label: 'Prosječna ocjena' });
         if (jobsDisplay) nextStats.push({ icon: CheckCircle, value: jobsDisplay, label: 'Završenih poslova' });
 
