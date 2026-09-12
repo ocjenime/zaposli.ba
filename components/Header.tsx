@@ -30,7 +30,7 @@ const navLinks = [
   { href: '/kategorije/', label: 'Kategorije', icon: LayoutGrid },
   { href: '/gradovi/', label: 'Gradovi', icon: MapPinned },
   { href: '/poslovi/', label: 'Poslovi', icon: FolderOpen },
-  { href: '/kako-radi/', label: 'Kako radi', icon: HelpCircle },
+  { href: '/kako-funkcionise/', label: 'Kako funkcioniše', icon: HelpCircle },
   { href: '/za-firme/', label: 'Za firme', icon: Building2 },
   { href: '/kontakt/', label: 'Kontakt', icon: Mail },
 ];

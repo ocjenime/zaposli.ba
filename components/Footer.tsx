@@ -6,7 +6,7 @@ import { site } from '@/lib/site';
 
 const footerLinks = {
   'Za klijente': [
-    { name: 'Kako radi', href: '/kako-radi/' },
+    { name: 'Kako funkcioniše', href: '/kako-funkcionise/' },
     { name: 'Objavi posao', href: '/objavi-projekat/' },
     { name: 'Kategorije', href: '/kategorije/' },
     { name: 'Top firme', href: '/top-firme/' },

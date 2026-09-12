@@ -422,7 +422,7 @@ export default function ZaFirmeContent() {
           <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <Target className="h-4 w-4" /> Kako radi
+                <Target className="h-4 w-4" /> Kako funkcioniše
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
                 Tri koraka do novih klijenata

@@ -17,6 +17,11 @@ const nextConfig = {
     ],
   },
   trailingSlash: true,
+  async redirects() {
+    return [
+      { source: '/kako-radi/:path*', destination: '/kako-funkcionise/:path*', permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
