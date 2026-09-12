@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Mail, ArrowUpRight } from 'lucide-react';
 import Logo from '@/components/Logo';
-import { categories, cities } from '@/lib/data';
+import { categories, cities, getCategoryShortName } from '@/lib/data';
 import { site } from '@/lib/site';
 
 const footerLinks = {
@@ -30,7 +30,7 @@ export default function Footer() {
   const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
   const sortedCategories = [...categories]
     .filter((cat) => !cat.noSeo)
-    .sort((a, b) => a.name.localeCompare(b.name, 'bs'));
+    .sort((a, b) => getCategoryShortName(a).localeCompare(getCategoryShortName(b), 'bs'));
 
   return (
     <footer className="bg-ink text-[#ffffff]">
@@ -93,7 +93,7 @@ export default function Footer() {
                 {sortedCategories.map((cat) => (
                   <li key={cat.slug}>
                     <Link href={`/kategorije/${cat.slug}/`} className="text-gray-400 hover:text-brand-orange text-sm leading-5 transition-colors">
-                      {cat.name}
+                      {getCategoryShortName(cat)}
                     </Link>
                   </li>
                 ))}

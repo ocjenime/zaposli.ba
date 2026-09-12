@@ -23,6 +23,68 @@ export interface Category {
   noSeo?: boolean;        // bez programatskih stranica (npr. Ostale usluge)
 }
 
+/**
+ * Kratka imena za direktorijske liste (npr. footer).
+ * Puna imena (`name`) ostaju izvor istine za SEO stranice i naslove.
+ */
+const shortNames: Record<string, string> = {
+  'hitne-intervencije': 'Hitne intervencije',
+  'gradjevinarstvo': 'Građevinarstvo',
+  'zidarski-radovi': 'Zidarstvo',
+  'tesarski-radovi': 'Tesarstvo',
+  'betoniranje-i-armatura': 'Betoniranje',
+  'rusenje': 'Rušenje',
+  'krovopokrivanje': 'Krovopokrivanje',
+  'limarski-radovi': 'Limarija',
+  'izolacija': 'Fasade i izolacija',
+  'hidroizolacija': 'Hidroizolacija',
+  'molerski-radovi': 'Moleraj',
+  'gipsarski-radovi': 'Gips-karton',
+  'zavrsni-radovi': 'Dekorativni zidovi',
+  'tapetarski-radovi': 'Tapetarstvo',
+  'keramicarski-radovi': 'Keramika',
+  'podovi': 'Podovi',
+  'staklar': 'Staklarstvo',
+  'kamen-i-poplocavanje': 'Kamen i popločavanje',
+  'adaptacije': 'Adaptacije',
+  'kupatila-kljuc-u-ruke': 'Kupatila',
+  'kuhinje-po-mjeri': 'Kuhinje',
+  'stolarija': 'Stolarija',
+  'vodoinstalacije': 'Vodoinstalacije',
+  'elektroinstalacije': 'Elektroinstalacije',
+  'grijanje-i-hladjenje': 'Grijanje i klime',
+  'plinske-instalacije': 'Plin',
+  'solarne-instalacije': 'Solarni paneli',
+  'servis-aparata': 'Servis aparata',
+  'kamin-i-peci': 'Kamini i peći',
+  'sigurnost': 'Bravarstvo i sigurnost',
+  'tehnologija': 'IT i Smart Home',
+  'ciscenje': 'Čišćenje',
+  'pranje-fasada-i-krovova': 'Pranje fasada',
+  'dimnjacar': 'Dimnjačarstvo',
+  'odrzavanje-zgrada': 'Održavanje zgrada',
+  'vrtlarstvo': 'Bašta i dvorišta',
+  'pergole-nadstresnice-tende': 'Pergole i tende',
+  'bazeni-i-fontane': 'Bazeni i fontane',
+  'poplocavanje-dvorista-i-terasa': 'Popločavanje dvorišta',
+  'rusenje-stabala-drvoreda': 'Rušenje stabala',
+  'ograde': 'Ograde',
+  'varilac': 'Zavarivanje',
+  'selidbe': 'Selidbe',
+  'auto-usluge': 'Auto usluge',
+  'projektovanje-i-arhitektura': 'Arhitektura',
+  'dizajn-enterijera': 'Dizajn interijera',
+  'dizajn-eksterijera': 'Dizajn eksterijera',
+  'statika-i-nadzor': 'Statika i nadzor',
+  'energetska-obnova': 'Energetska obnova',
+  'ostale-usluge': 'Ostale usluge',
+};
+
+/** Kratko ime kategorije za direktorijske liste; fallback na puno ime */
+export function getCategoryShortName(cat: Category): string {
+  return shortNames[cat.slug] || cat.name;
+}
+
 export const categories: Category[] = [
   // HITNO 24/7
   {
