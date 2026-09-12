@@ -97,6 +97,7 @@ type Role = 'client' | 'firm';
 export default function HowItWorksContent() {
   const [role, setRole] = useState<Role>('client');
   const [faqCategory, setFaqCategory] = useState<'all' | 'client' | 'firm'>('all');
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
   const [mounted, setMounted] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
 
@@ -116,6 +117,8 @@ export default function HowItWorksContent() {
 
   const filteredFaqs =
     faqCategory === 'all' ? faqs : faqs.filter((f) => f.category === faqCategory);
+  const visibleFaqs = showAllFaqs ? filteredFaqs : filteredFaqs.slice(0, 6);
+  const hasMoreFaqs = filteredFaqs.length > 6;
 
   return (
     <>
@@ -422,7 +425,10 @@ export default function HowItWorksContent() {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setFaqCategory(tab.id as 'all' | 'client' | 'firm')}
+                  onClick={() => {
+                    setFaqCategory(tab.id as 'all' | 'client' | 'firm');
+                    setShowAllFaqs(false);
+                  }}
                   className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
                     faqCategory === tab.id
                       ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
@@ -436,7 +442,7 @@ export default function HowItWorksContent() {
             </div>
 
             <div className="space-y-4">
-              {filteredFaqs.map((faq, index) => (
+              {visibleFaqs.map((faq, index) => (
                 <details
                   key={faq.question}
                   className="group bg-cloud rounded-2xl border border-gray-100 overflow-hidden open:border-brand-orange/30 open:shadow-lg transition-all duration-300"
@@ -453,7 +459,17 @@ export default function HowItWorksContent() {
               ))}
             </div>
 
-            <div className="text-center mt-10">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+              {hasMoreFaqs && (
+                <button
+                  type="button"
+                  onClick={() => setShowAllFaqs((prev) => !prev)}
+                  className="inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-all bg-cloud text-gray-700 hover:bg-orange-50 hover:text-brand-orange"
+                >
+                  {showAllFaqs ? 'Prikaži manje' : `Prikaži još ${filteredFaqs.length - 6}`}
+                  <ChevronDown className={`w-4 h-4 transition-transform ${showAllFaqs ? 'rotate-180' : ''}`} />
+                </button>
+              )}
               <Link
                 href="/faq/"
                 className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors"
