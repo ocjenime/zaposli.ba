@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { HowItWorksHeroIllustration } from '@/components/HowItWorksHeroIllustration';
 import {
   Users,
   Briefcase,
@@ -292,6 +293,11 @@ export default function HowItWorksContent() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Premium cartoon illustration - top right on desktop */}
+          <div className="hidden lg:block absolute top-20 right-4 xl:right-12 2xl:right-24 w-[260px] xl:w-[300px] 2xl:w-[340px] h-[260px] xl:h-[300px] 2xl:h-[340px] opacity-90 pointer-events-none z-20">
+            <HowItWorksHeroIllustration />
           </div>
 
           </section>
