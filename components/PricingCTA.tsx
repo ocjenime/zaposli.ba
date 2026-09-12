@@ -6,17 +6,15 @@ import { isFirmRole } from '@/lib/roles';
 import { ArrowRight, Loader2 } from 'lucide-react';
 
 interface PricingCTAProps {
-  href?: string;
   popular?: boolean;
   children: React.ReactNode;
   className?: string;
 }
 
-export default function PricingCTA({ href = '/registracija/', popular = false, children, className = '' }: PricingCTAProps) {
+export default function PricingCTA({ popular = false, children, className = '' }: PricingCTAProps) {
   const { user, loading, role } = useAuth();
 
-  const dashboardHref = isFirmRole(role) ? '/dashboard/firma/pretplata/' : '/dashboard/';
-  const targetHref = user ? dashboardHref : href;
+  const targetHref = user && isFirmRole(role) ? '/dashboard/firma/pretplata/' : '/pretplata-auth/';
 
   if (loading) {
     return (
