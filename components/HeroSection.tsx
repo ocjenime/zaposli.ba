@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, MapPin, ChevronDown, ArrowRight, Siren, X, CheckCircle2, Star, Shield, Users } from 'lucide-react';
+import { Search, MapPin, ChevronDown, ArrowRight, Siren, X, CheckCircle2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cities } from '@/lib/data';
@@ -150,22 +150,6 @@ export default function HeroSection() {
                 </button>
               </div>
             </form>
-
-            {/* Trust signals */}
-            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-6 text-sm text-white/80 animate-fade-in">
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-brand-orange" />
-                <span>Provjereni majstori</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-brand-orange" />
-                <span>Ocjene i recenzije</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-brand-orange" />
-                <span>50+ kategorija</span>
-              </div>
-            </div>
 
             {/* Quick stats */}
             <div className="mt-10 sm:mt-12 grid grid-cols-3 gap-4 sm:gap-8 max-w-xl animate-fade-in">
