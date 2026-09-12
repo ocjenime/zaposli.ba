@@ -135,11 +135,14 @@ export default function HowItWorksContent() {
       <main className="flex-grow">
         {/* Animated Higgsfield hero with role selector */}
         <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden">
-          {/* Abstract animated background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
+          {/* Abstract animated background - single dark base for seamless transitions */}
+          <div className="absolute inset-0 bg-ink" />
+
+          {/* Subtle radial depth gradient */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(6,38,48,0.6),transparent_60%)]" />
 
           {/* Subtle mesh/noise pattern */}
-          <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(circle_at_30%_30%,rgba(249,115,22,0.5),transparent_35%),radial-gradient(circle_at_70%_70%,rgba(251,191,36,0.4),transparent_35%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_40%)]" />
+          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(249,115,22,0.5),transparent_35%),radial-gradient(circle_at_70%_70%,rgba(251,191,36,0.4),transparent_35%),radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.2),transparent_40%)]" />
 
           {/* Animated gradient orbs */}
           {mounted && (
@@ -291,17 +294,20 @@ export default function HowItWorksContent() {
             </div>
           </div>
 
-          {/* Bottom fade for smooth transition to next section */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-ink to-transparent z-10" />
+          {/* Long soft fade for seamless transition to next section */}
+          <div className="absolute bottom-0 left-0 right-0 h-48 md:h-64 bg-gradient-to-t from-ink via-ink/80 to-transparent z-10" />
         </section>
 
         {/* Steps */}
         <section
           ref={stepsRef}
           id="koraci"
-          className="relative py-20 md:py-28 overflow-hidden bg-gradient-to-b from-ink via-slate-950 to-cloud"
+          className="relative py-20 md:py-28 overflow-hidden bg-ink"
         >
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
+
+          {/* Soft top glow that blends with hero fade */}
+          <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-ink-900/50 to-transparent" />
 
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
@@ -360,6 +366,9 @@ export default function HowItWorksContent() {
               </Link>
             </div>
           </div>
+
+          {/* Soft fade into Benefits section */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 md:h-48 bg-gradient-to-t from-cloud to-transparent pointer-events-none" />
         </section>
 
         {/* Benefits */}
