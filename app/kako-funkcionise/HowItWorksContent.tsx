@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import PageHero from '@/components/ui/PageHero';
+import Image from 'next/image';
 import {
   Users,
   Briefcase,
@@ -114,7 +114,12 @@ type Role = 'client' | 'firm';
 
 export default function HowItWorksContent() {
   const [role, setRole] = useState<Role>('client');
+  const [mounted, setMounted] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleRoleChange = (newRole: Role) => {
     setRole(newRole);
@@ -129,138 +134,171 @@ export default function HowItWorksContent() {
   return (
     <>
       <main className="flex-grow">
-        <PageHero
-          title="Kako funkcioniše Zaposli.ba?"
-          subtitle="Birajte svoju ulogu i pogledajte kako platforma radi za vas."
-          eyebrow="Jednostavan proces u 3 koraka"
-          icon={HelpCircle}
-          align="center"
-          size="lg"
-        >
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-white/70">
-            <span className="inline-flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-brand-orange" />
-              Bez provizije
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Clock className="h-4 w-4 text-brand-orange" />
-              Ponude u 24 sata
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <BadgeCheck className="h-4 w-4 text-brand-orange" />
-              Provjerene firme
-            </span>
+        {/* Cinematic hero with role selector */}
+        <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden">
+          {/* Background image */}
+          <div className="absolute inset-0">
+            <Image
+              src="/images/poslovi-hero.jpg"
+              alt="Majstor pri radu"
+              fill
+              priority
+              fetchPriority="high"
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            {/* Cinematic overlays for readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink via-black/20 to-black/40" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(249,115,22,0.15),transparent_50%)]" />
           </div>
-        </PageHero>
 
-        {/* Role selector */}
-        <section className="relative py-16 md:py-24 bg-ink-950 overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-brand-amber/5 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3" />
+          {/* Animated glass orbs */}
+          {mounted && (
+            <>
+              <div className="pointer-events-none absolute top-1/4 left-1/4 h-64 w-64 rounded-full bg-brand-orange/10 blur-[100px] animate-pulse-slow" />
+              <div className="pointer-events-none absolute bottom-1/3 right-1/4 h-72 w-72 rounded-full bg-brand-amber/10 blur-[120px] animate-pulse-slow" style={{ animationDelay: '1s' }} />
+            </>
+          )}
 
-          <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 text-brand-orange text-sm font-semibold mb-4">
-                <Users className="h-4 w-4" /> Izaberite ulogu
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Za koga je Zaposli.ba?
-              </h2>
-              <p className="text-white/60 text-lg">
-                Kliknite na svoju ulogu i pogledajte korake prilagođene vama.
-              </p>
-            </div>
+          {/* Hero content */}
+          <div className="relative z-20 flex-1 flex items-center">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-12">
+              <div className="max-w-3xl mx-auto text-center">
+                {/* Eyebrow */}
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white/90 mb-6 animate-fade-in">
+                  <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
+                  Jednostavan proces u 3 koraka
+                </div>
 
-            <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
-              {/* Client card */}
-              <button
-                type="button"
-                onClick={() => handleRoleChange('client')}
-                className={`group relative overflow-hidden rounded-3xl border p-8 text-left transition-all duration-300 ${
-                  role === 'client'
-                    ? 'border-brand-orange/50 bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 shadow-lg shadow-brand-orange/10'
-                    : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]'
-                }`}
-              >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/40 to-transparent" />
-                <div className="flex flex-col h-full">
-                  <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
-                    <Users className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Tražim majstora</h3>
-                  <p className="text-white/60 leading-relaxed mb-6 flex-grow">
-                    Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u vašem gradu.
-                  </p>
-                  <span
-                    className={`inline-flex items-center gap-2 text-sm font-semibold ${
-                      role === 'client' ? 'text-brand-orange' : 'text-white/70 group-hover:text-white'
-                    }`}
-                  >
-                    Pogledaj korake
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                {/* Headline */}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight mb-6 animate-fade-in">
+                  Kako funkcioniše
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                    Zaposli.ba?
+                  </span>
+                </h1>
+
+                {/* Subheadline */}
+                <p className="text-lg sm:text-xl text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto animate-fade-in">
+                  Birajte svoju ulogu i pogledajte korake prilagođene vama. Brzo, besplatno i bez posrednika.
+                </p>
+
+                {/* Trust signals */}
+                <div className="flex flex-wrap justify-center gap-4 sm:gap-6 text-sm text-white/80 mb-12 animate-fade-in">
+                  <span className="inline-flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-brand-orange" />
+                    Bez provizije
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-brand-orange" />
+                    Ponude u 24 sata
+                  </span>
+                  <span className="inline-flex items-center gap-2">
+                    <BadgeCheck className="w-5 h-5 text-brand-orange" />
+                    Provjerene firme
                   </span>
                 </div>
-              </button>
+              </div>
 
-              {/* Firm card */}
-              <button
-                type="button"
-                onClick={() => handleRoleChange('firm')}
-                className={`group relative overflow-hidden rounded-3xl border p-8 text-left transition-all duration-300 ${
-                  role === 'firm'
-                    ? 'border-brand-amber/50 bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 shadow-lg shadow-brand-amber/10'
-                    : 'border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.05]'
-                }`}
-              >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-amber/40 to-transparent" />
-                <div className="flex flex-col h-full">
-                  <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 text-brand-amber ring-1 ring-inset ring-brand-amber/20">
-                    <Briefcase className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Nudim usluge</h3>
-                  <p className="text-white/60 leading-relaxed mb-6 flex-grow">
-                    Registrujte se kao firma ili majstor, pronađite nove poslove i širite klijentelu.
-                  </p>
-                  <span
-                    className={`inline-flex items-center gap-2 text-sm font-semibold ${
-                      role === 'firm' ? 'text-brand-amber' : 'text-white/70 group-hover:text-white'
-                    }`}
-                  >
-                    Pogledaj korake
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </div>
-              </button>
-            </div>
-
-            {/* Inline role switcher */}
-            <div className="mt-10 flex justify-center">
-              <div className="inline-flex rounded-full border border-white/10 bg-white/5 p-1.5 backdrop-blur-sm">
+              {/* Glassmorphic role selector cards */}
+              <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto animate-fade-in">
+                {/* Client card */}
                 <button
                   type="button"
-                  onClick={() => setRole('client')}
-                  className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                  onClick={() => handleRoleChange('client')}
+                  className={`group relative overflow-hidden rounded-3xl border p-6 sm:p-8 text-left transition-all duration-300 ${
                     role === 'client'
-                      ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
-                      : 'text-white/70 hover:text-white'
+                      ? 'border-brand-orange/50 bg-white/10 backdrop-blur-xl shadow-2xl shadow-brand-orange/15'
+                      : 'border-white/10 bg-white/5 backdrop-blur-md hover:border-white/25 hover:bg-white/10'
                   }`}
                 >
-                  Klijent
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent" />
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/10 blur-[60px] opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="relative flex flex-col h-full">
+                    <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                      <Users className="h-7 w-7" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Tražim majstora</h3>
+                    <p className="text-white/60 leading-relaxed mb-5 flex-grow text-sm sm:text-base">
+                      Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u vašem gradu.
+                    </p>
+                    <span
+                      className={`inline-flex items-center gap-2 text-sm font-semibold ${
+                        role === 'client' ? 'text-brand-orange' : 'text-white/70 group-hover:text-white'
+                      }`}
+                    >
+                      Pogledaj korake
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
                 </button>
+
+                {/* Firm card */}
                 <button
                   type="button"
-                  onClick={() => setRole('firm')}
-                  className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                  onClick={() => handleRoleChange('firm')}
+                  className={`group relative overflow-hidden rounded-3xl border p-6 sm:p-8 text-left transition-all duration-300 ${
                     role === 'firm'
-                      ? 'bg-brand-amber text-white shadow-md shadow-brand-amber/20'
-                      : 'text-white/70 hover:text-white'
+                      ? 'border-brand-amber/50 bg-white/10 backdrop-blur-xl shadow-2xl shadow-brand-amber/15'
+                      : 'border-white/10 bg-white/5 backdrop-blur-md hover:border-white/25 hover:bg-white/10'
                   }`}
                 >
-                  Firma / Majstor
+                  <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-amber/50 to-transparent" />
+                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-amber/10 blur-[60px] opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="relative flex flex-col h-full">
+                    <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 text-brand-amber ring-1 ring-inset ring-brand-amber/20">
+                      <Briefcase className="h-7 w-7" />
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Nudim usluge</h3>
+                    <p className="text-white/60 leading-relaxed mb-5 flex-grow text-sm sm:text-base">
+                      Registrujte se kao firma ili majstor, pronađite nove poslove i širite klijentelu.
+                    </p>
+                    <span
+                      className={`inline-flex items-center gap-2 text-sm font-semibold ${
+                        role === 'firm' ? 'text-brand-amber' : 'text-white/70 group-hover:text-white'
+                      }`}
+                    >
+                      Pogledaj korake
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
                 </button>
+              </div>
+
+              {/* Inline role switcher */}
+              <div className="mt-8 flex justify-center animate-fade-in">
+                <div className="inline-flex rounded-full border border-white/10 bg-white/5 p-1.5 backdrop-blur-md">
+                  <button
+                    type="button"
+                    onClick={() => setRole('client')}
+                    className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                      role === 'client'
+                        ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Klijent
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setRole('firm')}
+                    className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                      role === 'firm'
+                        ? 'bg-brand-amber text-white shadow-md shadow-brand-amber/20'
+                        : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Firma / Majstor
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Bottom fade for smooth transition to next section */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-ink to-transparent z-10" />
         </section>
 
         {/* Steps */}
