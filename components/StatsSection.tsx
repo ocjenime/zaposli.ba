@@ -10,6 +10,8 @@ import {
   CreditCard,
   MessageSquare,
   TrendingUp,
+  Clock,
+  MapPin,
 } from 'lucide-react';
 import Counter from '@/components/ui/Counter';
 import { supabase } from '@/lib/supabase';
@@ -40,6 +42,16 @@ const trustCards = [
     icon: TrendingUp,
     title: 'Više ponuda',
     description: 'Uporedite cijene, rokove i reference - birajte najbolju ponudu za svoj projekat.',
+  },
+  {
+    icon: Clock,
+    title: 'Brze ponude',
+    description: 'Većina poslova dobije prve ponude u roku od 24 sata, hitni poslovi i brže.',
+  },
+  {
+    icon: MapPin,
+    title: 'Dostupni širom BiH',
+    description: 'Povezujemo klijente i firme u svim većim gradovima Bosne i Hercegovine.',
   },
 ];
 
