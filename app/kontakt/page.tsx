@@ -114,6 +114,7 @@ export default function KontaktPage() {
           subtitle="Imate pitanje, prijedlog ili trebate pomoć? Naš tim odgovara u roku od 24 sata."
           eyebrow="Tu smo za vas"
           icon={Mail}
+          image="/images/kontakt-hero.jpg"
           align="center"
           size="lg"
         >
