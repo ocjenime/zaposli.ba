@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { JsonLd, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/jsonld';
+import { faqs } from '@/lib/data';
 
 const clientSteps = [
   {
@@ -91,28 +92,11 @@ const benefits = [
   },
 ];
 
-const faqs = [
-  {
-    question: 'Ko može objaviti posao?',
-    answer:
-      'Svaki klijent koji ima potrebu za majstorom: stanovi, kuće, poslovni prostori, dvorišta i vozila. Objava je besplatna i neobavezujuća.',
-  },
-  {
-    question: 'Da li firme plaćaju proviziju po dobijenom poslu?',
-    answer:
-      'Ne. Zaposli.ba ne naplaćuje proviziju po dobijenom poslu. Firme i majstori plaćaju fiksnu mjesečnu naknadu za svoj paket.',
-  },
-  {
-    question: 'Koliko brzo dobijam ponude?',
-    answer:
-      'Većina poslova dobije prve ponude u roku od 24 sata. Hitne intervencije često dobiju ponude u nekoliko sati.',
-  },
-];
-
 type Role = 'client' | 'firm';
 
 export default function HowItWorksContent() {
   const [role, setRole] = useState<Role>('client');
+  const [faqCategory, setFaqCategory] = useState<'all' | 'client' | 'firm'>('all');
   const [mounted, setMounted] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
 
@@ -129,6 +113,9 @@ export default function HowItWorksContent() {
   const roleLabel = role === 'client' ? 'Za klijente' : 'Za firme i majstore';
   const ctaHref = role === 'client' ? '/objavi-projekat/' : '/registracija/';
   const ctaLabel = role === 'client' ? 'Objavi posao besplatno' : 'Registruj firmu besplatno';
+
+  const filteredFaqs =
+    faqCategory === 'all' ? faqs : faqs.filter((f) => f.category === faqCategory);
 
   return (
     <>
@@ -413,7 +400,7 @@ export default function HowItWorksContent() {
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
 
           <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-10">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
@@ -425,10 +412,33 @@ export default function HowItWorksContent() {
               </p>
             </div>
 
+            {/* Category tabs */}
+            <div className="flex flex-wrap justify-center gap-2 mb-10">
+              {[
+                { id: 'all', label: 'Sva pitanja', icon: HelpCircle },
+                { id: 'client', label: 'Za klijente', icon: Users },
+                { id: 'firm', label: 'Za firme', icon: Briefcase },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setFaqCategory(tab.id as 'all' | 'client' | 'firm')}
+                  className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all ${
+                    faqCategory === tab.id
+                      ? 'bg-brand-orange text-white shadow-md shadow-brand-orange/20'
+                      : 'bg-cloud text-gray-700 hover:bg-orange-50 hover:text-brand-orange'
+                  }`}
+                >
+                  <tab.icon className="w-4 h-4" />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
             <div className="space-y-4">
-              {faqs.map((faq, index) => (
+              {filteredFaqs.map((faq, index) => (
                 <details
-                  key={index}
+                  key={faq.question}
                   className="group bg-cloud rounded-2xl border border-gray-100 overflow-hidden open:border-brand-orange/30 open:shadow-lg transition-all duration-300"
                 >
                   <summary className="flex items-center gap-4 cursor-pointer p-6 list-none">
@@ -441,6 +451,16 @@ export default function HowItWorksContent() {
                   <div className="px-6 pb-6 pl-[4.5rem] text-steel leading-relaxed">{faq.answer}</div>
                 </details>
               ))}
+            </div>
+
+            <div className="text-center mt-10">
+              <Link
+                href="/faq/"
+                className="inline-flex items-center gap-2 text-brand-orange font-semibold hover:text-brand-orange-dark transition-colors"
+              >
+                Pogledaj sva pitanja
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>

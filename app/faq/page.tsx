@@ -47,35 +47,19 @@ const groups: FaqGroup[] = [
     id: 'klijenti',
     label: 'Za klijente',
     icon: User,
-    items: faqs.filter((f) =>
-      [
-        'Koliko košta korištenje Zaposli.ba za klijente?',
-        'Jesam li obavezan odabrati neku ponudu?',
-        'Mogu li objaviti hitan posao?',
-      ].includes(f.question)
-    ),
+    items: faqs.filter((f) => f.category === 'client'),
   },
   {
     id: 'firme',
-    label: 'Za firme',
+    label: 'Za firme i majstore',
     icon: Briefcase,
-    items: faqs.filter((f) =>
-      [
-        'Kako funkcioniše verifikacija firmi?',
-        'Kako firma dobija oznaku dobre reputacije?',
-        'Kako se registrujem kao firma i koliko to košta?',
-      ].includes(f.question)
-    ),
+    items: faqs.filter((f) => f.category === 'firm'),
   },
   {
-    id: 'sigurnost',
-    label: 'Sigurnost',
+    id: 'opce',
+    label: 'Opća pitanja',
     icon: Lock,
-    items: faqs.filter((f) =>
-      ['Koliko brzo ću dobiti ponude?', 'Šta ako nisam zadovoljan izvedenim radovima?'].includes(
-        f.question
-      )
-    ),
+    items: faqs.filter((f) => f.category === 'general'),
   },
 ];
 
