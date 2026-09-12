@@ -14,6 +14,7 @@ import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
 import CategoryHeroStats from '@/components/CategoryHeroStats';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
+import CategoryFirms from '@/components/CategoryFirms';
 
 export function generateStaticParams() {
   return categories.filter((c) => !c.noSeo).map((c) => ({ slug: c.slug }));
@@ -88,6 +89,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           </Link>
         </PageHero>
 
+        {/* Firme u kategoriji - ranking: ocjena ključna + verifikacija + premium */}
+        <CategoryFirms categorySlug={cat.slug} />
+
         {/* Istaknuti poslovi u kategoriji */}
         <FeaturedJobsSection categorySlug={cat.slug} />
 
@@ -147,24 +151,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 </div>
                 )}
 
-          </div>
-        </section>
-
-        {/* Empty state for firms */}
-        <section className="py-14 bg-white border-t border-gray-100">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-7 h-7 text-brand-orange" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Pronađite {cat.profession.toLowerCase()} u vašem gradu</h2>
-              <p className="text-steel max-w-xl mx-auto mb-6">
-                Firme se aktivno registruju. Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
-              </p>
-              <Link href="/objavi-projekat/" className="btn-primary">
-                Objavi posao besplatno
-              </Link>
-            </div>
           </div>
         </section>
 
