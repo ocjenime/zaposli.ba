@@ -59,7 +59,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           subtitle={`${cat.description}. Pronađite provjerenog ${cat.profession.toLowerCase()} širom BiH ili objavite posao besplatno.`}
           eyebrow={cat.featured ? '24/7 · dostupno odmah' : getGroupHeroStyle(cat.group).eyebrow}
           icon={Icon}
-          image="/images/kategorije-firma.jpg"
+          gradient={getGroupHeroStyle(cat.group).gradient}
           size="lg"
         >
           <div className="flex flex-wrap items-center gap-3 text-sm text-white/80 mb-6">
