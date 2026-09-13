@@ -247,6 +247,12 @@
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
+- Enabled custom logo upload for Start, Pro, and Premium plans:
+  - Updated `/za-firme/` pricing cards: Start and Pro now list "Vlastiti logotip na profilu"; Premium feature "24/7 podrška" replaced with "Prioritetna podrška".
+  - Updated `/dashboard/firma/profil/` to fetch the current subscription and disable logo upload for free users, showing an upgrade CTA instead.
+- Finished cookie-consent banner:
+  - Added a "Saznajte više" link to `/privacy/`.
+  - Confirmed banner appears for new visitors, respects localStorage choice, and loads Google Analytics only after consent is granted.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
