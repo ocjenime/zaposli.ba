@@ -9,7 +9,11 @@ const themes = [
   { key: 'dark', label: 'Tamna', icon: Moon },
 ] as const;
 
-export default function ThemeToggle() {
+interface ThemeToggleProps {
+  simple?: boolean;
+}
+
+export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -46,6 +50,20 @@ export default function ThemeToggle() {
   }
 
   const active = theme === 'dark' ? 'dark' : 'light';
+
+  if (simple) {
+    const toggleTheme = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    return (
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-gray-300 transition-colors"
+        aria-label={resolvedTheme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
+      >
+        {resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+      </button>
+    );
+  }
 
   return (
     <div className="relative" ref={containerRef}>

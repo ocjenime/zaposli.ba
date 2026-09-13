@@ -8,7 +8,7 @@ import Footer from '@/components/Footer';
 import DashboardHeader from '@/components/ui/DashboardHeader';
 import DashboardStat from '@/components/ui/DashboardStat';
 import EmptyState from '@/components/ui/EmptyState';
-import FirmPromotionsTab from '@/components/FirmPromotionsTab';
+import FirmAdsTab from '@/components/FirmAdsTab';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
 import { useAuth } from '@/lib/auth-context';
@@ -1316,7 +1316,7 @@ function FirmDashboardContent() {
           )}
 
           {activeTab === 'ads' && (
-            <FirmPromotionsTab firmId={firmId || ''} subscription={subscription} />
+            <FirmAdsTab firmId={firmId || ''} subscription={subscription} />
           )}
         </div>
       </main>

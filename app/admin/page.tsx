@@ -138,14 +138,16 @@ interface AdminMediation {
 
 interface AdminPromotion {
   id: string;
-  job_id: string;
   firm_id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  ad_type: 'promotion' | 'worker_search';
   amount: number;
-  status: 'pending' | 'active' | 'expired';
+  status: 'pending' | 'active' | 'expired' | 'rejected';
   source: 'included' | 'paid';
   created_at: string;
   ends_at: string | null;
-  jobs: { title: string; city: string | null } | null;
   firms: { name: string | null; email: string | null } | null;
 }
 
@@ -485,8 +487,8 @@ function AdminPage() {
     setLoadingPromotions(true);
     try {
       const { data, error } = await supabase
-        .from('job_promotions')
-        .select('*, jobs(title, city), firms(name, email)')
+        .from('promoted_ads')
+        .select('*, firms(name, email)')
         .order('created_at', { ascending: false })
         .limit(100);
       if (error) throw error;
@@ -703,7 +705,7 @@ function AdminPage() {
     endsAt.setDate(endsAt.getDate() + 30);
 
     const { error: promotionErr } = await supabase
-      .from('job_promotions')
+      .from('promoted_ads')
       .update({
         status: 'active',
         starts_at: new Date().toISOString(),
@@ -712,24 +714,14 @@ function AdminPage() {
       })
       .eq('id', promotion.id);
 
+    setSavingPromotion(null);
     if (promotionErr) {
-      setSavingPromotion(null);
       setError(promotionErr.message);
       return;
     }
 
-    await supabase
-      .from('jobs')
-      .update({
-        is_featured: true,
-        featured_until: endsAt.toISOString(),
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', promotion.job_id);
-
-    setSavingPromotion(null);
     await loadPromotions();
-    setSuccess('Oglas je odobren i istaknut na 30 dana.');
+    setSuccess('Oglas je odobren i aktivan na 30 dana.');
   }
 
   async function rejectPromotion(promotion: AdminPromotion) {
@@ -737,8 +729,8 @@ function AdminPage() {
     setError('');
     setSuccess('');
     const { error: err } = await supabase
-      .from('job_promotions')
-      .update({ status: 'expired', updated_at: new Date().toISOString() })
+      .from('promoted_ads')
+      .update({ status: 'rejected', updated_at: new Date().toISOString() })
       .eq('id', promotion.id);
     setSavingPromotion(null);
     if (err) {
@@ -1680,7 +1672,7 @@ function AdminPage() {
               {activeTab === 'promotions' && (
                 <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
                   <div className="p-4 border-b border-gray-100">
-                    <p className="text-sm text-steel">Promovisani oglasi i zahtjevi firmi</p>
+                    <p className="text-sm text-steel">Promovisani oglasi i zahtjevi firmi / majstora</p>
                   </div>
                   {loadingPromotions ? (
                     <div className="flex items-center justify-center py-12 text-steel">
@@ -1693,24 +1685,41 @@ function AdminPage() {
                       {promotions.map((p) => (
                         <div key={p.id} className="p-4">
                           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                            <div>
-                              <div className="flex flex-wrap items-center gap-2 mb-1">
-                                <p className="font-medium text-gray-900">{p.jobs?.title || 'Nepoznati posao'}</p>
-                                {p.status === 'pending' && (
-                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">NA ČEKANJU</span>
+                            <div className="flex-1">
+                              <div className="flex flex-wrap items-center gap-2 mb-2">
+                                {p.image_url && (
+                                  <>
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={p.image_url} alt="" className="w-16 h-12 object-cover rounded-lg border border-gray-100" />
+                                  </>
                                 )}
-                                {p.status === 'active' && (
-                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">AKTIVAN</span>
-                                )}
-                                {p.status === 'expired' && (
-                                  <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">ISTEKAO/ODBIJEN</span>
-                                )}
-                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
-                                  {p.source === 'included' ? 'Uključen u paket' : `Plaćeno ${p.amount} KM`}
-                                </span>
+                                <div>
+                                  <p className="font-medium text-gray-900">{p.title}</p>
+                                  <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                                    {p.status === 'pending' && (
+                                      <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">NA ČEKANJU</span>
+                                    )}
+                                    {p.status === 'active' && (
+                                      <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">AKTIVAN</span>
+                                    )}
+                                    {p.status === 'expired' && (
+                                      <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">ISTEKAO</span>
+                                    )}
+                                    {p.status === 'rejected' && (
+                                      <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">ODBIJEN</span>
+                                    )}
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                                      {p.ad_type === 'worker_search' ? 'Tražim radnike' : 'Promocija'}
+                                    </span>
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
+                                      {p.source === 'included' ? 'Uključen u paket' : `Plaćeno ${p.amount} KM`}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                              <p className="text-sm text-steel">
-                                Firma: {p.firms?.name || '-'} · {p.jobs?.city || ''} · {formatDate(p.created_at)}
+                              <p className="text-sm text-steel mt-1">{p.description}</p>
+                              <p className="text-xs text-steel mt-2">
+                                Firma: {p.firms?.name || '-'} · {formatDate(p.created_at)}
                               </p>
                             </div>
                             {p.status === 'pending' && (

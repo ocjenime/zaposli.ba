@@ -14,7 +14,6 @@ import {
   FilePlus,
   Mail,
   Info,
-  Phone,
   Bell,
   Sun,
   Shield,
@@ -106,7 +105,7 @@ export default function Header() {
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-14 md:h-16 items-center lg:justify-between">
             <div className="lg:hidden col-start-1 justify-self-start">
-              <ThemeToggle />
+              <ThemeToggle simple />
             </div>
 
             <Link
@@ -315,15 +314,6 @@ export default function Header() {
                 <Mail className="w-4 h-4 shrink-0 text-brand-orange" />
                 {site.email}
               </a>
-              {site.phone && (
-                <a
-                  href={`tel:${site.phone.replace(/\s/g, '')}`}
-                  className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-gray-300"
-                >
-                  <Phone className="w-4 h-4 shrink-0 text-brand-orange" />
-                  {site.phone}
-                </a>
-              )}
             </div>
           </div>
         </div>
