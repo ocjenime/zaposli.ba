@@ -219,6 +219,7 @@
 - Made mobile hamburger menu text and icons pure white in dark mode; made `ThemeToggle` icon pure white in dark mode.
 - Removed colored gradient accents from hero headlines (`HeroSection`, `ProjectsPageClient`) so all hero text is solid white for maximum readability.
 - Filled theme icons (`Sun`/`Moon`) with current color so the inner symbol is not transparent against the dark button background.
+- Lightened mobile hamburger menu section labels (`Navigacija`, `Račun`, `Postavke`, `Kontakt`) in dark mode.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
