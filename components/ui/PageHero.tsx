@@ -83,7 +83,7 @@ export default function PageHero({
         </>
       )}
 
-      <div className={`relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ${alignClass} flex flex-col drop-shadow-lg`}>
+      <div className={`relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ${alignClass} flex flex-col`}>
         {Icon && (
           <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center mb-5 shadow-lg">
             <Icon className="w-7 h-7 text-brand-orange" />
@@ -91,7 +91,7 @@ export default function PageHero({
         )}
 
         {eyebrow && (
-          <span className="inline-flex items-center gap-2 self-start rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5 text-sm font-medium text-white mb-5">
+          <span className="inline-flex items-center gap-2 self-start rounded-full bg-white/10 backdrop-blur-md border border-white/10 px-4 py-1.5 text-sm font-medium text-white/90 mb-5">
             {eyebrow}
           </span>
         )}
@@ -101,7 +101,7 @@ export default function PageHero({
         </h1>
 
         {subtitle && (
-          <p className="mt-5 text-lg md:text-xl text-white leading-relaxed max-w-3xl">
+          <p className="mt-5 text-lg md:text-xl text-white/80 leading-relaxed max-w-3xl">
             {subtitle}
           </p>
         )}

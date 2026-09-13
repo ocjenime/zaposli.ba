@@ -88,9 +88,9 @@ export default function HeroSection() {
       {/* Hero content */}
       <div className="relative z-20 flex-1 flex items-center">
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-20">
-          <div className="max-w-3xl drop-shadow-lg">
+          <div className="max-w-3xl">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white mb-6 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white/90 mb-6 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
               Marketplace za usluge u BiH
             </div>
@@ -99,13 +99,13 @@ export default function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.05] tracking-tight mb-6 animate-fade-in">
               Pronađite majstora
               <br />
-              <span className="text-white">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                 za vaš posao
               </span>
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg sm:text-xl text-white leading-relaxed mb-8 max-w-2xl animate-fade-in">
+            <p className="text-lg sm:text-xl text-white/80 leading-relaxed mb-8 max-w-2xl animate-fade-in">
               Besplatno objavite svoj projekt i primite ponude od provjerenih građevinskih firmi i majstora širom Bosne i Hercegovine.
             </p>
 
