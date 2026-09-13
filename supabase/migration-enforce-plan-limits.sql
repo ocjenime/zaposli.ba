@@ -8,6 +8,8 @@ RETURNS FLOAT
 LANGUAGE sql
 STABLE
 SECURITY DEFINER
+SET search_path = public, pg_temp
+SET row_security = off
 AS $$
   SELECT COALESCE(
     (SELECT CASE p.slug
@@ -35,6 +37,8 @@ CREATE OR REPLACE FUNCTION update_firm_plan_priority()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public, pg_temp
+SET row_security = off
 AS $$
 BEGIN
   IF TG_OP = 'DELETE' THEN
@@ -58,6 +62,8 @@ CREATE OR REPLACE FUNCTION enforce_bid_limit()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public, pg_temp
+SET row_security = off
 AS $$
 DECLARE
   plan_limit INT;
@@ -104,12 +110,14 @@ CREATE OR REPLACE FUNCTION enforce_included_ad_limit()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 SECURITY DEFINER
+SET search_path = public, pg_temp
+SET row_security = off
 AS $$
 DECLARE
   ad_limit INT;
   used_count INT;
 BEGIN
-  IF NEW.source != 'included' THEN
+  IF NEW.source <> 'included' THEN
     RETURN NEW;
   END IF;
 
