@@ -227,6 +227,8 @@
 - Fixed mobile hamburger menu in dark mode: items were invisible because `dark:text-white` resolved to the semantic dark `white` color instead of real white; added CSS overrides for `.dark .dark\:text-white` (and alpha variants) in `app/globals.css`.
 - Fixed mobile menu top offset so it starts exactly below the slimmed header (`top-14 md:top-16`).
 - Switched `Header.tsx` and `ThemeToggle.tsx` dark-mode text to explicit `dark:text-[#ffffff]` so menu items and icons are always readable regardless of semantic color swaps.
+- Made `/gradovi/` city firm counts update automatically by adding ISR (`revalidate = 60`) and a client-side refresh in the new `CityGrid` component, so a newly registered firm/majstor turns its city green right away.
+- Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
