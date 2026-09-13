@@ -169,12 +169,12 @@ export default function HeroSection() {
       </div>
 
       {/* Floating app sticker - Higgsfield style */}
-      <div className="pointer-events-none absolute z-20 right-2 sm:right-4 lg:right-12 xl:right-20 bottom-16 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 w-36 sm:w-48 md:w-64 lg:w-[420px] anim-float-soft drop-shadow-[0_12px_40px_rgba(0,0,0,0.45)] drop-shadow-[0_0_40px_rgba(249,115,22,0.25)]">
+      <div className="pointer-events-none absolute z-20 right-2 sm:right-4 lg:right-24 xl:right-36 bottom-16 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2 w-44 sm:w-56 md:w-80 lg:w-[520px] anim-float-soft drop-shadow-[0_12px_40px_rgba(0,0,0,0.45)] drop-shadow-[0_0_40px_rgba(249,115,22,0.25)]">
         <Image
           src="/images/hero-sticker.png"
           alt="Uskoro i mobilna aplikacija Zaposli.ba"
-          width={420}
-          height={320}
+          width={560}
+          height={420}
           className="w-full h-auto"
           priority
         />
