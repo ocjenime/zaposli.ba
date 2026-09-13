@@ -27,8 +27,18 @@ WHERE id IN (
 );
 
 -- Make sure one auth user can own exactly one firm.
-ALTER TABLE public.firms
-  ADD CONSTRAINT IF NOT EXISTS firms_owner_id_key UNIQUE (owner_id);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_constraint
+    WHERE conname = 'firms_owner_id_key'
+      AND conrelid = 'public.firms'::regclass
+  ) THEN
+    ALTER TABLE public.firms
+      ADD CONSTRAINT firms_owner_id_key UNIQUE (owner_id);
+  END IF;
+END
+$$;
 
 -- Re-create handle_new_user so it only inserts the profile and default
 -- notification settings, not a firms row. Firm creation is handled by the app.
