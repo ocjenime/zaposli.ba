@@ -231,6 +231,10 @@
 - Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium.
 - Hidden the visible "Početna - ..." breadcrumb bar on all public pages (`/kontakt/`, `/gradovi/`, `/kategorije/`, etc.) while keeping the JSON-LD `BreadcrumbList` schema for SEO.
 - Made the 6 homepage trust/info cards (`StatsSection`) titles and descriptions pure white in dark mode so the text is readable.
+- Fixed yearly subscription pricing:
+  - `getLaunchPrice(plan, 'yearly')` now computes `launch_offer_months * launch_price_monthly + (12 - launch_offer_months) * price_monthly` (e.g. Start: 3×19 + 9×29 = 318 KM).
+  - Added `supabase/migration-fix-yearly-prices.sql` to update stored `price_yearly` to `price_monthly * 12 * 0.9` and `launch_price_yearly` to the correct blended total.
+  - Improved the dashboard yearly launch-price label to show the blended monthly breakdown.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
