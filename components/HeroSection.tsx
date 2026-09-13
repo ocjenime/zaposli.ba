@@ -168,16 +168,19 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Floating app sticker - Higgsfield style (desktop only) */}
-      <div className="pointer-events-none absolute z-20 right-2 sm:right-4 lg:right-8 xl:right-12 bottom-16 sm:bottom-auto sm:top-56 md:top-60 lg:top-64 xl:top-72 w-44 sm:w-56 md:w-80 lg:w-[520px] anim-float-soft drop-shadow-[0_12px_40px_rgba(0,0,0,0.45)] drop-shadow-[0_0_40px_rgba(249,115,22,0.25)] hidden sm:block">
-        <Image
-          src="/images/hero-sticker.png"
-          alt="Uskoro i mobilna aplikacija Zaposli.ba"
-          width={560}
-          height={420}
-          className="w-full h-auto"
-          priority
-        />
+      {/* Floating app sticker - premium Higgsfield style (desktop only) */}
+      <div className="pointer-events-none absolute z-20 right-2 sm:right-4 lg:right-6 xl:right-10 bottom-16 sm:bottom-auto sm:top-56 md:top-60 lg:top-64 xl:top-72 w-44 sm:w-56 md:w-80 lg:w-[580px] anim-float-soft hidden sm:block">
+        <div className="relative rounded-3xl overflow-hidden ring-1 ring-white/10 bg-white/[0.03] backdrop-blur-sm p-2 drop-shadow-[0_16px_50px_rgba(0,0,0,0.5)] drop-shadow-[0_0_50px_rgba(249,115,22,0.3)]">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-orange/10 via-transparent to-white/5 pointer-events-none" />
+          <Image
+            src="/images/hero-sticker.png"
+            alt="Uskoro i mobilna aplikacija Zaposli.ba"
+            width={600}
+            height={450}
+            className="relative w-full h-auto"
+            priority
+          />
+        </div>
       </div>
 
       {/* Bottom fade for smooth transition to next section */}
