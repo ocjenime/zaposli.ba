@@ -62,17 +62,17 @@ export default function HeroSection() {
           emergencyBannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between gap-3">
           <Link
             href="/kategorije/hitne-intervencije/"
-            className="flex items-center gap-2 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity min-w-0"
+            className="flex items-center gap-2 text-[11px] sm:text-xs font-medium hover:opacity-90 transition-opacity min-w-0"
           >
-            <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full">
-              <Siren className="w-2.5 h-2.5" />
+            <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+              <Siren className="w-2 h-2" />
               24/7
             </span>
             <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
-            <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
+            <ArrowRight className="w-3.5 h-3.5 shrink-0 hidden sm:block" />
           </Link>
           <button
             type="button"
