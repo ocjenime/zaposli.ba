@@ -226,6 +226,7 @@
 - Updated `/gradovi/` city cards to show a green tint for cities that have at least one registered firm/majstor and a red tint for cities without any, fetching firm counts at build time.
 - Fixed mobile hamburger menu in dark mode: items were invisible because `dark:text-white` resolved to the semantic dark `white` color instead of real white; added CSS overrides for `.dark .dark\:text-white` (and alpha variants) in `app/globals.css`.
 - Fixed mobile menu top offset so it starts exactly below the slimmed header (`top-14 md:top-16`).
+- Switched `Header.tsx` and `ThemeToggle.tsx` dark-mode text to explicit `dark:text-[#ffffff]` so menu items and icons are always readable regardless of semantic color swaps.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
