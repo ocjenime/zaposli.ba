@@ -205,7 +205,7 @@ export default function Header() {
         <div
           ref={mobileMenuRef}
           id="mobile-menu"
-          className="lg:hidden fixed inset-x-0 top-16 md:top-20 bottom-0 z-[60] bg-white dark:bg-ink overflow-y-auto shadow-2xl"
+          className="lg:hidden fixed inset-x-0 top-14 md:top-16 bottom-0 z-[60] bg-white dark:bg-ink overflow-y-auto shadow-2xl"
         >
           <div className="px-4 py-6 space-y-6">
             {/* Primary CTA */}
