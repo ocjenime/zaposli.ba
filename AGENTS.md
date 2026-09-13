@@ -217,6 +217,8 @@
 - Added `drop-shadow-lg` to hero text to keep it readable.
 - Fixed homepage cards becoming invisible in dark mode by adding `dark:bg-ink-800` / `dark:border-ink-700` to `StatsSection`, `PopularCategories`, `HowItWorks`, `RecentProjects`, and `Testimonials` cards.
 - Made mobile hamburger menu text and icons pure white in dark mode; made `ThemeToggle` icon pure white in dark mode.
+- Removed colored gradient accents from hero headlines (`HeroSection`, `ProjectsPageClient`) so all hero text is solid white for maximum readability.
+- Filled theme icons (`Sun`/`Moon`) with current color so the inner symbol is not transparent against the dark button background.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
