@@ -214,6 +214,7 @@
   - Removed duplicate in-app notification inserts from `notify-client-on-bid`, `notify-firms-on-job`, and `notify-private-job` Edge Functions (they now handle email only).
 - Brightened dark-mode icons in `components/ThemeToggle.tsx` (`dark:text-gray-100`) for better visibility.
 - Darkened hero image overlays in dark mode (`PageHero`, `HeroSection`, `ProjectsPageClient`) and made hero text pure white for readability.
+- Fixed homepage cards becoming invisible in dark mode by adding `dark:bg-ink-800` / `dark:border-ink-700` to `StatsSection`, `PopularCategories`, `HowItWorks`, `RecentProjects`, and `Testimonials` cards.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
