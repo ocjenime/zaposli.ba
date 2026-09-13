@@ -250,15 +250,36 @@
 - Enabled custom logo upload for Start, Pro, and Premium plans:
   - Updated `/za-firme/` pricing cards: Start and Pro now list "Vlastiti logotip na profilu"; Premium feature "24/7 podrška" replaced with "Prioritetna podrška".
   - Updated `/dashboard/firma/profil/` to fetch the current subscription and disable logo upload for free users, showing an upgrade CTA instead.
-- Updated `/za-firme/` plan feature lists:
-  - Pro: replaced "Promovirani listingi" with "1 oglas mjesecno".
-  - Premium: replaced "Napredna analitika" with "Statistika posjeta" and added "3 oglasa mjesecno".
+- Updated `/za-firme/` plan feature lists to match the live offer matrix:
+  - Besplatno: Profil firme/majstora, 5 ponuda mjesečno, direktan kontakt, osnovni portfolio.
+  - Start: 10 ponuda, verifikacija profila, istaknuti kontakt, prioritet u listi, vlastiti logotip, email podrška.
+  - Pro: 30 ponuda, istaknuti profil, verifikacija, prioritetna podrška, statistika posjetitelja, 1 oglas mjesecno, logotip.
+  - Premium: neograničene ponude, premium istaknutost, verifikacija, prioritetna podrška, napredna analitika, 3 oglasa mjesecno, logotip.
+- Enforced plan limits for real so the advertised features actually work:
+  - Created `supabase/migration-enforce-plan-limits.sql`:
+    - Adds `firms.plan_priority` and keeps it in sync via subscription triggers.
+    - DB trigger `bids_limit_trigger` blocks INSERT into `bids` when the monthly plan limit is reached (free = 5, Start = 10, Pro = 30, Premium = unlimited).
+    - DB trigger `included_ad_limit_trigger` blocks INSERT of `source = 'included'` promoted ads when the monthly included-ad limit is reached (Pro = 1, Premium = 3).
+  - Ranking now uses `plan_priority`: Start +0.1, Pro +0.2, Premium +0.4 on top of rating + verified boost; updated `components/CategoryFirms.tsx` and `app/gradovi/[slug]/page.tsx`.
+  - Custom logo upload is gated to paid plans (Start/Pro/Premium) in `/dashboard/firma/profil/`.
+  - Verification request is gated to plans with `verified_badge = true` (Start/Pro/Premium); free users see an upgrade CTA.
+- Added real profile-visit analytics:
+  - Created `supabase/migration-firm-analytics.sql` with `firm_visits` table, RLS policies, and index.
+  - Added `lib/analytics.ts` helpers to record visits and fetch totals/month/today, daily chart (30 days), and top referrers.
+  - Added `components/FirmVisitTracker.tsx` and wired it into `/firma-profil/[slug]/page.tsx` so every public profile visit is recorded once per page load.
+  - Added a "Statistika" tab in `/dashboard/firma/`:
+    - Pro users see total / this month / today visit counters.
+    - Premium users see the same counters plus a 30-day bar chart and top referrers ("Napredna analitika").
 - Finished cookie-consent banner:
   - Added a "Saznajte više" link to `/privacy/`.
   - Confirmed banner appears for new visitors, respects localStorage choice, and loads Google Analytics only after consent is granted.
-- `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
+- `npm run lint` and `npm run build` both pass (2405 pages).
 
 ### Blocked
+- **ACTION REQUIRED**: Apply the two new SQL migrations in Supabase SQL Editor:
+  1. `supabase/migration-enforce-plan-limits.sql`
+  2. `supabase/migration-firm-analytics.sql`
+  Until these are run, the DB-level bid/ad limits and analytics tables will not exist in production.
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
