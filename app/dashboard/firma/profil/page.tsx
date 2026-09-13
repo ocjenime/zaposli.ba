@@ -328,6 +328,16 @@ export default function FirmProfileEditorPage() {
       return;
     }
 
+    if (!city.trim()) {
+      setError('Unesite grad.');
+      return;
+    }
+
+    if (selectedCategories.length === 0) {
+      setError('Odaberite bar jednu kategoriju.');
+      return;
+    }
+
     const finalSlug = slug.trim();
     const { data: existingSlug, error: slugError } = await supabase
       .from('firms')
@@ -537,7 +547,9 @@ export default function FirmProfileEditorPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 mb-2">Grad</label>
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
+                      Grad <span className="text-red-500">*</span>
+                    </label>
                     <div className="relative">
                       <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                       <input
@@ -546,6 +558,7 @@ export default function FirmProfileEditorPage() {
                         onChange={(e) => setCity(e.target.value)}
                         className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                         placeholder="Npr. Sarajevo"
+                        required
                       />
                     </div>
                   </div>
@@ -724,8 +737,10 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Kategorije</label>
-                  <p className="text-xs text-steel mb-3">Označite kategorije koje pokrivate. Obavještenja možete podesiti na dashboardu.</p>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Kategorije <span className="text-red-500">*</span>
+                  </label>
+                  <p className="text-xs text-steel mb-3">Označite bar jednu kategoriju koju pokrivate. Obavještenja možete podesiti na dashboardu.</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {categories.map((category) => {
                       const selected = selectedCategories.includes(category.slug);

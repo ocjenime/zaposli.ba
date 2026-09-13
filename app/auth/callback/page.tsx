@@ -111,14 +111,36 @@ export default function AuthCallback() {
           const meta = user.user_metadata || {};
           const name = (meta.full_name as string) || (meta.name as string) || 'Firma';
           const slug = await generateUniqueFirmSlug(callbackSupabase, name);
-          const { error: firmErr } = await callbackSupabase.from('firms').insert({
-            owner_id: user.id,
-            name,
-            slug,
-            email: user.email,
-            phone: (meta.phone as string) || '',
-          });
-          if (firmErr) console.error('Firm creation error in callback:', firmErr);
+          const city = (meta.city as string) || '';
+          const categoryString = (meta.categories as string) || '';
+          const categorySlugs = categoryString
+            .split(',')
+            .map((s) => s.trim())
+            .filter(Boolean);
+
+          const { data: newFirm, error: firmErr } = await callbackSupabase
+            .from('firms')
+            .insert({
+              owner_id: user.id,
+              name,
+              slug,
+              email: user.email,
+              phone: (meta.phone as string) || '',
+              city,
+            })
+            .select('id')
+            .single();
+
+          if (firmErr) {
+            console.error('Firm creation error in callback:', firmErr);
+          } else if (newFirm && categorySlugs.length > 0) {
+            const categoryRows = categorySlugs.map((category_slug) => ({
+              firm_id: newFirm.id,
+              category_slug,
+            }));
+            const { error: catErr } = await callbackSupabase.from('firm_categories').insert(categoryRows);
+            if (catErr) console.error('Category creation error in callback:', catErr);
+          }
         }
         router.push('/dashboard/firma/');
         return;

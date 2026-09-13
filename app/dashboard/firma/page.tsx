@@ -194,6 +194,7 @@ function FirmDashboardContent() {
   >({});
   const [savingPrefs, setSavingPrefs] = useState(false);
   const [prefsSaved, setPrefsSaved] = useState(false);
+  const [firmCity, setFirmCity] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads'>('jobs');
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
@@ -369,7 +370,7 @@ function FirmDashboardContent() {
 
     const { data, error: err } = await supabase
       .from('firms')
-      .select('id')
+      .select('id, city')
       .eq('owner_id', user.id)
       .single();
 
@@ -380,6 +381,7 @@ function FirmDashboardContent() {
     }
 
     setFirmId(data.id);
+    setFirmCity(data.city || null);
     setLoadingFirm(false);
 
     const { data: catData } = await supabase
@@ -622,7 +624,29 @@ function FirmDashboardContent() {
             </div>
           )}
 
-          {firmId && !loadingFirm && (
+          {firmId && !loadingFirm && (!firmCity?.trim() || firmCategories.length === 0) && (
+            <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-6 text-sm text-amber-800 animate-fade-in">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6 text-amber-700" />
+                </div>
+                <div>
+                  <p className="font-bold text-base mb-1">Dovršite profil firme</p>
+                  <p className="mb-4">
+                    Prije slanja ponuda morate unijeti grad u kojem radite i odabrati bar jednu kategoriju.
+                  </p>
+                  <Link
+                    href="/dashboard/firma/profil/"
+                    className="inline-flex items-center gap-2 font-semibold text-amber-700 hover:underline"
+                  >
+                    Idi na Profil firme <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {firmId && !loadingFirm && firmCity?.trim() && firmCategories.length > 0 && (
             <>
               {!canBid && !loadingPlan && (
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-900/10 border border-red-100 dark:border-red-900/30 px-4 py-3 text-sm text-red-800 dark:text-red-200 animate-fade-in">
@@ -1312,11 +1336,11 @@ function FirmDashboardContent() {
                   </div>
                 )}
               </section>
-            </>
-          )}
 
-          {activeTab === 'ads' && (
-            <FirmAdsTab firmId={firmId || ''} subscription={subscription} />
+              {activeTab === 'ads' && (
+                <FirmAdsTab firmId={firmId || ''} subscription={subscription} />
+              )}
+            </>
           )}
         </div>
       </main>

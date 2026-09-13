@@ -5,11 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
+import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2, MapPin, Tag, Check } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 import { slugify } from '@/lib/slugify';
 import { site } from '@/lib/site';
+import { categories, cities } from '@/lib/data';
 
 function formatError(err: unknown): string {
   if (typeof err === 'string') {
@@ -50,6 +51,8 @@ export default function RegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [userType, setUserType] = useState<UserRole>('client');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+  const [city, setCity] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailConfirmation, setEmailConfirmation] = useState(false);
@@ -63,6 +66,10 @@ export default function RegisterForm() {
     if (!formData.phone.trim()) return 'Unesite broj telefona.';
     if (formData.password.length < 6) return 'Lozinka mora imati najmanje 6 znakova.';
     if (formData.password !== formData.confirmPassword) return 'Lozinke se ne podudaraju.';
+    if (isFirmRole(userType)) {
+      if (!city.trim()) return 'Odaberite grad u kojem radite.';
+      if (selectedCategories.length === 0) return 'Odaberite bar jednu kategoriju u kojoj radite.';
+    }
     return '';
   };
 
@@ -85,6 +92,8 @@ export default function RegisterForm() {
             full_name: formData.name,
             phone: formData.phone,
             role: userType,
+            city: isFirmRole(userType) ? city.trim() : '',
+            categories: isFirmRole(userType) ? selectedCategories.join(',') : '',
           },
           emailRedirectTo: `${site.url}/auth/callback`,
         },
@@ -110,8 +119,8 @@ export default function RegisterForm() {
       return;
     }
 
-    // Direct signup (no email confirmation): create profile and firm immediately
-    // Using upsert with ignoreDuplicates to avoid conflicts with the database trigger
+    // Direct signup (no email confirmation): create profile and firm immediately.
+    // The auth trigger now only creates the profile, so the app must create the firm.
     const { error: profileError } = await supabase.from('profiles').upsert({
       id: authData.user.id,
       email: formData.email,
@@ -132,15 +141,31 @@ export default function RegisterForm() {
       if (existing) {
         slug = `${slug}-${Math.random().toString(36).slice(2, 7)}`;
       }
-      const { error: firmError } = await supabase.from('firms').upsert({
+      const { data: newFirm, error: firmError } = await supabase.from('firms').insert({
         owner_id: authData.user.id,
         name: formData.name,
         slug,
         email: formData.email,
         phone: formData.phone,
-      }, { ignoreDuplicates: true });
+        city: city.trim(),
+      }).select('id').single();
+
       if (firmError) {
         console.error('Firm creation error:', firmError);
+        setError('Nalog je kreiran, ali nismo uspjeli kreirati profil firme. Pokušajte se prijaviti.');
+        setLoading(false);
+        return;
+      }
+
+      if (newFirm && selectedCategories.length > 0) {
+        const categoryRows = selectedCategories.map((catSlug) => ({
+          firm_id: newFirm.id,
+          category_slug: catSlug,
+        }));
+        const { error: catError } = await supabase.from('firm_categories').insert(categoryRows);
+        if (catError) {
+          console.error('Category creation error:', catError);
+        }
       }
     }
 
@@ -238,6 +263,80 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
+
+              {isFirmRole(userType) && (
+                <div className="space-y-5 animate-fade-in">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Grad <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <select
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="input-field pl-10 appearance-none"
+                        required
+                      >
+                        <option value="">Izaberite grad</option>
+                        {cities.map((c) => (
+                          <option key={c.slug} value={c.name}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Kategorije <span className="text-red-500">*</span>
+                    </label>
+                    <p className="text-xs text-gray-500 mb-3">
+                      Odaberite bar jednu kategoriju u kojoj radite.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {categories.map((category) => {
+                        const selected = selectedCategories.includes(category.slug);
+                        return (
+                          <button
+                            key={category.slug}
+                            type="button"
+                            onClick={() =>
+                              setSelectedCategories((prev) =>
+                                prev.includes(category.slug)
+                                  ? prev.filter((s) => s !== category.slug)
+                                  : [...prev, category.slug]
+                              )
+                            }
+                            className={`flex items-center gap-3 text-left rounded-lg border p-3 transition-colors ${
+                              selected
+                                ? 'bg-orange-50 border-brand-orange'
+                                : 'bg-white border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <div
+                              className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
+                                selected
+                                  ? 'bg-brand-orange border-brand-orange'
+                                  : 'border-gray-300 bg-white'
+                              }`}
+                            >
+                              {selected && <Check className="w-3.5 h-3.5 text-white" />}
+                            </div>
+                            <span className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-600'}`}>
+                              {category.name}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {selectedCategories.length === 0 && (
+                      <p className="text-xs text-steel mt-2">Odaberite bar jednu kategoriju.</p>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Lozinka</label>
