@@ -238,6 +238,8 @@
 - Added the new `hero-sticker.png` ("Uskoro i aplikacija!") as a floating Higgsfield-style element on the homepage hero, responsive from mobile to desktop with soft float animation and orange glow shadow.
 - Created `components/AppStickerPopup.tsx`: on mobile, the sticker appears centered on screen as a large popup after the user scrolls ~400px down the homepage, with an X close button and localStorage dismissal so it stays closed.
 - Hidden the homepage hero sticker on mobile; only the scroll-triggered popup is shown there. Lowered the desktop hero sticker by ~2cm.
+- Enlarged the desktop hero sticker further and wrapped it in a premium Higgsfield glass container with ring, subtle orange/white gradient overlay, deeper shadow, and orange glow.
+- Made the emergency bottom bar on `/kategorije/` always visible instead of scroll-triggered.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
