@@ -296,7 +296,7 @@ export default function Header() {
                 </div>
                 <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
                   <span className="flex items-center gap-3">
-                    <Sun className="w-5 h-5 shrink-0" />
+                    <Sun className="w-5 h-5 shrink-0" fill="currentColor" />
                     Tema
                   </span>
                   <ThemeToggle />

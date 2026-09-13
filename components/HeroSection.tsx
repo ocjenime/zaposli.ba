@@ -99,7 +99,7 @@ export default function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-[1.05] tracking-tight mb-6 animate-fade-in">
               Pronađite majstora
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+              <span className="text-white">
                 za vaš posao
               </span>
             </h1>

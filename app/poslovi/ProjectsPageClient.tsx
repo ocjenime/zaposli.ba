@@ -284,7 +284,7 @@ function ProjectsPageContent() {
                 Uživo objavljeni poslovi
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6">
-                Pronađite svoj <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">sljedeći posao</span>
+                Pronađite svoj <span className="text-white">sljedeći posao</span>
               </h1>
               <p className="text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md">
                 Stvarni klijenti širom Bosne i Hercegovine svakodnevno objavljuju poslove.
