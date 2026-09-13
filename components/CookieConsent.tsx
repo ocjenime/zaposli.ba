@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Cookie } from 'lucide-react';
 import GoogleAnalytics from './GoogleAnalytics';
 
@@ -49,7 +50,10 @@ export default function CookieConsent() {
               <p className="text-sm font-semibold">Vaša privatnost je važna</p>
               <p className="text-xs text-white/70 mt-1 leading-relaxed">
                 Koristimo kolačiće kako bismo poboljšali vaše iskustvo i analizirali posjete putem
-                Google Analytics. Možete prihvatiti sve kolačiće ili koristiti samo neophodne.
+                Google Analytics. Možete prihvatiti sve kolačiće ili koristiti samo neophodne.{' '}
+                <Link href="/privacy/" className="underline hover:text-brand-orange transition-colors">
+                  Saznajte više
+                </Link>
               </p>
             </div>
           </div>

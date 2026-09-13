@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { categories } from '@/lib/data';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
+import { getCurrentSubscription, Subscription } from '@/lib/subscriptions';
 import NextImage from 'next/image';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
@@ -99,6 +100,7 @@ export default function FirmProfileEditorPage() {
   const [portfolioImages, setPortfolioImages] = useState<{ id: string; image_url: string }[]>([]);
   const [uploadingPortfolio, setUploadingPortfolio] = useState(false);
   const [deletingPortfolioId, setDeletingPortfolioId] = useState<string | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   const loadFirm = useCallback(async () => {
     if (!user) return;
@@ -145,6 +147,9 @@ export default function FirmProfileEditorPage() {
         .eq('firm_id', typedFirm.id)
         .order('created_at', { ascending: true });
       setPortfolioImages((portfolioData as { id: string; image_url: string }[]) || []);
+
+      const currentSub = await getCurrentSubscription(typedFirm.id);
+      setSubscription(currentSub);
     } catch (err) {
       setError('Došlo je do greške pri učitavanju profila.');
     } finally {
@@ -629,7 +634,11 @@ export default function FirmProfileEditorPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Logotip</label>
-                  <p className="text-xs text-steel mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
+                  {subscription?.plans && subscription.plans.price_monthly > 0 ? (
+                    <p className="text-xs text-steel mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
+                  ) : (
+                    <p className="text-xs text-steel mb-3">Logotip je dostupan u paketima Start, Pro i Premium.</p>
+                  )}
                   <div className="relative inline-block">
                     <LogoDisplay
                       name={name || 'Firma'}
@@ -655,24 +664,35 @@ export default function FirmProfileEditorPage() {
                     )}
                   </div>
                   <div className="mt-3">
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={uploadingLogo}
-                      className="inline-flex items-center gap-2 px-4 py-2.5 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
-                    >
-                      <Upload className="w-4 h-4" />
-                      {logoPreview ? 'Promijeni logotip' : 'Dodaj logotip'}
-                    </button>
+                    {subscription?.plans && subscription.plans.price_monthly > 0 ? (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingLogo}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
+                      >
+                        <Upload className="w-4 h-4" />
+                        {logoPreview ? 'Promijeni logotip' : 'Dodaj logotip'}
+                      </button>
+                    ) : (
+                      <Link
+                        href="/dashboard/firma/pretplata/"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark transition-colors shadow-lg shadow-brand-orange/20"
+                      >
+                        Nadogradite paket za logotip
+                      </Link>
+                    )}
                   </div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/jpeg,image/png,image/webp"
-                    onChange={handleLogoChange}
-                    disabled={uploadingLogo}
-                    className="hidden"
-                  />
+                  {subscription?.plans && subscription.plans.price_monthly > 0 && (
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={handleLogoChange}
+                      disabled={uploadingLogo}
+                      className="hidden"
+                    />
+                  )}
                 </div>
 
                 <div>
