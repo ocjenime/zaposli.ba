@@ -16,6 +16,30 @@ import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { cities } from '@/lib/data';
 import { site } from '@/lib/site';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+function createServerSupabase() {
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+async function getCitiesWithFirms(): Promise<Set<string>> {
+  try {
+    const supabase = createServerSupabase();
+    const { data } = await supabase.from('firms').select('city').not('slug', 'like', 'test-%');
+    const set = new Set<string>();
+    (data || []).forEach((row: { city: string | null }) => {
+      if (row.city) set.add(row.city.trim().toLowerCase());
+    });
+    return set;
+  } catch {
+    return new Set<string>();
+  }
+}
 
 export const metadata: Metadata = {
   title: `Majstori po gradovima - ${cities.length} gradova u BiH | Zaposli.ba`,
@@ -40,17 +64,9 @@ const trustBadges = [
   { icon: Users, label: `${cities.length} gradova`, value: 'Širom BiH' },
 ];
 
-const cityGradients = [
-  'from-orange-50 to-white border-orange-100',
-  'from-blue-50 to-white border-blue-100',
-  'from-stone-50 to-white border-stone-100',
-  'from-amber-50 to-white border-amber-100',
-  'from-emerald-50 to-white border-emerald-100',
-  'from-violet-50 to-white border-violet-100',
-];
-
-export default function CitiesPage() {
+export default async function CitiesPage() {
   const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
+  const citiesWithFirms = await getCitiesWithFirms();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -59,7 +75,14 @@ export default function CitiesPage() {
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
 
         <PageHero
-          title="Majstori po gradovima"
+          title={
+            <>
+              Majstori{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                po gradovima
+              </span>
+            </>
+          }
           subtitle={`Provjerene firme i majstori u ${cities.length} gradova širom Bosne i Hercegovine. Od Sarajeva do Banja Luke, Mostara i Tuzle.`}
           eyebrow="Svi gradovi u BiH"
           icon={MapPin}
@@ -127,8 +150,11 @@ export default function CitiesPage() {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {sortedCities.map((city, index) => {
-                const gradient = cityGradients[index % cityGradients.length];
+              {sortedCities.map((city) => {
+                const hasFirms = citiesWithFirms.has(city.name.toLowerCase());
+                const gradient = hasFirms
+                  ? 'from-emerald-50 to-white border-emerald-100 hover:shadow-emerald-100'
+                  : 'from-red-50 to-white border-red-100 hover:shadow-red-100';
                 return (
                   <Link
                     key={city.slug}

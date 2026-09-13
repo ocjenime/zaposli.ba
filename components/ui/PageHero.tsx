@@ -2,12 +2,13 @@ import Image from 'next/image';
 import type { LucideIcon } from 'lucide-react';
 
 export interface PageHeroProps {
-  title: string;
+  title: React.ReactNode;
   subtitle?: string;
   eyebrow?: string;
   children?: React.ReactNode;
   image?: string;
   imagePosition?: string;
+  imageAlt?: string;
   icon?: LucideIcon;
   overlay?: boolean;
   overlayIntensity?: 'dark' | 'medium' | 'light';
@@ -23,6 +24,7 @@ export default function PageHero({
   children,
   image,
   imagePosition = 'object-center',
+  imageAlt,
   icon: Icon,
   overlay = true,
   overlayIntensity = 'dark',
@@ -63,7 +65,7 @@ export default function PageHero({
         <>
           <Image
             src={image}
-            alt={title}
+            alt={imageAlt ?? (typeof title === 'string' ? title : '')}
             fill
             className={`object-cover ${imagePosition}`}
             priority
