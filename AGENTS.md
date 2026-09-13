@@ -274,9 +274,15 @@
   - Added a "Saznajte više" link to `/privacy/`.
   - Confirmed banner appears for new visitors, respects localStorage choice, and loads Google Analytics only after consent is granted.
 - `npm run lint` and `npm run build` both pass (2405 pages).
+- Switched bid and included-ad counters from calendar-month reset to **30-day billing periods tied to each subscription's `starts_at`**:
+  - `lib/subscriptions.ts` now exposes `getSubscriptionPeriodStart` and `getSubscriptionNextReset`.
+  - `getBidsUsedThisMonth`, `getFeaturedAdsUsedThisMonth`, and `getPlanAndUsage` use the subscription period (with a calendar-month fallback for free users).
+  - Dashboard "Reset ponuda" card now shows the correct per-subscription countdown.
+  - Created `supabase/migration-subscription-period-reset.sql` which drops and recreates the DB enforcement triggers to count bids/ads from `starts_at + floor(days/30) * 30 days`.
 - User applied both new SQL migrations in Supabase SQL Editor:
   1. `supabase/migration-enforce-plan-limits.sql`
   2. `supabase/migration-firm-analytics.sql`
+- **ACTION REQUIRED**: User still needs to apply `supabase/migration-subscription-period-reset.sql` so the DB-level counters use 30-day periods instead of calendar months.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
