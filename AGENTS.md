@@ -213,7 +213,8 @@
   - Created `supabase/migration-notification-triggers.sql` with synchronous DB triggers for new messages and direct/private job status changes, so in-app notifications are instant even if Edge Function webhooks are delayed.
   - Removed duplicate in-app notification inserts from `notify-client-on-bid`, `notify-firms-on-job`, and `notify-private-job` Edge Functions (they now handle email only).
 - Brightened dark-mode icons in `components/ThemeToggle.tsx` (`dark:text-gray-100`) for better visibility.
-- `npm run lint` and `npm run build` both pass (2408 pages); Edge Functions redeployed via GitHub Actions.
+- Darkened hero image overlays in dark mode (`PageHero`, `HeroSection`, `ProjectsPageClient`) and made hero text pure white for readability.
+- `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
