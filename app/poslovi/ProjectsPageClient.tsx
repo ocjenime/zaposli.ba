@@ -275,18 +275,19 @@ function ProjectsPageContent() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30 dark:from-black/95 dark:via-black/75 dark:to-black/50" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 dark:from-black/90 dark:via-black/40 dark:to-black/60" />
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-16 md:pb-28">
             <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6 drop-shadow-md">
                 <Sparkles className="w-4 h-4 text-brand-orange" />
                 Uživo objavljeni poslovi
               </div>
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6">
                 Pronađite svoj <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">sljedeći posao</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-10">
+              <p className="text-lg md:text-xl text-white max-w-2xl mx-auto leading-relaxed mb-10 drop-shadow-md">
                 Stvarni klijenti širom Bosne i Hercegovine svakodnevno objavljuju poslove.
                 Filtrirajte, sortirajte i pošaljite ponudu za manje od minuta.
               </p>
@@ -322,7 +323,7 @@ function ProjectsPageContent() {
                   ].map((item) => {
                     const Icon = item.icon;
                     return (
-                      <div key={item.label} className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-white/5 border border-white/10 text-white/90">
+                      <div key={item.label} className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-white/5 border border-white/10 text-white drop-shadow-md">
                         <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-orange shrink-0" />
                         <p className="text-xs md:text-sm font-medium text-left leading-tight">{item.label}</p>
                       </div>
