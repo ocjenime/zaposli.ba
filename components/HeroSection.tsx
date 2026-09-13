@@ -54,9 +54,8 @@ export default function HeroSection() {
           className="object-cover object-[60%_center]"
         />
         {/* Cinematic overlay for text readability */}
-        <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20 dark:from-black/95 dark:via-black/75 dark:to-black/50" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30 dark:from-black/90 dark:via-black/40 dark:to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
       </div>
 
       {/* Emergency banner */}
@@ -89,7 +88,7 @@ export default function HeroSection() {
       {/* Hero content */}
       <div className="relative z-20 flex-1 flex items-center">
         <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-20">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl drop-shadow-lg">
             {/* Eyebrow */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white mb-6 animate-fade-in">
               <span className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />

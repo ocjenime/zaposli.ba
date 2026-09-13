@@ -41,19 +41,19 @@ export default function PageHero({
 
   const overlayClasses = {
     dark: {
-      base: 'bg-black/45 dark:bg-black/70',
-      left: 'from-black/85 via-black/60 to-black/40 dark:from-black/95 dark:via-black/80 dark:to-black/60',
-      top: 'from-black/70 via-black/25 to-black/40 dark:from-black/90 dark:via-black/50 dark:to-black/60',
+      base: 'bg-black/45',
+      left: 'from-black/85 via-black/60 to-black/40',
+      top: 'from-black/70 via-black/25 to-black/40',
     },
     medium: {
-      base: 'bg-black/35 dark:bg-black/55',
-      left: 'from-black/70 via-black/45 to-black/25 dark:from-black/90 dark:via-black/70 dark:to-black/45',
-      top: 'from-black/55 via-black/15 to-black/30 dark:from-black/80 dark:via-black/40 dark:to-black/50',
+      base: 'bg-black/35',
+      left: 'from-black/70 via-black/45 to-black/25',
+      top: 'from-black/55 via-black/15 to-black/30',
     },
     light: {
-      base: 'bg-black/25 dark:bg-black/40',
-      left: 'from-black/55 via-black/35 to-black/15 dark:from-black/80 dark:via-black/55 dark:to-black/30',
-      top: 'from-black/45 via-black/10 to-black/20 dark:from-black/70 dark:via-black/25 dark:to-black/40',
+      base: 'bg-black/25',
+      left: 'from-black/55 via-black/35 to-black/15',
+      top: 'from-black/45 via-black/10 to-black/20',
     },
   }[overlayIntensity];
 
@@ -83,7 +83,7 @@ export default function PageHero({
         </>
       )}
 
-      <div className={`relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ${alignClass} flex flex-col`}>
+      <div className={`relative z-10 mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 ${alignClass} flex flex-col drop-shadow-lg`}>
         {Icon && (
           <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center justify-center mb-5 shadow-lg">
             <Icon className="w-7 h-7 text-brand-orange" />
