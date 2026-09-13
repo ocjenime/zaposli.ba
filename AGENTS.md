@@ -250,6 +250,9 @@
 - Enabled custom logo upload for Start, Pro, and Premium plans:
   - Updated `/za-firme/` pricing cards: Start and Pro now list "Vlastiti logotip na profilu"; Premium feature "24/7 podrška" replaced with "Prioritetna podrška".
   - Updated `/dashboard/firma/profil/` to fetch the current subscription and disable logo upload for free users, showing an upgrade CTA instead.
+- Updated `/za-firme/` plan feature lists:
+  - Pro: renamed "Statistika posjeta" → "Statistika posjetitelja" and replaced "Promovirani listingi" with "1 oglas mjesecno".
+  - Premium: added "3 oglasa mjesecno".
 - Finished cookie-consent banner:
   - Added a "Saznajte više" link to `/privacy/`.
   - Confirmed banner appears for new visitors, respects localStorage choice, and loads Google Analytics only after consent is granted.
