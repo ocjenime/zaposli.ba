@@ -293,7 +293,7 @@
   - New DB trigger in `supabase/migration-admin-request-notifications.sql` inserts an in-app notification for every admin and calls the `notify-admin` Edge Function.
   - Extended `supabase/functions/notify-admin/index.ts` to send an email to `info@zaposli.ba` with firm, plan, price, and period details.
   - The subscription request form now includes `plan_name` in metadata for better email/notifications.
-- **ACTION REQUIRED**: Apply `supabase/migration-admin-request-notifications.sql` in Supabase SQL Editor and redeploy Edge Functions (GitHub Actions runs on push).
+- User applied `supabase/migration-admin-request-notifications.sql`; admin now receives in-app and email notifications for subscription upgrade requests.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
