@@ -275,8 +275,8 @@ function ProjectsPageContent() {
             priority
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/35" />
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-16 md:pb-28">
             <div className="max-w-4xl mx-auto text-center drop-shadow-lg">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6 drop-shadow-md">

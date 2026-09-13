@@ -41,19 +41,19 @@ export default function PageHero({
 
   const overlayClasses = {
     dark: {
-      base: 'bg-black/45',
-      left: 'from-black/85 via-black/60 to-black/40',
-      top: 'from-black/70 via-black/25 to-black/40',
+      base: 'bg-ink-950/55',
+      left: 'from-ink-950/90 via-ink-950/65 to-ink-950/45',
+      top: 'from-ink-950/75 via-ink-950/30 to-ink-950/45',
     },
     medium: {
-      base: 'bg-black/35',
-      left: 'from-black/70 via-black/45 to-black/25',
-      top: 'from-black/55 via-black/15 to-black/30',
+      base: 'bg-ink-950/45',
+      left: 'from-ink-950/75 via-ink-950/50 to-ink-950/30',
+      top: 'from-ink-950/60 via-ink-950/20 to-ink-950/35',
     },
     light: {
-      base: 'bg-black/25',
-      left: 'from-black/55 via-black/35 to-black/15',
-      top: 'from-black/45 via-black/10 to-black/20',
+      base: 'bg-ink-950/35',
+      left: 'from-ink-950/60 via-ink-950/40 to-ink-950/20',
+      top: 'from-ink-950/50 via-ink-950/15 to-ink-950/25',
     },
   }[overlayIntensity];
 

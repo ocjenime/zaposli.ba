@@ -54,8 +54,8 @@ export default function HeroSection() {
           className="object-cover object-[60%_center]"
         />
         {/* Cinematic overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-ink-950/35" />
       </div>
 
       {/* Emergency banner */}
