@@ -11,11 +11,9 @@ export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
   const [query, setQuery] = useState('');
   const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(true);
-  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
     try {
       if (typeof window !== 'undefined' && localStorage.getItem('emergencyBannerDismissed') === 'true') {
         setEmergencyBannerVisible(false);
@@ -59,31 +57,33 @@ export default function HeroSection() {
       </div>
 
       {/* Emergency banner */}
-      {mounted && emergencyBannerVisible && (
-        <div className="relative z-30 mt-14 md:mt-16 bg-[#111] text-white border-b border-white/10">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1.5 flex items-center justify-between gap-3">
-            <Link
-              href="/kategorije/hitne-intervencije/"
-              className="flex items-center gap-2 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity min-w-0"
-            >
-              <span className="inline-flex items-center gap-1 bg-red-600 text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full">
-                <Siren className="w-2.5 h-2.5" />
-                24/7
-              </span>
-              <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
-              <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
-            </Link>
-            <button
-              type="button"
-              onClick={dismissEmergencyBanner}
-              className="p-1.5 hover:bg-white/10 rounded-full transition-colors shrink-0"
-              aria-label="Zatvori"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+      <div
+        className={`relative z-30 mt-14 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20 transition-all duration-300 ${
+          emergencyBannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+        }`}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3">
+          <Link
+            href="/kategorije/hitne-intervencije/"
+            className="flex items-center gap-2 text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity min-w-0"
+          >
+            <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full">
+              <Siren className="w-2.5 h-2.5" />
+              24/7
+            </span>
+            <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
+            <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
+          </Link>
+          <button
+            type="button"
+            onClick={dismissEmergencyBanner}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors shrink-0"
+            aria-label="Zatvori"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-      )}
+      </div>
 
       {/* Hero content */}
       <div className="relative z-20 flex-1 flex items-center">
