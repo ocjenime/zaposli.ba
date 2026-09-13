@@ -343,19 +343,6 @@ function PostProjectContent() {
       }
     }
 
-    // Obavijesti ciljanu firmu ako je posao zatražen s profila firme
-    if (targetProvider?.type === 'firm' && targetProvider.ownerId) {
-      try {
-        await supabase.from('notifications').insert({
-          user_id: targetProvider.ownerId,
-          type: 'direct_quote_request',
-          title: 'Novi zahtjev za ponudu',
-          message: `Klijent traži ponudu za "${formData.title || 'posao'}" s vašeg profila.`,
-          job_id: jobData.id,
-        });
-      } catch {}
-    }
-
     setSubmitting(false);
     setSubmitted(true);
     try {

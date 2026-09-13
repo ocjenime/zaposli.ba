@@ -120,27 +120,6 @@ async function sendResendEmail(to: string, subject: string, html: string): Promi
   }
 }
 
-async function insertNotification(
-  supabase: ReturnType<typeof createClient>,
-  userId: string,
-  type: string,
-  title: string,
-  message: string,
-  jobId: string
-) {
-  try {
-    await supabase.from("notifications").insert({
-      user_id: userId,
-      type,
-      title,
-      message,
-      job_id: jobId,
-    });
-  } catch (err) {
-    console.error("Failed to insert notification:", err);
-  }
-}
-
 Deno.serve(async (req: Request) => {
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405 });
@@ -216,7 +195,6 @@ Deno.serve(async (req: Request) => {
   const adminUrl = `${SITE_URL}/admin/`;
 
   const emailPromises: Promise<EmailResult>[] = [];
-  const notificationPromises: Promise<void>[] = [];
 
   const jobDetails = `
     <p style="margin: 0 0 8px; font-size: 14px; color: #555;"><strong>Klijent:</strong> ${clientName}</p>
@@ -249,19 +227,6 @@ Deno.serve(async (req: Request) => {
     }
     if (firmOwner?.email && firmOwner.email !== firm?.email && firmOwner.email !== client?.email) {
       emailPromises.push(sendResendEmail(firmOwner.email, `Novi zahtjev za ponudu: ${job.title}`, html));
-    }
-
-    if (firmOwner) {
-      notificationPromises.push(
-        insertNotification(
-          supabase,
-          firmOwner.id,
-          "direct_request",
-          "Novi direktni zahtjev",
-          `Dobili ste novi direktni zahtjev za ponudu: "${job.title}"`,
-          job.id
-        )
-      );
     }
 
     if (ADMIN_EMAIL && RESEND_API_KEY) {
@@ -299,16 +264,6 @@ Deno.serve(async (req: Request) => {
           `
         );
         if (client?.email) emailPromises.push(sendResendEmail(client.email, `Ponuda za "${job.title}" je prihvaćena`, html));
-        notificationPromises.push(
-          insertNotification(
-            supabase,
-            job.client_id,
-            "direct_request_accepted",
-            "Ponuda prihvaćena",
-            `Firma ${firmName} je prihvatila vaš zahtjev za "${job.title}"`,
-            job.id
-          )
-        );
         break;
       }
       case "in_progress": {
@@ -324,16 +279,6 @@ Deno.serve(async (req: Request) => {
           `
         );
         if (client?.email) emailPromises.push(sendResendEmail(client.email, `Firma je započela rad na "${job.title}"`, html));
-        notificationPromises.push(
-          insertNotification(
-            supabase,
-            job.client_id,
-            "direct_request_in_progress",
-            "Rad u toku",
-            `Firma ${firmName} je započela rad na "${job.title}"`,
-            job.id
-          )
-        );
         break;
       }
       case "done_pending": {
@@ -353,16 +298,6 @@ Deno.serve(async (req: Request) => {
           `
         );
         if (client?.email) emailPromises.push(sendResendEmail(client.email, `Posao "${job.title}" je gotov — potvrdite završetak`, html));
-        notificationPromises.push(
-          insertNotification(
-            supabase,
-            job.client_id,
-            "direct_request_done",
-            "Posao gotov — potvrdite završetak",
-            `Firma ${firmName} označila je "${job.title}" kao gotov. Potvrdite završetak.`,
-            job.id
-          )
-        );
         break;
       }
       case "completed": {
@@ -382,18 +317,6 @@ Deno.serve(async (req: Request) => {
         if (firmOwner?.email && firmOwner.email !== firm?.email) {
           emailPromises.push(sendResendEmail(firmOwner.email, `Klijent je potvrdio završetak posla "${job.title}"`, html));
         }
-        if (firmOwner) {
-          notificationPromises.push(
-            insertNotification(
-              supabase,
-              firmOwner.id,
-              "direct_request_completed",
-              "Posao završen",
-              `Klijent ${clientName} je potvrdio završetak posla "${job.title}"`,
-              job.id
-            )
-          );
-        }
         break;
       }
       case "declined": {
@@ -410,16 +333,6 @@ Deno.serve(async (req: Request) => {
           `
         );
         if (client?.email) emailPromises.push(sendResendEmail(client.email, `Zahtjev za ponudu za "${job.title}" nije prihvaćen`, html));
-        notificationPromises.push(
-          insertNotification(
-            supabase,
-            job.client_id,
-            "direct_request_declined",
-            "Zahtjev odbijen",
-            `Firma ${firmName} je odbila vaš zahtjev za "${job.title}"`,
-            job.id
-          )
-        );
         break;
       }
       case "cancelled": {
@@ -439,28 +352,6 @@ Deno.serve(async (req: Request) => {
         }
         if (firmOwner?.email && firmOwner.email !== firm?.email && firmOwner.email !== client?.email) {
           emailPromises.push(sendResendEmail(firmOwner.email, `Zahtjev otkazan: ${job.title}`, html));
-        }
-        notificationPromises.push(
-          insertNotification(
-            supabase,
-            job.client_id,
-            "direct_request_cancelled",
-            "Zahtjev otkazan",
-            `Zahtjev "${job.title}" je otkazan`,
-            job.id
-          )
-        );
-        if (firmOwner) {
-          notificationPromises.push(
-            insertNotification(
-              supabase,
-              firmOwner.id,
-              "direct_request_cancelled",
-              "Zahtjev otkazan",
-              `Zahtjev "${job.title}" je otkazan`,
-              job.id
-            )
-          );
         }
         break;
       }
@@ -488,27 +379,13 @@ Deno.serve(async (req: Request) => {
     if (ADMIN_EMAIL && RESEND_API_KEY) {
       emailPromises.push(sendResendEmail(ADMIN_EMAIL, `[Admin] Problem prijavljen: ${job.title}`, html));
     }
-    if (firmOwner) {
-      notificationPromises.push(
-        insertNotification(
-          supabase,
-          firmOwner.id,
-          "direct_request_problem",
-          "Prijavljen problem",
-          `Klijent ${clientName} prijavio je problem za "${job.title}"`,
-          job.id
-        )
-      );
-    }
   }
-
-  await Promise.all([...emailPromises, ...notificationPromises]);
 
   const sentResults = await Promise.all(emailPromises);
   const sentCount = sentResults.filter((r) => r.status === "sent").length;
 
   return new Response(
-    JSON.stringify({ message: "Processed", emails: sentCount, notifications: notificationPromises.length }),
+    JSON.stringify({ message: "Processed", emails: sentCount }),
     { status: 200, headers: { "Content-Type": "application/json" } }
   );
 });

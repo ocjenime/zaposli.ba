@@ -57,7 +57,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
       <button
         type="button"
         onClick={toggleTheme}
-        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-gray-300 transition-colors"
+        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-gray-100 transition-colors"
         aria-label={resolvedTheme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
       >
         {resolvedTheme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -70,7 +70,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
-        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-gray-300 transition-colors"
+        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-gray-100 transition-colors"
         aria-label="Tema"
         aria-expanded={isOpen}
       >

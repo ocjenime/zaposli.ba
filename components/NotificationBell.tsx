@@ -48,6 +48,11 @@ export default function NotificationBell() {
   useEffect(() => {
     if (!mounted || !user) return;
     loadNotifications();
+    // Polling fallback in case realtime is not available.
+    const interval = setInterval(() => {
+      loadNotifications();
+    }, 30000);
+    return () => clearInterval(interval);
   }, [mounted, user, loadNotifications]);
 
   useEffect(() => {
