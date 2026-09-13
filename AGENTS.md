@@ -241,6 +241,7 @@
 - Reverted the desktop hero sticker to the previous Higgsfield drop-shadow/glow style (removed the glass container) and moved it ~1cm further to the right.
 - Made the emergency bottom bar on `/kategorije/` always visible instead of scroll-triggered.
 - Fixed homepage emergency banner so it renders immediately (no hydration delay) and upgraded it to a premium red glassmorphism style with smooth dismiss animation.
+- Slimmed down the homepage emergency banner height and font/icon sizes.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
