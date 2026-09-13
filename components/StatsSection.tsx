@@ -179,7 +179,7 @@ export default function StatsSection() {
                 <card.icon className="h-6 w-6" />
               </div>
               <h3 className="mb-1.5 text-lg font-bold text-[#ffffff]">{card.title}</h3>
-              <p className="text-sm leading-relaxed text-[#ffffff]">{card.description}</p>
+              <p className="text-sm leading-relaxed text-[#ffffff]/70">{card.description}</p>
             </div>
           ))}
         </div>
