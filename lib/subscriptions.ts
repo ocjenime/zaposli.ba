@@ -62,14 +62,46 @@ export async function getCurrentSubscription(firmId: string): Promise<Subscripti
   return data as unknown as Subscription;
 }
 
-export async function getBidsUsedThisMonth(firmId: string): Promise<number> {
+// Monthly limits reset every 30 days from the subscription start date,
+// not on calendar-month boundaries. Multi-month subscriptions keep resetting
+// every 30 days until they expire.
+export function getSubscriptionPeriodStart(startsAt: string): Date {
+  const start = new Date(startsAt);
   const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const elapsedMs = now.getTime() - start.getTime();
+  const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+  const periods = Math.floor(elapsedDays / 30);
+  const periodStart = new Date(start);
+  periodStart.setDate(periodStart.getDate() + periods * 30);
+  periodStart.setHours(0, 0, 0, 0);
+  return periodStart;
+}
+
+export function getSubscriptionNextReset(startsAt: string): Date {
+  const start = new Date(startsAt);
+  const now = new Date();
+  const elapsedMs = now.getTime() - start.getTime();
+  const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+  const periods = Math.floor(elapsedDays / 30);
+  const next = new Date(start);
+  next.setDate(next.getDate() + (periods + 1) * 30);
+  next.setHours(0, 0, 0, 0);
+  return next;
+}
+
+export async function getBidsUsedThisMonth(
+  firmId: string,
+  subscription: Subscription | null = null
+): Promise<number> {
+  const periodStart = subscription?.starts_at
+    ? getSubscriptionPeriodStart(subscription.starts_at).toISOString()
+    : new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+
   const { count, error } = await supabase
     .from('bids')
     .select('*', { count: 'exact', head: true })
     .eq('firm_id', firmId)
-    .gte('created_at', startOfMonth);
+    .gte('created_at', periodStart);
   if (error) throw error;
   return count ?? 0;
 }
@@ -79,13 +111,17 @@ export async function getPlanAndUsage(firmId: string): Promise<{
   bidsUsed: number;
   bidsLimit: number;
   canBid: boolean;
+  periodStart: Date | null;
+  nextReset: Date | null;
 }> {
   const subscription = await getCurrentSubscription(firmId);
-  const bidsUsed = await getBidsUsedThisMonth(firmId);
+  const bidsUsed = await getBidsUsedThisMonth(firmId, subscription);
   // Fallback to free plan (5 bids) when no subscription record exists
   const bidsLimit = subscription?.plans?.bids_per_month ?? 5;
   const canBid = bidsLimit === 9999 || bidsUsed < bidsLimit;
-  return { subscription, bidsUsed, bidsLimit, canBid };
+  const periodStart = subscription?.starts_at ? getSubscriptionPeriodStart(subscription.starts_at) : null;
+  const nextReset = subscription?.starts_at ? getSubscriptionNextReset(subscription.starts_at) : null;
+  return { subscription, bidsUsed, bidsLimit, canBid, periodStart, nextReset };
 }
 
 export function planLabel(plan: Plan | null, fallback = 'Besplatno') {
@@ -121,8 +157,8 @@ export function getNextResetDate() {
   return new Date(now.getFullYear(), now.getMonth() + 1, 1);
 }
 
-export function getResetCountdownText() {
-  const next = getNextResetDate();
+export function getResetCountdownText(nextReset?: Date | null) {
+  const next = nextReset && !isNaN(nextReset.getTime()) ? nextReset : getNextResetDate();
   const now = new Date();
   const diff = next.getTime() - now.getTime();
   const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -165,15 +201,20 @@ export function getCurrentSubscriptionPrice(
   return interval === 'yearly' ? plan.price_yearly : plan.price_monthly;
 }
 
-export async function getFeaturedAdsUsedThisMonth(firmId: string): Promise<number> {
-  const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+export async function getFeaturedAdsUsedThisMonth(
+  firmId: string,
+  subscription: Subscription | null = null
+): Promise<number> {
+  const periodStart = subscription?.starts_at
+    ? getSubscriptionPeriodStart(subscription.starts_at).toISOString()
+    : new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
+
   const { count, error } = await supabase
     .from('promoted_ads')
     .select('*', { count: 'exact', head: true })
     .eq('firm_id', firmId)
     .eq('source', 'included')
-    .gte('created_at', startOfMonth);
+    .gte('created_at', periodStart);
   if (error) throw error;
   return count ?? 0;
 }

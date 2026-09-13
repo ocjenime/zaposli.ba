@@ -50,7 +50,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     setError('');
     try {
       const [usedCount, adsData] = await Promise.all([
-        getFeaturedAdsUsedThisMonth(firmId),
+        getFeaturedAdsUsedThisMonth(firmId, subscription),
         supabase
           .from('promoted_ads')
           .select('*')
@@ -65,7 +65,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     } finally {
       setLoading(false);
     }
-  }, [firmId]);
+  }, [firmId, subscription]);
 
   useEffect(() => {
     loadData();

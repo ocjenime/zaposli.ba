@@ -198,6 +198,7 @@ function FirmDashboardContent() {
   const [bidsUsed, setBidsUsed] = useState(0);
   const [bidsLimit, setBidsLimit] = useState(0);
   const [canBid, setCanBid] = useState(true);
+  const [nextReset, setNextReset] = useState<Date | null>(null);
   const [loadingPlan, setLoadingPlan] = useState(true);
   const [firmCategories, setFirmCategories] = useState<string[]>([]);
   const [categoryPrefs, setCategoryPrefs] = useState<
@@ -281,6 +282,7 @@ function FirmDashboardContent() {
       setBidsUsed(usage.bidsUsed);
       setBidsLimit(usage.bidsLimit);
       setCanBid(usage.canBid);
+      setNextReset(usage.nextReset);
     } catch (err) {
       console.error(err);
     } finally {
@@ -631,8 +633,8 @@ function FirmDashboardContent() {
               />
               <DashboardStat
                 label="Reset ponuda"
-                value={loadingPlan ? 'Učitavanje...' : getResetCountdownText()}
-                sub="Ponude se resetuju 1. u mjesecu"
+                value={loadingPlan ? 'Učitavanje...' : getResetCountdownText(nextReset)}
+                sub={nextReset ? 'Reset svakih 30 dana od početka pretplate' : 'Ponude se resetuju 1. u mjesecu'}
                 icon={Timer}
                 tone="neutral"
                 isLoading={loadingPlan}
