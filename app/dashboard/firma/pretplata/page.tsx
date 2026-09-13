@@ -124,6 +124,7 @@ function FirmSubscriptionContent() {
       firm_id: firmId,
       metadata: {
         requested_plan_id: planId,
+        plan_name: plan?.name,
         requested_interval: interval,
         requested_price: requestedPrice,
         regular_price: regularPrice,

@@ -14,6 +14,7 @@ export default function NotificationBell() {
   const { user, role } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
@@ -37,6 +38,7 @@ export default function NotificationBell() {
         const list = (data as Notification[]) || [];
         setNotifications(list);
         setUnreadCount(list.filter((n) => !n.read).length);
+        setTotalCount(list.length);
       }
     } catch (err) {
       console.error('loadNotifications error:', err);
@@ -68,6 +70,7 @@ export default function NotificationBell() {
             const n = payload.new as Notification;
             setNotifications((prev) => [n, ...prev].slice(0, 20));
             setUnreadCount((c) => c + 1);
+            setTotalCount((c) => c + 1);
             const href = getNotificationHref(n, role);
             showToast(n.title, n.message, href);
           }
@@ -146,9 +149,13 @@ export default function NotificationBell() {
         aria-label="Obavještenja"
       >
         <Bell className="w-5 h-5" />
-        {unreadCount > 0 && (
-          <span className="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-[#ffffff] ring-2 ring-[#ffffff]">
-            {unreadCount > 9 ? '9+' : unreadCount}
+        {totalCount > 0 && (
+          <span
+            className={`absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold text-[#ffffff] ring-2 ring-[#ffffff] ${
+              unreadCount > 0 ? 'bg-red-500' : 'bg-gray-400'
+            }`}
+          >
+            {totalCount > 9 ? '9+' : totalCount}
           </span>
         )}
       </button>

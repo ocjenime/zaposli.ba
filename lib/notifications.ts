@@ -63,6 +63,10 @@ export function getNotificationHref(notification: Notification, role: string | n
     return '/admin/?tab=mediations';
   }
 
+  if (type === 'subscription_request') {
+    return role === 'admin' ? '/admin/?tab=requests' : undefined;
+  }
+
   if (type === 'payment') {
     return role === 'firm' || role === 'majstor'
       ? '/dashboard/firma/pretplata/'

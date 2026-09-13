@@ -39,6 +39,16 @@ interface ReviewRecord {
   created_at: string;
 }
 
+interface AdminRequestRecord {
+  id: string;
+  firm_id: string;
+  type: string;
+  metadata: Record<string, unknown>;
+  status: string;
+  read: boolean;
+  created_at: string;
+}
+
 // Deterministic formatter avoids Node.js ICU/locale issues like "M08".
 function formatDate(iso: string) {
   try {
@@ -185,6 +195,52 @@ Deno.serve(async (req: Request) => {
           <p style="margin: 0; font-size: 14px; color: #555;"><strong>Datum:</strong> ${formatDate(review.created_at)}</p>
         </div>
         <a href="${SITE_URL}/admin/" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Otvori admin panel</a>
+      </div>
+      `
+    );
+  } else if (payload.table === "admin_requests") {
+    const request = payload.record as unknown as AdminRequestRecord;
+    const { data: firmData } = await supabase
+      .from("firms")
+      .select("name, owner_id")
+      .eq("id", request.firm_id)
+      .single();
+    const firm = firmData as { name?: string | null; owner_id?: string } | null;
+
+    let ownerEmail = "";
+    let ownerName = "";
+    if (firm?.owner_id) {
+      const { data: profileData } = await supabase
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", firm.owner_id)
+        .single();
+      const profile = profileData as { email?: string | null; full_name?: string | null } | null;
+      ownerEmail = profile?.email || "";
+      ownerName = profile?.full_name || "";
+    }
+
+    const meta = request.metadata || {};
+    const planName = (meta.plan_name as string) || "nepoznati paket";
+    const interval = (meta.requested_interval as string) || "mjesečno";
+    const displayPrice = (meta.requested_price as number) ?? null;
+
+    await sendAdminEmail(
+      `Nova pretplata: ${firm?.name || request.firm_id}`,
+      `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">
+        <div style="margin-bottom: 24px;"><strong style="font-size: 20px; color: #f97316;">Zaposli.ba</strong></div>
+        <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">Zahtjev za nadogradnju paketa</h1>
+        <div style="background: #f8f8fb; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+          <p style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">${firm?.name || "Nepoznata firma"}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Email:</strong> ${ownerEmail || "N/A"}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Kontakt:</strong> ${ownerName || "Nije uneseno"}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Paket:</strong> ${planName}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Period:</strong> ${interval === "yearly" ? "Godišnje" : "Mjesecno"}</p>
+          ${displayPrice != null ? `<p style="margin: 0 0 8px; font-size: 16px;"><strong>Iznos:</strong> ${displayPrice} KM</p>` : ""}
+          <p style="margin: 0; font-size: 14px; color: #555;"><strong>Datum:</strong> ${formatDate(request.created_at)}</p>
+        </div>
+        <a href="${SITE_URL}/admin/?tab=requests" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Pogledaj zahtjev</a>
       </div>
       `
     );
