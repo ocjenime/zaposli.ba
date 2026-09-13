@@ -274,12 +274,11 @@
   - Added a "Saznajte više" link to `/privacy/`.
   - Confirmed banner appears for new visitors, respects localStorage choice, and loads Google Analytics only after consent is granted.
 - `npm run lint` and `npm run build` both pass (2405 pages).
-
-### Blocked
-- **ACTION REQUIRED**: Apply the two new SQL migrations in Supabase SQL Editor:
+- User applied both new SQL migrations in Supabase SQL Editor:
   1. `supabase/migration-enforce-plan-limits.sql`
   2. `supabase/migration-firm-analytics.sql`
-  Until these are run, the DB-level bid/ad limits and analytics tables will not exist in production.
+
+### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
