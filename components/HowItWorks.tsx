@@ -47,7 +47,7 @@ export default function HowItWorks() {
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="relative bg-white rounded-2xl border border-gray-100 p-5 md:p-6 hover:shadow-xl hover:border-primary-100 hover:-translate-y-1 transition-all duration-300 group"
+                className="relative bg-white rounded-2xl border border-gray-100 p-5 md:p-6 hover:shadow-xl hover:border-primary-100 hover:-translate-y-1 transition-all duration-300 group dark:bg-ink-800 dark:border-ink-700 dark:hover:border-ink-600"
               >
                 <div className="relative h-32 md:h-36 mb-3">
                   <step.illustration />

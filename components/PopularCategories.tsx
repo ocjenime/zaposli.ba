@@ -45,8 +45,8 @@ export default function PopularCategories() {
             <Link
               key={category.slug}
               href={`/kategorije/${category.slug}/`}
-              className={`group bg-white rounded-2xl p-6 text-center border hover:border-transparent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden ${
-                category.featured ? 'border-red-200' : 'border-gray-100'
+              className={`group bg-white rounded-2xl p-6 text-center border hover:border-transparent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden dark:bg-ink-800 dark:border-ink-700 dark:hover:border-ink-600 ${
+                category.featured ? 'border-red-200 dark:border-red-900/40' : 'border-gray-100'
               }`}
             >
               <div className={`absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-r ${
@@ -60,7 +60,7 @@ export default function PopularCategories() {
                 </span>
               )}
 
-              <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 group-hover:scale-110 transition-all duration-300 ${
+              <div className={`inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4 group-hover:scale-110 transition-all duration-300 dark:bg-ink-700 ${
                 category.featured
                   ? 'bg-red-50 group-hover:bg-gradient-to-br group-hover:from-red-600 group-hover:to-red-700'
                   : 'bg-primary-50 group-hover:bg-gradient-to-br group-hover:from-brand-orange group-hover:to-brand-orange-dark'

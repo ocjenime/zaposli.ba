@@ -94,13 +94,13 @@ export default function Testimonials() {
           {reviews.slice(0, 4).map((t) => (
             <div
               key={t.id}
-              className={`bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 relative group ${
+              className={`bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 relative group dark:bg-ink-800 dark:border-ink-700 dark:hover:border-ink-600 ${
                 loading ? 'opacity-70' : ''
               }`}
             >
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity rounded-t-2xl" />
 
-              <Quote className="w-8 h-8 text-primary-100 mb-3" />
+              <Quote className="w-8 h-8 text-primary-100 dark:text-ink-700 mb-3" />
 
               <div className="flex gap-0.5 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -113,7 +113,7 @@ export default function Testimonials() {
 
               <p className="text-steel text-sm mb-6 leading-relaxed line-clamp-4">{t.comment}</p>
 
-              <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-3 pt-4 border-t border-gray-100 dark:border-ink-700">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs shadow-lg">
                   {getInitials(t.client_name)}
                 </div>

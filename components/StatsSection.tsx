@@ -145,7 +145,7 @@ export default function StatsSection() {
           {visibleStats.map((stat, index) => (
             <div
               key={stat.label}
-              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06]"
+              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06] dark:border-ink-700 dark:bg-ink-800 dark:hover:border-ink-600 dark:hover:bg-ink-700"
             >
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
               <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-orange/5 blur-[50px] transition-opacity group-hover:opacity-70" />
@@ -171,11 +171,11 @@ export default function StatsSection() {
           {visibleTrust.map((card) => (
             <div
               key={card.title}
-              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05]"
+              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05] dark:border-ink-700 dark:bg-ink-800 dark:hover:border-ink-600 dark:hover:bg-ink-700"
             >
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20">
+              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20 dark:bg-ink-700 dark:ring-ink-600">
                 <card.icon className="h-6 w-6" />
               </div>
               <h3 className="mb-1.5 text-lg font-bold text-white">{card.title}</h3>
@@ -190,9 +190,9 @@ export default function StatsSection() {
             {extraStats.map((stat) => (
               <div
                 key={stat.label}
-                className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm"
+                className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm dark:border-ink-700 dark:bg-ink-800"
               >
-                <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10">
+                <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 dark:bg-ink-700 dark:ring-ink-600">
                   <stat.icon className="h-6 w-6" />
                 </div>
                 <div>

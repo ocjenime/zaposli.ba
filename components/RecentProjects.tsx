@@ -138,7 +138,7 @@ export default function RecentProjects() {
         <div className="grid md:grid-cols-2 gap-5">
           {loading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse">
+              <div key={i} className="bg-white rounded-2xl p-6 border border-gray-100 animate-pulse dark:bg-ink-800 dark:border-ink-700">
                 <div className="flex justify-between items-start mb-3">
                   <div className="w-20 h-5 bg-gray-200 rounded-lg" />
                   <div className="w-16 h-4 bg-gray-200 rounded" />
@@ -169,7 +169,7 @@ export default function RecentProjects() {
 
 function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean }) {
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group flex flex-col h-full">
+    <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group flex flex-col h-full dark:bg-ink-800 dark:border-ink-700 dark:hover:border-ink-600">
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-2">
           <Link
@@ -181,7 +181,7 @@ function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean })
           </Link>
           {isActiveFeatured(project) && <FeaturedBadge />}
         </div>
-        <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+        <span className="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded-md dark:bg-ink-700 dark:text-steel">
           {timeAgo(project.created_at)}
         </span>
       </div>
@@ -210,10 +210,10 @@ function ProjectCard({ project, firmUser }: { project: Job; firmUser: boolean })
         )}
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100">
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-ink-700">
         <div className="flex items-center gap-3">
           <div className="font-bold text-brand-orange text-sm">{formatBudget(project)}</div>
-          <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg">
+          <div className="flex items-center gap-1.5 text-xs text-steel bg-cloud px-2.5 py-1 rounded-lg dark:bg-ink-700">
             <span>{project.bids_count} ponuda</span>
           </div>
         </div>
