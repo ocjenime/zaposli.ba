@@ -198,6 +198,22 @@
   - Added new "Oglasi" tab to `/admin/` for approving/rejecting `promoted_ads`; approved ads are active for 30 days.
   - Made the mobile header theme toggle a direct light/dark toggle (`ThemeToggle simple`); removed the phone number from the mobile hamburger menu.
   - Updated `lib/subscriptions.ts` with helpers for launch pricing and included ads accounting. `npm run lint` and `npm run build` both pass (2408 pages).
+- Fixed duplicate firm profile creation:
+  - Root cause: the auth-user trigger and the registration form both created a `firms` row; because only `slug` was unique, the same owner could end up with two firms.
+  - Added `UNIQUE (owner_id)` constraint on `firms` via `supabase/migration-prevent-duplicate-firms.sql`.
+  - Removed firm creation from `handle_new_user()` so the app is the single source of truth.
+  - Updated direct signup in `app/registracija/RegisterForm.tsx` and email confirmation callback in `app/auth/callback/page.tsx` to create the firm with city and categories.
+- Made city and at least one category mandatory for firm/majstor accounts:
+  - Added city dropdown and category selector to `app/registracija/RegisterForm.tsx` for firm/majstor roles.
+  - Enforced the same rules on save in `app/dashboard/firma/profil/page.tsx`.
+  - Added a setup blocker in `app/dashboard/firma/page.tsx` that prevents bidding until city and categories are filled.
+- Improved notification reliability:
+  - Added `supabase/migration-realtime-notifications.sql` to enable realtime on `notifications` and `messages`.
+  - Added polling fallback to `components/NotificationBell.tsx` (every 30 s) in case realtime fails.
+  - Created `supabase/migration-notification-triggers.sql` with synchronous DB triggers for new messages and direct/private job status changes, so in-app notifications are instant even if Edge Function webhooks are delayed.
+  - Removed duplicate in-app notification inserts from `notify-client-on-bid`, `notify-firms-on-job`, and `notify-private-job` Edge Functions (they now handle email only).
+- Brightened dark-mode icons in `components/ThemeToggle.tsx` (`dark:text-gray-100`) for better visibility.
+- `npm run lint` and `npm run build` both pass (2408 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
