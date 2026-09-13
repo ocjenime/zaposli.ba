@@ -272,7 +272,9 @@ function FirmSubscriptionContent() {
                               {formatPrice(regularPrice)} KM/{interval === 'yearly' ? 'god' : 'mj'}
                             </p>
                             <p className="text-xs text-green-700 font-medium">
-                              Prvih {plan.launch_offer_months} mjeseca · zatim regularna cijena
+                              {interval === 'yearly'
+                                ? `Prvih ${plan.launch_offer_months} mj. ${formatPrice(plan.launch_price_monthly ?? 0)} KM, zatim ${formatPrice(plan.price_monthly)} KM/mj`
+                                : `Prvih ${plan.launch_offer_months} mjeseca · zatim regularna cijena`}
                             </p>
                           </div>
                         ) : (

@@ -132,7 +132,18 @@ export function getResetCountdownText() {
 export function getLaunchPrice(plan: Plan | null, interval: 'monthly' | 'yearly'): number | null {
   if (!plan) return null;
   if (interval === 'yearly') {
-    return plan.launch_price_yearly ?? null;
+    if (
+      plan.launch_price_monthly == null ||
+      plan.launch_offer_months == null ||
+      plan.launch_offer_months <= 0
+    ) {
+      return null;
+    }
+    const regularMonths = 12 - plan.launch_offer_months;
+    return (
+      plan.launch_offer_months * plan.launch_price_monthly +
+      regularMonths * plan.price_monthly
+    );
   }
   return plan.launch_price_monthly ?? null;
 }
