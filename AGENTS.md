@@ -220,6 +220,8 @@
 - Removed colored gradient accents from hero headlines (`HeroSection`, `ProjectsPageClient`) so all hero text is solid white for maximum readability.
 - Filled theme icons (`Sun`/`Moon`) with current color so the inner symbol is not transparent against the dark button background.
 - Lightened mobile hamburger menu section labels (`Navigacija`, `Račun`, `Postavke`, `Kontakt`) in dark mode.
+- Reverted hero text changes to original design: restored `text-white/80`/`text-white/90` transparency and orange `from-brand-orange to-amber-400` gradient accents on homepage and `/poslovi/`; removed added drop-shadows.
+- Kept the dark `ink-950` hero overlays so images remain dark in both light and dark modes.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
