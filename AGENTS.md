@@ -222,6 +222,8 @@
 - Lightened mobile hamburger menu section labels (`Navigacija`, `Račun`, `Postavke`, `Kontakt`) in dark mode.
 - Reverted hero text changes to original design: restored `text-white/80`/`text-white/90` transparency and orange `from-brand-orange to-amber-400` gradient accents on homepage and `/poslovi/`; removed added drop-shadows.
 - Kept the dark `ink-950` hero overlays so images remain dark in both light and dark modes.
+- Applied the same orange hero accent to `/gradovi/` (title "Majstori po gradovima" with orange "po gradovima").
+- Updated `/gradovi/` city cards to show a green tint for cities that have at least one registered firm/majstor and a red tint for cities without any, fetching firm counts at build time.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
