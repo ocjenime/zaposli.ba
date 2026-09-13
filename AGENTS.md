@@ -213,8 +213,10 @@
   - Created `supabase/migration-notification-triggers.sql` with synchronous DB triggers for new messages and direct/private job status changes, so in-app notifications are instant even if Edge Function webhooks are delayed.
   - Removed duplicate in-app notification inserts from `notify-client-on-bid`, `notify-firms-on-job`, and `notify-private-job` Edge Functions (they now handle email only).
 - Brightened dark-mode icons in `components/ThemeToggle.tsx` (`dark:text-gray-100`) for better visibility.
-- Reverted the extra dark-mode hero image darkening so hero images look the same in dark and light mode; added `drop-shadow-lg` to hero text to keep it readable.
+- Fixed hero overlays so they darken images consistently in both light and dark mode by using fixed `ink-950` tones instead of semantic `black` (which becomes light in dark mode).
+- Added `drop-shadow-lg` to hero text to keep it readable.
 - Fixed homepage cards becoming invisible in dark mode by adding `dark:bg-ink-800` / `dark:border-ink-700` to `StatsSection`, `PopularCategories`, `HowItWorks`, `RecentProjects`, and `Testimonials` cards.
+- Made mobile hamburger menu text and icons pure white in dark mode; made `ThemeToggle` icon pure white in dark mode.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
