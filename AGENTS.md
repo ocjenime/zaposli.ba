@@ -243,6 +243,8 @@
 - Fixed homepage emergency banner so it renders immediately (no hydration delay) and upgraded it to a premium red glassmorphism style with smooth dismiss animation.
 - Slimmed down the homepage emergency banner height and font/icon sizes.
 - Replaced the `/kontakt/` PageHero background with `public/images/kontakt-hero.png` (zaposlifirma.png) and kept the dark Higgsfield overlay.
+- Added `components/CookieConsent.tsx` and wired it into `app/layout.tsx`: a premium Higgsfield cookie-consent banner that loads Google Analytics only after the user grants consent.
+- Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only, in a premium glass container without animation.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
