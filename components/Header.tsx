@@ -220,7 +220,7 @@ export default function Header() {
 
             {/* Main navigation */}
             <div className="space-y-1">
-              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Navigacija</p>
+              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel mb-2">Navigacija</p>
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 return (
@@ -243,7 +243,7 @@ export default function Header() {
 
             {/* Auth section */}
             <div className="space-y-1 pt-4 border-t border-gray-100 dark:border-ink-700">
-              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Račun</p>
+              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel mb-2">Račun</p>
               {user ? (
                 <>
                   {user && !isAdmin && !isFirmRole(role) && (
@@ -286,7 +286,7 @@ export default function Header() {
             {/* Settings */}
             {user && (
               <div className="space-y-1 pt-4 border-t border-gray-100 dark:border-ink-700">
-                <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Postavke</p>
+                <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel mb-2">Postavke</p>
                 <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
                   <span className="flex items-center gap-3">
                     <Bell className="w-5 h-5 shrink-0" />
@@ -296,7 +296,7 @@ export default function Header() {
                 </div>
                 <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
                   <span className="flex items-center gap-3">
-                    <Sun className="w-5 h-5 shrink-0" fill="currentColor" />
+                    <Sun className="w-5 h-5 shrink-0 fill-current text-gray-700 dark:text-white" />
                     Tema
                   </span>
                   <ThemeToggle />
@@ -306,7 +306,7 @@ export default function Header() {
 
             {/* Contact */}
             <div className="pt-4 border-t border-gray-100 dark:border-ink-700 space-y-3">
-              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400">Kontakt</p>
+              <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel">Kontakt</p>
               <a
                 href={`mailto:${site.email}`}
                 className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-white"

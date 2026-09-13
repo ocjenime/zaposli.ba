@@ -60,7 +60,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
         className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-white transition-colors"
         aria-label={resolvedTheme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
       >
-        {resolvedTheme === 'dark' ? <Sun className="w-4 h-4" fill="currentColor" /> : <Moon className="w-4 h-4" fill="currentColor" />}
+        {resolvedTheme === 'dark' ? <Sun className="w-4 h-4 fill-current" /> : <Moon className="w-4 h-4 fill-current" />}
       </button>
     );
   }
@@ -74,7 +74,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
         aria-label="Tema"
         aria-expanded={isOpen}
       >
-        {resolvedTheme === 'dark' ? <Moon className="w-4 h-4" fill="currentColor" /> : <Sun className="w-4 h-4" fill="currentColor" />}
+        {resolvedTheme === 'dark' ? <Moon className="w-4 h-4 fill-current" /> : <Sun className="w-4 h-4 fill-current" />}
       </button>
 
       {isOpen && (
