@@ -287,6 +287,13 @@
   - Extracted canonical feature lists into `lib/plan-features.ts`.
   - Both `/za-firme/` and `/dashboard/firma/pretplata/` now read from the same source, so they can never diverge again.
   - Added the missing "Preporučeno" badge on the Pro card in the dashboard.
+- Admin notifications for subscription upgrade requests:
+  - New `subscription_request` notification type; `getNotificationHref` routes admins to `/admin/?tab=requests`.
+  - `components/NotificationBell.tsx` now always shows the total notification count badge (red when unread, gray when all read).
+  - New DB trigger in `supabase/migration-admin-request-notifications.sql` inserts an in-app notification for every admin and calls the `notify-admin` Edge Function.
+  - Extended `supabase/functions/notify-admin/index.ts` to send an email to `info@zaposli.ba` with firm, plan, price, and period details.
+  - The subscription request form now includes `plan_name` in metadata for better email/notifications.
+- **ACTION REQUIRED**: Apply `supabase/migration-admin-request-notifications.sql` in Supabase SQL Editor and redeploy Edge Functions (GitHub Actions runs on push).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
