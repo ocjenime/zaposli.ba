@@ -230,6 +230,7 @@
 - Made `/gradovi/` city firm counts update automatically by adding ISR (`revalidate = 60`) and a client-side refresh in the new `CityGrid` component, so a newly registered firm/majstor turns its city green right away.
 - Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium.
 - Hidden the visible "Početna - ..." breadcrumb bar on all public pages (`/kontakt/`, `/gradovi/`, `/kategorije/`, etc.) while keeping the JSON-LD `BreadcrumbList` schema for SEO.
+- Made the 6 homepage trust/info cards (`StatsSection`) titles and descriptions pure white in dark mode so the text is readable.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
