@@ -242,6 +242,7 @@
 - Made the emergency bottom bar on `/kategorije/` always visible instead of scroll-triggered.
 - Fixed homepage emergency banner so it renders immediately (no hydration delay) and upgraded it to a premium red glassmorphism style with smooth dismiss animation.
 - Slimmed down the homepage emergency banner height and font/icon sizes.
+- Used the `hero-sticker.png` as the background image for the `/kontakt/` PageHero with a dark Higgsfield overlay.
 - `npm run lint` and `npm run build` both pass (2405 pages); Edge Functions redeployed via GitHub Actions.
 
 ### Blocked
