@@ -282,7 +282,7 @@
 - User applied both new SQL migrations in Supabase SQL Editor:
   1. `supabase/migration-enforce-plan-limits.sql`
   2. `supabase/migration-firm-analytics.sql`
-- **ACTION REQUIRED**: User still needs to apply `supabase/migration-subscription-period-reset.sql` so the DB-level counters use 30-day periods instead of calendar months.
+- User applied `supabase/migration-subscription-period-reset.sql` so DB-level bid/ad counters now reset every 30 days from each subscription's `starts_at`.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
