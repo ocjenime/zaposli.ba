@@ -10,7 +10,7 @@ import { cities } from '@/lib/data';
 export default function HeroSection() {
   const [selectedCity, setSelectedCity] = useState('');
   const [query, setQuery] = useState('');
-  const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(true);
+  const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(false);
   const router = useRouter();
 
   useEffect(() => {

@@ -114,17 +114,15 @@ export default function Footer() {
               ))}
               </ul>
 
-              {/* App sticker - desktop only, premium Higgsfield style, no animation */}
-              <div className="hidden md:block mt-8 max-w-[260px]">
-                <div className="relative rounded-2xl overflow-hidden bg-white/[0.03] backdrop-blur-sm border border-white/10 p-2 drop-shadow-[0_12px_40px_rgba(0,0,0,0.45)]">
-                  <Image
-                    src="/images/hero-sticker.png"
-                    alt="Uskoro i mobilna aplikacija Zaposli.ba"
-                    width={260}
-                    height={195}
-                    className="w-full h-auto"
-                  />
-                </div>
+              {/* App sticker - desktop only, no glass frame, no animation */}
+              <div className="hidden md:block mt-10 max-w-[460px] mx-auto">
+                <Image
+                  src="/images/hero-sticker.png"
+                  alt="Uskoro i mobilna aplikacija Zaposli.ba"
+                  width={460}
+                  height={345}
+                  className="w-full h-auto drop-shadow-[0_16px_50px_rgba(0,0,0,0.5)]"
+                />
               </div>
             </div>
           </div>
