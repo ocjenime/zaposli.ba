@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
+import AppStickerPopup from '@/components/AppStickerPopup';
 import HowItWorks from '@/components/HowItWorks';
 import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
@@ -49,6 +50,7 @@ export default function Home() {
       <JsonLd data={websiteSchema()} />
       <JsonLd data={breadcrumbSchema([{ name: 'Početna', url: '/' }])} />
       <Header />
+      <AppStickerPopup />
       <main className="flex-grow">
         <HeroSection />
         <LazySection minHeight="18rem">
