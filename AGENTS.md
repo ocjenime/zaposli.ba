@@ -192,8 +192,11 @@
   - Updated `/za-firme/` pricing cards to show launch prices with "Launch ponuda" badges and struck-through regular prices.
   - Updated `/dashboard/firma/pretplata/` to display launch pricing and store launch/regular price metadata in `admin_requests`.
   - Updated admin `SubscriptionEditModal` to optionally apply launch discount (sets `subscriptions.discount_ends_at`).
-  - Added new "Oglasi" tab to `/dashboard/firma/` (`components/FirmPromotionsTab.tsx`) where firms can request promoted ads using included plan credits or paying 39 KM per ad.
-  - Added new "Oglasi" tab to `/admin/` for approving/rejecting `job_promotions`; approval sets `jobs.is_featured = true` and `jobs.featured_until` to 30 days.
+  - Added launch offer pricing helpers to `lib/subscriptions.ts`.
+  - Replaced the first `job_promotions` implementation with standalone `promoted_ads`: firms/majstors can now create their own ads (title, description, image, type: promotion or worker search) without selecting an existing job. Included plan credits or 39 KM per ad; admin approves in the "Oglasi" tab. Migration: `supabase/migration-promoted-ads.sql`.
+  - Added new professional "Oglasi" tab to `/dashboard/firma/` (`components/FirmAdsTab.tsx`).
+  - Added new "Oglasi" tab to `/admin/` for approving/rejecting `promoted_ads`; approved ads are active for 30 days.
+  - Made the mobile header theme toggle a direct light/dark toggle (`ThemeToggle simple`); removed the phone number from the mobile hamburger menu.
   - Updated `lib/subscriptions.ts` with helpers for launch pricing and included ads accounting. `npm run lint` and `npm run build` both pass (2408 pages).
 
 ### Blocked
