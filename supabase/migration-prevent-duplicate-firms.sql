@@ -14,6 +14,18 @@
 -- 3. Keep the profile insert and default notification settings in the trigger.
 -- ============================================================================
 
+-- Remove any duplicate firm rows that already exist (keep the oldest one per owner).
+DELETE FROM public.firms
+WHERE id IN (
+  SELECT id
+  FROM (
+    SELECT id,
+           ROW_NUMBER() OVER (PARTITION BY owner_id ORDER BY created_at ASC, id ASC) AS rn
+    FROM public.firms
+  ) sub
+  WHERE rn > 1
+);
+
 -- Make sure one auth user can own exactly one firm.
 ALTER TABLE public.firms
   ADD CONSTRAINT IF NOT EXISTS firms_owner_id_key UNIQUE (owner_id);
