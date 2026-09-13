@@ -178,8 +178,8 @@ export default function StatsSection() {
               <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20 dark:bg-ink-700 dark:ring-ink-600">
                 <card.icon className="h-6 w-6" />
               </div>
-              <h3 className="mb-1.5 text-lg font-bold text-white">{card.title}</h3>
-              <p className="text-sm leading-relaxed text-white/55">{card.description}</p>
+              <h3 className="mb-1.5 text-lg font-bold text-[#ffffff]">{card.title}</h3>
+              <p className="text-sm leading-relaxed text-[#ffffff]">{card.description}</p>
             </div>
           ))}
         </div>
