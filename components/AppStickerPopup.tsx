@@ -46,8 +46,8 @@ export default function AppStickerPopup() {
   if (!visible || dismissed) return null;
 
   return (
-    <div className="md:hidden fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="relative w-full max-w-sm animate-in slide-in-from-bottom-8 duration-300">
+    <div className="md:hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      <div className="relative w-full max-w-sm animate-in zoom-in-95 duration-300">
         <button
           type="button"
           onClick={close}
