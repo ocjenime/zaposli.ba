@@ -283,6 +283,10 @@
   1. `supabase/migration-enforce-plan-limits.sql`
   2. `supabase/migration-firm-analytics.sql`
 - User applied `supabase/migration-subscription-period-reset.sql` so DB-level bid/ad counters now reset every 30 days from each subscription's `starts_at`.
+- Synced the dashboard subscription page (`/dashboard/firma/pretplata/`) with the public `/za-firme/` pricing page:
+  - Extracted canonical feature lists into `lib/plan-features.ts`.
+  - Both `/za-firme/` and `/dashboard/firma/pretplata/` now read from the same source, so they can never diverge again.
+  - Added the missing "Preporučeno" badge on the Pro card in the dashboard.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
