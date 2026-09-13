@@ -19,15 +19,15 @@ interface Firm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
-  premium: boolean;
+  plan_priority: number;
 }
 
 /**
- * Ranking: ocjena je ključna, verifikacija i premium su pojačivači.
- * score = average_rating (0-5) + verified 0.5 + premium 0.25
+ * Ranking: ocjena je ključna, verifikacija i aktivni paket su pojačivači.
+ * score = average_rating (0-5) + verified 0.5 + plan_priority (0-0.4)
  */
 function score(f: Firm): number {
-  return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.premium ? 0.25 : 0);
+  return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.plan_priority || 0);
 }
 
 const LIMIT = 12;
@@ -64,22 +64,14 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
         if (!cancelled) setTotal(ids.length);
 
         const limited = ids.slice(0, 150);
-        const [firmsRes, premiumRes] = await Promise.all([
-          supabase
-            .from('firms')
-            .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
-            .in('id', limited)
-            .not('slug', 'like', 'test-%'),
-          supabase.from('public_firm_premium').select('firm_id').in('firm_id', limited),
-        ]);
-        if (firmsRes.error) throw firmsRes.error;
+        const { data: firmsData, error: firmsError } = await supabase
+          .from('firms')
+          .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority')
+          .in('id', limited)
+          .not('slug', 'like', 'test-%');
+        if (firmsError) throw firmsError;
 
-        const premiumIds = new Set((premiumRes.data || []).map((r: { firm_id: string }) => r.firm_id));
-        const typed = ((firmsRes.data || []) as Omit<Firm, 'premium'>[]).map((f) => ({
-          ...f,
-          premium: premiumIds.has(f.id),
-        }));
-
+        const typed = (firmsData || []) as Firm[];
         const ranked = typed.sort((a, b) => score(b) - score(a)).slice(0, LIMIT);
         if (!cancelled) {
           setFirms(ranked as Firm[]);
@@ -187,7 +179,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
                     <span className="truncate">{firm.city || 'BiH'}</span>
                   </div>
                 </div>
-                {firm.premium && (
+                {firm.plan_priority >= 0.4 && (
                   <span
                     className="shrink-0 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-white text-[10px] font-extrabold tracking-wide px-2 py-1 rounded-full shadow-sm"
                     title="Premium član"
@@ -220,7 +212,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
 
         {total > LIMIT && (
           <p className="text-xs text-steel text-center mt-6">
-            Prikazano prvih {LIMIT} firmi po ranking formuli: ocjena + verifikacija + premium.
+            Prikazano prvih {LIMIT} firmi po ranking formuli: ocjena + verifikacija + aktivni paket.
           </p>
         )}
       </div>

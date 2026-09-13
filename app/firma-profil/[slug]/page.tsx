@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import FirmProfileContent from '../FirmProfileContent';
+import FirmVisitTracker from '@/components/FirmVisitTracker';
 import { site } from '@/lib/site';
 import type { Metadata } from 'next';
 
@@ -115,6 +116,7 @@ export default async function FirmProfileSlugPage({
       }
     >
       <FirmProfileContent slug={slug} />
+      <FirmVisitTracker firmId={firm.id} />
     </Suspense>
   );
 }

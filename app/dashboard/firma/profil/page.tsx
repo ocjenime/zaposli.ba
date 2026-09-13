@@ -796,6 +796,61 @@ export default function FirmProfileEditorPage() {
                   )}
                 </div>
 
+                <div className="rounded-xl border border-gray-200 bg-cloud p-5">
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+                    <div className="flex items-start gap-3 flex-1">
+                      <div className="shrink-0 mt-0.5">
+                        {firm?.verified ? (
+                          <Check className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <AlertCircle className="w-5 h-5 text-brand-orange" />
+                        )}
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">Verifikacija profila</p>
+                        <p className="text-xs text-steel mt-1">
+                          {firm?.verified
+                            ? 'Vaš profil je verificiran i ima značku povjerenja.'
+                            : firm?.verification_status === 'pending'
+                            ? 'Zahtjev za verifikaciju je na čekanju. Odgovor stiže putem emaila.'
+                            : 'Verificirani profil dobiva značku povjerenja, bolju poziciju u listi i veću vjerovatnoću kontakta.'}
+                        </p>
+                        {verificationMessage && (
+                          <p className="text-xs mt-2 text-brand-orange font-medium">
+                            {verificationMessage}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    {!firm?.verified && firm?.verification_status !== 'pending' && (
+                      <div className="shrink-0">
+                        {subscription?.plans?.verified_badge ? (
+                          <button
+                            type="button"
+                            onClick={requestVerification}
+                            disabled={verificationLoading}
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark transition-colors shadow-lg shadow-brand-orange/20 disabled:opacity-50"
+                          >
+                            {verificationLoading ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : (
+                              <Check className="w-4 h-4" />
+                            )}
+                            {verificationLoading ? 'Slanje...' : 'Zatraži verifikaciju'}
+                          </button>
+                        ) : (
+                          <Link
+                            href="/dashboard/firma/pretplata/"
+                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-brand-orange hover:bg-brand-orange-dark transition-colors shadow-lg shadow-brand-orange/20"
+                          >
+                            Nadogradite za verifikaciju
+                          </Link>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 {error && (
                   <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
                     <AlertCircle className="w-4 h-4 shrink-0" />

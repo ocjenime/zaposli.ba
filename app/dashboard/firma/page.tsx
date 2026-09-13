@@ -22,6 +22,14 @@ import {
   getResetCountdownText,
   formatDateTime,
 } from '@/lib/subscriptions';
+import {
+  getFirmVisitStats,
+  getFirmVisitDaily,
+  getFirmVisitReferrers,
+  FirmVisitStats,
+  DailyVisit,
+  ReferrerCount,
+} from '@/lib/analytics';
 import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
 import { formatDate } from '@/lib/date';
 import {
@@ -48,6 +56,9 @@ import {
   User,
   AlertCircle,
   Megaphone,
+  BarChart3,
+  TrendingUp,
+  Eye,
 } from 'lucide-react';
 
 interface Job {
@@ -196,11 +207,16 @@ function FirmDashboardContent() {
   const [prefsSaved, setPrefsSaved] = useState(false);
   const [firmCity, setFirmCity] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads'>('jobs');
+  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads' | 'stats'>('jobs');
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
   const [loadingDirect, setLoadingDirect] = useState(true);
   const [expandedDirectJob, setExpandedDirectJob] = useState<string | null>(null);
   const [directActionId, setDirectActionId] = useState<string | null>(null);
+
+  const [visitStats, setVisitStats] = useState<FirmVisitStats | null>(null);
+  const [dailyVisits, setDailyVisits] = useState<DailyVisit[]>([]);
+  const [referrers, setReferrers] = useState<ReferrerCount[]>([]);
+  const [loadingStats, setLoadingStats] = useState(false);
 
   useEffect(() => {
     if (loading) return;
@@ -271,6 +287,30 @@ function FirmDashboardContent() {
       setLoadingPlan(false);
     }
   }, []);
+
+  const loadStats = useCallback(async (id: string, advanced: boolean) => {
+    setLoadingStats(true);
+    try {
+      const [stats, daily, refs] = await Promise.all([
+        getFirmVisitStats(id),
+        advanced ? getFirmVisitDaily(id, 30) : Promise.resolve([]),
+        advanced ? getFirmVisitReferrers(id, 5) : Promise.resolve([]),
+      ]);
+      setVisitStats(stats);
+      setDailyVisits(daily);
+      setReferrers(refs);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingStats(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!firmId || activeTab !== 'stats') return;
+    const isPremium = subscription?.plans?.slug === 'premium';
+    loadStats(firmId, isPremium);
+  }, [firmId, activeTab, subscription, loadStats]);
 
   async function saveCategoryPrefs() {
     if (!firmId) return;
@@ -736,6 +776,19 @@ function FirmDashboardContent() {
                     <Megaphone className="w-4 h-4" />
                     Oglasi
                   </button>
+                  {(subscription?.plans?.slug === 'pro' || subscription?.plans?.slug === 'premium') && (
+                    <button
+                      onClick={() => setActiveTab('stats')}
+                      className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
+                        activeTab === 'stats'
+                          ? 'bg-brand-orange text-white shadow-sm'
+                          : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
+                      }`}
+                    >
+                      <BarChart3 className="w-4 h-4" />
+                      {subscription?.plans?.slug === 'premium' ? 'Analitika' : 'Statistika'}
+                    </button>
+                  )}
                 </div>
 
                 <p className="text-sm text-steel">
@@ -745,7 +798,9 @@ function FirmDashboardContent() {
                     ? 'Upravljajte direktnim zahtjevima klijenata.'
                     : activeTab === 'bids'
                     ? 'Pregledajte sve ponude koje ste poslali.'
-                    : 'Plaćeni oglasi i promovisani poslovi.'}
+                    : activeTab === 'ads'
+                    ? 'Plaćeni oglasi i promovisani poslovi.'
+                    : 'Pregled posjeta vašeg profila.'}
                 </p>
               </div>
 
@@ -1339,6 +1394,114 @@ function FirmDashboardContent() {
 
               {activeTab === 'ads' && (
                 <FirmAdsTab firmId={firmId || ''} subscription={subscription} />
+              )}
+
+              {activeTab === 'stats' && (
+                <section className="animate-fade-in space-y-6">
+                  {loadingStats ? (
+                    <div className="flex items-center justify-center py-16 text-steel">
+                      <Loader2 className="w-6 h-6 animate-spin mr-2" />
+                      Učitavanje statistike...
+                    </div>
+                  ) : !visitStats ? (
+                    <EmptyState
+                      title="Nema dostupnih podataka"
+                      description="Trenutno nema podataka o posjetama vašeg profila."
+                    />
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
+                              <Eye className="w-5 h-5" />
+                            </div>
+                            <p className="text-sm text-steel">Ukupno posjeta</p>
+                          </div>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {visitStats.total.toLocaleString('bs-BA')}
+                          </p>
+                        </div>
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
+                              <TrendingUp className="w-5 h-5" />
+                            </div>
+                            <p className="text-sm text-steel">Ovaj mjesec</p>
+                          </div>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {visitStats.thisMonth.toLocaleString('bs-BA')}
+                          </p>
+                        </div>
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                          <div className="flex items-center gap-3 mb-2">
+                            <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
+                              <Calendar className="w-5 h-5" />
+                            </div>
+                            <p className="text-sm text-steel">Danas</p>
+                          </div>
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                            {visitStats.today.toLocaleString('bs-BA')}
+                          </p>
+                        </div>
+                      </div>
+
+                      {subscription?.plans?.slug === 'premium' && (
+                        <>
+                          <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                              Posjete u posljednjih 30 dana
+                            </h3>
+                            {dailyVisits.length === 0 ? (
+                              <p className="text-sm text-steel">Nema dovoljno podataka za prikaz grafa.</p>
+                            ) : (
+                              <div className="flex items-end gap-1 h-40 sm:h-56">
+                                {dailyVisits.map((d) => {
+                                  const max = Math.max(1, ...dailyVisits.map((v) => v.count));
+                                  const height = `${(d.count / max) * 100}%`;
+                                  return (
+                                    <div
+                                      key={d.date}
+                                      className="group flex-1 flex flex-col items-center justify-end min-w-0"
+                                      title={`${d.date}: ${d.count}`}
+                                    >
+                                      <div
+                                        className="w-full max-w-[14px] rounded-t-sm bg-brand-orange/80 hover:bg-brand-orange transition-colors"
+                                        style={{ height }}
+                                      />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                              Top izvori posjeta
+                            </h3>
+                            {referrers.length === 0 ? (
+                              <p className="text-sm text-steel">Nema podataka o izvorima.</p>
+                            ) : (
+                              <div className="space-y-3">
+                                {referrers.map((r) => (
+                                  <div key={r.referrer} className="flex items-center justify-between">
+                                    <span className="text-sm text-gray-700 dark:text-gray-200 truncate pr-4">
+                                      {r.referrer}
+                                    </span>
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-white shrink-0">
+                                      {r.count}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </>
+                  )}
+                </section>
               )}
             </>
           )}

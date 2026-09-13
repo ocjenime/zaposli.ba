@@ -37,32 +37,25 @@ interface CityFirm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
-  premium: boolean;
+  plan_priority: number;
 }
 
 function score(f: CityFirm): number {
-  return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.premium ? 0.25 : 0);
+  return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.plan_priority || 0);
 }
 
 async function getVerifiedCityFirms(cityName: string): Promise<CityFirm[]> {
   try {
     const supabase = createServerSupabase();
-    const [firmsRes, premiumRes] = await Promise.all([
-      supabase
-        .from('firms')
-        .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
-        .ilike('city', cityName)
-        .eq('verified', true)
-        .not('slug', 'like', 'test-%'),
-      supabase.from('public_firm_premium').select('firm_id'),
-    ]);
-    if (firmsRes.error) throw firmsRes.error;
+    const { data: firmsData, error: firmsError } = await supabase
+      .from('firms')
+      .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority')
+      .ilike('city', cityName)
+      .eq('verified', true)
+      .not('slug', 'like', 'test-%');
+    if (firmsError) throw firmsError;
 
-    const premiumIds = new Set((premiumRes.data || []).map((r: { firm_id: string }) => r.firm_id));
-    const typed = ((firmsRes.data || []) as Omit<CityFirm, 'premium'>[]).map((f) => ({
-      ...f,
-      premium: premiumIds.has(f.id),
-    }));
+    const typed = (firmsData || []) as CityFirm[];
     return typed.sort((a, b) => score(b) - score(a));
   } catch {
     return [];
@@ -171,7 +164,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                           <span className="truncate">{firm.city || 'BiH'}</span>
                         </div>
                       </div>
-                      {firm.premium && (
+                      {firm.plan_priority >= 0.4 && (
                         <span
                           className="shrink-0 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-white text-[10px] font-extrabold tracking-wide px-2 py-1 rounded-full shadow-sm"
                           title="Premium član"
