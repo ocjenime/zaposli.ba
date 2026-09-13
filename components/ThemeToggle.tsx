@@ -57,7 +57,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
       <button
         type="button"
         onClick={toggleTheme}
-        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-white transition-colors"
+        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-[#ffffff] transition-colors"
         aria-label={resolvedTheme === 'dark' ? 'Prebaci na svijetlu temu' : 'Prebaci na tamnu temu'}
       >
         {resolvedTheme === 'dark' ? <Sun className="w-4 h-4 fill-current" /> : <Moon className="w-4 h-4 fill-current" />}
@@ -70,7 +70,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
-        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-white transition-colors"
+        className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-ink-800 dark:hover:bg-ink-700 text-gray-600 dark:text-[#ffffff] transition-colors"
         aria-label="Tema"
         aria-expanded={isOpen}
       >
@@ -93,7 +93,7 @@ export default function ThemeToggle({ simple = false }: ThemeToggleProps) {
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                   isActive
                     ? 'bg-primary-50 dark:bg-ink-700 text-brand-orange dark:text-brand-orange font-medium'
-                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-700'
+                    : 'text-gray-600 dark:text-[#ffffff] hover:bg-gray-50 dark:hover:bg-ink-700'
                 }`}
               >
                 <ItemIcon className="w-4 h-4" />

@@ -230,7 +230,7 @@ export default function Header() {
                     className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
                       isActive(pathname, link.href)
                         ? 'text-brand-orange bg-orange-50 dark:bg-ink-800'
-                        : 'text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-ink-800'
+                        : 'text-gray-700 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800'
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -249,7 +249,7 @@ export default function Header() {
                   {user && !isAdmin && !isFirmRole(role) && (
                     <Link
                       href={profileHref}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-ink-800"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Info className="w-5 h-5 shrink-0" />
@@ -261,7 +261,7 @@ export default function Header() {
                       setMobileMenuOpen(false);
                       signOut();
                     }}
-                    className="flex w-full items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50/60 transition-colors dark:text-white"
+                    className="flex w-full items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium text-gray-600 hover:text-red-600 hover:bg-red-50/60 transition-colors dark:text-[#ffffff]"
                   >
                     <X className="w-5 h-5 shrink-0" />
                     Odjavi se
@@ -273,7 +273,7 @@ export default function Header() {
                     className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
                       isActive(pathname, '/prijava/')
                         ? 'text-brand-orange bg-orange-50 dark:bg-ink-800'
-                        : 'text-gray-700 hover:bg-gray-50 dark:text-white dark:hover:bg-ink-800'
+                        : 'text-gray-700 hover:bg-gray-50 dark:text-[#ffffff] dark:hover:bg-ink-800'
                     }`}
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -287,16 +287,16 @@ export default function Header() {
             {user && (
               <div className="space-y-1 pt-4 border-t border-gray-100 dark:border-ink-700">
                 <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel mb-2">Postavke</p>
-                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
+                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-[#ffffff] hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
                   <span className="flex items-center gap-3">
                     <Bell className="w-5 h-5 shrink-0" />
                     Obavještenja
                   </span>
                   <NotificationBell />
                 </div>
-                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
+                <div className="flex items-center justify-between px-3 py-3 rounded-xl text-sm font-medium text-gray-700 dark:text-[#ffffff] hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors">
                   <span className="flex items-center gap-3">
-                    <Sun className="w-5 h-5 shrink-0 fill-current text-gray-700 dark:text-white" />
+                    <Sun className="w-5 h-5 shrink-0 fill-current text-gray-700 dark:text-[#ffffff]" />
                     Tema
                   </span>
                   <ThemeToggle />
@@ -309,7 +309,7 @@ export default function Header() {
               <p className="px-3 text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-steel">Kontakt</p>
               <a
                 href={`mailto:${site.email}`}
-                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-white"
+                className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 dark:text-[#ffffff]"
               >
                 <Mail className="w-4 h-4 shrink-0 text-brand-orange" />
                 {site.email}
