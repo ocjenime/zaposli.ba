@@ -18,9 +18,10 @@ import {
   getLaunchPrice,
   hasActiveLaunchDiscount,
 } from '@/lib/subscriptions';
+import { planFeatures } from '@/lib/plan-features';
 import {
   ArrowLeft, Check, Crown, Loader2, AlertCircle,
-  Star, HeadphonesIcon, Briefcase,
+  Star,
   Calendar, Building2, Banknote, Receipt,
 } from 'lucide-react';
 
@@ -247,6 +248,11 @@ function FirmSubscriptionContent() {
                           <Crown className="w-3 h-3" /> Aktivno
                         </div>
                       )}
+                      {plan.slug === 'pro' && !isCurrent(plan.id) && (
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
+                          <Star className="w-3 h-3" /> Preporučeno
+                        </div>
+                      )}
 
                       <div className="mb-4">
                         <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
@@ -294,32 +300,12 @@ function FirmSubscriptionContent() {
                       </div>
 
                       <ul className="space-y-2.5 mb-6 text-sm text-gray-900 flex-1">
-                        <li className="flex items-start gap-2">
-                          <Briefcase className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                          <span>
-                            {plan.bids_per_month === 9999
-                              ? 'Neograničene ponude mjesečno'
-                              : `${plan.bids_per_month} ponuda mjesečno`}
-                          </span>
-                        </li>
-                        {plan.verified_badge && (
-                          <li className="flex items-start gap-2">
+                        {(planFeatures[plan.slug] || []).map((feature) => (
+                          <li key={feature} className="flex items-start gap-2">
                             <Check className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
-                            <span>Verifikacija profila</span>
+                            <span>{feature}</span>
                           </li>
-                        )}
-                        {plan.featured && (
-                          <li className="flex items-start gap-2">
-                            <Star className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                            <span>Istaknut profil</span>
-                          </li>
-                        )}
-                        {plan.priority_support && (
-                          <li className="flex items-start gap-2">
-                            <HeadphonesIcon className="w-4 h-4 text-brand-orange mt-0.5 shrink-0" />
-                            <span>Prioritetna podrška</span>
-                          </li>
-                        )}
+                        ))}
                       </ul>
 
                       {isCurrent(plan.id) ? (

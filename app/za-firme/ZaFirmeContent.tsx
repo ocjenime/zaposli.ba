@@ -6,6 +6,7 @@ import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
 import { categories } from '@/lib/data';
+import { planFeatures } from '@/lib/plan-features';
 
 import {
   CheckCircle,
@@ -153,72 +154,44 @@ const categoryCount = categories.filter((c) => !c.noSeo).length;
 const pricingPlans = [
   {
     name: 'Besplatno',
+    slug: 'besplatno',
     price: '0',
     regularPrice: '0',
     period: 'KM/mj',
     description: 'Idealno za početak i testiranje tržišta.',
-    features: [
-      'Profil firme / majstora',
-      '5 ponuda mjesečno',
-      'Direktan kontakt sa klijentima',
-      'Osnovni portfolio',
-    ],
     cta: 'Počnite besplatno',
     popular: false,
     launch: false,
   },
   {
     name: 'Start',
+    slug: 'start',
     price: '19',
     regularPrice: '29',
     period: 'KM/mj',
     description: 'Za početnike koji žele više poslova.',
-    features: [
-      '10 ponuda mjesečno',
-      'Verifikacija profila',
-      'Istaknuti kontakt',
-      'Prioritet u listi',
-      'Vlastiti logotip na profilu',
-      'Email podrška',
-    ],
     cta: 'Odaberite Start',
     popular: false,
     launch: true,
   },
   {
     name: 'Pro',
+    slug: 'pro',
     price: '49',
     regularPrice: '79',
     period: 'KM/mj',
     description: 'Za aktivne firme i majstore koji žele rasti.',
-    features: [
-      '30 ponuda mjesečno',
-      'Istaknuti profil',
-      'Verifikacija profila',
-      'Prioritetna podrška',
-      'Statistika posjetitelja',
-      '1 oglas mjesecno',
-      'Vlastiti logotip na profilu',
-    ],
     cta: 'Odaberite Pro',
     popular: true,
     launch: true,
   },
   {
     name: 'Premium',
+    slug: 'premium',
     price: '99',
     regularPrice: '149',
     period: 'KM/mj',
     description: 'Za najzahtjevnije profesionalce i firme.',
-    features: [
-      'Neograničene ponude',
-      'Premium istaknutost',
-      'Verifikacija profila',
-      'Prioritetna podrška',
-      'Napredna analitika',
-      '3 oglasa mjesecno',
-      'Vlastiti logotip na profilu',
-    ],
     cta: 'Odaberite Premium',
     popular: false,
     launch: true,
@@ -684,7 +657,7 @@ export default function ZaFirmeContent() {
                   </div>
 
                   <ul className="space-y-3 mb-8 flex-1">
-                    {plan.features.map((feature) => (
+                    {planFeatures[plan.slug].map((feature) => (
                       <li key={feature} className="flex items-start gap-3">
                         <div
                           className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
