@@ -60,10 +60,10 @@ export default function Home() {
         <HeroSection />
         <CategoryIconRow />
         <RoleCTACards />
-        <FeaturedAdsSection />
+        <LatestAdsSection />
         <PromoBanner />
         <RecommendedFirmsSection />
-        <LatestAdsSection />
+        <FeaturedAdsSection />
         <LazySection minHeight="18rem">
           <HowItWorks />
         </LazySection>

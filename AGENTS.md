@@ -18,6 +18,8 @@
 
 ## Work State
 ### Completed
+- Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
+- Restored the larger `PromoBanner` desktop layout with the dark background image, glass benefits panel, and a "Kreiraj oglas" CTA (removed the compact horizontal mobile strip).
 - Implemented the new promoted-ads pricing model:
   - Added `destination` column to `promoted_ads` via `supabase/migration-promoted-ads-destination.sql` (`homepage` vs `listing`).
   - Homepage mini oglas: **19 KM** or included in Pro (1/mj) / Premium (3/mj).

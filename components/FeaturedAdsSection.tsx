@@ -323,10 +323,10 @@ export default function FeaturedAdsSection() {
           <div>
             <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-brand-orange uppercase">
               <Crown className="w-3.5 h-3.5" />
-              Istaknuti oglasi
+              Sponzorirani oglasi
             </span>
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
-              Premium oglasi i projekti
+              Premium oglasi firmi i majstora
             </h2>
             <p className="text-sm text-steel dark:text-white/60 mt-1">
               {hasRealAds
