@@ -78,7 +78,7 @@ export default function TopFirmeContent() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Top firme' }]} />
@@ -107,9 +107,9 @@ export default function TopFirmeContent() {
         />
 
         {/* Trust traka */}
-        <section className="py-8 bg-white border-b border-gray-100">
+        <section className="py-8 bg-ink-950 border-b border-ink-800/60">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm text-steel">
+            <div className="flex flex-wrap justify-center gap-x-10 gap-y-3 text-sm text-white/70">
               <span className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-brand-orange" />
                 Svaki majstor je prošao verifikaciju identiteta
@@ -127,21 +127,21 @@ export default function TopFirmeContent() {
         </section>
 
         {/* Majstori */}
-        <section className="py-14 bg-cloud">
+        <section className="py-14 bg-ink-950">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {loading ? (
               <div className="flex items-center justify-center py-20">
                 <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
               </div>
             ) : firms.length === 0 ? (
-              <div className="bg-white rounded-3xl p-10 text-center border border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Još nema registrovanih firmi</h2>
-                <p className="text-steel mb-6 max-w-md mx-auto">
+              <div className="bg-ink-900/60 rounded-3xl p-10 text-center border border-ink-800">
+                <h2 className="text-xl font-bold text-white mb-2">Još nema registrovanih firmi</h2>
+                <p className="text-white/70 mb-6 max-w-md mx-auto">
                   Prve firme će se uskoro pojaviti. Do tada, vi možete objaviti posao besplatno.
                 </p>
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3 rounded-xl font-bold"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold"
                 >
                   Objavi posao besplatno
                 </Link>
@@ -153,7 +153,7 @@ export default function TopFirmeContent() {
                     <Link
                       key={f.id}
                       href={`/firma-profil/${f.slug}/`}
-                      className="group bg-white rounded-3xl p-7 border border-gray-100 hover:border-transparent hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                      className="group bg-ink-900/60 rounded-3xl p-7 border border-ink-800 hover:border-brand-orange/30 hover:shadow-2xl hover:shadow-brand-orange/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                     >
                       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -168,10 +168,10 @@ export default function TopFirmeContent() {
                         {f.verified && <VerifiedBadge size="sm" />}
                       </div>
 
-                      <h2 className="text-xl font-extrabold text-gray-900 group-hover:text-brand-orange transition-colors mb-1">
+                      <h2 className="text-xl font-extrabold text-white group-hover:text-brand-orange transition-colors mb-1">
                         {f.name}
                       </h2>
-                      <p className="text-sm text-steel mb-4">
+                      <p className="text-sm text-white/70 mb-4">
                         {f.specialty}
                       </p>
 
@@ -180,24 +180,24 @@ export default function TopFirmeContent() {
                           {[...Array(5)].map((_, i) => (
                             <Star
                               key={i}
-                              className={`w-4 h-4 ${i < Math.round((f.average_rating || 0)) ? 'text-brand-orange fill-brand-orange' : 'text-mist'}`}
+                              className={`w-4 h-4 ${i < Math.round((f.average_rating || 0)) ? 'text-brand-orange fill-brand-orange' : 'text-white/30'}`}
                             />
                           ))}
                         </div>
-                        <span className="font-extrabold text-gray-900">{(f.average_rating || 0).toFixed(1)}</span>
-                        <span className="text-xs text-steel">({f.review_count || 0} {plural(f.review_count || 0, ['recenzija', 'recenzije', 'recenzija'])})</span>
+                        <span className="font-extrabold text-white">{(f.average_rating || 0).toFixed(1)}</span>
+                        <span className="text-xs text-white/70">({f.review_count || 0} {plural(f.review_count || 0, ['recenzija', 'recenzije', 'recenzija'])})</span>
                       </div>
 
-                      <p className="text-sm text-steel leading-relaxed mb-5 line-clamp-2">
+                      <p className="text-sm text-white/70 leading-relaxed mb-5 line-clamp-2">
                         {f.description || 'Firma još nije dodala opis.'}
                       </p>
 
-                      <div className="flex items-center justify-between pt-5 border-t border-gray-100">
-                        <span className="flex items-center gap-1.5 text-xs text-steel">
+                      <div className="flex items-center justify-between pt-5 border-t border-ink-800">
+                        <span className="flex items-center gap-1.5 text-xs text-white/70">
                           <MapPin className="w-3.5 h-3.5" />
                           {f.city || 'BiH'}
                         </span>
-                        <span className="text-xs font-semibold text-gray-900 bg-cloud px-2.5 py-1 rounded-lg">
+                        <span className="text-xs font-semibold text-white bg-ink-800 border border-ink-700 px-2.5 py-1 rounded-lg">
                           Zatraži ponudu
                         </span>
                       </div>
@@ -206,18 +206,18 @@ export default function TopFirmeContent() {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-14 bg-ink rounded-3xl p-10 text-center relative overflow-hidden">
+                <div className="mt-14 bg-ink-900/60 border border-ink-800 rounded-3xl p-10 text-center relative overflow-hidden">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-brand-orange/10 rounded-full blur-3xl" />
                   <div className="relative">
-                    <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">
+                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
                       Želite ovakvu firmu za vaš posao?
                     </h2>
-                    <p className="text-[#ffffff]/60 mb-8 max-w-xl mx-auto">
+                    <p className="text-white/60 mb-8 max-w-xl mx-auto">
                       Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.
                     </p>
                     <Link
                       href="/objavi-projekat/"
-                      className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+                      className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
                     >
                       Objavi posao besplatno
                       <ArrowRight className="w-5 h-5" />
