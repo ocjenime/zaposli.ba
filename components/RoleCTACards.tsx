@@ -8,7 +8,7 @@ const cards = [
     href: '/objavi-projekat/',
     icon: Home,
     title: 'Tražim majstora',
-    description: 'Objavite svoj projekt besplatno i dobijte ponude od provjerenih firmi.',
+    description: 'Opiši šta ti treba i primi ponude od provjerenih majstora.',
     cta: 'Objavi posao',
     theme: 'orange',
   },
