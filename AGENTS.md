@@ -324,15 +324,18 @@
   - Updated `FirmAdsTab.tsx` upload form: firms now upload a wide banner with a recommended dimension note (**1200 × 400 px**, max 5MB).
   - Redesigned `PromotedAdCard.tsx` to show the banner at the top, firm logo overlay, firm name, verified badge, description, and CTA.
   - Updated `/izdvojeni-oglasi/` page to use the new banner cards.
-- Redesigned promoted ads surface as a **Top 10 listings leaderboard**:
-  - New `components/HomepageTopListings.tsx`: 10 compact text rows, no images in the list.
-  - Top 5 rows are paid sticky slots from `promoted_ads.homepage_position` (1-5) with `homepage_sticky_until` expiration.
-  - Bottom 5 rows are regular active promoted ads ordered by newest first.
-  - Each row shows rank badge, firm logo, ad title, type badge, firm name, verified badge, city, rating, and a "Sponzorirano" crown label for paid slots.
-  - Added `supabase/migration-promoted-ads-homepage-slots.sql` for sticky position columns.
-  - Added ad detail page `/izdvojeni-oglasi/[id]/` that shows the full banner, firm info, description, and CTAs.
-  - Added "Oglasi" link to desktop and mobile header navigation.
-  - Temporarily removed the Top 10 ads section from both the homepage and `/kako-funkcionise/`; component files are kept in the repo for the upcoming redesign based on user's mockup.
+- Added ad detail page `/izdvojeni-oglasi/[id]/` that shows the full banner, firm info, description, and CTAs.
+- Added sticky homepage-slot columns to `promoted_ads` via `supabase/migration-promoted-ads-homepage-slots.sql`.
+- **Homepage WOW redesign based on `wow.png` mockup** (premium Higgsfield dark style, kept existing logo/identity):
+  - Updated `Header.tsx` navigation: Početna, Oglasi, Firme, Kategorije, Gradovi, Poslovi, Kako funkcioniše, Za firme, Kontakt.
+  - Redesigned `HeroSection.tsx`: left-aligned headline "Objavite posao. Pronađite pravog majstora.", eyebrow, two CTAs, trust badges, floating social-proof card on desktop, decorative quote on the right.
+  - New `components/CategoryIconRow.tsx`: compact horizontal category icons with labels.
+  - New `components/RoleCTACards.tsx`: two dark glass cards for clients and firms.
+  - New `components/FeaturedAdsSection.tsx`: "Istaknuti oglasi" grid of 5 sponsored cards with rank badges, sponsored crown, banner images, type pills, firm info, ratings.
+  - New `components/PromoBanner.tsx`: full-width banner "Ovo može biti vaša reklama." with CTA and benefit list.
+  - New `components/RecommendedFirmsSection.tsx`: 5 recommended firm cards ranked by rating + verified + plan priority.
+  - New `components/LatestAdsSection.tsx`: "Najnoviji oglasi" grid of 5 latest open jobs with images, category pills, city and time-ago.
+  - Assembled all new sections in `app/page.tsx` while keeping existing HowItWorks, PopularCategories, StatsSection, RecentProjects, Testimonials and CTASection below.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.

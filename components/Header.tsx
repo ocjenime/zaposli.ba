@@ -6,11 +6,13 @@ import { usePathname } from 'next/navigation';
 import {
   Menu,
   X,
+  Home,
   LayoutGrid,
   MapPinned,
   FolderOpen,
   HelpCircle,
   Building2,
+  Briefcase,
   FilePlus,
   Mail,
   Info,
@@ -27,12 +29,14 @@ import { isFirmRole } from '@/lib/roles';
 import { site } from '@/lib/site';
 
 const navLinks = [
+  { href: '/', label: 'Početna', icon: Home },
+  { href: '/izdvojeni-oglasi/', label: 'Oglasi', icon: Megaphone },
+  { href: '/top-firme/', label: 'Firme', icon: Building2 },
   { href: '/kategorije/', label: 'Kategorije', icon: LayoutGrid },
   { href: '/gradovi/', label: 'Gradovi', icon: MapPinned },
   { href: '/poslovi/', label: 'Poslovi', icon: FolderOpen },
-  { href: '/izdvojeni-oglasi/', label: 'Oglasi', icon: Megaphone },
   { href: '/kako-funkcionise/', label: 'Kako funkcioniše', icon: HelpCircle },
-  { href: '/za-firme/', label: 'Za firme', icon: Building2 },
+  { href: '/za-firme/', label: 'Za firme', icon: Briefcase },
   { href: '/kontakt/', label: 'Kontakt', icon: Mail },
 ];
 

@@ -2,12 +2,17 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import AppStickerPopup from '@/components/AppStickerPopup';
+import CategoryIconRow from '@/components/CategoryIconRow';
+import RoleCTACards from '@/components/RoleCTACards';
+import FeaturedAdsSection from '@/components/FeaturedAdsSection';
+import PromoBanner from '@/components/PromoBanner';
+import RecommendedFirmsSection from '@/components/RecommendedFirmsSection';
+import LatestAdsSection from '@/components/LatestAdsSection';
 import HowItWorks from '@/components/HowItWorks';
 import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
 import RecentProjects from '@/components/RecentProjects';
 import Testimonials from '@/components/Testimonials';
-
 import CTASection from '@/components/CTASection';
 import LazySection from '@/components/LazySection';
 import { JsonLd, organizationSchema, websiteSchema, breadcrumbSchema } from '@/lib/jsonld';
@@ -54,6 +59,12 @@ export default function Home() {
       <AppStickerPopup />
       <main className="flex-grow">
         <HeroSection />
+        <CategoryIconRow />
+        <RoleCTACards />
+        <FeaturedAdsSection />
+        <PromoBanner />
+        <RecommendedFirmsSection />
+        <LatestAdsSection />
         <LazySection minHeight="18rem">
           <HowItWorks />
         </LazySection>
