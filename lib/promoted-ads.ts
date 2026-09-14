@@ -15,14 +15,19 @@ export interface PublicPromotedAd {
   banner_url: string | null;
   cta_url: string | null;
   ad_type: 'promotion' | 'worker_search';
+  status: 'pending' | 'active' | 'expired' | 'rejected';
   ends_at: string | null;
   created_at: string;
+  homepage_position: number | null;
+  homepage_sticky_until: string | null;
   firms: {
     name: string | null;
     slug: string | null;
     city: string | null;
     logo_url: string | null;
     verified: boolean | null;
+    average_rating: number | null;
+    review_count: number | null;
   } | null;
 }
 

@@ -323,7 +323,15 @@
   - Added `banner_url` column via `supabase/migration-promoted-ads-banner.sql`.
   - Updated `FirmAdsTab.tsx` upload form: firms now upload a wide banner with a recommended dimension note (**1200 × 400 px**, max 5MB).
   - Redesigned `PromotedAdCard.tsx` to show the banner at the top, firm logo overlay, firm name, verified badge, description, and CTA.
-  - Updated homepage strip and `/izdvojeni-oglasi/` page to use the new banner cards.
+  - Updated `/izdvojeni-oglasi/` page to use the new banner cards.
+- Redesigned homepage promoted surface as a **Top 10 listings leaderboard**:
+  - New `components/HomepageTopListings.tsx`: 10 compact text rows, no images on homepage.
+  - Top 5 rows are paid sticky slots from `promoted_ads.homepage_position` (1-5) with `homepage_sticky_until` expiration.
+  - Bottom 5 rows are organic top-ranked firms by rating + verified + plan_priority.
+  - Each row shows rank badge, firm logo, name, verified badge, city, rating, and a "Sponzorirano" crown label for paid slots.
+  - Added `supabase/migration-promoted-ads-homepage-slots.sql` for sticky position columns.
+  - Added ad detail page `/izdvojeni-oglasi/[id]/` that shows the full banner, firm info, description, and CTAs.
+  - Added "Oglasi" link to desktop and mobile header navigation.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
