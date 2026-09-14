@@ -437,7 +437,7 @@ export default function FirmProfileEditorPage() {
 
   if (authLoading || (!user && !isFirmRole(role))) {
     return (
-      <div className="min-h-screen flex flex-col bg-ink-950">
+      <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
@@ -447,7 +447,7 @@ export default function FirmProfileEditorPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
@@ -458,7 +458,7 @@ export default function FirmProfileEditorPage() {
             actions={
               <Link
                 href="/dashboard/firma/"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-ink-700 text-white/70 hover:text-white hover:bg-ink-800 hover:border-ink-700 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Nazad na dashboard
@@ -466,10 +466,10 @@ export default function FirmProfileEditorPage() {
             }
           />
 
-          <div className="bg-ink-900/60 rounded-2xl shadow-card border border-ink-800 p-6 sm:p-8">
+          <div className="bg-white dark:bg-ink-900 rounded-2xl shadow-card border border-gray-100 dark:border-ink-800 p-6 sm:p-8">
 
             {success && (
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm text-green-400 bg-green-500/10 rounded-xl px-4 py-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3">
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4" />
                   Profil je uspješno ažuriran.
@@ -489,18 +489,18 @@ export default function FirmProfileEditorPage() {
               </div>
             ) : error && !firm ? (
               <div className="text-center py-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-50 mb-4">
                   <AlertCircle className="w-8 h-8 text-red-500" />
                 </div>
-                <h2 className="text-lg font-bold text-white mb-2">Profil nije pronađen</h2>
-                <p className="text-white/70">{error}</p>
+                <h2 className="text-lg font-bold text-gray-900 mb-2">Profil nije pronađen</h2>
+                <p className="text-steel">{error}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Naziv firme</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Naziv firme</label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                     <input
                       type="text"
                       value={name}
@@ -508,7 +508,7 @@ export default function FirmProfileEditorPage() {
                         setName(e.target.value);
                         if (slug === slugify(name)) setSlug(slugify(e.target.value));
                       }}
-                      className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                       placeholder="Naziv firme"
                       required
                     />
@@ -516,35 +516,35 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     URL slug
-                    <span className="text-white/70 font-normal ml-1">(npr. moja-firma)</span>
+                    <span className="text-steel font-normal ml-1">(npr. moja-firma)</span>
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                    <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                     <input
                       type="text"
                       value={slug}
                       onChange={(e) => setSlug(slugify(e.target.value))}
-                      className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                       placeholder="slug"
                       required
                     />
                   </div>
-                  <p className="text-xs text-white/70 mt-1">
+                  <p className="text-xs text-steel mt-1">
                     Profil će biti dostupan na /firma-profil/{slug || 'slug'}/
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Opis</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Opis</label>
                   <div className="relative">
-                    <FileText className="absolute left-3 top-3 w-5 h-5 text-white/70" />
+                    <FileText className="absolute left-3 top-3 w-5 h-5 text-steel" />
                     <textarea
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       rows={4}
-                      className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+                      className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
                       placeholder="Opisite vašu firmu i usluge..."
                     />
                   </div>
@@ -552,16 +552,16 @@ export default function FirmProfileEditorPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-2">
                       Grad <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                       <input
                         type="text"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                         placeholder="Npr. Sarajevo"
                         required
                       />
@@ -569,49 +569,49 @@ export default function FirmProfileEditorPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-white mb-2">Telefon</label>
+                    <label className="block text-sm font-medium text-gray-900 mb-2">Telefon</label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                       <input
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                        className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                        className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                         placeholder="+387 61 123 456"
                       />
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-ink-950 rounded-2xl p-5 border border-ink-800">
-                  <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                <div className="bg-cloud rounded-2xl p-5 border border-gray-100">
+                  <h3 className="text-sm font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <Building2 className="w-4 h-4 text-brand-orange" />
                     Poslovni podaci
                   </h3>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-white mb-2">Registracijski broj</label>
+                      <label className="block text-sm font-medium text-gray-900 mb-2">Registracijski broj</label>
                       <div className="relative">
-                        <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                        <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                         <input
                           type="text"
                           value={registrationNumber}
                           onChange={(e) => setRegistrationNumber(e.target.value)}
-                          className="w-full bg-ink-900/60 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                           placeholder="npr. 12345678"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-white mb-2">Datum osnivanja</label>
+                      <label className="block text-sm font-medium text-gray-900 mb-2">Datum osnivanja</label>
                       <div className="relative">
-                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                         <input
                           type="date"
                           value={foundedAt}
                           onChange={(e) => setFoundedAt(e.target.value)}
-                          className="w-full bg-ink-900/60 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                          className="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -619,25 +619,25 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Email</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Email</label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                      className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent"
                       placeholder="firma@email.com"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Logotip</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Logotip</label>
                   {subscription?.plans && subscription.plans.price_monthly > 0 ? (
-                    <p className="text-xs text-white/70 mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
+                    <p className="text-xs text-steel mb-3">Maksimalno 2MB, formati: JPG, PNG, WEBP.</p>
                   ) : (
-                    <p className="text-xs text-white/70 mb-3">Logotip je dostupan u paketima Start, Pro i Premium.</p>
+                    <p className="text-xs text-steel mb-3">Logotip je dostupan u paketima Start, Pro i Premium.</p>
                   )}
                   <div className="relative inline-block">
                     <LogoDisplay
@@ -648,7 +648,7 @@ export default function FirmProfileEditorPage() {
                       rounded="xl"
                     />
                     {uploadingLogo && (
-                      <div className="absolute inset-0 bg-ink-950/80 flex items-center justify-center rounded-2xl">
+                      <div className="absolute inset-0 bg-white/80 flex items-center justify-center rounded-2xl">
                         <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
                       </div>
                     )}
@@ -656,7 +656,7 @@ export default function FirmProfileEditorPage() {
                       <button
                         type="button"
                         onClick={removeLogo}
-                        className="absolute -top-2 -right-2 p-1 bg-ink-900/60 border border-ink-800 rounded-full text-white/70 hover:text-red-500 shadow-sm"
+                        className="absolute -top-2 -right-2 p-1 bg-white border border-gray-100 rounded-full text-steel hover:text-red-500 shadow-sm"
                         aria-label="Ukloni logotip"
                       >
                         <X className="w-4 h-4" />
@@ -669,7 +669,7 @@ export default function FirmProfileEditorPage() {
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploadingLogo}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-ink-900/80 border border-ink-700 border-dashed rounded-xl text-sm text-white/70 hover:text-white hover:border-brand-orange transition-colors disabled:opacity-50"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
                       >
                         <Upload className="w-4 h-4" />
                         {logoPreview ? 'Promijeni logotip' : 'Dodaj logotip'}
@@ -696,8 +696,8 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">Portfolio fotografije</label>
-                  <p className="text-xs text-white/70 mb-3">Dodajte fotografije vaših radova. Maksimalno 2MB po fotografiji.</p>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">Portfolio fotografije</label>
+                  <p className="text-xs text-steel mb-3">Dodajte fotografije vaših radova. Maksimalno 2MB po fotografiji.</p>
 
                   <input
                     ref={portfolioInputRef}
@@ -712,7 +712,7 @@ export default function FirmProfileEditorPage() {
                     type="button"
                     onClick={() => portfolioInputRef.current?.click()}
                     disabled={uploadingPortfolio}
-                    className="flex items-center gap-2 px-4 py-3 bg-ink-900/80 border border-ink-700 border-dashed rounded-xl text-sm text-white/70 hover:text-white hover:border-brand-orange transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 border-dashed rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors disabled:opacity-50"
                   >
                     {uploadingPortfolio ? (
                       <>
@@ -728,7 +728,7 @@ export default function FirmProfileEditorPage() {
                   {portfolioImages.length > 0 && (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-4">
                       {portfolioImages.map((img, index) => (
-                        <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-ink-700">
+                        <div key={img.id} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200">
                           <NextImage
                             src={img.image_url}
                             alt={`Portfolio firme ${name || ''} - fotografija ${index + 1}`}
@@ -741,7 +741,7 @@ export default function FirmProfileEditorPage() {
                             type="button"
                             onClick={() => deletePortfolioImage(img.id)}
                             disabled={deletingPortfolioId === img.id}
-                            className="absolute top-1.5 right-1.5 p-1 bg-ink-900/90 rounded-full text-white/70 hover:text-red-500 shadow-sm disabled:opacity-50"
+                            className="absolute top-1.5 right-1.5 p-1 bg-white/90 rounded-full text-steel hover:text-red-500 shadow-sm disabled:opacity-50"
                             aria-label="Ukloni fotografiju"
                           >
                             {deletingPortfolioId === img.id ? (
@@ -757,10 +757,10 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white mb-2">
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
                     Kategorije <span className="text-red-500">*</span>
                   </label>
-                  <p className="text-xs text-white/70 mb-3">Označite bar jednu kategoriju koju pokrivate. Obavještenja možete podesiti na dashboardu.</p>
+                  <p className="text-xs text-steel mb-3">Označite bar jednu kategoriju koju pokrivate. Obavještenja možete podesiti na dashboardu.</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {categories.map((category) => {
                       const selected = selectedCategories.includes(category.slug);
@@ -771,20 +771,20 @@ export default function FirmProfileEditorPage() {
                           onClick={() => toggleCategory(category.slug)}
                           className={`flex items-center gap-3 text-left rounded-xl border p-4 transition-colors ${
                             selected
-                              ? 'bg-brand-orange/10 border-brand-orange'
-                              : 'bg-ink-900/60 border-ink-700 hover:border-brand-orange/30'
+                              ? 'bg-orange-50/50 border-brand-orange'
+                              : 'bg-white border-gray-200 hover:border-gray-300'
                           }`}
                         >
                           <div
                             className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
                               selected
                                 ? 'bg-brand-orange border-brand-orange'
-                                : 'border-ink-700 bg-ink-900/60'
+                                : 'border-gray-300 bg-white'
                             }`}
                           >
                             {selected && <Check className="w-3.5 h-3.5 text-white" />}
                           </div>
-                          <span className={`text-sm font-medium ${selected ? 'text-white' : 'text-white/70'}`}>
+                          <span className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-600'}`}>
                             {category.name}
                           </span>
                         </button>
@@ -792,23 +792,23 @@ export default function FirmProfileEditorPage() {
                     })}
                   </div>
                   {selectedCategories.length === 0 && (
-                    <p className="text-xs text-white/70 mt-2">Odaberite bar jednu kategoriju.</p>
+                    <p className="text-xs text-steel mt-2">Odaberite bar jednu kategoriju.</p>
                   )}
                 </div>
 
-                <div className="rounded-xl border border-ink-700 bg-ink-950 p-5">
+                <div className="rounded-xl border border-gray-200 bg-cloud p-5">
                   <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                     <div className="flex items-start gap-3 flex-1">
                       <div className="shrink-0 mt-0.5">
                         {firm?.verified ? (
-                          <Check className="w-5 h-5 text-green-400" />
+                          <Check className="w-5 h-5 text-green-600" />
                         ) : (
                           <AlertCircle className="w-5 h-5 text-brand-orange" />
                         )}
                       </div>
                       <div>
-                        <p className="text-sm font-semibold text-white">Verifikacija profila</p>
-                        <p className="text-xs text-white/70 mt-1">
+                        <p className="text-sm font-semibold text-gray-900">Verifikacija profila</p>
+                        <p className="text-xs text-steel mt-1">
                           {firm?.verified
                             ? 'Vaš profil je verificiran i ima značku povjerenja.'
                             : firm?.verification_status === 'pending'
@@ -852,7 +852,7 @@ export default function FirmProfileEditorPage() {
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     {error}
                   </div>
@@ -868,7 +868,7 @@ export default function FirmProfileEditorPage() {
                   </button>
                   <Link
                     href="/dashboard/firma/"
-                    className="px-6 py-3 rounded-xl border border-ink-700 text-sm font-medium text-white/70 hover:text-white hover:bg-ink-950 transition-colors"
+                    className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-medium text-steel hover:text-gray-900 hover:bg-cloud transition-colors"
                   >
                     Odustani
                   </Link>

@@ -131,13 +131,13 @@ const privateStatusLabels: Record<PrivateStatus, string> = {
 };
 
 const privateStatusColors: Record<PrivateStatus, string> = {
-  pending: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  accepted: 'bg-green-500/10 text-green-400 border-green-500/20',
-  in_progress: 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20',
-  done_pending: 'bg-brand-orange/10 text-brand-orange border-brand-orange/30',
-  completed: 'bg-green-500/10 text-green-400 border-green-500/20',
-  declined: 'bg-ink-800 text-white/50 border-ink-700',
-  cancelled: 'bg-ink-800 text-white/50 border-ink-700',
+  pending: 'bg-blue-50 text-blue-700 border-blue-100',
+  accepted: 'bg-green-50 text-green-700 border-green-100',
+  in_progress: 'bg-yellow-50 text-yellow-700 border-yellow-100',
+  done_pending: 'bg-orange-50 text-brand-orange border-orange-100',
+  completed: 'bg-green-50 text-green-700 border-green-100',
+  declined: 'bg-gray-100 text-gray-500 border-gray-200',
+  cancelled: 'bg-gray-100 text-gray-500 border-gray-200',
 };
 
 const statusLabels: Record<BidStatus, string> = {
@@ -153,9 +153,9 @@ const statusIcons: Record<BidStatus, React.ReactNode> = {
 };
 
 const statusBadgeClasses: Record<BidStatus, string> = {
-  pending: 'bg-ink-800 text-white/70 border-ink-700',
-  accepted: 'bg-green-500/10 text-green-400 border-green-500/20',
-  rejected: 'bg-ink-800 text-white/50 border-ink-700',
+  pending: 'bg-gray-100 text-steel border-gray-200',
+  accepted: 'bg-success-50 text-success-700 border-success-100',
+  rejected: 'bg-gray-100 text-gray-500 border-gray-200',
 };
 
 function formatBudget(job: Job) {
@@ -566,10 +566,10 @@ function FirmDashboardContent() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-ink-950">
+      <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p className="text-white/70">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
+          <p className="text-steel">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
         </main>
         <Footer />
       </div>
@@ -577,12 +577,12 @@ function FirmDashboardContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 md:pt-28 pb-10 md:pb-14 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto space-y-6">
           {error && (
-            <div className="flex items-start gap-3 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3 border border-red-500/20 animate-fade-in">
+            <div className="flex items-start gap-3 text-sm text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-200 rounded-xl px-4 py-3 border border-red-100 dark:border-red-900/30 animate-fade-in">
               <AlertTriangle className="w-5 h-5 shrink-0" />
               {error}
             </div>
@@ -598,7 +598,7 @@ function FirmDashboardContent() {
               <>
                 <Link
                   href="/dashboard/firma/profil/"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-ink-700 text-white/70 hover:text-white hover:bg-ink-800 hover:border-ink-700 transition-all duration-200"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
                 >
                   <Settings className="w-4 h-4" />
                   <span className="hidden sm:inline">Uredi profil</span>
@@ -660,17 +660,17 @@ function FirmDashboardContent() {
           )}
 
           {loadingFirm && (
-            <div className="flex items-center justify-center py-16 text-white/70">
+            <div className="flex items-center justify-center py-16 text-steel">
               <Loader2 className="w-6 h-6 animate-spin mr-2" />
               Učitavanje profila firme...
             </div>
           )}
 
           {firmId && !loadingFirm && (!firmCity?.trim() || firmCategories.length === 0) && (
-            <div className="rounded-2xl bg-gradient-to-r from-amber-500/10 to-amber-500/5 border border-amber-500/30 p-6 text-sm text-amber-400 animate-fade-in">
+            <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-6 text-sm text-amber-800 animate-fade-in">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0">
-                  <AlertTriangle className="w-6 h-6 text-amber-400" />
+                <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-6 h-6 text-amber-700" />
                 </div>
                 <div>
                   <p className="font-bold text-base mb-1">Dovršite profil firme</p>
@@ -679,7 +679,7 @@ function FirmDashboardContent() {
                   </p>
                   <Link
                     href="/dashboard/firma/profil/"
-                    className="inline-flex items-center gap-2 font-semibold text-amber-400 hover:underline"
+                    className="inline-flex items-center gap-2 font-semibold text-amber-700 hover:underline"
                   >
                     Idi na Profil firme <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -691,14 +691,14 @@ function FirmDashboardContent() {
           {firmId && !loadingFirm && firmCity?.trim() && firmCategories.length > 0 && (
             <>
               {!canBid && !loadingPlan && (
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-red-900/20 to-red-900/10 border border-red-500/20 px-4 py-3 text-sm text-red-400 animate-fade-in">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-900/10 border border-red-100 dark:border-red-900/30 px-4 py-3 text-sm text-red-800 dark:text-red-200 animate-fade-in">
                   <div className="flex items-center gap-2 font-medium">
                     <AlertTriangle className="w-4 h-4" />
                     Dostigli ste mjesečno ograničenje ponuda.
                   </div>
                   <Link
                     href="/dashboard/firma/pretplata/"
-                    className="inline-flex items-center gap-1.5 font-semibold text-red-400 hover:underline"
+                    className="inline-flex items-center gap-1.5 font-semibold text-red-700 dark:text-red-200 hover:underline"
                   >
                     Nadogradite paket <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -706,13 +706,13 @@ function FirmDashboardContent() {
               )}
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="inline-flex flex-wrap p-1 bg-ink-900/60 rounded-xl border border-ink-800 shadow-sm">
+                <div className="inline-flex flex-wrap p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
                   <button
                     onClick={() => setActiveTab('jobs')}
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       activeTab === 'jobs'
                         ? 'bg-brand-orange text-white shadow-sm'
-                        : 'text-white/70 hover:text-white hover:bg-ink-800'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
                     }`}
                   >
                     <Briefcase className="w-4 h-4" />
@@ -721,7 +721,7 @@ function FirmDashboardContent() {
                       className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
                         activeTab === 'jobs'
                           ? 'bg-white/20 text-white'
-                          : 'bg-ink-800 text-white/70'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
                       }`}
                     >
                       {openJobs.length}
@@ -732,7 +732,7 @@ function FirmDashboardContent() {
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       activeTab === 'direct'
                         ? 'bg-brand-orange text-white shadow-sm'
-                        : 'text-white/70 hover:text-white hover:bg-ink-800'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
                     }`}
                   >
                     <MessageSquare className="w-4 h-4" />
@@ -741,7 +741,7 @@ function FirmDashboardContent() {
                       className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
                         activeTab === 'direct'
                           ? 'bg-white/20 text-white'
-                          : 'bg-ink-800 text-white/70'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
                       }`}
                     >
                       {directJobs.length}
@@ -752,7 +752,7 @@ function FirmDashboardContent() {
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       activeTab === 'bids'
                         ? 'bg-brand-orange text-white shadow-sm'
-                        : 'text-white/70 hover:text-white hover:bg-ink-800'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
                     }`}
                   >
                     <Send className="w-4 h-4" />
@@ -761,7 +761,7 @@ function FirmDashboardContent() {
                       className={`ml-1 inline-flex items-center justify-center rounded-full px-2 py-0.5 text-xs font-bold ${
                         activeTab === 'bids'
                           ? 'bg-white/20 text-white'
-                          : 'bg-ink-800 text-white/70'
+                          : 'bg-cloud dark:bg-ink-800 text-steel'
                       }`}
                     >
                       {myBids.length}
@@ -772,7 +772,7 @@ function FirmDashboardContent() {
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                       activeTab === 'ads'
                         ? 'bg-brand-orange text-white shadow-sm'
-                        : 'text-white/70 hover:text-white hover:bg-ink-800'
+                        : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
                     }`}
                   >
                     <Megaphone className="w-4 h-4" />
@@ -784,7 +784,7 @@ function FirmDashboardContent() {
                       className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
                         activeTab === 'stats'
                           ? 'bg-brand-orange text-white shadow-sm'
-                          : 'text-white/70 hover:text-white hover:bg-ink-800'
+                          : 'text-steel hover:text-gray-900 dark:hover:text-white hover:bg-cloud dark:hover:bg-ink-800'
                       }`}
                     >
                       <BarChart3 className="w-4 h-4" />
@@ -793,7 +793,7 @@ function FirmDashboardContent() {
                   )}
                 </div>
 
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-steel">
                   {activeTab === 'jobs'
                     ? 'Pronađite nove poslove i pošaljite ponudu.'
                     : activeTab === 'direct'
@@ -813,7 +813,7 @@ function FirmDashboardContent() {
                       {[1, 2, 3].map((i) => (
                         <div
                           key={i}
-                          className="h-28 bg-ink-900/60 rounded-2xl border border-ink-800 shadow-sm p-5 animate-pulse"
+                          className="h-28 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
                         />
                       ))}
                     </div>
@@ -833,10 +833,10 @@ function FirmDashboardContent() {
                         return (
                           <div
                             key={job.id}
-                            className={`group bg-ink-900/60 rounded-2xl border p-5 shadow-sm transition-all duration-200 ${
+                            className={`group bg-white dark:bg-ink-900 rounded-2xl border p-5 shadow-sm transition-all duration-200 ${
                               alreadyBid || !canBid
-                                ? 'border-ink-800 opacity-80'
-                                : 'border-ink-800 hover:border-brand-orange/30 hover:shadow-md hover:-translate-y-0.5 cursor-pointer'
+                                ? 'border-gray-100 dark:border-ink-800 opacity-80'
+                                : 'border-gray-100 dark:border-ink-800 hover:border-brand-orange/30 hover:shadow-md hover:-translate-y-0.5 cursor-pointer'
                             }`}
                             onClick={() => {
                               if (!alreadyBid && canBid) setExpandedJob(isExpanded ? null : job.id);
@@ -844,17 +844,17 @@ function FirmDashboardContent() {
                           >
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                               <div className="flex items-start gap-4">
-                                <div className="hidden sm:flex w-12 h-12 rounded-xl bg-ink-800 items-center justify-center text-white/70 shrink-0">
+                                <div className="hidden sm:flex w-12 h-12 rounded-xl bg-cloud dark:bg-ink-800 items-center justify-center text-steel shrink-0">
                                   <Briefcase className="w-6 h-6" />
                                 </div>
                                 <div>
                                   <div className="flex items-center gap-2 mb-1">
-                                    <h3 className="text-base md:text-lg font-bold text-white">
+                                    <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
                                       {job.title}
                                     </h3>
                                     {isActiveFeatured(job) && <FeaturedBadge />}
                                   </div>
-                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-white/70">
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-steel">
                                     <span className="inline-flex items-center gap-1">
                                       <MapPin className="w-3.5 h-3.5" />
                                       {job.city}
@@ -899,10 +899,10 @@ function FirmDashboardContent() {
                                 disabled={alreadyBid || !canBid}
                                 className={`inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed w-full md:w-auto md:shrink-0 ${
                                   alreadyBid || !canBid
-                                    ? 'bg-ink-800 text-white/70'
+                                    ? 'bg-cloud dark:bg-ink-800 text-steel'
                                     : isExpanded
-                                    ? 'bg-ink-800 text-white hover:bg-ink-700'
-                                    : 'bg-brand-orange/10 text-brand-orange hover:bg-orange-900/30'
+                                    ? 'bg-gray-100 dark:bg-ink-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-ink-700'
+                                    : 'bg-orange-50 dark:bg-orange-900/20 text-brand-orange-dark dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30'
                                 }`}
                               >
                                 {alreadyBid
@@ -917,11 +917,11 @@ function FirmDashboardContent() {
 
                             {isExpanded && !alreadyBid && (
                               <div
-                                className="mt-5 pt-5 border-t border-ink-800 animate-fade-in"
+                                className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in"
                                 onClick={(e) => e.stopPropagation()}
                               >
                                 {!isCategoryAllowed(job) && (
-                                  <div className="mb-4 rounded-xl bg-gradient-to-r from-amber-500/10 to-amber-500/5 border border-amber-500/30 p-4 text-sm text-amber-400">
+                                  <div className="mb-4 rounded-xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-4 text-sm text-amber-800">
                                     <div className="flex items-start gap-3">
                                       <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
                                       <div>
@@ -937,7 +937,7 @@ function FirmDashboardContent() {
                                         </p>
                                         <Link
                                           href="/dashboard/firma/profil/"
-                                          className="inline-flex items-center gap-1.5 font-semibold text-amber-400 hover:underline"
+                                          className="inline-flex items-center gap-1.5 font-semibold text-amber-700 hover:underline"
                                         >
                                           Idi na Profil firme <ArrowRight className="w-4 h-4" />
                                         </Link>
@@ -945,24 +945,24 @@ function FirmDashboardContent() {
                                     </div>
                                   </div>
                                 )}
-                                <div className="bg-ink-950 rounded-xl p-4 mb-4">
-                                  <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">
+                                <div className="bg-cloud dark:bg-ink-950 rounded-xl p-4 mb-4">
+                                  <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
                                     {job.description}
                                   </p>
                                 </div>
                                 {job.address && (
-                                  <div className="flex items-center gap-2 text-sm text-white/70 mb-4">
+                                  <div className="flex items-center gap-2 text-sm text-steel mb-4">
                                     <MapPin className="w-4 h-4" />
                                     {job.address}
                                   </div>
                                 )}
                                 <div className="grid sm:grid-cols-2 gap-4 mb-4">
                                   <div>
-                                    <label className="block text-xs font-semibold text-white/70 uppercase tracking-wide mb-1.5">
+                                    <label className="block text-xs font-semibold text-steel uppercase tracking-wide mb-1.5">
                                       Iznos ponude (KM) *
                                     </label>
                                     <div className="relative">
-                                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70" />
+                                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-steel" />
                                       <input
                                         type="number"
                                         value={amount}
@@ -976,7 +976,7 @@ function FirmDashboardContent() {
                                     </div>
                                   </div>
                                   <div className="sm:col-span-2">
-                                    <label className="block text-xs font-semibold text-white/70 uppercase tracking-wide mb-1.5">
+                                    <label className="block text-xs font-semibold text-steel uppercase tracking-wide mb-1.5">
                                       Poruka (opcionalno)
                                     </label>
                                     <textarea
@@ -1005,7 +1005,7 @@ function FirmDashboardContent() {
                                   </button>
                                   <button
                                     onClick={() => setExpandedJob(null)}
-                                    className="text-sm font-medium text-white/70 hover:text-white px-3 py-2.5 transition-colors"
+                                    className="text-sm font-medium text-steel hover:text-gray-900 dark:hover:text-white px-3 py-2.5 transition-colors"
                                   >
                                     Odustani
                                   </button>
@@ -1027,7 +1027,7 @@ function FirmDashboardContent() {
                       {[1, 2].map((i) => (
                         <div
                           key={i}
-                          className="h-32 bg-ink-900/60 rounded-2xl border border-ink-800 shadow-sm p-5 animate-pulse"
+                          className="h-32 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
                         />
                       ))}
                     </div>
@@ -1043,7 +1043,7 @@ function FirmDashboardContent() {
                         return (
                           <div
                             key={bid.id}
-                            className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm hover:shadow-md transition-all duration-200"
+                            className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm hover:shadow-md transition-all duration-200"
                           >
                             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                               <div className="flex items-start gap-4">
@@ -1053,10 +1053,10 @@ function FirmDashboardContent() {
                                   {statusIcons[bid.status]}
                                 </div>
                                 <div>
-                                  <h3 className="text-base md:text-lg font-bold text-white mb-1">
+                                  <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1">
                                     {bid.jobs?.title || 'Posao'}
                                   </h3>
-                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-white/70">
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-steel">
                                     <span className="inline-flex items-center gap-1">
                                       <MapPin className="w-3.5 h-3.5" />
                                       {bid.jobs?.city || '-'}
@@ -1081,8 +1081,8 @@ function FirmDashboardContent() {
                             </div>
 
                             {bid.message && (
-                              <div className="mt-4 bg-ink-950 rounded-xl p-4 text-sm text-white/80">
-                                <p className="font-medium text-white/70 text-xs uppercase tracking-wide mb-1">
+                              <div className="mt-4 bg-cloud dark:bg-ink-950 rounded-xl p-4 text-sm text-gray-800 dark:text-gray-200">
+                                <p className="font-medium text-steel text-xs uppercase tracking-wide mb-1">
                                   Vaša poruka
                                 </p>
                                 <p className="whitespace-pre-line">{bid.message}</p>
@@ -1113,7 +1113,7 @@ function FirmDashboardContent() {
                       {[1, 2].map((i) => (
                         <div
                           key={i}
-                          className="h-32 bg-ink-900/60 rounded-2xl border border-ink-800 shadow-sm p-5 animate-pulse"
+                          className="h-32 bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-sm p-5 animate-pulse"
                         />
                       ))}
                     </div>
@@ -1135,23 +1135,23 @@ function FirmDashboardContent() {
                         return (
                           <div
                             key={job.id}
-                            className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm transition-all duration-200 hover:shadow-md"
+                            className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm transition-all duration-200 hover:shadow-md"
                           >
                             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                               <div className="flex items-start gap-4">
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
+                                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
                                   <User className="w-6 h-6" />
                                 </div>
                                 <div>
                                   <div className="flex flex-wrap items-center gap-2 mb-1">
-                                    <h3 className="text-base md:text-lg font-bold text-white">
+                                    <h3 className="text-base md:text-lg font-bold text-gray-900 dark:text-white">
                                       {job.title}
                                     </h3>
                                     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold border ${badgeClass}`}>
                                       {privateStatusLabels[job.private_status]}
                                     </span>
                                   </div>
-                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-white/70">
+                                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-steel">
                                     <span className="inline-flex items-center gap-1">
                                       <User className="w-3.5 h-3.5" />
                                       {clientName}
@@ -1198,7 +1198,7 @@ function FirmDashboardContent() {
                                     <button
                                       onClick={() => acceptDirect(job)}
                                       disabled={directActionId === job.id}
-                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-green-500/10 text-green-400 hover:bg-green-500/20 transition-colors disabled:opacity-50"
+                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-green-50 text-green-700 hover:bg-green-100 transition-colors disabled:opacity-50"
                                     >
                                       <CheckCircle className="w-4 h-4" />
                                       {directActionId === job.id ? 'Obrada...' : 'Prihvati'}
@@ -1206,7 +1206,7 @@ function FirmDashboardContent() {
                                     <button
                                       onClick={() => declineDirect(job)}
                                       disabled={directActionId === job.id}
-                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-ink-800 text-white/70 hover:bg-ink-700 transition-colors disabled:opacity-50"
+                                      className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors disabled:opacity-50"
                                     >
                                       <XCircle className="w-4 h-4" />
                                       Odbij
@@ -1217,7 +1217,7 @@ function FirmDashboardContent() {
                                   <button
                                     onClick={() => startWork(job)}
                                     disabled={directActionId === job.id}
-                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-brand-orange/10 text-brand-orange hover:bg-brand-orange/20 transition-colors disabled:opacity-50"
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl bg-orange-50 text-brand-orange hover:bg-orange-100 transition-colors disabled:opacity-50"
                                   >
                                     <Clock className="w-4 h-4" />
                                     {directActionId === job.id ? 'Obrada...' : 'Započni rad'}
@@ -1237,20 +1237,20 @@ function FirmDashboardContent() {
                                   <button
                                     onClick={() => cancelDirect(job)}
                                     disabled={directActionId === job.id}
-                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                                    className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
                                   >
                                     <XCircle className="w-4 h-4" />
                                     Otkaži
                                   </button>
                                 )}
                                 {job.private_status === 'done_pending' && (
-                                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-orange-700 bg-brand-orange/10 rounded-xl px-4 py-2.5">
+                                  <span className="inline-flex items-center gap-1.5 text-sm font-medium text-orange-700 bg-orange-50 rounded-xl px-4 py-2.5">
                                     <Clock className="w-4 h-4" /> Čeka potvrdu klijenta
                                   </span>
                                 )}
                                 <button
                                   onClick={() => setExpandedDirectJob(isExpanded ? null : job.id)}
-                                  className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl border border-ink-700 text-white/70 hover:bg-ink-800 transition-colors"
+                                  className="inline-flex items-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-xl border border-gray-200 dark:border-ink-700 text-steel hover:bg-cloud dark:hover:bg-ink-800 transition-colors"
                                 >
                                   <MessageSquare className="w-4 h-4" />
                                   {isExpanded ? 'Sakrij detalje' : 'Detalji i razgovor'}
@@ -1259,22 +1259,22 @@ function FirmDashboardContent() {
                             </div>
 
                             {isExpanded && (
-                              <div className="mt-5 pt-5 border-t border-ink-800 animate-fade-in">
+                              <div className="mt-5 pt-5 border-t border-gray-100 dark:border-ink-800 animate-fade-in">
                                 <div className="grid lg:grid-cols-2 gap-6">
                                   <div className="space-y-4">
-                                    <div className="bg-ink-950 rounded-xl p-4">
-                                      <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">
+                                    <div className="bg-cloud dark:bg-ink-950 rounded-xl p-4">
+                                      <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-line">
                                         {job.description}
                                       </p>
                                     </div>
                                     {job.client_question && (
-                                      <div className="bg-blue-500/10 text-blue-400 rounded-lg p-3 text-sm">
+                                      <div className="bg-blue-50 text-blue-800 rounded-lg p-3 text-sm">
                                         <p className="font-semibold mb-1">Pitanje klijenta:</p>
                                         <p>{job.client_question}</p>
                                       </div>
                                     )}
                                     {job.problem_reported && (
-                                      <div className="bg-red-500/10 text-red-400 rounded-lg p-3 text-sm">
+                                      <div className="bg-red-50 text-red-700 rounded-lg p-3 text-sm">
                                         <p className="font-semibold flex items-center gap-2 mb-1">
                                           <AlertTriangle className="w-4 h-4" /> Prijavljen problem
                                         </p>
@@ -1282,14 +1282,14 @@ function FirmDashboardContent() {
                                       </div>
                                     )}
                                     {clientEmail && (
-                                      <p className="text-sm text-white/70 flex items-center gap-2">
+                                      <p className="text-sm text-steel flex items-center gap-2">
                                         <Mail className="w-4 h-4" /> {clientEmail}
                                       </p>
                                     )}
                                   </div>
                                   <div>
                                     {['declined', 'cancelled'].includes(job.private_status) ? (
-                                      <p className="text-sm text-white/70 text-center py-8 bg-ink-950 rounded-xl">
+                                      <p className="text-sm text-steel text-center py-8 bg-cloud dark:bg-ink-950 rounded-xl">
                                         Razgovor nije dostupan za otkazane/odbijene zahtjeve.
                                       </p>
                                     ) : (
@@ -1314,18 +1314,18 @@ function FirmDashboardContent() {
               )}
 
               {/* Notification preferences */}
-              <section className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
+              <section className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-10 h-10 rounded-xl bg-brand-orange/10 flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
                     <Bell className="w-5 h-5 text-brand-orange" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white">Postavke obavještenja</h3>
-                    <p className="text-xs text-white/70">Odaberite kako želite primati obavještenja po kategoriji.</p>
+                    <h3 className="text-base font-bold text-gray-900 dark:text-white">Postavke obavještenja</h3>
+                    <p className="text-xs text-steel">Odaberite kako želite primati obavještenja po kategoriji.</p>
                   </div>
                 </div>
                 {firmCategories.length === 0 ? (
-                  <p className="text-sm text-white/70 py-4">
+                  <p className="text-sm text-steel py-4">
                     Nemate odabranih kategorija. Idite na{' '}
                     <Link href="/dashboard/firma/profil/" className="text-brand-orange hover:underline">
                       Profil firme
@@ -1340,28 +1340,28 @@ function FirmDashboardContent() {
                       return (
                         <div
                           key={slug}
-                          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 border-b border-ink-800 last:border-b-0"
+                          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 py-3 border-b border-gray-100 dark:border-ink-800 last:border-b-0"
                         >
-                          <span className="text-sm font-medium text-white">
+                          <span className="text-sm font-medium text-gray-900 dark:text-white">
                             {category?.name || slug}
                           </span>
                           <div className="flex items-center gap-4">
-                            <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+                            <label className="flex items-center gap-2 text-sm text-steel cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={prefs.notify_enabled}
                                 onChange={() => togglePref(slug, 'notify_enabled')}
-                                className="w-4 h-4 rounded border-ink-700 text-brand-orange focus:ring-brand-orange"
+                                className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
                               />
                               <Bell className="w-4 h-4" />
                               In-app
                             </label>
-                            <label className="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+                            <label className="flex items-center gap-2 text-sm text-steel cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={prefs.email_enabled}
                                 onChange={() => togglePref(slug, 'email_enabled')}
-                                className="w-4 h-4 rounded border-ink-700 text-brand-orange focus:ring-brand-orange"
+                                className="w-4 h-4 rounded border-gray-300 text-brand-orange focus:ring-brand-orange"
                               />
                               <Mail className="w-4 h-4" />
                               Email
@@ -1387,7 +1387,7 @@ function FirmDashboardContent() {
                         )}
                       </button>
                       {prefsSaved && (
-                        <span className="text-sm text-green-400 font-medium">Postavke su spremljene.</span>
+                        <span className="text-sm text-green-700 font-medium">Postavke su spremljene.</span>
                       )}
                     </div>
                   </div>
@@ -1401,7 +1401,7 @@ function FirmDashboardContent() {
               {activeTab === 'stats' && (
                 <section className="animate-fade-in space-y-6">
                   {loadingStats ? (
-                    <div className="flex items-center justify-center py-16 text-white/70">
+                    <div className="flex items-center justify-center py-16 text-steel">
                       <Loader2 className="w-6 h-6 animate-spin mr-2" />
                       Učitavanje statistike...
                     </div>
@@ -1413,36 +1413,36 @@ function FirmDashboardContent() {
                   ) : (
                     <>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
                           <div className="flex items-center gap-3 mb-2">
                             <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
                               <Eye className="w-5 h-5" />
                             </div>
-                            <p className="text-sm text-white/70">Ukupno posjeta</p>
+                            <p className="text-sm text-steel">Ukupno posjeta</p>
                           </div>
-                          <p className="text-2xl font-bold text-white">
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
                             {visitStats.total.toLocaleString('bs-BA')}
                           </p>
                         </div>
-                        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
                           <div className="flex items-center gap-3 mb-2">
                             <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
                               <TrendingUp className="w-5 h-5" />
                             </div>
-                            <p className="text-sm text-white/70">Ovaj mjesec</p>
+                            <p className="text-sm text-steel">Ovaj mjesec</p>
                           </div>
-                          <p className="text-2xl font-bold text-white">
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
                             {visitStats.thisMonth.toLocaleString('bs-BA')}
                           </p>
                         </div>
-                        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
+                        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
                           <div className="flex items-center gap-3 mb-2">
                             <div className="p-2 rounded-lg bg-brand-orange/10 text-brand-orange">
                               <Calendar className="w-5 h-5" />
                             </div>
-                            <p className="text-sm text-white/70">Danas</p>
+                            <p className="text-sm text-steel">Danas</p>
                           </div>
-                          <p className="text-2xl font-bold text-white">
+                          <p className="text-2xl font-bold text-gray-900 dark:text-white">
                             {visitStats.today.toLocaleString('bs-BA')}
                           </p>
                         </div>
@@ -1450,12 +1450,12 @@ function FirmDashboardContent() {
 
                       {subscription?.plans?.slug === 'premium' && (
                         <>
-                          <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
-                            <h3 className="text-base font-semibold text-white mb-4">
+                          <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                               Posjete u posljednjih 30 dana
                             </h3>
                             {dailyVisits.length === 0 ? (
-                              <p className="text-sm text-white/70">Nema dovoljno podataka za prikaz grafa.</p>
+                              <p className="text-sm text-steel">Nema dovoljno podataka za prikaz grafa.</p>
                             ) : (
                               <div className="flex items-end gap-1 h-40 sm:h-56">
                                 {dailyVisits.map((d) => {
@@ -1478,20 +1478,20 @@ function FirmDashboardContent() {
                             )}
                           </div>
 
-                          <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
-                            <h3 className="text-base font-semibold text-white mb-4">
+                          <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+                            <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-4">
                               Top izvori posjeta
                             </h3>
                             {referrers.length === 0 ? (
-                              <p className="text-sm text-white/70">Nema podataka o izvorima.</p>
+                              <p className="text-sm text-steel">Nema podataka o izvorima.</p>
                             ) : (
                               <div className="space-y-3">
                                 {referrers.map((r) => (
                                   <div key={r.referrer} className="flex items-center justify-between">
-                                    <span className="text-sm text-white/70 truncate pr-4">
+                                    <span className="text-sm text-gray-700 dark:text-gray-200 truncate pr-4">
                                       {r.referrer}
                                     </span>
-                                    <span className="text-sm font-semibold text-white shrink-0">
+                                    <span className="text-sm font-semibold text-gray-900 dark:text-white shrink-0">
                                       {r.count}
                                     </span>
                                   </div>
@@ -1518,7 +1518,7 @@ export default function FirmDashboard() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-ink-950">
+        <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <Loader2 className="w-8 h-8 animate-spin text-brand-orange" />

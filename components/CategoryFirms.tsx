@@ -92,9 +92,9 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
 
   if (loading) {
     return (
-      <section className="py-14 bg-ink-950 border-b border-ink-800">
+      <section className="py-14 bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center py-12 text-white/70">
+          <div className="flex items-center justify-center py-12 text-steel">
             <Loader2 className="w-5 h-5 animate-spin mr-2" />
             Učitavanje firmi...
           </div>
@@ -105,9 +105,9 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
 
   if (error) {
     return (
-      <section className="py-14 bg-ink-950 border-b border-ink-800">
+      <section className="py-14 bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-red-500/10 text-red-400 border border-red-500/20 rounded-xl px-4 py-3 text-sm">{error}</div>
+          <div className="bg-red-50 text-red-600 rounded-xl px-4 py-3 text-sm">{error}</div>
         </div>
       </section>
     );
@@ -115,16 +115,16 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
 
   if (firms.length === 0) {
     return (
-      <section className="py-14 bg-ink-950 border-b border-ink-800">
+      <section className="py-14 bg-white border-b border-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-8 md:p-10 text-center">
-            <div className="w-14 h-14 bg-ink-800 rounded-2xl border border-ink-700 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
+            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
               <MapPin className="w-7 h-7 text-brand-orange" />
             </div>
-            <h2 className="text-xl md:text-2xl font-bold text-white mb-2">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
               Firme u kategoriji {profession} se registruju
             </h2>
-            <p className="text-white/70 max-w-xl mx-auto mb-6">
+            <p className="text-steel max-w-xl mx-auto mb-6">
               Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
             </p>
             <Link href="/objavi-projekat/" className="btn-primary inline-flex items-center gap-2">
@@ -138,17 +138,17 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
   }
 
   return (
-    <section className="py-14 bg-ink-950 border-b border-ink-800">
+    <section className="py-14 bg-white border-b border-gray-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-brand-orange mb-2">
               Najbolje ocijenjene
             </p>
-            <h2 className="text-xl md:text-2xl font-bold text-white">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900">
               {profession} širom BiH
             </h2>
-            <p className="text-sm text-white/70 mt-1">
+            <p className="text-sm text-steel mt-1">
               Pronađeno {total} {plural(total, ['firma', 'firme', 'firmi'])} · sortirano po ocjeni
             </p>
           </div>
@@ -166,15 +166,15 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
             <Link
               key={firm.id}
               href={`/firma-profil/${firm.slug}/`}
-              className="group bg-ink-900/60 rounded-2xl p-5 border border-ink-800 hover:border-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/5 transition-all duration-300 block"
+              className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 block"
             >
               <div className="flex items-start gap-4 mb-4">
                 <LogoDisplay name={firm.name} src={firm.logo_url} alt={firm.name} size="lg" rounded="2xl" />
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-white text-base leading-tight truncate">
+                  <h3 className="font-bold text-gray-900 text-base leading-tight truncate">
                     {firm.name}
                   </h3>
-                  <div className="flex items-center gap-1 text-xs text-white/70 mt-1">
+                  <div className="flex items-center gap-1 text-xs text-steel mt-1">
                     <MapPin className="w-3 h-3" />
                     <span className="truncate">{firm.city || 'BiH'}</span>
                   </div>
@@ -190,17 +190,17 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
                 )}
               </div>
 
-              <p className="text-sm text-white/70 line-clamp-2 mb-4 min-h-[2.5rem]">
+              <p className="text-sm text-steel line-clamp-2 mb-4 min-h-[2.5rem]">
                 {firm.description || 'Provjerena firma na Zaposli.ba.'}
               </p>
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                  <span className="text-sm font-bold text-white">
+                  <span className="text-sm font-bold text-gray-900">
                     {(firm.average_rating || 0).toFixed(1)}
                   </span>
-                  <span className="text-xs text-white/70">
+                  <span className="text-xs text-steel">
                     ({firm.review_count || 0} {plural(firm.review_count || 0, ['recenzija', 'recenzije', 'recenzija'])})
                   </span>
                 </div>
@@ -211,7 +211,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
         </div>
 
         {total > LIMIT && (
-          <p className="text-xs text-white/70 text-center mt-6">
+          <p className="text-xs text-steel text-center mt-6">
             Prikazano prvih {LIMIT} firmi po ranking formuli: ocjena + verifikacija + aktivni paket.
           </p>
         )}

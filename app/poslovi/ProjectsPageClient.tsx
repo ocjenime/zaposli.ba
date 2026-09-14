@@ -259,7 +259,7 @@ function ProjectsPageContent() {
   const cities = Array.from(new Set(jobs.map((j) => j.city))).sort();
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <JsonLd data={jobListSchema(filteredJobs)} />
       <main className="flex-grow">
@@ -337,24 +337,24 @@ function ProjectsPageContent() {
         <section id="listings" className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Filter bar - sticky, pill-style */}
-            <div className="sticky top-14 md:top-16 z-30 bg-ink-950/95 backdrop-blur-md -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-ink-800/60">
+            <div className="sticky top-16 md:top-20 z-30 bg-[#f8f7f4]/95 backdrop-blur-md -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60">
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1">
                     <div className="relative flex-1 md:max-w-sm">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                       <input
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Pretraži poslove..."
-                        className="w-full pl-9 pr-9 py-2.5 rounded-full border border-ink-800 bg-ink-900/80 text-sm text-white placeholder:text-white/50 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all"
+                        className="w-full pl-9 pr-9 py-2.5 rounded-full border border-gray-200 bg-white text-sm text-gray-900 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all"
                       />
                       {search && (
                         <button
                           onClick={() => setSearch('')}
                           aria-label="Očisti pretragu"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-ink-800 hover:bg-ink-700 flex items-center justify-center text-white/70"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
                         >
                           <X className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
@@ -366,7 +366,7 @@ function ProjectsPageContent() {
                         className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all min-h-[44px] ${
                           showFilters || activeFiltersCount > 0
                             ? 'bg-brand-orange text-white border-brand-orange'
-                            : 'bg-ink-900/80 text-white/90 border-ink-800 hover:border-brand-orange hover:text-brand-orange'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-brand-orange hover:text-brand-orange'
                         }`}
                       >
                         <SlidersHorizontal className="w-4 h-4" />
@@ -378,11 +378,11 @@ function ProjectsPageContent() {
                         )}
                       </button>
                       <div className="relative">
-                        <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/50" />
+                        <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                         <select
                           value={sortBy}
                           onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                          className="pl-9 pr-7 py-2.5 rounded-full border border-ink-800 bg-ink-900/80 text-sm text-white/90 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none appearance-none cursor-pointer min-h-[44px]"
+                          className="pl-9 pr-7 py-2.5 rounded-full border border-gray-200 bg-white text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none appearance-none cursor-pointer min-h-[44px]"
                         >
                           <option value="featured">Istaknuti prvo</option>
                           <option value="newest">Najnovije</option>
@@ -393,20 +393,20 @@ function ProjectsPageContent() {
                       </div>
                     </div>
                   </div>
-                  <p className="text-sm text-white/70 md:text-right">
+                  <p className="text-sm text-steel md:text-right">
                     {filteredJobs.length} {plural(filteredJobs.length, ['posao', 'posla', 'poslova'])}
-                    {activeFiltersCount > 0 && <span className="text-white/40"> / {jobs.length} ukupno</span>}
+                    {activeFiltersCount > 0 && <span className="text-gray-400"> / {jobs.length} ukupno</span>}
                   </p>
                 </div>
 
                 {showFilters && (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 mt-3 border-t border-ink-800/60 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 mt-3 border-t border-gray-200/60 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div>
-                      <label className="block text-xs font-medium text-white/60 mb-1.5">Kategorija</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Kategorija</label>
                       <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-ink-800 bg-ink-900/80 text-sm text-white/90 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
                       >
                         <option value="">Sve kategorije</option>
                         {categories.map((c) => (
@@ -415,11 +415,11 @@ function ProjectsPageContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-white/60 mb-1.5">Grad</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Grad</label>
                       <select
                         value={cityFilter}
                         onChange={(e) => setCityFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-ink-800 bg-ink-900/80 text-sm text-white/90 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
                       >
                         <option value="">Svi gradovi</option>
                         {cities.map((city) => (
@@ -428,51 +428,51 @@ function ProjectsPageContent() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-white/60 mb-1.5">Min. budžet (KM)</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Min. budžet (KM)</label>
                       <input
                         type="number"
                         value={minBudget}
                         onChange={(e) => setMinBudget(e.target.value)}
                         placeholder="npr. 500"
-                        className="w-full px-3 py-2.5 rounded-xl border border-ink-800 bg-ink-900/80 text-sm text-white/90 placeholder:text-white/40 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-white/60 mb-1.5">Max. budžet (KM)</label>
+                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Max. budžet (KM)</label>
                       <input
                         type="number"
                         value={maxBudget}
                         onChange={(e) => setMaxBudget(e.target.value)}
                         placeholder="npr. 5000"
-                        className="w-full px-3 py-2.5 rounded-xl border border-ink-800 bg-ink-900/80 text-sm text-white/90 placeholder:text-white/40 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
                       />
                     </div>
                   </div>
                 )}
 
                 {activeFiltersCount > 0 && (
-                  <div className="flex items-start md:items-center justify-between gap-3 pt-3 mt-3 border-t border-ink-800/60">
+                  <div className="flex items-start md:items-center justify-between gap-3 pt-3 mt-3 border-t border-gray-200/60">
                     <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1">
                         {search && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-ink-800 text-xs text-white/90 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
                             {search}
                             <button onClick={() => setSearch('')} aria-label="Ukloni pretragu" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
                           </span>
                         )}
                         {categoryFilter && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-ink-800 text-xs text-white/90 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
                             {getCategory(categoryFilter)?.name || categoryFilter}
                             <button onClick={() => setCategoryFilter('')} aria-label="Ukloni filter kategorije" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
                           </span>
                         )}
                         {cityFilter && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-ink-800 text-xs text-white/90 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
                             {cityFilter}
                             <button onClick={() => setCityFilter('')} aria-label="Ukloni filter grada" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
                           </span>
                         )}
                         {(minBudget || maxBudget) && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-ink-900 border border-ink-800 text-xs text-white/90 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
                             {minBudget || '0'} - {maxBudget || '∞'} KM
                             <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} aria-label="Ukloni filter budžeta" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
                           </span>
@@ -492,39 +492,39 @@ function ProjectsPageContent() {
             {loading ? (
               <div className="space-y-3 mb-12">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-ink-900/60 rounded-2xl border border-ink-800 p-4 md:p-5 animate-pulse">
+                  <div key={i} className="bg-white rounded-2xl border border-gray-100 p-4 md:p-5 animate-pulse">
                     <div className="flex flex-col md:flex-row md:items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-ink-800 shrink-0" />
+                      <div className="w-10 h-10 rounded-lg bg-gray-200 shrink-0" />
                       <div className="flex-1 space-y-2">
-                        <div className="w-2/3 h-5 bg-ink-800 rounded" />
-                        <div className="w-1/2 h-4 bg-ink-800 rounded" />
+                        <div className="w-2/3 h-5 bg-gray-200 rounded" />
+                        <div className="w-1/2 h-4 bg-gray-200 rounded" />
                       </div>
                       <div className="flex gap-2">
-                        <div className="w-24 h-8 bg-ink-800 rounded-lg" />
-                        <div className="w-20 h-8 bg-ink-800 rounded-lg" />
+                        <div className="w-24 h-8 bg-gray-200 rounded-lg" />
+                        <div className="w-20 h-8 bg-gray-200 rounded-lg" />
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             ) : error ? (
-              <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-center">{error}</p>
+              <p className="text-red-600 text-sm bg-red-50 rounded-xl px-4 py-3 text-center">{error}</p>
             ) : filteredJobs.length === 0 ? (
-              <div className="bg-ink-900/60 rounded-2xl md:rounded-3xl border border-ink-800 p-8 md:p-12 lg:p-16 text-center mb-12">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-brand-orange/10 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-5 md:mb-6">
+              <div className="bg-white rounded-2xl md:rounded-3xl border border-gray-100 p-8 md:p-12 lg:p-16 text-center mb-12">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-orange-50 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-5 md:mb-6">
                   <Search className="w-8 h-8 md:w-10 md:h-10 text-brand-orange" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
+                <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                   {activeFiltersCount > 0 ? 'Nema poslova za izabrane filtere' : 'Trenutno nema otvorenih poslova'}
                 </h3>
-                <p className="text-white/70 max-w-md mx-auto mb-6 md:mb-8">
+                <p className="text-steel max-w-md mx-auto mb-6 md:mb-8">
                   {activeFiltersCount > 0
                     ? 'Pokušajte poništiti filtere ili se vratite kasnije.'
                     : 'Budite prvi koji će objaviti posao i primiti ponude od provjerenih firmi.'}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   {activeFiltersCount > 0 ? (
-                    <button onClick={clearFilters} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-ink-800 font-semibold text-white/90 hover:bg-ink-800 transition-colors min-h-[48px]">
+                    <button onClick={clearFilters} className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-gray-200 font-semibold text-gray-700 hover:bg-gray-50 transition-colors min-h-[48px]">
                       <X className="w-4 h-4" /> Poništi filtere
                     </button>
                   ) : (
@@ -532,7 +532,7 @@ function ProjectsPageContent() {
                       Objavi prvi posao <ArrowRight className="w-4 h-4" />
                     </Link>
                   )}
-                  <Link href="/registracija/" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-ink-800 font-semibold text-white/90 hover:bg-ink-800 transition-colors min-h-[48px]">
+                  <Link href="/registracija/" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-gray-200 font-semibold text-gray-700 hover:bg-gray-50 transition-colors min-h-[48px]">
                     Registruj firmu <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -546,8 +546,8 @@ function ProjectsPageContent() {
                   return (
                     <article
                       key={job.id}
-                      className={`group bg-ink-900/60 rounded-2xl border border-ink-800 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-orange/5 hover:border-brand-orange/30 ${
-                        isExpanded ? 'ring-1 ring-brand-orange/20 shadow-lg border-brand-orange/30' : ''
+                      className={`bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md ${
+                        isExpanded ? 'ring-1 ring-brand-orange/20 shadow-lg' : ''
                       }`}
                     >
                       <button
@@ -556,33 +556,33 @@ function ProjectsPageContent() {
                       >
                         <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
                           <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className="w-10 h-10 rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
                               <Tag className="w-5 h-5 text-brand-orange" />
                             </div>
                             <div className="min-w-0">
                               <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="text-base md:text-lg font-bold text-white truncate group-hover:text-brand-orange transition-colors">{job.title}</h3>
+                                <h3 className="text-base md:text-lg font-bold text-gray-900 truncate">{job.title}</h3>
                                 {isActiveFeatured(job) && <FeaturedBadge />}
                               </div>
-                              <div className="flex items-center gap-3 text-xs md:text-sm text-white/60 mt-0.5 flex-wrap">
+                              <div className="flex items-center gap-3 text-xs md:text-sm text-steel mt-0.5 flex-wrap">
                                 <span className="flex items-center gap-1">
                                   <MapPin className="w-3.5 h-3.5" /> {job.city}{job.address ? `, ${job.address}` : ''}
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <Clock className="w-3.5 h-3.5" /> {relativeTime(job.created_at)}
                                 </span>
-                                <span className="px-2 py-0.5 rounded-full bg-ink-800 text-white/80 font-medium border border-ink-700">
+                                <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
                                   {category?.name || job.category_slug}
                                 </span>
                               </div>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 md:justify-end shrink-0">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-brand-orange/10 border border-brand-orange/20 text-sm font-semibold text-brand-orange">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-orange-50 text-sm font-semibold text-brand-orange">
                               <Banknote className="w-4 h-4" />
                               {formatBudgetShort(job)}
                             </span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-ink-800 border border-ink-700 text-sm font-semibold text-white/80">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white border border-gray-100 text-sm font-semibold text-gray-600">
                               {job.bids_count} {job.bids_count === 1 ? 'ponuda' : job.bids_count >= 2 && job.bids_count <= 4 ? 'ponude' : 'ponuda'}
                             </span>
                             <span className={`inline-flex items-center text-brand-orange transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
@@ -593,23 +593,23 @@ function ProjectsPageContent() {
                       </button>
 
                       {isExpanded && (
-                        <div className="px-4 md:px-5 pb-5 border-t border-ink-800 animate-in fade-in slide-in-from-top-2 duration-200">
-                          <p className="text-white/70 text-sm leading-relaxed py-4">{job.description}</p>
+                        <div className="px-4 md:px-5 pb-5 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                          <p className="text-steel text-sm leading-relaxed py-4">{job.description}</p>
 
                           {job.deadline && (
-                            <div className="flex items-center gap-2 text-sm text-white/70 mb-4">
+                            <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
                               <Calendar className="w-4 h-4 text-brand-orange" />
                               Rok: {formatDate(job.deadline)}
                             </div>
                           )}
 
                           {loadingImages === job.id ? (
-                            <div className="flex items-center gap-2 text-sm text-white/70 py-2 mb-4">
+                            <div className="flex items-center gap-2 text-sm text-steel py-2 mb-4">
                               <Loader2 className="w-4 h-4 animate-spin" /> Učitavanje fotografija...
                             </div>
                           ) : images.length > 0 ? (
                             <div className="mb-4">
-                              <h4 className="text-sm font-semibold text-white mb-2 flex items-center gap-2">
+                              <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-brand-orange" /> Fotografije
                               </h4>
                               <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
@@ -620,7 +620,7 @@ function ProjectsPageContent() {
                                       e.stopPropagation();
                                       setSelectedImage({ url: img.image_url, title: job.title });
                                     }}
-                                    className="relative aspect-square rounded-lg overflow-hidden border border-ink-700 hover:ring-2 hover:ring-brand-orange transition"
+                                    className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
                                     aria-label={`Pogledaj fotografiju posla: ${job.title}`}
                                   >
                                     <Image
@@ -684,18 +684,18 @@ function ProjectsPageContent() {
             {/* Upozorenje za kategoriju */}
             {categoryWarningJob && (
               <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-                <div className="bg-ink-900 rounded-3xl shadow-2xl border border-ink-800 max-w-md w-full p-6 animate-fade-in">
+                <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 animate-fade-in">
                   <div className="flex items-start gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0">
-                      <AlertTriangle className="w-5 h-5 text-amber-500" />
+                    <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+                      <AlertTriangle className="w-5 h-5 text-amber-600" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-white mb-1">
+                      <h3 className="font-bold text-gray-900 mb-1">
                         {firmCategories.length === 0
                           ? 'Nemate odabranih kategorija'
                           : 'Ne pokrivate ovu kategoriju'}
                       </h3>
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-steel">
                         {firmCategories.length === 0
                           ? 'Prije slanja ponude morate u profilu firme odabrati kategorije koje pokrivate.'
                           : <>Da biste poslali ponudu za posao <strong>{categoryWarningJob.title}</strong> u kategoriji{' '}
@@ -715,7 +715,7 @@ function ProjectsPageContent() {
                     </Link>
                     <button
                       onClick={() => setCategoryWarningJob(null)}
-                      className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-semibold text-white/80 hover:bg-ink-800 transition-colors"
+                      className="inline-flex items-center justify-center px-4 py-2.5 rounded-xl font-semibold text-steel hover:bg-gray-100 transition-colors"
                     >
                       Zatvori
                     </button>
@@ -725,14 +725,14 @@ function ProjectsPageContent() {
             )}
 
             {/* CTA za firme */}
-            <div className="bg-ink-900/60 rounded-2xl md:rounded-3xl p-8 md:p-10 lg:p-14 text-center border border-ink-800 relative overflow-hidden">
+            <div className="bg-white rounded-2xl md:rounded-3xl p-8 md:p-10 lg:p-14 text-center border border-gray-100 relative overflow-hidden">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
               <div className="relative">
-                <div className="w-12 h-12 md:w-14 md:h-14 bg-brand-orange/10 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-5 md:mb-6">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-orange-50 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-5 md:mb-6">
                   <Briefcase className="w-6 h-6 md:w-7 md:h-7 text-brand-orange" />
                 </div>
-                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-4">Želite slati ponude na ove poslove?</h2>
-                <p className="text-white/70 mb-6 md:mb-8 max-w-xl mx-auto">
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 md:mb-4">Želite slati ponude na ove poslove?</h2>
+                <p className="text-steel mb-6 md:mb-8 max-w-xl mx-auto">
                   Registrujte firmu besplatno, pregledajte poslove u vašoj kategoriji i pošaljite prvu ponudu već danas.
                 </p>
                 <Link
@@ -755,7 +755,7 @@ function ProjectsPageContent() {
 export default function ProjectsPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex flex-col bg-ink-950">
+      <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />

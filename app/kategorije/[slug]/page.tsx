@@ -47,7 +47,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const Icon = cat.icon;
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije', href: '/kategorije/' }, { name: cat.name }]} />
@@ -97,14 +97,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
         {/* Kako funkcioniše: samo za hitne intervencije */}
         {cat.featured && (
-        <section className="py-12 md:py-16 bg-ink-950 border-b border-ink-800">
+        <section className="py-12 md:py-16 bg-white border-b border-gray-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Kako funkcioniše hitna intervencija?</h2>
-              <p className="text-white/70">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">Kako funkcioniše hitna intervencija?</h2>
+              <p className="text-steel">Tri koraka do majstora, u bilo koje doba dana ili noći.</p>
             </div>
 
-            <div className="bg-red-500/5 border border-red-500/10 rounded-3xl p-6 md:p-8 mb-8">
+            <div className="bg-red-50/40 border border-red-100 rounded-3xl p-6 md:p-8 mb-8">
               <EmergencyProcessAnimation />
             </div>
 
@@ -114,10 +114,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 { n: '02', title: 'Firme se javljaju odmah', text: 'Vaš posao dobija prioritet i firme za hitne intervencije u vašem gradu odmah šalju ponude.' },
                 { n: '03', title: 'Majstor dolazi', text: 'Dogovorite dolazak, često isti dan. Dostupno vikendom, noću i za praznike.' },
               ].map((step) => (
-                <div key={step.n} className="bg-red-500/5 border border-red-500/10 rounded-2xl p-6 text-center">
-                  <div className="text-red-400 text-sm font-extrabold mb-2">{step.n}</div>
-                  <h3 className="font-bold text-white mb-1.5">{step.title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{step.text}</p>
+                <div key={step.n} className="bg-red-50/60 border border-red-100 rounded-2xl p-6 text-center">
+                  <div className="text-red-600 text-sm font-extrabold mb-2">{step.n}</div>
+                  <h3 className="font-bold text-gray-900 mb-1.5">{step.title}</h3>
+                  <p className="text-steel text-sm leading-relaxed">{step.text}</p>
                 </div>
               ))}
             </div>
@@ -126,24 +126,24 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         )}
 
             {/* Gradovi */}
-            <section className="py-14 bg-ink-950">
+            <section className="py-14 bg-white">
               <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 {!cat.noSeo && (
                 <div className="mb-14">
-                  <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-6 md:p-8">
+                  <div className="bg-cloud rounded-2xl p-6 md:p-8">
                     <div className="flex items-center gap-3 mb-4">
                       <MapPin className="w-6 h-6 text-brand-orange" />
-                      <h2 className="text-xl font-bold text-white">{cat.profession} po gradovima</h2>
+                      <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
                     </div>
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                       {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
                         <Link
                           key={city.slug}
                           href={`/usluge/${cat.seoSlug}-${city.slug}/`}
-                          className="flex items-center justify-between px-3 py-2 bg-ink-800 rounded-lg text-sm text-white/80 hover:text-brand-orange hover:border-brand-orange/30 transition-all border border-ink-700"
+                          className="flex items-center justify-between px-3 py-2 bg-white rounded-lg text-sm text-steel hover:text-brand-orange hover:border-brand-orange/30 hover:shadow-sm transition-all border border-gray-100"
                         >
                           <span>{city.name}</span>
-                          <ArrowRight className="w-3 h-3 text-white/40" />
+                          <ArrowRight className="w-3 h-3 text-gray-300" />
                         </Link>
                       ))}
                     </div>
@@ -155,10 +155,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </section>
 
         {/* CTA */}
-        <section className="py-14 bg-ink-950">
+        <section className="py-14 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-bold text-white mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
-            <p className="text-white/70 mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
+            <p className="text-steel mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
             <Link href="/objavi-projekat/" className="btn-primary">Objavi posao besplatno</Link>
           </div>
         </section>

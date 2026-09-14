@@ -143,10 +143,7 @@
 - Google Search Console domain-level verification succeeded automatically after adding the property; removed the hardcoded fallback token from `app/layout.tsx` since the env var is sufficient if needed later.
 
 ### Active
-- All planned premium redesigns pushed to `main` and deployed on Vercel. Google Search Console auto-verified via domain-level ownership; waiting for sitemap submission confirmation. Waiting for user feedback on the new Bosnian `/kategorije/` hero image and the sticky hitna-intervencija CTA bar.
-- Email notifications fixed (2026-09-11): MX record for `zaposli.ba` incorrectly pointed to the Vercel A record (216.198.79.1, no SMTP there) after the Vercel migration, so all email to `info@zaposli.ba` bounced ("temporary issue"/"permanently rejected" in Resend logs). Fix in cPanel Zone Editor: MX 10 → `mail.zaposli.ba`; `mail.zaposli.ba` changed from CNAME→apex to A record → `185.99.1.4` (hosting mail server). Resend sending config was already correct (`send.zaposli.ba` SPF/MX + `resend._domainkey` DKIM), so no changes needed there. Verified live: admin notification test email delivered to `info@zaposli.ba`.
-- Invisible hero bug fixed (2026-09-11, commit `210f82ca`): heroes on `/usluge/[slug]/`, `/kategorije/[slug]/`, `/gradovi/[slug]/` showed white text on white background because Tailwind purged the gradient classes from `lib/hero.ts` (`./lib/**` was missing from `content` in `tailwind.config.js`). Fix: added `'./lib/**/*.{js,ts,jsx,tsx,mdx}'` to Tailwind `content`. Verified all group gradient classes (`.from-red-900`, `.via-red-800`, `.to-amber-950`, `.from-cyan-950`, etc.) now exist in the deployed CSS.
-- Emergency banner fix (2026-09-11, commit `b8a7d6f3`): the homepage hero's "Hitne intervencije" banner was fully covered by the fixed header (`fixed top-0 z-50`, h-16/md:h-20) since the banner sat at page y=0 with z-30. Fix: added `mt-16 md:mt-20` to the banner in `components/HeroSection.tsx` so it renders directly below the header.
+- Reverted forced-dark redesigns across public and dashboard pages to respect the user's light/dark theme preference. Local lint and build pass; ready to push to `main` and verify on production.
 - Higgsfield dark mode pass (2026-09-11, commit `1c9695f7`): fixed inverted dark elevation (`--cloud` sections were LIGHTER than `--white` cards); new dark palette in `app/globals.css` (cloud #020B10 deepest < white #09161E cards < gray-100 hover); added `.dark .text-white { color: #fff }` override because the semantic swap made `text-white` dark-on-dark (invisible hero titles in dark mode); dark scrollbar styling; dark card shadows via inset top edge-light + deep ambient shadows; branded orange `::selection`; added `ThemeToggle` to the mobile header next to the hamburger (previously mobile guests had no theme control).
 - QA mega pass (2026-09-11, commit `259a4920`): 3-agent audit (app/ pages, components/, live crawl) fixing ~50 confirmed items: `.text-white/xx` alpha variants added to the globals override (they were still dark-on-dark); NotificationBell + ToastProvider fixed `dark:bg-gray-900` near-white trap (now `dark:bg-ink-800`); Counter bs-formatted thousands parsing fixed (`1.234` no longer becomes `1.2`); category data typos (Ograde i ograde, Isptivanje, Krovne stanje) fixed; new `lib/plural.ts` Bosnian pluralization helper applied to 9 spots; objavi-projekat wizard now validates title/category/description/city per step; empty contact cards render `<div>` instead of dead `href="#"`; duplicate FAQ question removed; duplicate BreadcrumbList JSON-LD removed from 9 pages (Breadcrumbs component is the single source); og:image added to homepage, /poslovi/, /top-firme/, /za-firme/, /objavi-projekat/, /zatrazi-ponudu/; public/favicon.ico added (was 404); aria-labels on JobChat input/send, hero search input/city select, prijava password toggle, razgovor send; EmergencyBottomBar uses inert when hidden + z-40 (below mobile menu); GoogleAnalytics re-enabled page_view; Pretplata/firma profile redirect for logged-in clients fixed (goes to /dashboard not /prijava); invalid w-5.5 class fixed; noindex layouts for admin/ and dashboard/; per-toast auto-dismiss timers (prevents timer-reset bug); ErrorBoundary no longer shows raw error.message; verifikacija reject requires non-empty reason (cancel aborts); admin English strings localized (Firm dashboard → Panel firme, Custom → Prilagođeno, NEPOZNATO → NEVERIFICIRANO, odgovrena → odobrena); FeaturedCategoryCard/FeaturedBadge/VerifiedBadge dark-mode adapted. TypeScript, ESLint and full build (2404 pages) all clean.
 - Category firms ranking (2026-09-11, commit `c5488a2f`): new `components/CategoryFirms.tsx` on `/kategorije/[slug]/` showing firms from that category FIRST, before FeaturedJobsSection and the cities list; ranking formula `score = average_rating + verified 0.5 + premium 0.25` (rating is key, verified and premium are boosters as requested); premium crown badge via `public_firm_premium` join; graceful empty state; old separate empty-state section removed.
@@ -346,26 +343,22 @@
   - `/za-firme/#reklame` anchor and 49 KM pricing card render.
   - `/izdvojeni-oglasi/` renders test promoted ads.
   - `npm run lint` and `npm run build` pass (2406 pages).
-- Full public-site WOW/Higgsfield dark redesign completed:
-  - `/poslovi/` converted to full dark theme (hero, filter bar, job cards, empty state, CTA).
-  - `/firma-profil/[slug]/` content area converted to dark glass cards.
-  - `/top-firme/` converted to dark theme (trust badges, firm cards, CTA).
-  - `/kategorije/` and `/kategorije/[slug]/` converted to dark theme; `CategoryCard`, `CategoryFirms`, `FeaturedJobsSection`, `CityCategoriesGrid` updated.
-  - `/gradovi/` and `/gradovi/[slug]/` converted to dark theme; `CityGrid` updated.
-- All dashboard pages and shared components converted to dark Higgsfield theme:
-  - `app/dashboard/**/*.tsx` pages.
-  - `components/JobChat.tsx`, `components/NotificationBell.tsx`, `components/FirmAdsTab.tsx`, `components/ToastProvider.tsx`.
-  - `components/ui/DashboardHeader.tsx`, `components/ui/DashboardStat.tsx`, `components/ui/EmptyState.tsx`.
-  - Status badges switched to dark translucent variants.
 - Promoted ad cards now link to `/izdvojeni-oglasi/[id]/` instead of firm profile; CTA text changed to "Pogledaj oglas".
+- Reverted forced-dark redesigns so public and dashboard pages respect the user's light/dark theme choice:
+  - `/kategorije/`, `/kategorije/[slug]/`, `/gradovi/`, `/gradovi/[slug]/`, `/kako-funkcionise/` restored to light-in-light-mode styles.
+  - `/poslovi/`, `/firma-profil/[slug]/`, `/top-firme/` restored to light-in-light-mode styles.
+  - All `app/dashboard/**/*.tsx` pages and shared dashboard components (`JobChat.tsx`, `NotificationBell.tsx`, `FirmAdsTab.tsx`, `ToastProvider.tsx`, `ui/DashboardHeader.tsx`, `ui/DashboardStat.tsx`, `ui/EmptyState.tsx`) restored to light-in-light-mode styles.
+  - Removed unused `app/kako-funkcionise/HowItWorksContent.tsx`; replaced with a server-side light-theme page that preserves `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
+  - Standalone promoted-ad price kept at 49 KM (`components/FirmAdsTab.tsx`).
+  - `npm run lint` and `npm run build` pass (2406 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- Smoke-test the redesigned pages on production and fix any visual/functionality issues reported by the user.
-- Optionally polish remaining public pages (`/kako-funkcionise/`, `/objavi-projekat/`, `/zatrazi-ponudu/`, `/o-nama/`, `/faq/`, `/savjeti/`, auth pages) if the user wants the entire site in the same dark WOW style.
+- Commit and push the theme-respecting revert to `main`, then ask the user to verify `/top-firme/`, `/poslovi/`, `/firma-profil/`, `/kategorije/`, `/gradovi/`, `/kako-funkcionise/`, and dashboard pages in light mode.
+- If any remaining page still renders dark while light mode is active, identify and fix the specific component/page file.
 - Investigate and fix the admin role-change-to-firm trigger root cause if it resurfaces.
 
 ## Relevant Files
@@ -405,7 +398,7 @@
 - `next.config.js`: Supabase preconnect header.
 - `lib/articles.ts`: article metadata source.
 - `app/savjeti/**/page.tsx`: article pages.
-- `app/kako-funkcionise/HowItWorksContent.tsx`: redesigned how-it-works page with interactive role selector and animated abstract hero.
+- `app/kako-funkcionise/page.tsx`: light-theme how-it-works page with `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD.
 - `app/globals.css`: global CSS including custom `floatOrb` keyframe animations.
 - `app/kontakt/page.tsx`: redesigned contact page.
 - `app/o-nama/page.tsx`: redesigned about page.

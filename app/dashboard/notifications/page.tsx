@@ -108,10 +108,10 @@ export default function NotificationsPage() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-ink-950">
+      <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p className="text-white/70">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
+          <p className="text-steel">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
         </main>
         <Footer />
       </div>
@@ -119,14 +119,14 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-white">Obavještenja</h1>
-              <p className="text-white/70 text-sm">
+              <h1 className="text-2xl font-bold text-gray-900">Obavještenja</h1>
+              <p className="text-steel text-sm">
                 {unreadCount > 0
                   ? `${unreadCount} ${plural(unreadCount, ['nepročitano obavještenje', 'nepročitana obavještenja', 'nepročitanih obavještenja'])}`
                   : 'Sva obavještenja su pročitana'}
@@ -137,7 +137,7 @@ export default function NotificationsPage() {
                 <button
                   onClick={markAllRead}
                   disabled={actionId === 'all'}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-ink-900/60 text-brand-orange border-2 border-brand-orange hover:bg-ink-800 transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-white text-brand-orange border-2 border-brand-orange hover:bg-primary-50 transition-colors disabled:opacity-50"
                 >
                   {actionId === 'all' ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -151,24 +151,24 @@ export default function NotificationsPage() {
           </div>
 
           {error && (
-            <div className="mb-4 flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-lg px-3 py-2">
+            <div className="mb-4 flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">
               <AlertCircle className="w-4 h-4" />
               {error}
             </div>
           )}
 
           {loadingNotifications ? (
-            <div className="flex items-center justify-center py-12 text-white/70">
+            <div className="flex items-center justify-center py-12 text-steel">
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje obavještenja...
             </div>
           ) : notifications.length === 0 ? (
-            <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-8 text-center">
-              <Bell className="w-10 h-10 text-white/50 mx-auto mb-3" />
-              <h3 className="font-bold text-white mb-1">Nemate obavještenja</h3>
-              <p className="text-white/70 text-sm">Nova obavještenja će se pojaviti ovdje.</p>
+            <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
+              <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+              <h3 className="font-bold text-gray-900 mb-1">Nemate obavještenja</h3>
+              <p className="text-steel text-sm">Nova obavještenja će se pojaviti ovdje.</p>
             </div>
           ) : (
-            <div className="bg-ink-900/60 rounded-xl border border-ink-800 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
               <div className="divide-y divide-gray-100">
                 {notifications.map((n) => {
                   const href = getNotificationHref(n, role);
@@ -183,11 +183,11 @@ export default function NotificationsPage() {
                         aria-hidden="true"
                       />
                       <div className="min-w-0 flex-1">
-                        <p className={`text-sm font-semibold ${n.read ? 'text-white/70' : 'text-white'}`}>
+                        <p className={`text-sm font-semibold ${n.read ? 'text-gray-700' : 'text-gray-900'}`}>
                           {n.title}
                         </p>
-                        <p className="text-xs text-white/70 mt-0.5 line-clamp-2">{n.message}</p>
-                        <p className="text-[10px] text-white/50 mt-1">{formatNotificationTime(n.created_at)}</p>
+                        <p className="text-xs text-steel mt-0.5 line-clamp-2">{n.message}</p>
+                        <p className="text-[10px] text-gray-400 mt-1">{formatNotificationTime(n.created_at)}</p>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
                         {!n.read && (
@@ -197,7 +197,7 @@ export default function NotificationsPage() {
                               e.stopPropagation();
                               markRead(n.id);
                             }}
-                            className="p-2 rounded-lg text-white/50 hover:text-brand-orange hover:bg-brand-orange/10 transition-colors"
+                            className="p-2 rounded-lg text-gray-400 hover:text-brand-orange hover:bg-orange-50 transition-colors"
                             aria-label="Označi kao pročitano"
                             title="Označi kao pročitano"
                           >
@@ -211,7 +211,7 @@ export default function NotificationsPage() {
                             deleteNotification(n.id);
                           }}
                           disabled={isBusy}
-                          className="p-2 rounded-lg text-white/50 hover:text-red-400 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                          className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
                           aria-label="Izbriši obavještenje"
                           title="Izbriši obavještenje"
                         >
@@ -227,8 +227,8 @@ export default function NotificationsPage() {
                         key={n.id}
                         href={href}
                         onClick={() => markRead(n.id)}
-                        className={`block transition-colors hover:bg-ink-800 ${
-                          n.read ? 'bg-ink-900/60' : 'bg-brand-orange/10'
+                        className={`block transition-colors hover:bg-gray-50 ${
+                          n.read ? 'bg-white' : 'bg-orange-50/40'
                         }`}
                       >
                         {content}
@@ -239,8 +239,8 @@ export default function NotificationsPage() {
                   return (
                     <div
                       key={n.id}
-                      className={`transition-colors hover:bg-ink-800 ${
-                        n.read ? 'bg-ink-900/60' : 'bg-brand-orange/10'
+                      className={`transition-colors hover:bg-gray-50 ${
+                        n.read ? 'bg-white' : 'bg-orange-50/40'
                       }`}
                     >
                       {content}
@@ -250,11 +250,11 @@ export default function NotificationsPage() {
               </div>
 
               {hasMore && (
-                <div className="px-4 py-4 border-t border-ink-800 bg-ink-900/50">
+                <div className="px-4 py-4 border-t border-gray-100 bg-gray-50/50">
                   <button
                     onClick={() => loadNotifications(false)}
                     disabled={loadingMore}
-                    className="w-full py-2.5 px-4 rounded-xl text-sm font-medium text-brand-orange hover:bg-brand-orange/10 transition-colors disabled:opacity-50"
+                    className="w-full py-2.5 px-4 rounded-xl text-sm font-medium text-brand-orange hover:bg-orange-50 transition-colors disabled:opacity-50"
                   >
                     {loadingMore ? (
                       <span className="inline-flex items-center gap-2">
@@ -271,7 +271,7 @@ export default function NotificationsPage() {
 
           <Link
             href="/dashboard/"
-            className="inline-flex items-center text-sm text-white/70 hover:text-white mt-6"
+            className="inline-flex items-center text-sm text-steel hover:text-gray-900 mt-6"
           >
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na dashboard
           </Link>

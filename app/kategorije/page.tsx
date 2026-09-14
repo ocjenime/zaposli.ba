@@ -57,7 +57,7 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
@@ -82,7 +82,7 @@ export default function CategoriesPage() {
         </PageHero>
 
         {/* Trust badges */}
-        <section className="relative py-10 md:py-12 bg-ink-950 overflow-hidden">
+        <section className="relative py-10 md:py-12 bg-cloud overflow-hidden">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -90,13 +90,13 @@ export default function CategoriesPage() {
               {trustBadges.map((badge) => (
                 <div
                   key={badge.label}
-                  className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 hover:border-brand-orange/30 transition-all duration-300 text-center"
+                  className="bg-white rounded-2xl border border-gray-100 p-5 shadow-card hover:shadow-lg transition-all duration-300 text-center"
                 >
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center mb-3">
                     <badge.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
                   </div>
-                  <p className="font-bold text-white">{badge.value}</p>
-                  <p className="text-xs text-white/70">{badge.label}</p>
+                  <p className="font-bold text-gray-900">{badge.value}</p>
+                  <p className="text-xs text-steel">{badge.label}</p>
                 </div>
               ))}
             </div>
@@ -104,24 +104,24 @@ export default function CategoriesPage() {
         </section>
 
         {/* Grupe kategorija */}
-        <section className="py-16 md:py-20 bg-ink-950">
+        <section className="py-16 md:py-20 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-ink-900/80 text-brand-orange text-sm font-semibold mb-4 border border-ink-800">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
                 <Briefcase className="h-4 w-4" /> Kategorije
               </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4 text-balance">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
                 Pretražite po struci
               </h2>
-              <p className="text-white/70 text-lg">
+              <p className="text-steel text-lg">
                 Odaberite oblast i pronađite majstore koji rade upravo ono što vam treba.
               </p>
             </div>
 
             <div className="space-y-10">
               {groups.map((group) => (
-                <div key={group.name} className="bg-ink-900/60 rounded-2xl border border-ink-800 p-6 md:p-8">
-                  <h3 className="text-sm font-bold text-white/70 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <div key={group.name} className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card">
+                  <h3 className="text-sm font-bold text-steel uppercase tracking-wider mb-4 flex items-center gap-2">
                     <Briefcase className="w-4 h-4 text-brand-orange" />
                     {group.name}
                   </h3>

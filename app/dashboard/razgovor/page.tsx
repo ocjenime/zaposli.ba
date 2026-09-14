@@ -334,10 +334,10 @@ function Conversation() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-ink-950">
+      <div className="min-h-screen flex flex-col bg-cloud">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p className="text-white/70">Učitavanje...</p>
+          <p className="text-steel">Učitavanje...</p>
         </main>
         <Footer />
       </div>
@@ -345,15 +345,15 @@ function Conversation() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-ink-950">
+    <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto h-[calc(100vh-14rem)] sm:h-[calc(100vh-15rem)] flex flex-col">
-          <Link href={isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-white/70 hover:text-white mb-3">
+          <Link href={isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/'} className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-3">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad
           </Link>
 
-          {error && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-3">{error}</p>}
+          {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{error}</p>}
 
           {isAdmin && (
             <div className="bg-brand-orange/10 text-brand-orange border border-brand-orange/20 rounded-xl px-4 py-3 mb-3 text-sm font-medium">
@@ -362,28 +362,28 @@ function Conversation() {
           )}
 
           {loadingData ? (
-            <div className="flex-grow flex items-center justify-center text-white/70">
+            <div className="flex-grow flex items-center justify-center text-steel">
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje razgovora...
             </div>
           ) : !job ? (
-            <p className="text-white/70 flex-grow">Razgovor nije pronađen.</p>
+            <p className="text-steel flex-grow">Razgovor nije pronađen.</p>
           ) : (
             <>
-              <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-4 mb-3 shadow-sm">
+              <div className="bg-white rounded-xl border border-gray-100 p-4 mb-3 shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div>
-                    <h1 className="font-bold text-white">{job.title}</h1>
-                    <div className="flex items-center gap-2 text-sm text-white/70 mt-1">
+                    <h1 className="font-bold text-gray-900">{job.title}</h1>
+                    <div className="flex items-center gap-2 text-sm text-steel mt-1">
                       <MapPin className="w-4 h-4" /> {job.city}
                       {adminInfo && (
                         <>
-                          <span className="w-1 h-1 bg-white/50 rounded-full" />
+                          <span className="w-1 h-1 bg-steel rounded-full" />
                           <span className="text-brand-orange font-medium">{adminInfo}</span>
                         </>
                       )}
                       {!adminInfo && partner?.full_name && (
                         <>
-                          <span className="w-1 h-1 bg-white/50 rounded-full" />
+                          <span className="w-1 h-1 bg-steel rounded-full" />
                           <span>{role === 'client' ? 'Firma' : 'Klijent'}: {partner.full_name}</span>
                         </>
                       )}
@@ -392,7 +392,7 @@ function Conversation() {
                   {!isAdmin && canRequestMediation() && (
                     <button
                       onClick={() => setShowMediationForm(true)}
-                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-400 hover:text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full transition-colors"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-full transition-colors"
                     >
                       <ShieldAlert className="w-4 h-4" /> Zatraži pomoć administratora
                     </button>
@@ -400,7 +400,7 @@ function Conversation() {
                 </div>
 
                 {job.mediation_requested && (
-                  <div className={`mt-3 rounded-xl px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
+                  <div className={`mt-3 rounded-xl px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
                     <div className="flex items-start gap-2">
                       {job.mediation_resolved ? <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0" /> : <ShieldAlert className="w-4 h-4 mt-0.5 shrink-0" />}
                       <div>
@@ -410,10 +410,10 @@ function Conversation() {
                             : 'Zatražena je pomoć administratora'}
                         </p>
                         {job.mediation_reason && (
-                          <p className="mt-1 text-red-400/80">{job.mediation_reason}</p>
+                          <p className="mt-1 text-red-700/80">{job.mediation_reason}</p>
                         )}
                         {job.mediation_resolution && (
-                          <p className="mt-1 text-green-400/80"><strong>Odluka:</strong> {job.mediation_resolution}</p>
+                          <p className="mt-1 text-green-700/80"><strong>Odluka:</strong> {job.mediation_resolution}</p>
                         )}
                       </div>
                     </div>
@@ -422,14 +422,14 @@ function Conversation() {
               </div>
 
               {showMediationForm && (
-                <div className="bg-ink-900/60 rounded-xl border border-red-500/20 p-4 mb-3 shadow-sm">
-                  <h3 className="font-bold text-white mb-1">Zatražite pomoć administratora</h3>
-                  <p className="text-sm text-white/70 mb-3">
+                <div className="bg-white rounded-xl border border-red-100 p-4 mb-3 shadow-sm">
+                  <h3 className="font-bold text-gray-900 mb-1">Zatražite pomoć administratora</h3>
+                  <p className="text-sm text-steel mb-3">
                     Opcija je dostupna jer je rok za ovaj posao istekao i postoji nesuglasica. Admin će se uključiti u razgovor i pomoći u rješavanju spora.
                   </p>
-                  {mediationError && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
+                  {mediationError && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
                   {mediationSuccess && (
-                    <p className="text-green-400 text-sm bg-green-500/10 rounded-lg px-3 py-2 mb-3">
+                    <p className="text-green-700 text-sm bg-green-50 rounded-lg px-3 py-2 mb-3">
                       Zahtjev je poslan. Administrator će pregledati slučaj i kontaktirati vas.
                     </p>
                   )}
@@ -438,7 +438,7 @@ function Conversation() {
                     onChange={(e) => setMediationReason(e.target.value)}
                     rows={3}
                     placeholder="Opišite u čemu je problem i šta očekujete..."
-                    className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
                   />
                   <div className="flex flex-wrap gap-2">
                     <button
@@ -459,9 +459,9 @@ function Conversation() {
                 </div>
               )}
 
-              <div className="flex-grow bg-ink-900/60 rounded-xl border border-ink-800 p-4 shadow-sm overflow-y-auto">
+              <div className="flex-grow bg-white rounded-xl border border-gray-100 p-4 shadow-sm overflow-y-auto">
                 {messages.length === 0 ? (
-                  <p className="text-center text-white/70 text-sm mt-8">Pošaljite prvu poruku i dogovorite detalje posla.</p>
+                  <p className="text-center text-steel text-sm mt-8">Pošaljite prvu poruku i dogovorite detalje posla.</p>
                 ) : (
                   <div className="space-y-4">
                     {messages.map((msg, idx) => {
@@ -470,19 +470,19 @@ function Conversation() {
                       return (
                         <div key={msg.id}>
                           {showDate && (
-                            <div className="text-center text-xs text-white/70 my-3">{formatDate(msg.created_at)}</div>
+                            <div className="text-center text-xs text-steel my-3">{formatDate(msg.created_at)}</div>
                           )}
                           <div className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                             <div
                               className={`max-w-[80%] sm:max-w-[70%] rounded-2xl px-4 py-2 text-sm ${
-                                isMe ? 'bg-brand-orange text-[#ffffff] rounded-br-none' : 'bg-ink-950 text-white rounded-bl-none'
+                                isMe ? 'bg-brand-orange text-[#ffffff] rounded-br-none' : 'bg-cloud text-gray-900 rounded-bl-none'
                               }`}
                             >
-                              <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-white/70'}`}>
+                              <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
                                 {getSenderLabel(msg, isMe)}
                               </p>
                               <p>{msg.content}</p>
-                              <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-white/70'}`}>
+                              <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
                                 {formatTime(msg.created_at)}
                               </p>
                             </div>
@@ -526,7 +526,7 @@ export default function ConversationPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-ink-950">
+        <div className="min-h-screen flex flex-col bg-cloud">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
