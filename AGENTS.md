@@ -351,7 +351,7 @@
   - Removed unused `app/kako-funkcionise/HowItWorksContent.tsx`; replaced with a server-side light-theme page that preserves `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
   - Standalone promoted-ad price kept at 49 KM (`components/FirmAdsTab.tsx`).
   - `npm run lint` and `npm run build` pass (2406 pages).
-- Created a new reusable `components/ProjectListCard.tsx` for premium horizontal job cards (image, title/description, category pill, location/time, status badge, budget, bid count, favorite toggle, dark "Pošalji ponudu" CTA) with a responsive mobile layout.
+- Created a new reusable `components/ProjectListCard.tsx` for compact horizontal job cards (square image left, title/description, category pill, location/time, status badge, budget, bid count, favorite toggle, dark "Pošalji ponudu" CTA). The card stays horizontal on all breakpoints so mobile feels like scrolling a news feed, with reduced height and a compact right-hand meta column.
 - Replaced job-card UI across the site with `ProjectListCard`:
   - `components/LatestAdsSection.tsx` (homepage "Najnoviji projekti") now shows a vertical list of premium cards and fetches budget/bids/images.
   - `components/RecentProjects.tsx` (homepage bottom "Nedavno objavljeni poslovi") replaced its old two-column cards with the same vertical premium list.
