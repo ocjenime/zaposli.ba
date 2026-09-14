@@ -332,7 +332,7 @@
   - Added `supabase/migration-promoted-ads-homepage-slots.sql` for sticky position columns.
   - Added ad detail page `/izdvojeni-oglasi/[id]/` that shows the full banner, firm info, description, and CTAs.
   - Added "Oglasi" link to desktop and mobile header navigation.
-  - Moved the Top 10 ads section from the homepage to the top of `/kako-funkcionise/` with a staggered fade-in animation.
+  - Temporarily removed the Top 10 ads section from both the homepage and `/kako-funkcionise/`; component files are kept in the repo for the upcoming redesign based on user's mockup.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
