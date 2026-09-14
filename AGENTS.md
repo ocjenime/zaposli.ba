@@ -358,7 +358,7 @@
   - `components/FeaturedJobsSection.tsx` (category/city "Istaknuti poslovi") now uses the premium card list and fetches job images.
   - `app/poslovi/ProjectsPageClient.tsx` replaced expandable list rows with the premium cards; removed inline expansion/lightbox and uses `onSendOffer` for category warnings.
 - Restyled homepage premium sections to match the provided mockup:
-  - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop.
+  - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop. When no real promoted ads exist, it now shows 5 Higgsfield-style demo placeholder cards (ranked 1–5) to advertise the ad product to firms/majstors, linking to `/za-firme/#reklame`.
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel.
   - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated.
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
