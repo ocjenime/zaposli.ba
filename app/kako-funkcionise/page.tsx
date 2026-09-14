@@ -1,7 +1,6 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HowItWorksContent from './HowItWorksContent';
-import HomepageTopListings from '@/components/HomepageTopListings';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
 
@@ -16,7 +15,6 @@ export default function HowItWorksPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <HomepageTopListings />
       <HowItWorksContent />
       <Footer />
     </div>
