@@ -61,8 +61,7 @@ export async function fetchActivePromotedAds(limit?: number): Promise<PublicProm
 
 export function getPromotedAdHref(ad: PublicPromotedAd): string {
   if (ad.cta_url) return ad.cta_url;
-  if (ad.firms?.slug) return `/firma-profil/${ad.firms.slug}/`;
-  return '#';
+  return `/izdvojeni-oglasi/${ad.id}/`;
 }
 
 export function getAdTypeLabel(adType: PublicPromotedAd['ad_type']): string {

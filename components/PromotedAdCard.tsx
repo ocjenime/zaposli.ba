@@ -97,7 +97,7 @@ export default function PromotedAdCard({ ad }: PromotedAdCardProps) {
         </p>
 
         <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange group-hover:gap-2 transition-all">
-          {ad.cta_url ? 'Posjeti' : 'Pogledaj profil'}
+          {ad.cta_url ? 'Posjeti' : 'Pogledaj oglas'}
           <ArrowRight className="w-4 h-4" />
         </span>
       </div>
