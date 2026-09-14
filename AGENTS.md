@@ -360,7 +360,7 @@
 - Restyled homepage premium sections to match the provided mockup:
   - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop.
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel.
-  - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop.
+  - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated.
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
   - Removed `RecentProjects` from `app/page.tsx` because the same latest jobs already appear at the top in `LatestAdsSection`.
   - `npm run lint` and `npm run build` pass (2406 pages).

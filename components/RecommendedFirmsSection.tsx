@@ -37,23 +37,23 @@ function FirmCard({ firm }: { firm: Firm }) {
         rounded="xl"
         className="border border-gray-100 dark:border-ink-700 shrink-0"
       />
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5 mb-1">
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-brand-orange transition-colors">
-            {firm.name}
-          </h3>
-          {firm.verified && <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0" />}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start gap-1.5 mb-1">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
+              {firm.name}
+            </h3>
+            {firm.verified && <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-steel dark:text-gray-400">
+            <span className="inline-flex items-center gap-0.5 font-medium">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              {(firm.average_rating || 0).toFixed(1)}
+            </span>
+            <span>({firm.review_count || 0})</span>
+            {firm.city && <span className="text-gray-300 dark:text-gray-600">·</span>}
+            {firm.city && <span className="line-clamp-1">{firm.city}</span>}
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-xs text-steel dark:text-gray-400">
-          <span className="inline-flex items-center gap-0.5 font-medium">
-            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-            {(firm.average_rating || 0).toFixed(1)}
-          </span>
-          <span>({firm.review_count || 0})</span>
-          {firm.city && <span className="text-gray-300 dark:text-gray-600">·</span>}
-          {firm.city && <span className="truncate">{firm.city}</span>}
-        </div>
-      </div>
       <span className="shrink-0 w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors">
         <ArrowRight className="w-4 h-4" />
       </span>
