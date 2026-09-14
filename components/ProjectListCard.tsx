@@ -123,7 +123,7 @@ export default function ProjectListCard({
       {/* Center content */}
       <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
         <div>
-          <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-1 sm:line-clamp-2 mb-1">
+          <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-white leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
             {job.title}
           </h3>
 
