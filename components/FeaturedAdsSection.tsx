@@ -291,7 +291,10 @@ export default function FeaturedAdsSection() {
         if (error) throw error;
 
         const typedAds = ((data || []) as unknown as PublicPromotedAd[]).filter(
-          (ad) => !ad.firms?.slug?.startsWith('test-') && ad.destination !== 'listing'
+          (ad) =>
+            !ad.firms?.slug?.startsWith('test-') &&
+            ad.destination !== 'listing' &&
+            ad.destination !== 'homepage_banner'
         );
         const sorted = typedAds.sort((a, b) => {
           const aPos = a.homepage_position || 99;

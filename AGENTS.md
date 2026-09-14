@@ -20,6 +20,15 @@
 ### Completed
 - Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
 - Restored the larger `PromoBanner` desktop layout with the dark background image, glass benefits panel, and a "Kreiraj oglas" CTA (removed the compact horizontal mobile strip).
+- Expanded promoted-ads product model to three placements:
+  - `homepage` mini oglas: **19 KM/mj** (included credits for Pro/Premium).
+  - `homepage_banner` veliki banner 1200×400: **49 KM/mj** (not included in plans).
+  - `listing` oglas na `/izdvojeni-oglasi/`: **5 KM**, but **besplatan** za sve plaćene pakete (Start, Pro, Premium).
+  - Updated `components/FirmAdsTab.tsx` with three destination options, free-listing logic, dynamic pricing, and improved status badges.
+  - Added `components/HomepageBannerAd.tsx` to display one active 1200×400 homepage banner below the category icon row.
+  - Updated `/za-firme/#reklame` pricing section to show three clear product cards with conditional CTAs (firm users go to dashboard, others to `/pretplata-auth/`).
+  - Made CTAs in `PromoBanner` and `AdCreateCTA` conditional by role so clients/guests no longer land on the client “Objavi posao” dashboard.
+  - Added `supabase/migration-promoted-ads-listing-free.sql` to allow `homepage_banner` and ensure only `homepage` mini ads consume included credits.
 - Implemented the new promoted-ads pricing model:
   - Added `destination` column to `promoted_ads` via `supabase/migration-promoted-ads-destination.sql` (`homepage` vs `listing`).
   - Homepage mini oglas: **19 KM** or included in Pro (1/mj) / Premium (3/mj).

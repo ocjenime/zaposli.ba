@@ -4,7 +4,7 @@
 
 ALTER TABLE promoted_ads
   ADD COLUMN IF NOT EXISTS destination text NOT NULL DEFAULT 'homepage'
-  CHECK (destination IN ('homepage', 'listing'));
+  CHECK (destination IN ('homepage', 'homepage_banner', 'listing'));
 
 -- Existing rows keep 'homepage' so they continue to appear on the homepage.
 UPDATE promoted_ads SET destination = 'homepage' WHERE destination IS NULL;

@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { Megaphone, ArrowRight } from 'lucide-react';
+import { Megaphone } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import PromotedAdCard from '@/components/PromotedAdCard';
+import AdCreateCTA from '@/components/AdCreateCTA';
 import { fetchActivePromotedAds } from '@/lib/promoted-ads';
 import { site } from '@/lib/site';
 
@@ -48,25 +49,7 @@ export default async function PromotedAdsPage() {
           size="md"
         />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-4 md:-mt-6 mb-8 md:mb-10">
-          <a
-            href="/dashboard/firma/?tab=ads&destination=listing"
-            className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-4 shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30 transition-all"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
-                <Megaphone className="w-5 h-5" />
-              </div>
-              <div>
-                <p className="font-bold">Želite da vaš oglas bude ovdje?</p>
-                <p className="text-sm text-white/90">Objavite oglas na stranici svih oglasa za samo 5 KM.</p>
-              </div>
-            </div>
-            <span className="inline-flex items-center justify-center gap-2 self-start sm:self-center bg-white text-brand-orange px-4 py-2 rounded-xl text-sm font-bold hover:bg-white/90 transition-colors shrink-0">
-              Objavi oglas <ArrowRight className="w-4 h-4" />
-            </span>
-          </a>
-        </div>
+        <AdCreateCTA destination="listing" />
 
         <section className="relative py-12 md:py-16">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[50rem] h-[20rem] bg-brand-orange/5 rounded-full blur-[120px] pointer-events-none" />

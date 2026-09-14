@@ -143,7 +143,7 @@ interface AdminPromotion {
   description: string;
   image_url: string | null;
   ad_type: 'promotion' | 'worker_search';
-  destination: 'homepage' | 'listing' | null;
+  destination: 'homepage' | 'homepage_banner' | 'listing' | null;
   amount: number;
   status: 'pending' | 'active' | 'expired' | 'rejected';
   source: 'included' | 'paid';
@@ -1795,7 +1795,11 @@ function AdminPage() {
                                     </span>
                                     {p.destination && (
                                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                                        {p.destination === 'homepage' ? 'Homepage' : 'Svi oglasi'}
+                                        {p.destination === 'homepage'
+                                          ? 'Homepage mini'
+                                          : p.destination === 'homepage_banner'
+                                          ? 'Homepage banner'
+                                          : 'Svi oglasi'}
                                       </span>
                                     )}
                                   </div>

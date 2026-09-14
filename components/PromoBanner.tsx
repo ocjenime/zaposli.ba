@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import NextImage from 'next/image';
 import Logo from '@/components/Logo';
+import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 
 const benefits = [
   'Veća vidljivost',
@@ -12,6 +14,9 @@ const benefits = [
 ];
 
 export default function PromoBanner() {
+  const { role } = useAuth();
+  const href = isFirmRole(role) ? '/dashboard/firma/?tab=ads' : '/pretplata-auth/';
+
   return (
     <section className="relative py-8 md:py-10 bg-cloud px-4 sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-7xl rounded-3xl overflow-hidden shadow-2xl shadow-black/10">
@@ -40,7 +45,7 @@ export default function PromoBanner() {
               Dosegnite hiljade klijenata na Zaposli.ba. Istaknite svoju firmu, privucite nove kupce i budite prvi izbor za projekte u vašem gradu.
             </p>
             <Link
-              href="/za-firme/#reklame"
+              href={href}
               className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
             >
               Kreiraj oglas

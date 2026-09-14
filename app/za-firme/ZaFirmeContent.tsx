@@ -4,6 +4,8 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
+import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
 import { categories } from '@/lib/data';
 import { planFeatures } from '@/lib/plan-features';
@@ -39,6 +41,7 @@ import {
   Crown,
   Eye,
   MousePointerClick,
+  Monitor,
 } from 'lucide-react';
 
 const benefits = [
@@ -236,6 +239,11 @@ const faqs = [
 ];
 
 export default function ZaFirmeContent() {
+  const { role } = useAuth();
+  const isFirm = isFirmRole(role);
+  const adHref = (destination: string) =>
+    isFirm ? `/dashboard/firma/?tab=ads&destination=${destination}` : '/pretplata-auth/';
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
@@ -701,89 +709,116 @@ export default function ZaFirmeContent() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[30rem] bg-brand-orange/5 rounded-full blur-[140px] pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-              {/* Left: copy */}
-              <div>
-                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-bold text-brand-orange uppercase tracking-wider mb-6">
-                  <Megaphone className="w-4 h-4" />
-                  Reklamirajte se
+            <div className="text-center max-w-3xl mx-auto mb-14">
+              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-bold text-brand-orange uppercase tracking-wider mb-6">
+                <Megaphone className="w-4 h-4" />
+                Reklamirajte se
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
+                Istaknite svoju{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                  firmu na pravom mjestu.
                 </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
-                  Istaknite svoju{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                    firmu na prvoj strani.
-                  </span>
-                </h2>
-                <p className="text-white/70 text-lg mb-8 max-w-xl">
-                  Postavite premium oglas s bannerom, logotipom i opisom na homepage-u Zaposli.ba. Budite prvo što klijenti vide kada traže majstora ili firmu.
-                </p>
+              </h2>
+              <p className="text-white/70 text-lg max-w-2xl mx-auto">
+                Tri načina promocije. Izaberite onaj koji vam najviše odgovara — mini oglas, veliki banner ili pregled svih oglasa.
+              </p>
+            </div>
 
-                <ul className="space-y-4">
-                  {[
-                    { icon: Crown, text: 'Premium pozicija na homepage-u' },
-                    { icon: Eye, text: 'Banner, logo i detaljan opis oglasa' },
-                    { icon: MousePointerClick, text: 'Direktan link na vaš profil ili web stranicu' },
-                    { icon: BarChart3, text: 'Mjesečno izvještavanje o pregledima i klikovima' },
-                  ].map((item) => (
-                    <li key={item.text} className="flex items-start gap-3 text-white/80">
-                      <span className="w-8 h-8 rounded-full bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center shrink-0">
-                        <item.icon className="w-4 h-4 text-brand-orange" />
-                      </span>
-                      {item.text}
+            <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+              {/* Homepage mini */}
+              <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
+                    <Home className="w-6 h-6 text-brand-orange" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1">Homepage mini oglas</h3>
+                  <p className="text-white/50 text-sm mb-4">Kompaktna kartica u traci</p>
+                  <div className="flex items-end justify-center gap-1">
+                    <span className="text-4xl font-extrabold text-white leading-none">19</span>
+                    <span className="text-white/70 font-semibold mb-1">KM/mj</span>
+                  </div>
+                  <p className="text-xs text-white/40 mt-2">Pro uključuje 1 · Premium 3</p>
+                </div>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {['Prikaz u traci istaknutih oglasa', 'Brojčana pozicija 1–5', 'Logo, naziv i kratak opis'].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      {f}
                     </li>
                   ))}
                 </ul>
+                <Link
+                  href={adHref('homepage')}
+                  className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+                >
+                  Kreiraj oglas <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
 
-              {/* Right: pricing card */}
-              <div className="relative">
-                <div className="absolute -inset-1 bg-gradient-to-br from-brand-orange to-amber-400 rounded-3xl blur opacity-30" />
-                <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-8 md:p-10 shadow-2xl shadow-black/40">
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
-                      <Crown className="w-3 h-3" /> Najbolja vrijednost
-                    </span>
-                  </div>
-
-                  <div className="text-center mb-8 pt-4">
-                    <h3 className="text-xl font-bold text-white mb-2">Istaknuti oglas</h3>
-                    <p className="text-white/60 text-sm mb-5">Odaberite gdje želite da vas vide</p>
-                    <div className="flex items-end justify-center gap-1">
-                      <span className="text-5xl md:text-6xl font-extrabold text-white leading-none">19</span>
-                      <span className="text-white/70 font-semibold mb-2">KM/mj</span>
-                    </div>
-                    <p className="text-sm text-white/50 mt-2">homepage mini oglas · Pro uključuje 1 · Premium 3</p>
-                  </div>
-
-                  <ul className="space-y-3 mb-8">
-                    {[
-                      'Homepage mini oglas: 19 KM/mj (ili uključen u Pro/Premium)',
-                      'Stranica svih oglasa: samo 5 KM po oglasu',
-                      'Banner dimenzija 1200 × 400 px',
-                      'Prikaz u sekciji „Istaknuti oglasi"',
-                      'Brojčana pozicija 1–5 na homepage-u',
-                      'Direktna stranica oglasa s CTA',
-                    ].map((feature) => (
-                      <li key={feature} className="flex items-start gap-3 text-sm text-white/80">
-                        <span className="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center shrink-0 mt-0.5">
-                          <CheckCircle className="w-3.5 h-3.5" />
-                        </span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    href="/dashboard/firma/?tab=ads"
-                    className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-4 rounded-xl font-semibold text-base transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
-                  >
-                    Kreiraj oglas
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <p className="text-center text-xs text-white/40 mt-4">
-                    Bez ugovorne obaveze. Otkazivanje u bilo kojem trenutku.
-                  </p>
+              {/* Homepage banner */}
+              <div className="relative rounded-3xl bg-gradient-to-b from-ink-900 to-ink-950 backdrop-blur-xl border border-brand-orange/40 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
+                    <Crown className="w-3 h-3" /> Najbolja vidljivost
+                  </span>
                 </div>
+                <div className="text-center mb-6 pt-4">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
+                    <Monitor className="w-6 h-6 text-brand-orange" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1">Homepage banner</h3>
+                  <p className="text-white/50 text-sm mb-4">Veliki banner 1200 × 400 px</p>
+                  <div className="flex items-end justify-center gap-1">
+                    <span className="text-4xl font-extrabold text-white leading-none">49</span>
+                    <span className="text-white/70 font-semibold mb-1">KM/mj</span>
+                  </div>
+                  <p className="text-xs text-white/40 mt-2">Nije uključen u pakete</p>
+                </div>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {['Dominantna pozicija na homepage-u', 'Dimenzije 1200 × 400 px', 'Banner, naslov, opis i CTA'].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={adHref('homepage_banner')}
+                  className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+                >
+                  Kreiraj banner <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Listing ad */}
+              <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
+                    <LayoutGrid className="w-6 h-6 text-brand-orange" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-1">Stranica svih oglasa</h3>
+                  <p className="text-white/50 text-sm mb-4">/izdvojeni-oglasi/</p>
+                  <div className="flex items-end justify-center gap-1">
+                    <span className="text-4xl font-extrabold text-white leading-none">5</span>
+                    <span className="text-white/70 font-semibold mb-1">KM</span>
+                  </div>
+                  <p className="text-xs text-green-400 mt-2">Besplatno za Start, Pro i Premium</p>
+                </div>
+                <ul className="space-y-2 mb-6 flex-1">
+                  {['Prikaz na stranici svih oglasa', 'Dostupno svim korisnicima', 'Jednostavno i brzo'].map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={adHref('listing')}
+                  className="flex items-center justify-center gap-2 w-full bg-white hover:bg-white/90 text-gray-900 px-5 py-3 rounded-xl font-semibold text-sm transition-all"
+                >
+                  Kreiraj oglas <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ import CategoryIconRow from '@/components/CategoryIconRow';
 import RoleCTACards from '@/components/RoleCTACards';
 import FeaturedAdsSection from '@/components/FeaturedAdsSection';
 import PromoBanner from '@/components/PromoBanner';
+import HomepageBannerAd from '@/components/HomepageBannerAd';
 import RecommendedFirmsSection from '@/components/RecommendedFirmsSection';
 import LatestAdsSection from '@/components/LatestAdsSection';
 import HowItWorks from '@/components/HowItWorks';
@@ -59,6 +60,7 @@ export default function Home() {
       <main className="flex-grow">
         <HeroSection />
         <CategoryIconRow />
+        <HomepageBannerAd />
         <RoleCTACards />
         <LatestAdsSection />
         <PromoBanner />

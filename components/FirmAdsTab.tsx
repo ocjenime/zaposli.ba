@@ -3,11 +3,12 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Subscription, getFeaturedAdsUsedThisMonth, getIncludedAdsRemaining } from '@/lib/subscriptions';
-import { Megaphone, Loader2, CheckCircle, Clock, AlertCircle, Crown, Zap, Users, Sparkles, Upload, X, ImageIcon, LayoutGrid, Home } from 'lucide-react';
+import { Megaphone, Loader2, CheckCircle, Clock, AlertCircle, Crown, Zap, Users, Sparkles, Upload, X, ImageIcon, LayoutGrid, Home, Monitor } from 'lucide-react';
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
-const HOMEPAGE_AD_PRICE = 19;
+const HOMEPAGE_MINI_PRICE = 19;
+const HOMEPAGE_BANNER_PRICE = 49;
 const LISTING_AD_PRICE = 5;
 
 interface PromotedAd {
@@ -18,7 +19,7 @@ interface PromotedAd {
   banner_url: string | null;
   cta_url: string | null;
   ad_type: 'promotion' | 'worker_search';
-  destination: 'homepage' | 'listing' | null;
+  destination: 'homepage' | 'homepage_banner' | 'listing' | null;
   amount: number;
   status: 'pending' | 'active' | 'expired' | 'rejected';
   source: 'included' | 'paid';
@@ -51,15 +52,23 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const searchParams = useSearchParams();
-  const [destination, setDestination] = useState<'homepage' | 'listing'>(() => {
+  const [destination, setDestination] = useState<'homepage' | 'homepage_banner' | 'listing'>(() => {
     const d = searchParams.get('destination');
-    return d === 'listing' ? 'listing' : 'homepage';
+    return d === 'listing' ? 'listing' : d === 'homepage_banner' ? 'homepage_banner' : 'homepage';
   });
 
   const includedRemaining = getIncludedAdsRemaining(subscription, adsUsed);
-  const isHomepage = destination === 'homepage';
-  const canUseIncluded = isHomepage && includedRemaining > 0;
-  const effectivePrice = isHomepage ? HOMEPAGE_AD_PRICE : LISTING_AD_PRICE;
+  const isHomepageMini = destination === 'homepage';
+  const isHomepageBanner = destination === 'homepage_banner';
+  const isListing = destination === 'listing';
+  const hasPaidPlan = !!subscription?.plans && (subscription.plans.price_monthly ?? 0) > 0;
+  const canUseIncluded = isHomepageMini && includedRemaining > 0;
+  const effectivePrice = isHomepageMini
+    ? HOMEPAGE_MINI_PRICE
+    : isHomepageBanner
+    ? HOMEPAGE_BANNER_PRICE
+    : LISTING_AD_PRICE;
+  const isFreeListing = isListing && hasPaidPlan;
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -158,8 +167,12 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
 
     try {
       const [imageUrl, bannerUrl] = await Promise.all([uploadImage(), uploadBanner()]);
-      const source = canUseIncluded ? 'included' : 'paid';
-      const amount = source === 'included' ? 0 : effectivePrice;
+      let source: 'included' | 'paid' = canUseIncluded ? 'included' : 'paid';
+      let amount = canUseIncluded ? 0 : effectivePrice;
+      if (isFreeListing) {
+        source = 'paid';
+        amount = 0;
+      }
 
       const { error: insertErr } = await supabase.from('promoted_ads').insert({
         firm_id: firmId,
@@ -181,10 +194,12 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
       setAdType('promotion');
       removeImage();
       removeBanner();
-      if (source === 'included') {
+      if (canUseIncluded) {
         setSuccess('Oglas je poslan na odobrenje (uključen u paket).');
+      } else if (isFreeListing) {
+        setSuccess('Oglas je poslan na odobrenje. Besplatan je jer imate plaćeni paket.');
       } else {
-        const place = isHomepage ? 'homepage-u' : 'stranici svih oglasa';
+        const place = isListing ? 'stranici svih oglasa' : isHomepageBanner ? 'homepage banner poziciji' : 'homepage-u';
         setSuccess(`Oglas je poslan na odobrenje. Nakon odobrenja plaćate ${amount} KM za prikaz na ${place}.`);
       }
       await loadData();
@@ -234,8 +249,10 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
               <Megaphone className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Cijena jednog oglasa</p>
-              <p className="font-bold text-gray-900 dark:text-white">Homepage {HOMEPAGE_AD_PRICE} KM / Svi oglasi {LISTING_AD_PRICE} KM</p>
+              <p className="text-sm text-steel">Cijene oglasa</p>
+              <p className="font-bold text-gray-900 dark:text-white text-xs leading-tight">
+                Homepage mini {HOMEPAGE_MINI_PRICE} KM · Banner {HOMEPAGE_BANNER_PRICE} KM · Svi oglasi {LISTING_AD_PRICE} KM
+              </p>
             </div>
           </div>
         </div>
@@ -291,7 +308,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Lokacija prikaza</label>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <button
                 type="button"
                 onClick={() => setDestination('homepage')}
@@ -301,8 +318,20 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                     : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
                 }`}
               >
-                <Home className="w-4 h-4" /> Homepage mini oglas
-                <span className="ml-auto text-xs font-bold opacity-70">{HOMEPAGE_AD_PRICE} KM</span>
+                <Home className="w-4 h-4" /> Homepage mini
+                <span className="ml-auto text-xs font-bold opacity-70">{HOMEPAGE_MINI_PRICE} KM</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDestination('homepage_banner')}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
+                  destination === 'homepage_banner'
+                    ? 'border-brand-orange bg-orange-50 text-brand-orange'
+                    : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
+                }`}
+              >
+                <Monitor className="w-4 h-4" /> Homepage banner
+                <span className="ml-auto text-xs font-bold opacity-70">{HOMEPAGE_BANNER_PRICE} KM</span>
               </button>
               <button
                 type="button"
@@ -313,15 +342,20 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                     : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
                 }`}
               >
-                <LayoutGrid className="w-4 h-4" /> Stranica svih oglasa
-                <span className="ml-auto text-xs font-bold opacity-70">{LISTING_AD_PRICE} KM</span>
+                <LayoutGrid className="w-4 h-4" /> Svi oglasi
+                <span className="ml-auto text-xs font-bold opacity-70">
+                  {hasPaidPlan ? 'Besplatno' : `${LISTING_AD_PRICE} KM`}
+                </span>
               </button>
             </div>
-            {!isHomepage && (
-              <p className="text-xs text-steel mt-2">Oglas na stranici svih oglasa se naplaćuje pojedinačno i nije uključen u paket.</p>
+            {isListing && hasPaidPlan && (
+              <p className="text-xs text-green-600 mt-2">Oglas na stranici svih oglasa je besplatan jer imate plaćeni paket.</p>
             )}
-            {isHomepage && includedRemaining > 0 && (
-              <p className="text-xs text-green-600 mt-2">Imate {includedRemaining} uključenih homepage oglasa ovaj mjesec.</p>
+            {isListing && !hasPaidPlan && (
+              <p className="text-xs text-steel mt-2">Oglas na stranici svih oglasa košta 5 KM. Besplatan je za Start, Pro i Premium pakete.</p>
+            )}
+            {isHomepageMini && includedRemaining > 0 && (
+              <p className="text-xs text-green-600 mt-2">Imate {includedRemaining} uključenih homepage mini oglasa ovaj mjesec.</p>
             )}
           </div>
 
@@ -352,10 +386,9 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
               Banner oglasa
             </label>
             <p className="text-xs text-steel mb-2">
-              Preporučene dimenzije: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB.
-              {isHomepage
-                ? ' Istaknuto se prikazuje na homepage traci i stranici izdvojenih oglasa.'
-                : ' Prikazuje se na stranici svih oglasa (/izdvojeni-oglasi/).'}
+              {isHomepageBanner
+                ? <>Preporučene dimenzije za <strong>homepage banner</strong>: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB. Prikazuje se kao veliki banner na vrhu homepage-a.</>
+                : <>Preporučene dimenzije: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB.{isListing ? ' Prikazuje se na stranici svih oglasa (/izdvojeni-oglasi/).' : ' Istaknuto se prikazuje na homepage traci i stranici izdvojenih oglasa.'}</>}
             </p>
             <input
               ref={bannerInputRef}
@@ -395,7 +428,11 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
             className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-orange text-white font-semibold hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
           >
             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Megaphone className="w-4 h-4" />}
-            {canUseIncluded ? 'Pošalji oglas (uključen u paket)' : `Pošalji oglas (${effectivePrice} KM)`}
+            {canUseIncluded
+              ? 'Pošalji oglas (uključen u paket)'
+              : isFreeListing
+              ? 'Pošalji oglas (besplatno)'
+              : `Pošalji oglas (${effectivePrice} KM)`}
           </button>
         </div>
       </div>
@@ -437,12 +474,16 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                       {ad.status === 'rejected' && (
                         <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">ODBIJEN</span>
                       )}
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ad.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
-                        {ad.source === 'included' ? 'Uključen u paket' : `Plaćeno ${ad.amount} KM`}
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ad.source === 'included' ? 'bg-blue-100 text-blue-700' : ad.amount === 0 ? 'bg-green-100 text-green-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
+                        {ad.source === 'included' ? 'Uključen u paket' : ad.amount === 0 ? 'Besplatan' : `Plaćeno ${ad.amount} KM`}
                       </span>
                       {ad.destination && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                          {ad.destination === 'homepage' ? 'Homepage' : 'Svi oglasi'}
+                          {ad.destination === 'homepage'
+                            ? 'Homepage mini'
+                            : ad.destination === 'homepage_banner'
+                            ? 'Homepage banner'
+                            : 'Svi oglasi'}
                         </span>
                       )}
                     </div>

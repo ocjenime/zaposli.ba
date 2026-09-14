@@ -15,7 +15,7 @@ export interface PublicPromotedAd {
   banner_url: string | null;
   cta_url: string | null;
   ad_type: 'promotion' | 'worker_search';
-  destination: 'homepage' | 'listing' | null;
+  destination: 'homepage' | 'homepage_banner' | 'listing' | null;
   status: 'pending' | 'active' | 'expired' | 'rejected';
   ends_at: string | null;
   created_at: string;
