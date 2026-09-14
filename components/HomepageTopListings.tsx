@@ -2,31 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Star, ArrowRight, Crown, Loader2 } from 'lucide-react';
+import { Star, ArrowRight, Crown, Loader2, Sparkles, Users } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { PublicPromotedAd } from '@/lib/promoted-ads';
+import { getAdTypeLabel } from '@/lib/promoted-ads';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 
-interface OrganicFirm {
-  id: string;
-  name: string;
-  slug: string;
-  city: string | null;
-  logo_url: string | null;
-  verified: boolean;
-  average_rating: number | null;
-  review_count: number | null;
-  description: string | null;
-  plan_priority: number | null;
-}
-
 interface ListingItem {
   rank: number;
-  type: 'sticky' | 'organic';
+  type: 'sticky' | 'regular';
   id: string;
-  title?: string;
-  description?: string;
+  title: string;
+  description: string;
+  ad_type: 'promotion' | 'worker_search';
   firm: {
     name: string | null;
     slug: string | null;
@@ -36,14 +25,6 @@ interface ListingItem {
     average_rating: number | null;
     review_count: number | null;
   };
-  href: string;
-}
-
-function firmScore(f: OrganicFirm | ListingItem['firm']) {
-  const avg = f.average_rating || 0;
-  const verifiedBoost = f.verified ? 0.5 : 0;
-  const priority = (f as OrganicFirm).plan_priority || 0;
-  return avg + verifiedBoost + priority;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -72,13 +53,29 @@ function RatingStars({ rating, count }: { rating: number | null; count: number |
   );
 }
 
+function TypeBadge({ adType }: { adType: ListingItem['ad_type'] }) {
+  const isWorkerSearch = adType === 'worker_search';
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-[10px] font-bold px-1.5 py-0.5 rounded border ${
+        isWorkerSearch
+          ? 'bg-blue-500/10 text-blue-200 border-blue-400/20'
+          : 'bg-brand-orange/10 text-orange-200 border-brand-orange/20'
+      }`}
+    >
+      {isWorkerSearch ? <Users className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
+      {getAdTypeLabel(adType)}
+    </span>
+  );
+}
+
 function ListingRow({ item }: { item: ListingItem }) {
   const isSticky = item.type === 'sticky';
   const firmName = item.firm.name || 'Firma';
 
   return (
     <Link
-      href={item.href}
+      href={`/izdvojeni-oglasi/${item.id}/`}
       className="group relative flex items-center gap-3 md:gap-4 rounded-xl bg-ink-900/60 backdrop-blur-sm border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-3 md:p-4"
     >
       {isSticky && (
@@ -101,17 +98,16 @@ function ListingRow({ item }: { item: ListingItem }) {
       </div>
 
       <div className="flex-1 min-w-0">
-        <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+        <div className="flex flex-wrap items-center gap-1.5 mb-1">
           <h3 className="text-sm md:text-base font-bold text-white truncate group-hover:text-brand-orange transition-colors">
-            {firmName}
+            {item.title}
           </h3>
-          {item.firm.verified && <VerifiedBadge size="sm" className="border-white/10" />}
+          <TypeBadge adType={item.ad_type} />
         </div>
-        {isSticky && item.title && (
-          <p className="text-xs text-brand-orange font-medium truncate mb-0.5">{item.title}</p>
-        )}
-        <div className="flex flex-wrap items-center gap-2 text-xs text-white/50">
-          {item.firm.city && <span>{item.firm.city}</span>}
+        <div className="flex flex-wrap items-center gap-2 text-xs text-white/60">
+          <span className="font-medium text-white/80">{firmName}</span>
+          {item.firm.verified && <VerifiedBadge size="sm" className="border-white/10" />}
+          {item.firm.city && <span>· {item.firm.city}</span>}
           <RatingStars rating={item.firm.average_rating} count={item.firm.review_count} />
         </div>
       </div>
@@ -129,8 +125,8 @@ function SkeletonRow() {
       <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-ink-800" />
       <div className="w-10 h-10 rounded-xl bg-ink-800" />
       <div className="flex-1">
-        <div className="h-4 bg-ink-800 rounded w-1/3 mb-2" />
-        <div className="h-3 bg-ink-800 rounded w-1/4" />
+        <div className="h-4 bg-ink-800 rounded w-2/3 mb-2" />
+        <div className="h-3 bg-ink-800 rounded w-1/3" />
       </div>
       <div className="w-8 h-8 rounded-full bg-ink-800" />
     </div>
@@ -146,80 +142,67 @@ export default function HomepageTopListings() {
       try {
         const now = new Date().toISOString();
 
-        const { data: stickyData, error: stickyError } = await supabase
+        const { data: allAds, error } = await supabase
           .from('promoted_ads')
           .select(
-            'id,title,description,homepage_position,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
+            'id,title,description,ad_type,homepage_position,homepage_sticky_until,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
           )
           .eq('status', 'active')
-          .not('homepage_position', 'is', null)
-          .gt('homepage_sticky_until', now)
-          .order('homepage_position', { ascending: true })
-          .limit(5);
+          .gt('ends_at', now)
+          .order('homepage_position', { ascending: true, nullsFirst: false })
+          .order('created_at', { ascending: false })
+          .limit(20);
 
-        if (stickyError) throw stickyError;
+        if (error) throw error;
 
-        const stickyAds = ((stickyData || []) as unknown as PublicPromotedAd[])
-          .filter((ad) => ad.homepage_position && ad.homepage_position >= 1 && ad.homepage_position <= 5)
-          .map((ad) => ({
-            rank: ad.homepage_position!,
-            type: 'sticky' as const,
+        const typedAds = (allAds || []) as unknown as PublicPromotedAd[];
+
+        const sticky: ListingItem[] = [];
+        const regular: ListingItem[] = [];
+
+        typedAds.forEach((ad) => {
+          const firm = ad.firms || {
+            name: null,
+            slug: null,
+            city: null,
+            logo_url: null,
+            verified: null,
+            average_rating: null,
+            review_count: null,
+          };
+          const base = {
             id: ad.id,
             title: ad.title,
             description: ad.description,
-            firm: ad.firms || {
-              name: null,
-              slug: null,
-              city: null,
-              logo_url: null,
-              verified: null,
-              average_rating: null,
-              review_count: null,
-            },
-            href: `/izdvojeni-oglasi/${ad.id}/`,
-          }));
+            ad_type: ad.ad_type,
+            firm,
+          };
 
-        const neededOrganic = 10 - stickyAds.length;
-        let organic: ListingItem[] = [];
+          if (
+            ad.homepage_position &&
+            ad.homepage_position >= 1 &&
+            ad.homepage_position <= 5 &&
+            ad.homepage_sticky_until &&
+            new Date(ad.homepage_sticky_until) > new Date()
+          ) {
+            sticky.push({ ...base, rank: ad.homepage_position, type: 'sticky' });
+          } else if (regular.length < 5) {
+            regular.push({ ...base, rank: 0, type: 'regular' });
+          }
+        });
 
-        if (neededOrganic > 0) {
-          const { data: firmsData, error: firmsError } = await supabase
-            .from('firms')
-            .select(
-              'id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority'
-            )
-            .not('slug', 'like', 'test-%')
-            .limit(50);
-
-          if (firmsError) throw firmsError;
-
-          const typedFirms = ((firmsData || []) as OrganicFirm[]).sort(
-            (a, b) => firmScore(b) - firmScore(a)
-          );
-
-          const usedSlugs = new Set(stickyAds.map((s) => s.firm.slug).filter(Boolean));
-
-          organic = typedFirms
-            .filter((f) => !usedSlugs.has(f.slug))
-            .slice(0, neededOrganic)
-            .map((f, i) => ({
-              rank: stickyAds.length + i + 1,
-              type: 'organic' as const,
-              id: f.id,
-              firm: {
-                name: f.name,
-                slug: f.slug,
-                city: f.city,
-                logo_url: f.logo_url,
-                verified: f.verified,
-                average_rating: f.average_rating,
-                review_count: f.review_count,
-              },
-              href: `/firma-profil/${f.slug}/`,
-            }));
+        // Fill missing sticky slots with regular ads so we always have 10 rows if possible
+        while (sticky.length < 5 && regular.length > 0) {
+          const next = regular.shift();
+          if (!next) break;
+          sticky.push({ ...next, rank: sticky.length + 1, type: 'sticky' });
         }
 
-        const merged = [...stickyAds, ...organic].sort((a, b) => a.rank - b.rank);
+        const merged = [...sticky, ...regular]
+          .sort((a, b) => a.rank - b.rank)
+          .slice(0, 10)
+          .map((item, i) => ({ ...item, rank: i + 1 }));
+
         setItems(merged);
       } catch (err) {
         // eslint-disable-next-line no-console
@@ -245,9 +228,9 @@ export default function HomepageTopListings() {
               <Crown className="w-3.5 h-3.5" />
               Top lista
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Najbolje firme i majstori</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Top 10 oglasa</h2>
             <p className="text-sm text-white/60 mt-1">
-              Prvih 5 pozicija su premium reklame. Ostale se rangiraju prema ocjenama i verifikaciji.
+              Prvih 5 pozicija su premium reklame koje uvijek stoje na vrhu.
             </p>
           </div>
           <Link
@@ -268,7 +251,7 @@ export default function HomepageTopListings() {
               <SkeletonRow />
             </>
           ) : (
-            items.map((item) => <ListingRow key={`${item.type}-${item.id}`} item={item} />)
+            items.map((item) => <ListingRow key={item.id} item={item} />)
           )}
         </div>
       </div>
