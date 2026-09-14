@@ -351,6 +351,13 @@
   - Removed unused `app/kako-funkcionise/HowItWorksContent.tsx`; replaced with a server-side light-theme page that preserves `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
   - Standalone promoted-ad price kept at 49 KM (`components/FirmAdsTab.tsx`).
   - `npm run lint` and `npm run build` pass (2406 pages).
+- Created a new reusable `components/ProjectListCard.tsx` for premium horizontal job cards (image, title/description, category pill, location/time, status badge, budget, bid count, favorite toggle, dark "Pošalji ponudu" CTA) with a responsive mobile layout.
+- Replaced job-card UI across the site with `ProjectListCard`:
+  - `components/LatestAdsSection.tsx` (homepage "Najnoviji projekti") now shows a vertical list of premium cards and fetches budget/bids/images.
+  - `components/RecentProjects.tsx` (homepage bottom "Nedavno objavljeni poslovi") replaced its old two-column cards with the same vertical premium list.
+  - `components/FeaturedJobsSection.tsx` (category/city "Istaknuti poslovi") now uses the premium card list and fetches job images.
+  - `app/poslovi/ProjectsPageClient.tsx` replaced expandable list rows with the premium cards; removed inline expansion/lightbox and uses `onSendOffer` for category warnings.
+  - `npm run lint` and `npm run build` pass (2406 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
@@ -405,5 +412,9 @@
 - `app/kategorije/page.tsx`: categories list page (previous design restored).
 - `components/CategoryCard.tsx`: category card component.
 - `components/ui/Breadcrumbs.tsx`: hidden on desktop, visible on mobile.
-- `app/poslovi/ProjectsPageClient.tsx`: compact expandable job cards.
+- `app/poslovi/ProjectsPageClient.tsx`: premium job card list.
 - `app/gradovi/page.tsx`: redesigned cities list page.
+- `components/ProjectListCard.tsx`: reusable premium horizontal job card.
+- `components/LatestAdsSection.tsx`: homepage "Najnoviji projekti" list.
+- `components/RecentProjects.tsx`: homepage bottom job list.
+- `components/FeaturedJobsSection.tsx`: category/city featured jobs list.

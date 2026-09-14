@@ -6,20 +6,18 @@ import { plural } from '@/lib/plural';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
-  MapPin, Clock, ArrowRight, Loader2, Send,
-  Calendar, ImageIcon, ChevronDown, ChevronUp, X, Search, SlidersHorizontal,
+  ArrowRight, Loader2, X, Search, SlidersHorizontal,
   ArrowUpDown, ShieldCheck, Wallet, AlertTriangle, Briefcase, Sparkles,
-  Banknote, Tag, LayoutGrid,
+  LayoutGrid, Clock,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import FeaturedBadge from '@/components/FeaturedBadge';
+import ProjectListCard from '@/components/ProjectListCard';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 import { getCategory, categories } from '@/lib/data';
-import { formatDate } from '@/lib/date';
 import { JsonLd, jobListSchema } from '@/lib/jsonld';
 
 interface Job {
@@ -38,40 +36,7 @@ interface Job {
   bids_count: number;
   is_featured: boolean | null;
   featured_until: string | null;
-}
-
-interface JobImage {
-  id: string;
-  image_url: string;
-}
-
-function relativeTime(iso: string) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  if (minutes < 1) return 'upravo objavljeno';
-  if (minutes < 60) return `prije ${minutes} min`;
-  if (hours < 24) return `prije ${hours} h`;
-  if (days === 1) return 'jučer';
-  if (days < 7) return `prije ${days} dana`;
-  return formatDate(iso);
-}
-
-function formatBudget(job: Job) {
-  if (job.budget_mode === 'open') return 'Majstori predlažu cijenu';
-  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')} - ${job.budget_max.toLocaleString('bs')} KM`;
-  if (job.budget_min) return `Od ${job.budget_min.toLocaleString('bs')} KM`;
-  if (job.budget_max) return `Do ${job.budget_max.toLocaleString('bs')} KM`;
-  return 'Budžet po dogovoru';
-}
-
-function formatBudgetShort(job: Job) {
-  if (job.budget_mode === 'open') return 'po dogovoru';
-  if (job.budget_min && job.budget_max) return `${job.budget_min.toLocaleString('bs')}-${job.budget_max.toLocaleString('bs')} KM`;
-  if (job.budget_min) return `od ${job.budget_min.toLocaleString('bs')} KM`;
-  if (job.budget_max) return `do ${job.budget_max.toLocaleString('bs')} KM`;
-  return 'po dogovoru';
+  job_images: { image_url: string }[] | null;
 }
 
 function ProjectsPageContent() {
@@ -79,10 +44,6 @@ function ProjectsPageContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
-  const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
-  const [jobImages, setJobImages] = useState<Record<string, JobImage[]>>({});
-  const [loadingImages, setLoadingImages] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<{ url: string; title: string } | null>(null);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('');
   const [cityFilter, setCityFilter] = useState('');
@@ -116,7 +77,7 @@ function ProjectsPageContent() {
     setLoading(true);
     const { data, error: err } = await supabase
       .from('jobs')
-      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count,is_featured,featured_until')
+      .select('id,title,description,city,address,category_slug,status,created_at,budget_mode,budget_min,budget_max,deadline,bids_count,is_featured,featured_until,job_images(image_url)')
       .eq('status', 'open')
       .order('created_at', { ascending: false });
     if (err) {
@@ -126,20 +87,6 @@ function ProjectsPageContent() {
     }
     setLoading(false);
   }, []);
-
-  const fetchImages = useCallback(async (jobId: string) => {
-    if (jobImages[jobId]) return;
-    setLoadingImages(jobId);
-    const { data, error: err } = await supabase
-      .from('job_images')
-      .select('id, image_url')
-      .eq('job_id', jobId)
-      .order('created_at', { ascending: true });
-    if (!err) {
-      setJobImages((prev) => ({ ...prev, [jobId]: (data as JobImage[]) || [] }));
-    }
-    setLoadingImages(null);
-  }, [jobImages]);
 
   useEffect(() => {
     setMounted(true);
@@ -153,12 +100,7 @@ function ProjectsPageContent() {
       const section = document.getElementById('listings');
       if (section) section.scrollIntoView({ behavior: 'smooth' });
     }
-    const expandId = searchParams.get('expandId');
-    if (expandId) {
-      setExpandedJobId(expandId);
-      fetchImages(expandId);
-    }
-  }, [searchParams, fetchImages]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (user && isFirmRole(role)) loadFirmCategories();
@@ -167,15 +109,6 @@ function ProjectsPageContent() {
   function isActiveFeatured(job: Job) {
     if (!job.is_featured || !job.featured_until) return false;
     return new Date(job.featured_until).getTime() > Date.now();
-  }
-
-  function toggleExpand(jobId: string) {
-    if (expandedJobId === jobId) {
-      setExpandedJobId(null);
-    } else {
-      setExpandedJobId(jobId);
-      fetchImages(jobId);
-    }
   }
 
   function isCategoryAllowed(job: Job) {
@@ -538,146 +471,14 @@ function ProjectsPageContent() {
                 </div>
               </div>
             ) : (
-              <div className="space-y-3 mb-12">
-                {filteredJobs.map((job) => {
-                  const category = getCategory(job.category_slug);
-                  const isExpanded = expandedJobId === job.id;
-                  const images = jobImages[job.id] || [];
-                  return (
-                    <article
-                      key={job.id}
-                      className={`bg-white rounded-2xl border border-gray-100 overflow-hidden transition-all duration-200 hover:shadow-md ${
-                        isExpanded ? 'ring-1 ring-brand-orange/20 shadow-lg' : ''
-                      }`}
-                    >
-                      <button
-                        onClick={() => toggleExpand(job.id)}
-                        className="w-full text-left p-4 md:p-5"
-                      >
-                        <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
-                          <div className="flex items-center gap-3 flex-1 min-w-0">
-                            <div className="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-                              <Tag className="w-5 h-5 text-brand-orange" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <h3 className="text-base md:text-lg font-bold text-gray-900 truncate">{job.title}</h3>
-                                {isActiveFeatured(job) && <FeaturedBadge />}
-                              </div>
-                              <div className="flex items-center gap-3 text-xs md:text-sm text-steel mt-0.5 flex-wrap">
-                                <span className="flex items-center gap-1">
-                                  <MapPin className="w-3.5 h-3.5" /> {job.city}{job.address ? `, ${job.address}` : ''}
-                                </span>
-                                <span className="flex items-center gap-1">
-                                  <Clock className="w-3.5 h-3.5" /> {relativeTime(job.created_at)}
-                                </span>
-                                <span className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-700 font-medium">
-                                  {category?.name || job.category_slug}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2 md:justify-end shrink-0">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-orange-50 text-sm font-semibold text-brand-orange">
-                              <Banknote className="w-4 h-4" />
-                              {formatBudgetShort(job)}
-                            </span>
-                            <span className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-white border border-gray-100 text-sm font-semibold text-gray-600">
-                              {job.bids_count} {job.bids_count === 1 ? 'ponuda' : job.bids_count >= 2 && job.bids_count <= 4 ? 'ponude' : 'ponuda'}
-                            </span>
-                            <span className={`inline-flex items-center text-brand-orange transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
-                              <ChevronDown className="w-5 h-5" />
-                            </span>
-                          </div>
-                        </div>
-                      </button>
-
-                      {isExpanded && (
-                        <div className="px-4 md:px-5 pb-5 border-t border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200">
-                          <p className="text-steel text-sm leading-relaxed py-4">{job.description}</p>
-
-                          {job.deadline && (
-                            <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-                              <Calendar className="w-4 h-4 text-brand-orange" />
-                              Rok: {formatDate(job.deadline)}
-                            </div>
-                          )}
-
-                          {loadingImages === job.id ? (
-                            <div className="flex items-center gap-2 text-sm text-steel py-2 mb-4">
-                              <Loader2 className="w-4 h-4 animate-spin" /> Učitavanje fotografija...
-                            </div>
-                          ) : images.length > 0 ? (
-                            <div className="mb-4">
-                              <h4 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                <ImageIcon className="w-4 h-4 text-brand-orange" /> Fotografije
-                              </h4>
-                              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
-                                {images.map((img) => (
-                                  <button
-                                    key={img.id}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedImage({ url: img.image_url, title: job.title });
-                                    }}
-                                    className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
-                                    aria-label={`Pogledaj fotografiju posla: ${job.title}`}
-                                  >
-                                    <Image
-                                      src={img.image_url}
-                                      alt={`Fotografija posla: ${job.title}`}
-                                      fill
-                                      sizes="96px"
-                                      className="object-cover"
-                                      unoptimized
-                                    />
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          ) : null}
-
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleBidClick(job);
-                            }}
-                            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-brand-orange text-white px-6 py-3 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors active:scale-95"
-                          >
-                            <Send className="w-4 h-4" />
-                            {!mounted ? 'Pošalji ponudu' : user ? (isFirmRole(role) ? 'Pošalji ponudu' : 'Moj dashboard') : 'Prijavi se da pošalješ ponudu'}
-                          </button>
-                        </div>
-                      )}
-                    </article>
-                  );
-                })}
-              </div>
-            )}
-
-            {selectedImage && (
-              <div
-                className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 sm:p-8"
-                onClick={() => setSelectedImage(null)}
-              >
-                <button
-                  onClick={() => setSelectedImage(null)}
-                  className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors"
-                  aria-label="Zatvori"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-                <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
-                  <Image
-                    src={selectedImage.url}
-                    alt={`Uvećana fotografija posla: ${selectedImage.title}`}
-                    width={1200}
-                    height={800}
-                    className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                    onClick={(e) => e.stopPropagation()}
-                    unoptimized
+              <div className="flex flex-col gap-4 md:gap-5 mb-12">
+                {filteredJobs.map((job) => (
+                  <ProjectListCard
+                    key={job.id}
+                    job={job as unknown as import('@/components/ProjectListCard').ProjectListCardJob}
+                    onSendOffer={() => handleBidClick(job)}
                   />
-                </div>
+                ))}
               </div>
             )}
 
