@@ -6,7 +6,7 @@ import { Subscription, getFeaturedAdsUsedThisMonth, getIncludedAdsRemaining } fr
 import { Megaphone, Loader2, CheckCircle, Clock, AlertCircle, Crown, Zap, Users, Sparkles, Upload, X, ImageIcon } from 'lucide-react';
 import NextImage from 'next/image';
 
-const PAID_AD_PRICE = 39;
+const PAID_AD_PRICE = 49;
 
 interface PromotedAd {
   id: string;

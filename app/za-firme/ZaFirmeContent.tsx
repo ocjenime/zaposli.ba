@@ -35,6 +35,10 @@ import {
   BarChart3,
   UserPlus,
   LayoutGrid,
+  Megaphone,
+  Crown,
+  Eye,
+  MousePointerClick,
 } from 'lucide-react';
 
 const benefits = [
@@ -688,6 +692,97 @@ export default function ZaFirmeContent() {
               <span className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-brand-orange" /> Podrška na bosanskom
               </span>
+            </div>
+          </div>
+        </section>
+
+        {/* Promoted ads pricing */}
+        <section id="reklame" className="relative py-20 md:py-28 bg-gradient-to-b from-cloud to-ink-950 overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[30rem] bg-brand-orange/5 rounded-full blur-[140px] pointer-events-none" />
+
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+              {/* Left: copy */}
+              <div>
+                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-bold text-brand-orange uppercase tracking-wider mb-6">
+                  <Megaphone className="w-4 h-4" />
+                  Reklamirajte se
+                </span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
+                  Istaknite svoju{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                    firmu na prvoj strani.
+                  </span>
+                </h2>
+                <p className="text-white/70 text-lg mb-8 max-w-xl">
+                  Postavite premium oglas s bannerom, logotipom i opisom na homepage-u Zaposli.ba. Budite prvo što klijenti vide kada traže majstora ili firmu.
+                </p>
+
+                <ul className="space-y-4">
+                  {[
+                    { icon: Crown, text: 'Premium pozicija na homepage-u' },
+                    { icon: Eye, text: 'Banner, logo i detaljan opis oglasa' },
+                    { icon: MousePointerClick, text: 'Direktan link na vaš profil ili web stranicu' },
+                    { icon: BarChart3, text: 'Mjesečno izvještavanje o pregledima i klikovima' },
+                  ].map((item) => (
+                    <li key={item.text} className="flex items-start gap-3 text-white/80">
+                      <span className="w-8 h-8 rounded-full bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center shrink-0">
+                        <item.icon className="w-4 h-4 text-brand-orange" />
+                      </span>
+                      {item.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Right: pricing card */}
+              <div className="relative">
+                <div className="absolute -inset-1 bg-gradient-to-br from-brand-orange to-amber-400 rounded-3xl blur opacity-30" />
+                <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-8 md:p-10 shadow-2xl shadow-black/40">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
+                      <Crown className="w-3 h-3" /> Najbolja vrijednost
+                    </span>
+                  </div>
+
+                  <div className="text-center mb-8 pt-4">
+                    <h3 className="text-xl font-bold text-white mb-2">Istaknuti oglas</h3>
+                    <p className="text-white/60 text-sm mb-5">Prikazuje se na homepage-u 30 dana</p>
+                    <div className="flex items-end justify-center gap-1">
+                      <span className="text-5xl md:text-6xl font-extrabold text-white leading-none">49</span>
+                      <span className="text-white/70 font-semibold mb-2">KM/mj</span>
+                    </div>
+                    <p className="text-sm text-white/50 mt-2 line-through">79 KM/mj</p>
+                  </div>
+
+                  <ul className="space-y-3 mb-8">
+                    {[
+                      'Banner dimenzija 1200 × 400 px',
+                      'Prikaz u sekciji „Istaknuti oglasi"',
+                      'Brojčana pozicija 1–5 na homepage-u',
+                      'Direktna stranica oglasa s CTA',
+                    ].map((feature) => (
+                      <li key={feature} className="flex items-start gap-3 text-sm text-white/80">
+                        <span className="w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle className="w-3.5 h-3.5" />
+                        </span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <Link
+                    href="/dashboard/firma/"
+                    className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-4 rounded-xl font-semibold text-base transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
+                  >
+                    Kreiraj oglas
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <p className="text-center text-xs text-white/40 mt-4">
+                    Bez ugovorne obaveze. Otkazivanje u bilo kojem trenutku.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>

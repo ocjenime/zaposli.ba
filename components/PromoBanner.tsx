@@ -40,7 +40,7 @@ export default function PromoBanner() {
               Dosegnite hiljade klijenata na Zaposli.ba. Istaknite svoju firmu, privucite nove kupce i budite prvi izbor za projekte u vašem gradu.
             </p>
             <Link
-              href="/za-firme/"
+              href="/za-firme/#reklame"
               className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
             >
               Saznaj više
