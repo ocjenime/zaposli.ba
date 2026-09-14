@@ -314,7 +314,11 @@
   - Added `lib/promoted-ads.ts` helper for fetching active ads and building links.
   - Added `supabase/migration-promoted-ads-rls.sql` to enable RLS and add public read + owner/admin policies for `promoted_ads`.
   - Updated `app/sitemap.ts` to include `/izdvojeni-oglasi/`.
-- **ACTION REQUIRED**: Apply `supabase/migration-promoted-ads-rls.sql` in Supabase SQL Editor so public pages can read active promoted ads.
+- User applied `supabase/migration-promoted-ads-rls.sql` and created 6 test ads on a test firm.
+- Refactored homepage promoted ads into a **compact premium horizontal strip**:
+  - Single-row horizontal scroll with snap, hidden scrollbar, edge gradient fades, and desktop arrow controls.
+  - Compact glass cards (thumbnail + title + type badge + firm + CTA) take minimal vertical space.
+  - Section label changed to "Sponzorirano" for clear ad disclosure.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
