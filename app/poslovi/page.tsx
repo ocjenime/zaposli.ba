@@ -41,7 +41,7 @@ export default function PosloviPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
+        <div className="min-h-screen flex flex-col bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
