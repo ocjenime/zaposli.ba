@@ -13,6 +13,7 @@ interface PromotedAd {
   title: string;
   description: string;
   image_url: string | null;
+  banner_url: string | null;
   cta_url: string | null;
   ad_type: 'promotion' | 'worker_search';
   amount: number;
@@ -41,6 +42,10 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [banner, setBanner] = useState<File | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const bannerInputRef = useRef<HTMLInputElement>(null);
 
   const includedRemaining = getIncludedAdsRemaining(subscription, adsUsed);
   const canUseIncluded = includedRemaining > 0;
@@ -89,14 +94,41 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  async function uploadImage(): Promise<string | null> {
-    if (!image) return null;
-    const ext = image.name.split('.').pop() || 'jpg';
-    const path = `promoted-ads/${firmId}/${Date.now()}.${ext}`;
-    const { error: uploadErr } = await supabase.storage.from('job-images').upload(path, image);
+  function handleBannerChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Banner može biti najviše 5MB.');
+      return;
+    }
+    setBanner(file);
+    setBannerPreview(URL.createObjectURL(file));
+    setError('');
+  }
+
+  function removeBanner() {
+    setBanner(null);
+    setBannerPreview(null);
+    if (bannerInputRef.current) bannerInputRef.current.value = '';
+  }
+
+  async function uploadFile(file: File, folder: string): Promise<string | null> {
+    const ext = file.name.split('.').pop() || 'jpg';
+    const path = `${folder}/${firmId}/${Date.now()}.${ext}`;
+    const { error: uploadErr } = await supabase.storage.from('job-images').upload(path, file);
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from('job-images').getPublicUrl(path);
     return data.publicUrl;
+  }
+
+  async function uploadImage(): Promise<string | null> {
+    if (!image) return null;
+    return uploadFile(image, 'promoted-ads');
+  }
+
+  async function uploadBanner(): Promise<string | null> {
+    if (!banner) return null;
+    return uploadFile(banner, 'promoted-ads-banners');
   }
 
   async function submitAd() {
@@ -114,7 +146,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     setSuccess('');
 
     try {
-      const imageUrl = await uploadImage();
+      const [imageUrl, bannerUrl] = await Promise.all([uploadImage(), uploadBanner()]);
       const source = canUseIncluded ? 'included' : 'paid';
       const amount = source === 'included' ? 0 : PAID_AD_PRICE;
 
@@ -123,6 +155,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
         title: title.trim(),
         description: description.trim(),
         image_url: imageUrl,
+        banner_url: bannerUrl,
         ad_type: adType,
         amount,
         status: 'pending',
@@ -135,6 +168,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
       setDescription('');
       setAdType('promotion');
       removeImage();
+      removeBanner();
       setSuccess(
         source === 'included'
           ? 'Oglas je poslan na odobrenje (uključen u paket).'
@@ -265,30 +299,37 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Slika (opcionalno)</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
+              Banner oglasa
+            </label>
+            <p className="text-xs text-steel mb-2">
+              Preporučene dimenzije: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB.
+              Savršeno se prikazuje na homepage traci i stranici izdvojenih oglasa.
+            </p>
             <input
-              ref={fileInputRef}
+              ref={bannerInputRef}
               type="file"
               accept="image/jpeg,image/png,image/webp"
-              onChange={handleImageChange}
+              onChange={handleBannerChange}
               className="hidden"
             />
-            {!preview ? (
+            {!bannerPreview ? (
               <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => bannerInputRef.current?.click()}
                 className="w-full flex flex-col items-center justify-center gap-2 px-4 py-8 rounded-xl border-2 border-dashed border-gray-200 dark:border-ink-700 text-steel hover:border-brand-orange hover:text-brand-orange transition-colors"
               >
                 <Upload className="w-6 h-6" />
-                <span className="text-sm font-medium">Kliknite da dodate sliku (max 5MB)</span>
+                <span className="text-sm font-medium">Kliknite da dodate banner (max 5MB)</span>
+                <span className="text-xs text-steel">1200 × 400 px preporučeno</span>
               </button>
             ) : (
-              <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-ink-700 aspect-video">
+              <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-ink-700 aspect-[3/1]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-cover" />
                 <button
                   type="button"
-                  onClick={removeImage}
+                  onClick={removeBanner}
                   className="absolute top-2 right-2 w-8 h-8 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center"
                 >
                   <X className="w-4 h-4" />

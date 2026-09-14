@@ -319,6 +319,11 @@
   - Single-row horizontal scroll with snap, hidden scrollbar, edge gradient fades, and desktop arrow controls.
   - Compact glass cards (thumbnail + title + type badge + firm + CTA) take minimal vertical space.
   - Section label changed to "Sponzorirano" for clear ad disclosure.
+- Upgraded promoted ads to **banner-based cards**:
+  - Added `banner_url` column via `supabase/migration-promoted-ads-banner.sql`.
+  - Updated `FirmAdsTab.tsx` upload form: firms now upload a wide banner with a recommended dimension note (**1200 × 400 px**, max 5MB).
+  - Redesigned `PromotedAdCard.tsx` to show the banner at the top, firm logo overlay, firm name, verified badge, description, and CTA.
+  - Updated homepage strip and `/izdvojeni-oglasi/` page to use the new banner cards.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.

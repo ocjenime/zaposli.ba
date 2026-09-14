@@ -2,91 +2,34 @@
 
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
-import NextImage from 'next/image';
-import { Megaphone, ArrowRight, ChevronLeft, ChevronRight, Sparkles, Users } from 'lucide-react';
+import { Megaphone, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { PublicPromotedAd } from '@/lib/promoted-ads';
-import { getPromotedAdHref, getAdTypeLabel } from '@/lib/promoted-ads';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
+import PromotedAdCard from './PromotedAdCard';
 
-const HOMEPAGE_AD_LIMIT = 10;
-const CARD_WIDTH = 320; // px
+const HOMEPAGE_AD_LIMIT = 8;
+const CARD_WIDTH = 340; // px
 
-function CompactAdCard({ ad }: { ad: PublicPromotedAd }) {
-  const href = getPromotedAdHref(ad);
-  const isWorkerSearch = ad.ad_type === 'worker_search';
-
-  return (
-    <Link
-      href={href}
-      target={ad.cta_url ? '_blank' : undefined}
-      rel={ad.cta_url ? 'noopener noreferrer' : undefined}
-      className="group relative shrink-0 w-[280px] md:w-[320px] snap-start rounded-xl bg-ink-900/60 backdrop-blur-sm border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-3 flex gap-3 overflow-hidden"
-    >
-      {/* subtle top accent */}
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-orange via-amber-400 to-brand-orange opacity-60 group-hover:opacity-100 transition-opacity" />
-
-      {/* Thumbnail */}
-      <div className="relative shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden bg-ink-950 border border-white/5">
-        {ad.image_url ? (
-          <NextImage
-            src={ad.image_url}
-            alt={ad.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            sizes="80px"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-ink-900">
-            {isWorkerSearch ? (
-              <Users className="w-6 h-6 text-brand-orange/70" />
-            ) : (
-              <Sparkles className="w-6 h-6 text-brand-orange/70" />
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-col flex-1 min-w-0 py-0.5">
-        <span
-          className={`self-start text-[10px] font-bold px-1.5 py-0.5 rounded border mb-1.5 ${
-            isWorkerSearch
-              ? 'bg-blue-500/10 text-blue-200 border-blue-400/20'
-              : 'bg-brand-orange/10 text-orange-200 border-brand-orange/20'
-          }`}
-        >
-          {getAdTypeLabel(ad.ad_type)}
-        </span>
-        <h3 className="text-sm font-bold text-white leading-tight line-clamp-2 group-hover:text-brand-orange transition-colors">
-          {ad.title}
-        </h3>
-        <div className="mt-auto pt-1.5 flex items-center justify-between">
-          <span className="text-xs text-white/50 truncate max-w-[120px]">
-            {ad.firms?.name || 'Firma'}
-          </span>
-          <span className="text-xs font-semibold text-brand-orange inline-flex items-center gap-0.5 group-hover:gap-1.5 transition-all">
-            Pogledaj <ArrowRight className="w-3 h-3" />
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function CompactSkeleton() {
+function AdCardSkeleton() {
   return (
     <div className="flex gap-4">
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="shrink-0 w-[280px] md:w-[320px] rounded-xl bg-ink-900/40 border border-ink-800 p-3 flex gap-3 animate-pulse"
+          className="shrink-0 w-[300px] md:w-[340px] rounded-2xl bg-ink-900/40 border border-ink-800 overflow-hidden animate-pulse"
         >
-          <div className="w-16 h-16 md:w-20 md:h-20 rounded-lg bg-ink-800" />
-          <div className="flex flex-col flex-1 py-0.5">
-            <div className="h-4 bg-ink-800 rounded w-16 mb-2" />
+          <div className="aspect-[3/1] bg-ink-950" />
+          <div className="p-4">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-ink-800 -mt-7 border-2 border-ink-800" />
+              <div className="flex-1 pt-0.5">
+                <div className="h-4 bg-ink-800 rounded w-32 mb-1" />
+                <div className="h-3 bg-ink-800 rounded w-20" />
+              </div>
+            </div>
+            <div className="h-5 bg-ink-800 rounded w-3/4 mb-2" />
             <div className="h-4 bg-ink-800 rounded w-full mb-1" />
-            <div className="h-4 bg-ink-800 rounded w-3/4 mt-auto" />
+            <div className="h-4 bg-ink-800 rounded w-2/3" />
           </div>
         </div>
       ))}
@@ -105,7 +48,7 @@ export default function PromotedAdsSection() {
         const { data, error } = await supabase
           .from('promoted_ads')
           .select(
-            'id,title,description,image_url,cta_url,ad_type,ends_at,created_at,firms(name,slug,city,verified)'
+            'id,title,description,image_url,banner_url,cta_url,ad_type,ends_at,created_at,firms(name,slug,city,logo_url,verified)'
           )
           .eq('status', 'active')
           .gt('ends_at', new Date().toISOString())
@@ -139,7 +82,7 @@ export default function PromotedAdsSection() {
   return (
     <section className="relative py-8 md:py-10 bg-cloud border-y border-white/5 overflow-hidden">
       {/* subtle ambient glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[12rem] bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[14rem] bg-brand-orange/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -188,12 +131,16 @@ export default function PromotedAdsSection() {
 
         <div
           ref={scrollRef}
-          className="flex gap-3 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
+          className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
         >
           {loading ? (
-            <CompactSkeleton />
+            <AdCardSkeleton />
           ) : (
-            ads.map((ad) => <CompactAdCard key={ad.id} ad={ad} />)
+            ads.map((ad) => (
+              <div key={ad.id} className="shrink-0 w-[300px] md:w-[340px]">
+                <PromotedAdCard ad={ad} />
+              </div>
+            ))
           )}
         </div>
       </div>

@@ -2,19 +2,20 @@
 
 import Link from 'next/link';
 import NextImage from 'next/image';
-import { Sparkles, Users, MapPin, ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles, Users } from 'lucide-react';
 import type { PublicPromotedAd } from '@/lib/promoted-ads';
 import { getPromotedAdHref, getAdTypeLabel } from '@/lib/promoted-ads';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
+import LogoDisplay from '@/components/ui/LogoDisplay';
 
 interface PromotedAdCardProps {
   ad: PublicPromotedAd;
-  variant?: 'default' | 'compact';
 }
 
-export default function PromotedAdCard({ ad, variant = 'default' }: PromotedAdCardProps) {
+export default function PromotedAdCard({ ad }: PromotedAdCardProps) {
   const href = getPromotedAdHref(ad);
   const isWorkerSearch = ad.ad_type === 'worker_search';
+  const bannerUrl = ad.banner_url || ad.image_url;
 
   return (
     <Link
@@ -26,11 +27,11 @@ export default function PromotedAdCard({ ad, variant = 'default' }: PromotedAdCa
       {/* Top brand accent line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-orange via-amber-400 to-brand-orange opacity-80" />
 
-      {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-ink-950">
-        {ad.image_url ? (
+      {/* Banner */}
+      <div className="relative aspect-[3/1] overflow-hidden bg-ink-950">
+        {bannerUrl ? (
           <NextImage
-            src={ad.image_url}
+            src={bannerUrl}
             alt={ad.title}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -38,22 +39,22 @@ export default function PromotedAdCard({ ad, variant = 'default' }: PromotedAdCa
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-ink-900 to-ink-950">
-            <div className="w-16 h-16 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center">
               {isWorkerSearch ? (
-                <Users className="w-8 h-8 text-brand-orange" />
+                <Users className="w-6 h-6 text-brand-orange" />
               ) : (
-                <Sparkles className="w-8 h-8 text-brand-orange" />
+                <Sparkles className="w-6 h-6 text-brand-orange" />
               )}
             </div>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/20 to-transparent" />
 
         {/* Type badge */}
         <span
-          className={`absolute top-3 left-3 inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-md border ${
+          className={`absolute top-2 left-2 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full backdrop-blur-md border ${
             isWorkerSearch
-              ? 'bg-blue-500/20 text-blue-200 border-blue-400/30'
+              ? 'bg-blue-500/20 text-blue-100 border-blue-400/30'
               : 'bg-brand-orange/20 text-orange-100 border-brand-orange/30'
           }`}
         >
@@ -63,7 +64,31 @@ export default function PromotedAdCard({ ad, variant = 'default' }: PromotedAdCa
       </div>
 
       {/* Content */}
-      <div className="flex flex-col flex-1 p-5">
+      <div className="flex flex-col flex-1 p-4">
+        <div className="flex items-start gap-3 mb-3">
+          <div className="shrink-0 -mt-7 relative z-10">
+            <LogoDisplay
+              name={ad.firms?.name || 'Firma'}
+              src={ad.firms?.logo_url}
+              alt={ad.firms?.name || 'Firma'}
+              size="sm"
+              rounded="xl"
+              className="border-2 border-ink-800 shadow-lg"
+            />
+          </div>
+          <div className="flex-1 min-w-0 pt-0.5">
+            <div className="flex items-center gap-1.5">
+              <p className="text-sm font-bold text-white truncate">
+                {ad.firms?.name || 'Firma'}
+              </p>
+              {ad.firms?.verified && <VerifiedBadge size="sm" className="border-white/10 shrink-0" />}
+            </div>
+            {ad.firms?.city && (
+              <p className="text-xs text-white/50 truncate">{ad.firms.city}</p>
+            )}
+          </div>
+        </div>
+
         <h3 className="text-base font-bold text-white leading-snug mb-2 line-clamp-2 group-hover:text-brand-orange transition-colors">
           {ad.title}
         </h3>
@@ -71,27 +96,10 @@ export default function PromotedAdCard({ ad, variant = 'default' }: PromotedAdCa
           {ad.description}
         </p>
 
-        <div className="flex items-center gap-2 text-xs text-white/60 mb-4">
-          <span className="font-semibold text-white/90">
-            {ad.firms?.name || 'Firma'}
-          </span>
-          {ad.firms?.verified && <VerifiedBadge size="sm" className="border-white/10" />}
-        </div>
-
-        <div className="flex items-center justify-between pt-4 border-t border-white/10">
-          {ad.firms?.city ? (
-            <span className="inline-flex items-center gap-1 text-xs text-white/50">
-              <MapPin className="w-3.5 h-3.5" />
-              {ad.firms.city}
-            </span>
-          ) : (
-            <span />
-          )}
-          <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange group-hover:gap-2 transition-all">
-            {ad.cta_url ? 'Posjeti' : 'Profil'}
-            <ArrowRight className="w-4 h-4" />
-          </span>
-        </div>
+        <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange group-hover:gap-2 transition-all">
+          {ad.cta_url ? 'Posjeti' : 'Pogledaj profil'}
+          <ArrowRight className="w-4 h-4" />
+        </span>
       </div>
     </Link>
   );
