@@ -82,12 +82,12 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
   if (jobs.length === 0) return null;
 
   return (
-    <section className="py-14 bg-white border-b border-gray-100">
+    <section className="py-14 bg-ink-950 border-b border-ink-800">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-amber-500" />
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">Istaknuti poslovi</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-white">Istaknuti poslovi</h2>
           </div>
           <Link
             href={categorySlug ? `/poslovi/?category=${categorySlug}` : '/poslovi/'}
@@ -102,20 +102,20 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
           {jobs.map((job) => (
             <div
               key={job.id}
-              className="bg-cloud rounded-2xl p-6 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 group flex flex-col h-full"
+              className="bg-ink-900/60 rounded-2xl p-6 border border-ink-800 hover:border-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/5 transition-all duration-300 group flex flex-col h-full"
             >
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/poslovi/?category=${job.category_slug}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-white text-brand-orange border border-gray-100 hover:bg-brand-orange hover:text-white hover:border-transparent transition-colors"
+                    className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-ink-800 text-brand-orange border border-ink-700 hover:bg-brand-orange hover:text-white hover:border-transparent transition-colors"
                   >
                     {getCategory(job.category_slug)?.name || job.category_slug}
                   </Link>
                   <FeaturedBadge />
                 </div>
-                <span className="text-xs text-gray-400 bg-white px-2 py-1 rounded-md border border-gray-100">
+                <span className="text-xs text-white/50 bg-ink-800 px-2 py-1 rounded-md border border-ink-700">
                   {formatDate(job.created_at)}
                 </span>
               </div>
@@ -124,14 +124,14 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 href={`/poslovi/?expandId=${job.id}`}
                 className="block group/link"
               >
-                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover/link:text-brand-orange transition-colors">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover/link:text-brand-orange transition-colors">
                   {job.title}
                 </h3>
 
-                <p className="text-steel text-sm mb-4 line-clamp-2">{job.description}</p>
+                <p className="text-white/70 text-sm mb-4 line-clamp-2">{job.description}</p>
               </Link>
 
-              <div className="flex flex-wrap gap-4 text-xs text-gray-500 mb-4">
+              <div className="flex flex-wrap gap-4 text-xs text-white/60 mb-4">
                 <div className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5" />
                   <span>{job.city}</span>
@@ -144,10 +144,10 @@ export default function FeaturedJobsSection({ categorySlug, city, limit = 4 }: F
                 )}
               </div>
 
-              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-gray-200">
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-ink-800">
                 <div className="flex items-center gap-3">
                   <div className="font-bold text-brand-orange text-sm">{formatBudget(job)}</div>
-                  <div className="flex items-center gap-1.5 text-xs text-steel bg-white px-2.5 py-1 rounded-lg border border-gray-100">
+                  <div className="flex items-center gap-1.5 text-xs text-white/70 bg-ink-800 px-2.5 py-1 rounded-lg border border-ink-700">
                     <span>{job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}</span>
                   </div>
                 </div>
