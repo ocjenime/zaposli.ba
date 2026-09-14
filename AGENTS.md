@@ -336,13 +336,23 @@
   - New `components/RecommendedFirmsSection.tsx`: 5 recommended firm cards ranked by rating + verified + plan priority.
   - New `components/LatestAdsSection.tsx`: "Najnoviji oglasi" grid of 5 latest open jobs with images, category pills, city and time-ago.
   - Assembled all new sections in `app/page.tsx` while keeping existing HowItWorks, PopularCategories, StatsSection, RecentProjects, Testimonials and CTASection below.
+- Professional promoted-ads pricing:
+  - Added premium "Reklamirajte se" section on `/za-firme/#reklame` at **49 KM/mj** with launch strikethrough 79 KM/mj, benefits, and a CTA to `/dashboard/firma/`.
+  - Updated `components/PromoBanner.tsx` CTA to link to `/za-firme/#reklame`.
+  - Updated standalone ad price in `components/FirmAdsTab.tsx` from 39 to 49 KM.
+- Production smoke test passed:
+  - Homepage renders, header links clean, hero CTAs present.
+  - PromoBanner correctly links to `/za-firme/#reklame`.
+  - `/za-firme/#reklame` anchor and 49 KM pricing card render.
+  - `/izdvojeni-oglasi/` renders test promoted ads.
+  - `npm run lint` and `npm run build` pass (2406 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- Wait for user feedback and proceed with the next requested page or task.
+- Redesign the next highest-traffic public page(s) in the same WOW/Higgsfield style. Highest-priority candidates: `/poslovi/`, `/firma-profil/[slug]/`, `/top-firme/`, `/kategorije/`, `/gradovi/`, `/kako-funkcionise/` (already redesigned but can be polished), dashboard pages. Ask user which page to tackle first.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
