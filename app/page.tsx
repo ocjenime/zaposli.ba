@@ -7,7 +7,7 @@ import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
 import RecentProjects from '@/components/RecentProjects';
 import Testimonials from '@/components/Testimonials';
-import HomepageTopListings from '@/components/HomepageTopListings';
+
 import CTASection from '@/components/CTASection';
 import LazySection from '@/components/LazySection';
 import { JsonLd, organizationSchema, websiteSchema, breadcrumbSchema } from '@/lib/jsonld';
@@ -58,9 +58,6 @@ export default function Home() {
           <HowItWorks />
         </LazySection>
         <PopularCategories />
-        <LazySection minHeight="30rem">
-          <HomepageTopListings />
-        </LazySection>
         <LazySection minHeight="16rem">
           <StatsSection />
         </LazySection>

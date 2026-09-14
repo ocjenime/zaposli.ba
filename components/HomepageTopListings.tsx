@@ -222,7 +222,7 @@ export default function HomepageTopListings() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[16rem] bg-brand-orange/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between gap-4 mb-6">
+        <div className="flex items-end justify-between gap-4 mb-6 animate-fade-in">
           <div>
             <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-brand-orange uppercase">
               <Crown className="w-3.5 h-3.5" />
@@ -251,7 +251,15 @@ export default function HomepageTopListings() {
               <SkeletonRow />
             </>
           ) : (
-            items.map((item) => <ListingRow key={item.id} item={item} />)
+            items.map((item, i) => (
+              <div
+                key={item.id}
+                className="animate-fade-in"
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                <ListingRow item={item} />
+              </div>
+            ))
           )}
         </div>
       </div>
