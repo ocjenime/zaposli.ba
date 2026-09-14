@@ -11,7 +11,6 @@ import LatestAdsSection from '@/components/LatestAdsSection';
 import HowItWorks from '@/components/HowItWorks';
 import PopularCategories from '@/components/PopularCategories';
 import StatsSection from '@/components/StatsSection';
-import RecentProjects from '@/components/RecentProjects';
 import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 import LazySection from '@/components/LazySection';
@@ -71,9 +70,6 @@ export default function Home() {
         <PopularCategories />
         <LazySection minHeight="16rem">
           <StatsSection />
-        </LazySection>
-        <LazySection minHeight="24rem">
-          <RecentProjects />
         </LazySection>
         <LazySection minHeight="20rem">
           <Testimonials />

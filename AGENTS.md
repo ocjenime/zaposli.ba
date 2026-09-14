@@ -362,6 +362,7 @@
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel.
   - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop.
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
+  - Removed `RecentProjects` from `app/page.tsx` because the same latest jobs already appear at the top in `LatestAdsSection`.
   - `npm run lint` and `npm run build` pass (2406 pages).
 - Fixed city/firm matching when diacritics differ between the canonical city name (e.g., `Tešanj`) and the value stored in `firms.city` (e.g., `Tesanj`). Added `lib/city-utils.ts` with `normalizeCityName()` and updated `app/gradovi/page.tsx`, `components/CityGrid.tsx`, `app/gradovi/[slug]/page.tsx`, and `components/ServiceCityFirms.tsx` to compare normalized names.
   - `npm run lint` and `npm run build` pass (2406 pages).
