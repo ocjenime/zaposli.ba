@@ -123,27 +123,9 @@ export default function ProjectListCard({
       {/* Center content */}
       <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
         <div>
-          <div className="flex items-start justify-between gap-2 mb-1">
-            <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-1 sm:line-clamp-2">
-              {job.title}
-            </h3>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                setLiked((v) => !v);
-              }}
-              aria-label={liked ? 'Ukloni iz spašenih' : 'Sačuvaj oglas'}
-              className={`shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full border flex items-center justify-center transition-colors ${
-                liked
-                  ? 'bg-red-50 border-red-100 text-red-500 dark:bg-red-500/15 dark:border-red-500/30'
-                  : 'bg-white border-gray-100 text-gray-300 hover:text-red-500 dark:bg-ink-800 dark:border-ink-700 dark:hover:text-red-400'
-              }`}
-            >
-              <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${liked ? 'fill-current' : ''}`} />
-            </button>
-          </div>
+          <h3 className="text-sm sm:text-base md:text-lg font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-1 sm:line-clamp-2 mb-1">
+            {job.title}
+          </h3>
 
           {job.description && (
             <p className="hidden sm:block text-xs md:text-sm text-steel dark:text-gray-300 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
@@ -170,16 +152,34 @@ export default function ProjectListCard({
       </div>
 
       {/* Right meta column */}
-      <div className="w-24 sm:w-32 md:w-40 shrink-0 flex flex-col justify-between items-end p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
-        <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-500/20">
-          Otvoreno
-        </span>
+      <div className="w-[6.5rem] sm:w-36 md:w-44 shrink-0 flex flex-col justify-between items-stretch p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
+        <div className="flex items-center justify-end gap-1.5">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setLiked((v) => !v);
+            }}
+            aria-label={liked ? 'Ukloni iz spašenih' : 'Sačuvaj oglas'}
+            className={`shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-colors ${
+              liked
+                ? 'bg-red-50 border-red-100 text-red-500 dark:bg-red-500/15 dark:border-red-500/30'
+                : 'bg-white border-gray-100 text-gray-300 hover:text-red-500 dark:bg-ink-800 dark:border-ink-700 dark:hover:text-red-400'
+            }`}
+          >
+            <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${liked ? 'fill-current' : ''}`} />
+          </button>
+          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-500/20">
+            Otvoreno
+          </span>
+        </div>
 
-        <div className="text-right mt-1">
-          <div className="text-xs sm:text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">
+        <div className="text-right mt-1 sm:mt-2">
+          <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">
             {formatBudget(job)}
           </div>
-          <div className="text-[10px] sm:text-xs text-steel dark:text-gray-400">
+          <div className="text-[9px] sm:text-[11px] text-steel dark:text-gray-400">
             {job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
           </div>
         </div>
