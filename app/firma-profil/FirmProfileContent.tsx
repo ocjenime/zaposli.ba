@@ -197,10 +197,10 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
           rows={3}
           maxLength={1000}
           placeholder="Napišite odgovor na ovu recenziju..."
-          className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+          className="w-full bg-ink-900/80 border border-ink-700 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
         />
         <div className="flex items-center justify-between mt-2">
-          <span className="text-xs text-steel">{text.length}/1000</span>
+          <span className="text-xs text-white/70">{text.length}/1000</span>
           <button
             type="submit"
             disabled={submitting || !text.trim()}
@@ -281,15 +281,15 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
               <div className="h-12 w-56 bg-white/10 rounded-xl animate-pulse" />
             </div>
           </div>
-          <section className="py-12 md:py-20 bg-cloud">
+          <section className="py-12 md:py-20 bg-ink-950">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="grid lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-48 animate-pulse" />
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-64 animate-pulse" />
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-40 animate-pulse" />
+                  <div className="bg-ink-900/60 rounded-2xl p-6 border border-ink-800 h-48 animate-pulse" />
+                  <div className="bg-ink-900/60 rounded-2xl p-6 border border-ink-800 h-64 animate-pulse" />
+                  <div className="bg-ink-900/60 rounded-2xl p-6 border border-ink-800 h-40 animate-pulse" />
                 </div>
-                <div className="bg-ink rounded-3xl h-[540px] animate-pulse shadow-card" />
+                <div className="bg-ink-900/60 rounded-3xl h-[540px] animate-pulse border border-ink-800" />
               </div>
             </div>
           </section>
@@ -441,13 +441,13 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
           </div>
         </PageHero>
 
-        <section className="py-12 md:py-20 bg-cloud">
+        <section className="py-12 md:py-20 bg-ink-950">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-3 gap-8 items-start">
               <div className="lg:col-span-2 space-y-8">
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">O firmi</h2>
-                  <p className="text-steel leading-relaxed mb-6">
+                <div className="bg-ink-900/60 rounded-2xl p-6 md:p-8 border border-ink-800">
+                  <h2 className="text-2xl font-bold text-white mb-4">O firmi</h2>
+                  <p className="text-white/70 leading-relaxed mb-6">
                     {firm.description || 'Firma još nije dodala opis.'}
                   </p>
                   {categoryNames.length > 0 && (
@@ -455,7 +455,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                       {categoryNames.map((name) => (
                         <span
                           key={name}
-                          className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-gray-900 border border-gray-100"
+                          className="px-4 py-2 bg-ink-800 rounded-xl text-sm font-medium text-white border border-ink-700"
                         >
                           {name}
                         </span>
@@ -464,8 +464,8 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   )}
                 </div>
 
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-xl font-bold text-gray-900 mb-5">Poslovni podaci</h2>
+                <div className="bg-ink-900/60 rounded-2xl p-6 md:p-8 border border-ink-800">
+                  <h2 className="text-xl font-bold text-white mb-5">Poslovni podaci</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     {[
                       {
@@ -485,12 +485,12 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                       },
                     ].map((item) => (
                       <div key={item.label} className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-cloud border border-gray-100 flex items-center justify-center shrink-0">
+                        <div className="w-11 h-11 rounded-xl bg-ink-800 border border-ink-700 flex items-center justify-center shrink-0">
                           <item.icon className="w-5 h-5 text-brand-orange" />
                         </div>
                         <div>
-                          <p className="text-xs text-steel">{item.label}</p>
-                          <p className="font-bold text-gray-900">{item.value}</p>
+                          <p className="text-xs text-white/70">{item.label}</p>
+                          <p className="font-bold text-white">{item.value}</p>
                         </div>
                       </div>
                     ))}
@@ -498,14 +498,14 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                 </div>
 
                 {portfolioImages.length > 0 && (
-                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                    <h2 className="text-xl font-bold text-gray-900 mb-5">Portfolio</h2>
+                <div className="bg-ink-900/60 rounded-2xl p-6 md:p-8 border border-ink-800">
+                    <h2 className="text-xl font-bold text-white mb-5">Portfolio</h2>
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                       {portfolioImages.map((url, index) => (
                         <button
                           key={index}
                           onClick={() => setSelectedPortfolioImage(url)}
-                          className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
+                          className="relative aspect-square rounded-2xl overflow-hidden border border-ink-700 hover:ring-2 hover:ring-brand-orange transition group"
                         >
                           <Image
                             src={url}
@@ -521,18 +521,18 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   </div>
                 )}
 
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-xl font-bold text-gray-900 mb-5">Recenzije klijenata</h2>
+                <div className="bg-ink-900/60 rounded-2xl p-6 md:p-8 border border-ink-800">
+                  <h2 className="text-xl font-bold text-white mb-5">Recenzije klijenata</h2>
                   {reviews.length === 0 ? (
-                    <div className="bg-cloud rounded-2xl p-6 text-center border border-gray-100">
-                      <p className="text-steel">Još nema recenzija za ovu firmu.</p>
+                    <div className="bg-ink-800 rounded-2xl p-6 text-center border border-ink-700">
+                      <p className="text-white/70">Još nema recenzija za ovu firmu.</p>
                     </div>
                   ) : (
                     <>
-                      <div className="bg-cloud rounded-2xl p-5 border border-gray-100 mb-6">
+                      <div className="bg-ink-800 rounded-2xl p-5 border border-ink-700 mb-6">
                         <div className="flex flex-col sm:flex-row sm:items-center gap-6">
                           <div className="text-center sm:text-left">
-                            <div className="text-4xl font-extrabold text-gray-900">
+                            <div className="text-4xl font-extrabold text-white">
                               {rating.toFixed(1)}
                             </div>
                             <div className="flex gap-0.5 justify-center sm:justify-start my-1">
@@ -542,25 +542,25 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                   className={`w-4 h-4 ${
                                     i < Math.round(rating)
                                       ? 'text-brand-orange fill-brand-orange'
-                                      : 'text-mist'
+                                      : 'text-white/30'
                                   }`}
                                 />
                               ))}
                             </div>
-                            <div className="text-xs text-steel">{reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])}</div>
+                            <div className="text-xs text-white/70">{reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])}</div>
                           </div>
                           <div className="flex-1 space-y-2">
                             {histogram.map(({ star, count }) => (
                               <div key={star} className="flex items-center gap-3 text-sm">
-                                <span className="w-4 font-semibold text-gray-900">{star}</span>
+                                <span className="w-4 font-semibold text-white">{star}</span>
                                 <Star className="w-3 h-3 text-brand-orange fill-brand-orange" />
-                                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div className="flex-1 h-2 bg-ink-700 rounded-full overflow-hidden">
                                   <div
                                     className="h-full bg-brand-orange rounded-full"
                                     style={{ width: `${(count / maxHistogramCount) * 100}%` }}
                                   />
                                 </div>
-                                <span className="w-8 text-right text-steel text-xs">{count}</span>
+                                <span className="w-8 text-right text-white/70 text-xs">{count}</span>
                               </div>
                             ))}
                           </div>
@@ -571,7 +571,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                         {reviews.map((review) => (
                           <div
                             key={review.id}
-                            className="bg-cloud rounded-2xl p-5 border border-gray-100"
+                            className="bg-ink-800 rounded-2xl p-5 border border-ink-700"
                           >
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
                               <div className="flex items-center gap-3">
@@ -579,10 +579,10 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                   {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}
                                 </div>
                                 <div>
-                                  <div className="font-semibold text-gray-900 text-sm">
+                                  <div className="font-semibold text-white text-sm">
                                     {review.profiles?.full_name || 'Klijent'}
                                   </div>
-                                  <div className="text-xs text-steel">
+                                  <div className="text-xs text-white/70">
                                     {formatDate(review.created_at)}
                                   </div>
                                 </div>
@@ -594,7 +594,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                     className={`w-4 h-4 ${
                                       i < review.rating
                                         ? 'text-brand-orange fill-brand-orange'
-                                        : 'text-mist'
+                                        : 'text-white/30'
                                     }`}
                                   />
                                 ))}
@@ -602,8 +602,8 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                             </div>
                             {review.comment && (
                               <div className="flex gap-2 mb-3">
-                                <Quote className="w-4 h-4 text-primary-200 shrink-0 mt-0.5" />
-                                <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
+                                <Quote className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                                <p className="text-white/70 text-sm leading-relaxed">{review.comment}</p>
                               </div>
                             )}
                             {review.image_url && (
@@ -618,16 +618,16 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                               </a>
                             )}
                             {review.reply && (
-                              <div className="mt-4 bg-white rounded-xl p-4 border border-gray-100">
-                                <div className="text-xs font-semibold text-gray-900 mb-1">
+                              <div className="mt-4 bg-ink-900/60 rounded-xl p-4 border border-ink-700">
+                                <div className="text-xs font-semibold text-white mb-1">
                                   Odgovor firme
                                   {review.replied_at && (
-                                    <span className="font-normal text-steel ml-2">
+                                    <span className="font-normal text-white/70 ml-2">
                                       {formatDate(review.replied_at)}
                                     </span>
                                   )}
                                 </div>
-                                <p className="text-steel text-sm leading-relaxed">{review.reply}</p>
+                                <p className="text-white/70 text-sm leading-relaxed">{review.reply}</p>
                               </div>
                             )}
                             {isFirmOwner && !review.reply && (
@@ -714,7 +714,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                           {firm.verification_status === 'verified' ? (
                             <VerifiedBadge size="sm" />
                           ) : firm.verification_status === 'pending' ? (
-                            <span className="text-sm text-accent-400">Na čekanju</span>
+                            <span className="text-sm text-amber-400">Na čekanju</span>
                           ) : firm.verification_status === 'rejected' ? (
                             <span className="text-sm text-red-400">Odbijeno</span>
                           ) : (
