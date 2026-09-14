@@ -27,32 +27,34 @@ function FirmCard({ firm }: { firm: Firm }) {
   return (
     <Link
       href={`/firma-profil/${firm.slug}/`}
-      className="group flex items-center gap-3 rounded-xl bg-ink-900/60 backdrop-blur-sm border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-3"
+      className="group flex items-center gap-3 rounded-2xl bg-white dark:bg-ink-900 border border-gray-100 dark:border-ink-800 hover:border-brand-orange/30 dark:hover:border-brand-orange/40 hover:shadow-xl transition-all duration-300 p-4 snap-start min-w-[280px] sm:min-w-0"
     >
       <LogoDisplay
         name={firm.name}
         src={firm.logo_url}
         alt={firm.name}
-        size="sm"
+        size="md"
         rounded="xl"
-        className="border border-ink-700 shrink-0"
+        className="border border-gray-100 dark:border-ink-700 shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1 mb-0.5">
-          <h3 className="text-sm font-bold text-white truncate group-hover:text-brand-orange transition-colors">
+        <div className="flex items-center gap-1.5 mb-1">
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white truncate group-hover:text-brand-orange transition-colors">
             {firm.name}
           </h3>
-          {firm.verified && <VerifiedBadge size="sm" className="border-white/10 shrink-0" />}
+          {firm.verified && <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0" />}
         </div>
-        <div className="flex items-center gap-2 text-xs text-white/50">
-          <span className="inline-flex items-center gap-0.5">
-            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-            {(firm.average_rating || 0).toFixed(1)} ({firm.review_count || 0})
+        <div className="flex items-center gap-2 text-xs text-steel dark:text-gray-400">
+          <span className="inline-flex items-center gap-0.5 font-medium">
+            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+            {(firm.average_rating || 0).toFixed(1)}
           </span>
-          {firm.city && <span>· {firm.city}</span>}
+          <span>({firm.review_count || 0})</span>
+          {firm.city && <span className="text-gray-300 dark:text-gray-600">·</span>}
+          {firm.city && <span className="truncate">{firm.city}</span>}
         </div>
       </div>
-      <span className="shrink-0 w-8 h-8 rounded-full bg-ink-800 text-white/60 group-hover:bg-brand-orange group-hover:text-white transition-colors flex items-center justify-center">
+      <span className="shrink-0 w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors">
         <ArrowRight className="w-4 h-4" />
       </span>
     </Link>
@@ -61,13 +63,13 @@ function FirmCard({ firm }: { firm: Firm }) {
 
 function SkeletonCard() {
   return (
-    <div className="flex items-center gap-3 rounded-xl bg-ink-900/40 border border-ink-800 p-3 animate-pulse">
-      <div className="w-10 h-10 rounded-xl bg-ink-800 shrink-0" />
+    <div className="flex items-center gap-3 rounded-2xl bg-white dark:bg-ink-900 border border-gray-100 dark:border-ink-800 p-4 snap-start min-w-[280px] sm:min-w-0 animate-pulse">
+      <div className="w-12 h-12 rounded-xl bg-gray-200 dark:bg-ink-800 shrink-0" />
       <div className="flex-1">
-        <div className="h-4 bg-ink-800 rounded w-2/3 mb-2" />
-        <div className="h-3 bg-ink-800 rounded w-1/3" />
+        <div className="h-4 bg-gray-200 dark:bg-ink-800 rounded w-2/3 mb-2" />
+        <div className="h-3 bg-gray-200 dark:bg-ink-800 rounded w-1/3" />
       </div>
-      <div className="w-8 h-8 rounded-full bg-ink-800" />
+      <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-ink-800" />
     </div>
   );
 }
@@ -103,7 +105,7 @@ export default function RecommendedFirmsSection() {
   if (!loading && firms.length === 0) return null;
 
   return (
-    <section className="relative py-10 md:py-12 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-10 md:py-14 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[14rem] bg-brand-orange/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl">
@@ -113,32 +115,26 @@ export default function RecommendedFirmsSection() {
               <Megaphone className="w-3.5 h-3.5" />
               Preporučene firme
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-white mt-1">Provjereni majstori i firme</h2>
-            <p className="text-sm text-white/60 mt-1">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
+              Provjereni majstori i firme
+            </h2>
+            <p className="text-sm text-steel dark:text-white/60 mt-1">
               Firme koje pružaju kvalitetne usluge i imaju najbolje ocjene.
             </p>
           </div>
           <Link
             href="/top-firme/"
-            className="text-xs md:text-sm font-semibold text-white/60 hover:text-brand-orange transition-colors inline-flex items-center gap-1 shrink-0"
+            className="text-xs md:text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors inline-flex items-center gap-1 shrink-0"
           >
             Sve firme <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <SkeletonCard key={i} />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4">
-            {firms.map((firm) => (
-              <FirmCard key={firm.id} firm={firm} />
-            ))}
-          </div>
-        )}
+        <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x no-scrollbar">
+          {loading
+            ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
+            : firms.map((firm) => <FirmCard key={firm.id} firm={firm} />)}
+        </div>
       </div>
     </section>
   );
