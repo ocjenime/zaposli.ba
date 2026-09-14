@@ -39,7 +39,7 @@ export default function LatestAdsSection() {
   if (!loading && jobs.length === 0) return null;
 
   return (
-    <section className="relative py-10 md:py-14 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-6 md:py-8 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[50rem] h-[20rem] bg-brand-orange/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl">
@@ -47,10 +47,10 @@ export default function LatestAdsSection() {
           <div>
             <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-brand-orange uppercase">
               <Clock className="w-3.5 h-3.5" />
-              Najnoviji oglasi
+              Najnoviji poslovi
             </span>
             <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
-              Najnoviji projekti koje klijenti objavljuju
+              Poslovi koje klijenti trenutno objavljuju
             </h2>
           </div>
           <Link

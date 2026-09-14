@@ -24,7 +24,7 @@ const cards = [
 
 export default function RoleCTACards() {
   return (
-    <section className="relative py-8 md:py-12 bg-cloud px-4 sm:px-6 lg:px-8">
+    <section className="relative py-5 md:py-6 bg-cloud px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid md:grid-cols-2 gap-4 md:gap-6">
           {cards.map((card) => (

@@ -20,6 +20,7 @@
 ### Completed
 - Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
 - Restored the larger `PromoBanner` desktop layout with the dark background image, glass benefits panel, and a "Kreiraj oglas" CTA (removed the compact horizontal mobile strip).
+- Reordered homepage sections to: Hero → RoleCTACards → PromoBanner → Sponzorirani oglasi → Najnoviji poslovi → RecommendedFirmsSection, with reduced vertical padding (py-5/6 md:py-6/8) between sections for a tighter Higgsfield-style flow.
 - Expanded promoted-ads product model to three placements:
   - `homepage` mini oglas: **19 KM/mj** (included credits for Pro/Premium).
   - `homepage_banner` veliki banner 1200×400: **49 KM/mj** (not included in plans).

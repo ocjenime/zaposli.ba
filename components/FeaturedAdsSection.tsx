@@ -318,7 +318,7 @@ export default function FeaturedAdsSection() {
   const hasRealAds = !loading && ads.length > 0;
 
   return (
-    <section className="relative py-10 md:py-14 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-6 md:py-8 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[50rem] h-[20rem] bg-brand-orange/5 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl">

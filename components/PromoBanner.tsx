@@ -18,7 +18,7 @@ export default function PromoBanner() {
   const href = isFirmRole(role) ? '/dashboard/firma/?tab=ads' : '/pretplata-auth/';
 
   return (
-    <section className="relative py-8 md:py-10 bg-cloud px-4 sm:px-6 lg:px-8">
+    <section className="relative py-5 md:py-6 bg-cloud px-4 sm:px-6 lg:px-8">
       <div className="relative mx-auto max-w-7xl rounded-3xl overflow-hidden shadow-2xl shadow-black/10">
         {/* Background image */}
         <div className="absolute inset-0">
