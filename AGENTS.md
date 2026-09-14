@@ -327,7 +327,7 @@
 - Added ad detail page `/izdvojeni-oglasi/[id]/` that shows the full banner, firm info, description, and CTAs.
 - Added sticky homepage-slot columns to `promoted_ads` via `supabase/migration-promoted-ads-homepage-slots.sql`.
 - **Homepage WOW redesign based on `wow.png` mockup** (premium Higgsfield dark style, kept existing logo/identity):
-  - Updated `Header.tsx` navigation: Početna, Oglasi, Firme, Kategorije, Gradovi, Poslovi, Kako funkcioniše, Za firme, Kontakt.
+  - Restored previous clean `Header.tsx` navigation: Kategorije, Gradovi, Poslovi, Kako funkcioniše, Za firme, Kontakt.
   - Redesigned `HeroSection.tsx`: left-aligned headline "Objavite posao. Pronađite pravog majstora.", eyebrow, two CTAs, trust badges, floating social-proof card on desktop, decorative quote on the right.
   - New `components/CategoryIconRow.tsx`: compact horizontal category icons with labels.
   - New `components/RoleCTACards.tsx`: two dark glass cards for clients and firms.
