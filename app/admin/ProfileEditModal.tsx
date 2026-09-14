@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { roleLabel, roleInputOptions, type UserRole } from '@/lib/roles';
 import {
-  X, Loader2, Crown, AlertCircle, Check, KeyRound, Mail, Phone, User,
+  X, Loader2, Crown, AlertCircle, Check, KeyRound, Mail, Phone, User, Trash2, ShieldAlert, Eye, EyeOff,
 } from 'lucide-react';
 
 export interface AdminProfile {
@@ -14,6 +14,7 @@ export interface AdminProfile {
   phone: string | null;
   role: UserRole;
   is_admin: boolean;
+  blocked: boolean;
   created_at: string;
 }
 
@@ -34,8 +35,10 @@ export default function ProfileEditModal({
   const [phone, setPhone] = useState(profile?.phone || '');
   const [role, setRole] = useState<UserRole>(profile?.role || 'client');
   const [isAdmin, setIsAdmin] = useState(profile?.is_admin || false);
+  const [blocked, setBlocked] = useState(profile?.blocked || false);
   const [saving, setSaving] = useState(false);
   const [resetting, setResetting] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -54,6 +57,7 @@ export default function ProfileEditModal({
         phone: phone.trim() || null,
         role,
         is_admin: isAdmin,
+        blocked,
       })
       .eq('id', profile!.id);
 
@@ -77,6 +81,71 @@ export default function ProfileEditModal({
       setError(err?.message || 'Greška prilikom slanja emaila za reset lozinke.');
     } finally {
       setResetting(false);
+    }
+  }
+
+  async function callAdminAction(action: string, payload: Record<string, unknown> = {}) {
+    setError('');
+    setSuccess('');
+    const { data: sessionData } = await supabase.auth.getSession();
+    const accessToken = sessionData.session?.access_token;
+    if (!accessToken) throw new Error('Niste prijavljeni.');
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/admin-user-action`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ action, userId: profile!.id, ...payload }),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Akcija nije uspjela.');
+    return data;
+  }
+
+  async function handleSetPassword() {
+    setResetting(true);
+    try {
+      const data = await callAdminAction('set_password');
+      setNewPassword(data.password || '');
+      setSuccess('Nova lozinka je postavljena. Prikazana je ispod.');
+    } catch (err: any) {
+      setError(err?.message || 'Greška prilikom postavljanja lozinke.');
+    } finally {
+      setResetting(false);
+    }
+  }
+
+  async function handleToggleBlock() {
+    setSaving(true);
+    try {
+      await callAdminAction('block_user', { blocked: !blocked });
+      setBlocked((v) => !v);
+      setSuccess(!blocked ? 'Korisnik je blokiran.' : 'Korisnik je odblokiran.');
+      onSaved();
+    } catch (err: any) {
+      setError(err?.message || 'Greška prilikom blokiranja.');
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete() {
+    if (!confirm('Jeste li sigurni da želite obrisati ovaj profil? Ova akcija je nepovratna.')) return;
+    setSaving(true);
+    try {
+      await callAdminAction('delete_user');
+      setSuccess('Korisnik je obrisan.');
+      onSaved();
+      setTimeout(onClose, 800);
+    } catch (err: any) {
+      setError(err?.message || 'Greška prilikom brisanja.');
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -204,16 +273,69 @@ export default function ProfileEditModal({
             </div>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Sigurnost</h3>
+          <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Sigurnost i upravljanje</h3>
+
+            <button
+              type="button"
+              onClick={handleSetPassword}
+              disabled={resetting}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange text-white text-sm font-medium hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
+            >
+              {resetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4" />}
+              {resetting ? 'Postavljanje...' : 'Postavi novu lozinku'}
+            </button>
+
+            {newPassword && (
+              <div className="rounded-xl border border-dashed border-brand-orange bg-orange-50 p-3">
+                <p className="text-xs text-steel mb-1">Nova lozinka (pokažite je korisniku samo jednom):</p>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 text-sm font-mono text-gray-900 bg-white border border-gray-200 rounded-lg px-3 py-1.5 truncate">
+                    {newPassword}
+                  </code>
+                  <button
+                    type="button"
+                    onClick={() => { navigator.clipboard.writeText(newPassword); setSuccess('Lozinka kopirana.'); }}
+                    className="text-xs font-medium text-brand-orange hover:underline"
+                  >
+                    Kopiraj
+                  </button>
+                </div>
+              </div>
+            )}
+
             <button
               type="button"
               onClick={handleResetPassword}
               disabled={resetting}
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
             >
-              {resetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4" />}
+              {resetting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
               {resetting ? 'Slanje...' : 'Pošalji email za reset lozinke'}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleToggleBlock}
+              disabled={saving}
+              className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-50 ${
+                blocked
+                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                  : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+              }`}
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldAlert className="w-4 h-4" />}
+              {blocked ? 'Odblokiraj korisnika' : 'Blokiraj korisnika'}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={saving}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-700 text-sm font-medium hover:bg-red-200 transition-colors disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+              Obriši korisnika
             </button>
           </div>
         </div>

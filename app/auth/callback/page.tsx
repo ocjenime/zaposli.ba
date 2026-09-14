@@ -86,12 +86,18 @@ export default function AuthCallback() {
 
       const { data: profile, error: profileError } = await callbackSupabase
         .from('profiles')
-        .select('role, is_admin')
+        .select('role, is_admin, blocked')
         .eq('id', user.id)
         .single();
 
       if (profileError) {
         console.error('Profile lookup error:', profileError);
+      }
+
+      if (profile?.blocked) {
+        await callbackSupabase.auth.signOut();
+        router.push('/prijava/?error=blocked');
+        return;
       }
 
       const isAdmin = profile?.is_admin ?? false;

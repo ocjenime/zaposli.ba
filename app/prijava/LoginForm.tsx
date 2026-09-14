@@ -35,9 +35,16 @@ export default function LoginForm() {
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role, is_admin')
+      .select('role, is_admin, blocked')
       .eq('id', authData.user.id)
       .single();
+
+    if (profile?.blocked) {
+      await supabase.auth.signOut();
+      setError('Vaš nalog je blokiran. Kontaktirajte podršku.');
+      setLoading(false);
+      return;
+    }
 
     if (profile?.is_admin) {
       router.push('/admin/');

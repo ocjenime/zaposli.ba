@@ -956,7 +956,14 @@ function AdminPage() {
                     {filteredProfiles().map((profile) => (
                       <div key={profile.id} className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <div>
-                          <p className="font-medium text-gray-900">{profile.full_name || profile.email}</p>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="font-medium text-gray-900">{profile.full_name || profile.email}</p>
+                            {profile.blocked && (
+                              <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                BLOKIRAN
+                              </span>
+                            )}
+                          </div>
                           <p className="text-sm text-steel">{profile.email} · {profile.phone || '-'}</p>
                           <p className="text-xs text-steel mt-1">
                             {roleLabel(profile.role)} · {formatDate(profile.created_at)}
