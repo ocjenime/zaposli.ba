@@ -1067,6 +1067,77 @@ function AdminPage() {
                     </div>
                   </div>
 
+                  {requests.filter((r) => r.type === 'subscription_request' && !r.read).length > 0 && (
+                    <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
+                      <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          Zahtjevi za nadogradnju paketa
+                        </p>
+                        <span className="text-xs font-bold px-2.5 py-1 bg-red-100 text-red-700 rounded-full">
+                          {requests.filter((r) => r.type === 'subscription_request' && !r.read).length} novo
+                        </span>
+                      </div>
+                      <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                        {requests
+                          .filter((r) => r.type === 'subscription_request' && !r.read)
+                          .map((req) => {
+                            const existing = firmPlans.find((fp) => fp.firm.id === req.firm_id);
+                            const firm = existing?.firm || req.firms;
+                            return (
+                              <div
+                                key={req.id}
+                                className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                              >
+                                <div>
+                                  <p className="font-medium text-gray-900 dark:text-white">
+                                    {req.firms?.name || 'Nepoznata firma'}
+                                  </p>
+                                  <p className="text-sm text-steel dark:text-gray-400">
+                                    Paket:{' '}
+                                    <span className="font-medium text-gray-900 dark:text-white">
+                                      {(req.metadata?.plan_name as string) || '-'}
+                                    </span>
+                                    {' · '}
+                                    {(req.metadata?.requested_interval as string) === 'yearly'
+                                      ? 'Godišnje'
+                                      : 'Mjesecno'}
+                                    {typeof req.metadata?.requested_price === 'number' && (
+                                      <>{' · '}{formatPrice(req.metadata.requested_price as number)} KM</>
+                                    )}
+                                  </p>
+                                  <p className="text-xs text-steel dark:text-gray-500 mt-1">
+                                    {formatDateTime(req.created_at)}
+                                  </p>
+                                </div>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <button
+                                    onClick={() =>
+                                      firm &&
+                                      setEditingSubscription({
+                                        firm,
+                                        subscription: existing?.subscription || null,
+                                      })
+                                    }
+                                    disabled={!firm}
+                                    className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-brand-orange text-white hover:bg-brand-orange-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                  >
+                                    <Pencil className="w-3.5 h-3.5" />
+                                    Aktiviraj / uredi
+                                  </button>
+                                  <button
+                                    onClick={() => markRequestRead(req.id)}
+                                    className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                                  >
+                                    Označi pročitanim
+                                  </button>
+                                </div>
+                              </div>
+                            );
+                          })}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
                     <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <p className="text-sm text-steel dark:text-gray-400">Upravljanje pretplatama po firmama</p>
