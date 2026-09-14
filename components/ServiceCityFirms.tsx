@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Star, MapPin, ArrowRight, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
+import { normalizeCityName } from '@/lib/city-utils';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 
@@ -56,11 +57,12 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
           return;
         }
 
+        const target = normalizeCityName(cityName);
         const { data: firmsData, error: firmsError } = await supabase
           .from('firms')
           .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
           .in('id', firmIds)
-          .eq('city', cityName)
+          .not('city', 'is', null)
           .not('slug', 'like', 'test-%')
           .order('verified', { ascending: false })
           .order('average_rating', { ascending: false });
@@ -70,10 +72,12 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
         const category = getCategory(categorySlug);
         const typed = (firmsData || []) as unknown as Firm[];
         setFirms(
-          typed.map((f) => ({
-            ...f,
-            specialty: category?.name || 'Razne usluge',
-          }))
+          typed
+            .filter((f) => normalizeCityName(f.city || '') === target)
+            .map((f) => ({
+              ...f,
+              specialty: category?.name || 'Razne usluge',
+            }))
         );
       } catch (err: any) {
         setError(err?.message || 'Greška pri učitavanju firmi.');

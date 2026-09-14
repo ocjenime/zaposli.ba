@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MapPin, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { normalizeCityName } from '@/lib/city-utils';
 
 interface City {
   slug: string;
@@ -27,7 +28,7 @@ export default function CityGrid({ cities, initialHasFirms }: CityGridProps) {
           .not('slug', 'like', 'test-%');
         const set = new Set<string>();
         (data || []).forEach((row: { city: string | null }) => {
-          if (row.city) set.add(row.city.trim().toLowerCase());
+          if (row.city) set.add(normalizeCityName(row.city));
         });
         setHasFirms(set);
       } catch {
@@ -40,7 +41,7 @@ export default function CityGrid({ cities, initialHasFirms }: CityGridProps) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       {cities.map((city) => {
-        const firmAvailable = hasFirms.has(city.name.toLowerCase());
+        const firmAvailable = hasFirms.has(normalizeCityName(city.name));
         const gradient = firmAvailable
           ? 'from-emerald-50 to-white border-emerald-100 hover:shadow-emerald-100'
           : 'from-red-50 to-white border-red-100 hover:shadow-red-100';

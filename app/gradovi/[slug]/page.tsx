@@ -11,6 +11,7 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities, categories } from '@/lib/data';
 import { site } from '@/lib/site';
 import { plural } from '@/lib/plural';
+import { normalizeCityName } from '@/lib/city-utils';
 import CityCategoriesGrid from '@/components/CityCategoriesGrid';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
 import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
@@ -46,17 +47,20 @@ function score(f: CityFirm): number {
 
 async function getVerifiedCityFirms(cityName: string): Promise<CityFirm[]> {
   try {
+    const target = normalizeCityName(cityName);
     const supabase = createServerSupabase();
     const { data: firmsData, error: firmsError } = await supabase
       .from('firms')
       .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority')
-      .ilike('city', cityName)
+      .not('city', 'is', null)
       .eq('verified', true)
       .not('slug', 'like', 'test-%');
     if (firmsError) throw firmsError;
 
     const typed = (firmsData || []) as CityFirm[];
-    return typed.sort((a, b) => score(b) - score(a));
+    return typed
+      .filter((f) => normalizeCityName(f.city || '') === target)
+      .sort((a, b) => score(b) - score(a));
   } catch {
     return [];
   }

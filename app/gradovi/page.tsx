@@ -17,6 +17,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import CityGrid from '@/components/CityGrid';
 import { cities } from '@/lib/data';
 import { site } from '@/lib/site';
+import { normalizeCityName } from '@/lib/city-utils';
 import { createClient } from '@supabase/supabase-js';
 
 export const revalidate = 60;
@@ -36,7 +37,7 @@ async function getCitiesWithFirms(): Promise<Set<string>> {
     const { data } = await supabase.from('firms').select('city').not('slug', 'like', 'test-%');
     const set = new Set<string>();
     (data || []).forEach((row: { city: string | null }) => {
-      if (row.city) set.add(row.city.trim().toLowerCase());
+      if (row.city) set.add(normalizeCityName(row.city));
     });
     return set;
   } catch {
