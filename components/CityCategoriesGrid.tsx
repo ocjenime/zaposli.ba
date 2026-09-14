@@ -20,15 +20,15 @@ export default function CityCategoriesGrid({ slugs, citySlug }: CityCategoriesGr
           <Link
             key={cat.slug}
             href={`/usluge/${cat.seoSlug}-${citySlug}/`}
-            className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-brand-orange/40 hover:shadow-lg transition-all"
+            className="group bg-ink-900/60 rounded-2xl p-5 border border-ink-800 hover:border-brand-orange/40 hover:shadow-lg hover:shadow-brand-orange/5 transition-all"
           >
-            <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+            <div className="w-11 h-11 rounded-xl bg-brand-orange/10 border border-brand-orange/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
               <Icon className="w-[22px] h-[22px] text-brand-orange" />
             </div>
-            <h3 className="font-semibold text-gray-900 text-sm group-hover:text-brand-orange transition-colors mb-0.5">
+            <h3 className="font-semibold text-white text-sm group-hover:text-brand-orange transition-colors mb-0.5">
               {cat.profession}
             </h3>
-            <p className="text-xs text-steel">
+            <p className="text-xs text-white/60">
               <LiveCategoryCount slug={cat.slug} />
             </p>
           </Link>
