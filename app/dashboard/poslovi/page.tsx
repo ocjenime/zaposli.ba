@@ -98,11 +98,11 @@ const publicStatusLabels: Record<Job['status'], string> = {
 };
 
 const publicStatusColors: Record<Job['status'], string> = {
-  open: 'bg-blue-50 text-blue-700',
-  bidding: 'bg-orange-50 text-brand-orange',
-  in_progress: 'bg-yellow-50 text-yellow-700',
-  completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-600',
+  open: 'bg-blue-500/10 text-blue-400',
+  bidding: 'bg-brand-orange/10 text-brand-orange',
+  in_progress: 'bg-yellow-500/10 text-yellow-400',
+  completed: 'bg-green-500/10 text-green-400',
+  cancelled: 'bg-ink-800 text-white/70',
 };
 
 const privateStatusLabels: Record<PrivateStatus, string> = {
@@ -116,13 +116,13 @@ const privateStatusLabels: Record<PrivateStatus, string> = {
 };
 
 const privateStatusColors: Record<PrivateStatus, string> = {
-  pending: 'bg-blue-50 text-blue-700',
-  accepted: 'bg-green-50 text-green-700',
-  in_progress: 'bg-yellow-50 text-yellow-700',
-  done_pending: 'bg-orange-50 text-brand-orange',
-  completed: 'bg-green-50 text-green-700',
-  declined: 'bg-gray-100 text-gray-600',
-  cancelled: 'bg-gray-100 text-gray-600',
+  pending: 'bg-blue-500/10 text-blue-400',
+  accepted: 'bg-green-500/10 text-green-400',
+  in_progress: 'bg-yellow-500/10 text-yellow-400',
+  done_pending: 'bg-brand-orange/10 text-brand-orange',
+  completed: 'bg-green-500/10 text-green-400',
+  declined: 'bg-ink-800 text-white/70',
+  cancelled: 'bg-ink-800 text-white/70',
 };
 
 const progressSteps: PrivateStatus[] = ['pending', 'accepted', 'in_progress', 'done_pending', 'completed'];
@@ -326,7 +326,7 @@ function JobDetail() {
     if (!job) return null;
     if (job.mediation_requested) {
       return (
-        <div className={`mt-4 rounded-lg px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+        <div className={`mt-4 rounded-lg px-4 py-3 text-sm ${job.mediation_resolved ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
           <div className="flex items-start gap-2">
             {job.mediation_resolved ? <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0" /> : <ShieldAlert className="w-4 h-4 mt-0.5 shrink-0" />}
             <div>
@@ -342,27 +342,27 @@ function JobDetail() {
     }
     if (!canRequestMediation()) return null;
     return (
-      <div className="mt-4 pt-4 border-t border-gray-100">
+      <div className="mt-4 pt-4 border-t border-ink-800">
         {!showMediationForm ? (
           <button
             onClick={() => setShowMediationForm(true)}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-600 hover:text-red-700 bg-red-50 px-3 py-1.5 rounded-full transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-red-400 hover:text-red-400 bg-red-500/10 px-3 py-1.5 rounded-full transition-colors"
           >
             <ShieldAlert className="w-4 h-4" /> Zatraži pomoć administratora
           </button>
         ) : (
-          <div className="bg-white rounded-xl border border-red-100 p-4 shadow-sm">
-            <h3 className="font-bold text-gray-900 mb-1">Zatražite pomoć administratora</h3>
-            <p className="text-sm text-steel mb-3">
+          <div className="bg-ink-900/60 rounded-xl border border-red-500/20 p-4 shadow-sm">
+            <h3 className="font-bold text-white mb-1">Zatražite pomoć administratora</h3>
+            <p className="text-sm text-white/70 mb-3">
               Rok za ovaj posao je istekao i imate nesuglasicu s drugom stranom. Admin će se uključiti u razgovor i pomoći u rješavanju spora.
             </p>
-            {mediationError && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
+            {mediationError && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-3">{mediationError}</p>}
             <textarea
               value={mediationReason}
               onChange={(e) => setMediationReason(e.target.value)}
               rows={3}
               placeholder="Opišite u čemu je problem..."
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
+              className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-red-200 focus:border-red-400 resize-none mb-3"
             />
             <div className="flex flex-wrap gap-2">
               <button
@@ -528,14 +528,14 @@ function JobDetail() {
                       ? 'bg-brand-orange text-[#ffffff] ring-4 ring-brand-orange/20'
                       : isActive
                       ? 'bg-green-500 text-[#ffffff]'
-                      : 'bg-gray-200 text-gray-500'
+                      : 'bg-ink-700 text-white/50'
                   }`}
                 >
                   {isActive ? <CheckCircle className="w-4 h-4" /> : index + 1}
                 </div>
                 <span
                   className={`text-[10px] mt-2 text-center leading-tight ${
-                    isCurrent ? 'text-brand-orange font-semibold' : isActive ? 'text-gray-700' : 'text-gray-400'
+                    isCurrent ? 'text-brand-orange font-semibold' : isActive ? 'text-white/70' : 'text-white/50'
                   }`}
                 >
                   {privateStatusLabels[step]}
@@ -543,7 +543,7 @@ function JobDetail() {
                 {index < progressSteps.length - 1 && (
                   <div
                     className={`absolute top-4 left-1/2 w-full h-0.5 ${
-                      index < currentIndex ? 'bg-green-500' : 'bg-gray-200'
+                      index < currentIndex ? 'bg-green-500' : 'bg-ink-700'
                     }`}
                     style={{ transform: 'translateX(50%)' }}
                   />
@@ -562,12 +562,12 @@ function JobDetail() {
 
     if (ps === 'pending') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-sm text-steel mb-3">Čeka se odgovor firme.</p>
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-sm text-white/70 mb-3">Čeka se odgovor firme.</p>
           <button
             onClick={cancelPrivateJob}
             disabled={actionId === 'cancel'}
-            className="text-sm text-red-600 hover:text-red-700 font-medium"
+            className="text-sm text-red-400 hover:text-red-400 font-medium"
           >
             {actionId === 'cancel' ? 'Obrada...' : 'Otkaži zahtjev'}
           </button>
@@ -577,16 +577,16 @@ function JobDetail() {
 
     if (ps === 'accepted') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-sm text-steel">Firma je prihvatila zahtjev. Čeka se da započne rad.</p>
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-sm text-white/70">Firma je prihvatila zahtjev. Čeka se da započne rad.</p>
         </div>
       );
     }
 
     if (ps === 'in_progress') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-sm text-steel">Rad je u toku. Možete komunicirati s firmom putem chat-a.</p>
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-sm text-white/70">Rad je u toku. Možete komunicirati s firmom putem chat-a.</p>
           {renderMediationSection()}
         </div>
       );
@@ -594,9 +594,9 @@ function JobDetail() {
 
     if (ps === 'done_pending') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
+        <div className="mt-4 pt-4 border-t border-ink-800">
           {job.problem_reported ? (
-            <div className="bg-red-50 text-red-700 rounded-lg p-3 text-sm mb-3">
+            <div className="bg-red-500/10 text-red-400 rounded-lg p-3 text-sm mb-3">
               <p className="font-semibold flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4" /> Prijavljen problem
               </p>
@@ -604,7 +604,7 @@ function JobDetail() {
             </div>
           ) : (
             <>
-              <p className="text-sm text-steel mb-3">Firma je označila posao kao gotov. Potvrdite završetak ili prijavite problem.</p>
+              <p className="text-sm text-white/70 mb-3">Firma je označila posao kao gotov. Potvrdite završetak ili prijavite problem.</p>
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={confirmPrivateComplete}
@@ -630,8 +630,8 @@ function JobDetail() {
 
     if (ps === 'completed') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-green-700 text-sm font-medium flex items-center gap-2 mb-3">
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-green-400 text-sm font-medium flex items-center gap-2 mb-3">
             <CheckCircle className="w-4 h-4" /> Posao je uspješno završen.
           </p>
           {!review && !reviewSuccess && (
@@ -643,7 +643,7 @@ function JobDetail() {
             </button>
           )}
           {(review || reviewSuccess) && (
-            <p className="text-sm text-steel">Hvala na recenziji. Objavljena je na profilu firme.</p>
+            <p className="text-sm text-white/70">Hvala na recenziji. Objavljena je na profilu firme.</p>
           )}
           {renderMediationSection()}
         </div>
@@ -652,16 +652,16 @@ function JobDetail() {
 
     if (ps === 'declined') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-gray-600 text-sm">Firma je odbila vaš zahtjev. Možete poslati novi zahtjev drugoj firmi ili objaviti posao javno.</p>
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-white/70 text-sm">Firma je odbila vaš zahtjev. Možete poslati novi zahtjev drugoj firmi ili objaviti posao javno.</p>
         </div>
       );
     }
 
     if (ps === 'cancelled') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-gray-600 text-sm">Zahtjev je otkazan.</p>
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-white/70 text-sm">Zahtjev je otkazan.</p>
         </div>
       );
     }
@@ -674,7 +674,7 @@ function JobDetail() {
 
     if (job.status === 'in_progress') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
+        <div className="mt-4 pt-4 border-t border-ink-800">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={completeJob}
@@ -692,8 +692,8 @@ function JobDetail() {
 
     if (job.status === 'completed') {
       return (
-        <div className="mt-4 pt-4 border-t border-gray-100">
-          <p className="text-green-700 text-sm font-medium flex items-center gap-2">
+        <div className="mt-4 pt-4 border-t border-ink-800">
+          <p className="text-green-400 text-sm font-medium flex items-center gap-2">
             <CheckCircle className="w-4 h-4" /> Posao je uspješno završen.
           </p>
           {renderMediationSection()}
@@ -708,22 +708,22 @@ function JobDetail() {
     if (!showReviewForm || !job || !targetFirm) return null;
     if (reviewSuccess) {
       return (
-        <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm mt-4">
+        <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-6 shadow-sm mt-4">
           <div className="text-center">
-            <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
-              <CheckCircle className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-3">
+              <CheckCircle className="w-6 h-6 text-green-400" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Hvala na recenziji</h3>
-            <p className="text-sm text-steel">Vaša recenzija je objavljena na profilu firme {targetFirm.name}.</p>
+            <h3 className="text-lg font-bold text-white mb-1">Hvala na recenziji</h3>
+            <p className="text-sm text-white/70">Vaša recenzija je objavljena na profilu firme {targetFirm.name}.</p>
           </div>
         </div>
       );
     }
 
     return (
-      <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm mt-4">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Ostavite recenziju</h3>
-        <p className="text-sm text-steel mb-4">Kako ste zadovoljni uslugom firme {targetFirm.name}?</p>
+      <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-6 shadow-sm mt-4">
+        <h3 className="text-lg font-bold text-white mb-4">Ostavite recenziju</h3>
+        <p className="text-sm text-white/70 mb-4">Kako ste zadovoljni uslugom firme {targetFirm.name}?</p>
 
         <div className="flex items-center gap-2 mb-5">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -740,7 +740,7 @@ function JobDetail() {
                 className={`w-8 h-8 transition-colors ${
                   star <= (hoverRating || rating)
                     ? 'text-brand-orange fill-brand-orange'
-                    : 'text-gray-300'
+                    : 'text-white/50'
                 }`}
               />
             </button>
@@ -752,7 +752,7 @@ function JobDetail() {
           onChange={(e) => setComment(e.target.value)}
           rows={3}
           placeholder="Napišite komentar (opcionalno)"
-          className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange resize-none mb-4"
+          className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange resize-none mb-4"
         />
 
         <div className="mb-4">
@@ -769,7 +769,7 @@ function JobDetail() {
           <label
             htmlFor="review-images"
             className={`inline-flex items-center gap-2 text-sm font-medium ${
-              reviewImages.length >= 3 ? 'text-gray-400 cursor-not-allowed' : 'text-brand-orange cursor-pointer'
+              reviewImages.length >= 3 ? 'text-white/50 cursor-not-allowed' : 'text-brand-orange cursor-pointer'
             }`}
           >
             <Upload className="w-4 h-4" /> Dodaj fotografije (opcionalno, max 3)
@@ -777,7 +777,7 @@ function JobDetail() {
           {reviewPreviews.length > 0 && (
             <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-3">
               {reviewPreviews.map((preview, index) => (
-                <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
+                <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-ink-700">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={preview} alt={`Recenzija ${index + 1}`} className="w-full h-full object-cover" />
                   <button
@@ -816,15 +816,15 @@ function JobDetail() {
   function renderProblemForm() {
     if (!showProblemForm) return null;
     return (
-      <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm mt-4">
-        <h3 className="text-lg font-bold text-gray-900 mb-2">Prijavite problem</h3>
-        <p className="text-sm text-steel mb-4">Objasnite što nije u redu s izvedenim radom.</p>
+      <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-6 shadow-sm mt-4">
+        <h3 className="text-lg font-bold text-white mb-2">Prijavite problem</h3>
+        <p className="text-sm text-white/70 mb-4">Objasnite što nije u redu s izvedenim radom.</p>
         <textarea
           value={problemText}
           onChange={(e) => setProblemText(e.target.value)}
           rows={3}
           placeholder="Opišite problem..."
-          className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange resize-none mb-4"
+          className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange resize-none mb-4"
         />
         <div className="flex flex-wrap gap-2">
           <button
@@ -847,10 +847,10 @@ function JobDetail() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p className="text-steel">Učitavanje...</p>
+          <p className="text-white/70">Učitavanje...</p>
         </main>
         <Footer />
       </div>
@@ -859,11 +859,11 @@ function JobDetail() {
 
   if (!id) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow pt-24 pb-10 px-4">
           <div className="max-w-3xl mx-auto">
-            <p className="text-steel">ID posla nije naveden.</p>
+            <p className="text-white/70">ID posla nije naveden.</p>
             <Link href="/dashboard/" className="btn-primary mt-4 inline-block">Nazad na dashboard</Link>
           </div>
         </main>
@@ -873,34 +873,34 @@ function JobDetail() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-5xl mx-auto">
-          <Link href="/dashboard/" className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4">
+          <Link href="/dashboard/" className="inline-flex items-center text-sm text-white/70 hover:text-white mb-4">
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na poslove
           </Link>
 
-          {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
+          {error && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-4">{error}</p>}
 
           {loadingData ? (
-            <div className="flex items-center justify-center py-12 text-steel">
+            <div className="flex items-center justify-center py-12 text-white/70">
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje...
             </div>
           ) : !job ? (
-            <p className="text-steel">Posao nije pronađen.</p>
+            <p className="text-white/70">Posao nije pronađen.</p>
           ) : (
             <div className="grid lg:grid-cols-2 gap-6">
               {/* Left column: details and actions */}
               <div className="space-y-4">
-                <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+                <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-5 shadow-sm">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
-                    <h1 className="text-xl font-bold text-gray-900">{job.title}</h1>
+                    <h1 className="text-xl font-bold text-white">{job.title}</h1>
                     <div className="flex items-center gap-2">
                       {(job.status === 'open' || job.status === 'bidding') && (
                         <Link
                           href={`/dashboard/?editJobId=${job.id}`}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-brand-orange hover:text-brand-orange-dark bg-orange-50 px-2.5 py-1 rounded-full transition-colors"
+                          className="inline-flex items-center gap-1 text-xs font-semibold text-brand-orange hover:text-brand-orange bg-brand-orange/10 px-2.5 py-1 rounded-full transition-colors"
                         >
                           Uredi posao
                         </Link>
@@ -918,15 +918,15 @@ function JobDetail() {
                       </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-steel mb-4">
+                  <div className="flex items-center gap-2 text-sm text-white/70 mb-4">
                     <MapPin className="w-4 h-4" /> {job.city}
                     {job.address ? `, ${job.address}` : ''}
-                    <span className="w-1 h-1 bg-steel rounded-full" />
+                    <span className="w-1 h-1 bg-white/50 rounded-full" />
                     <span>{job.is_private ? 'Privatni zahtjev' : 'Javni oglas'} · {formatDate(job.created_at)}</span>
                   </div>
 
                   {job.is_private && targetFirm && (
-                    <div className="flex items-center gap-3 bg-cloud rounded-xl p-3 mb-4">
+                    <div className="flex items-center gap-3 bg-ink-950 rounded-xl p-3 mb-4">
                       {targetFirm.logo_url ? (
                         <div className="relative w-12 h-12 shrink-0">
                           <NextImage
@@ -944,23 +944,23 @@ function JobDetail() {
                         </div>
                       )}
                       <div>
-                        <p className="font-bold text-gray-900 text-sm">{targetFirm.name}</p>
-                        <p className="text-xs text-steel">{targetFirm.city}</p>
+                        <p className="font-bold text-white text-sm">{targetFirm.name}</p>
+                        <p className="text-xs text-white/70">{targetFirm.city}</p>
                       </div>
                     </div>
                   )}
 
                   {job.client_question && (
-                    <div className="bg-blue-50 text-blue-800 rounded-lg p-3 text-sm mb-4">
+                    <div className="bg-blue-500/10 text-blue-400 rounded-lg p-3 text-sm mb-4">
                       <p className="font-semibold mb-1">Vaše pitanje:</p>
                       <p>{job.client_question}</p>
                     </div>
                   )}
 
-                  <p className="text-gray-900 text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
+                  <p className="text-white text-sm whitespace-pre-wrap leading-relaxed">{job.description}</p>
 
                   <div className="flex flex-wrap gap-3 text-sm mt-4">
-                    <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
+                    <span className="inline-flex items-center gap-1.5 text-white/70 bg-ink-950 rounded-lg px-3 py-1.5">
                       <DollarSign className="w-4 h-4 text-brand-orange" />
                       {job.budget_mode === 'open'
                         ? 'Majstori predlažu cijenu'
@@ -973,7 +973,7 @@ function JobDetail() {
                         : 'Budžet po dogovoru'}
                     </span>
                     {job.deadline && (
-                      <span className="inline-flex items-center gap-1.5 text-steel bg-cloud rounded-lg px-3 py-1.5">
+                      <span className="inline-flex items-center gap-1.5 text-white/70 bg-ink-950 rounded-lg px-3 py-1.5">
                         <Calendar className="w-4 h-4 text-brand-orange" />
                         Rok: {formatDate(job.deadline)}
                       </span>
@@ -982,7 +982,7 @@ function JobDetail() {
 
                   {images.length > 0 && (
                     <div className="mt-5">
-                      <h3 className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <h3 className="text-sm font-medium text-white/70 mb-2 flex items-center gap-2">
                         <ImageIcon className="w-4 h-4" /> Fotografije posla
                       </h3>
                       <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -990,7 +990,7 @@ function JobDetail() {
                           <button
                             key={img.id}
                             onClick={() => setSelectedImage(img.image_url)}
-                            className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 hover:ring-2 hover:ring-brand-orange transition"
+                            className="relative aspect-square rounded-lg overflow-hidden border border-ink-700 hover:ring-2 hover:ring-brand-orange transition"
                           >
                             <NextImage
                               src={img.image_url}
@@ -1011,14 +1011,14 @@ function JobDetail() {
                 </div>
 
                 {!job.is_private && (
-                  <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
-                    <h2 className="text-lg font-bold text-gray-900 mb-4">
-                      Ponude {bids.length > 0 && <span className="text-steel font-normal text-sm">({bids.length})</span>}
+                  <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-5 shadow-sm">
+                    <h2 className="text-lg font-bold text-white mb-4">
+                      Ponude {bids.length > 0 && <span className="text-white/70 font-normal text-sm">({bids.length})</span>}
                     </h2>
                     {bids.length === 0 ? (
                       <div className="text-center py-8">
-                        <p className="text-steel text-sm">Još uvijek nema ponuda za ovaj posao.</p>
-                        <p className="text-steel text-xs mt-1">Prve ponude obično stižu u roku od 24 sata.</p>
+                        <p className="text-white/70 text-sm">Još uvijek nema ponuda za ovaj posao.</p>
+                        <p className="text-white/70 text-xs mt-1">Prve ponude obično stižu u roku od 24 sata.</p>
                       </div>
                     ) : (
                       <div className="divide-y divide-gray-100">
@@ -1026,20 +1026,20 @@ function JobDetail() {
                           <div key={bid.id} className="py-4 first:pt-0 last:pb-0">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                               <div>
-                                <h3 className="font-bold text-gray-900">{bid.firms?.name || 'Firma'}</h3>
-                                <p className="text-xs text-steel">{bid.firms?.city}</p>
+                                <h3 className="font-bold text-white">{bid.firms?.name || 'Firma'}</h3>
+                                <p className="text-xs text-white/70">{bid.firms?.city}</p>
                               </div>
                               <div className="text-right">
                                 <p className="text-lg font-bold text-brand-orange">{bid.amount} KM</p>
-                                <p className={`text-xs font-medium ${bid.status === 'accepted' ? 'text-green-700' : bid.status === 'rejected' ? 'text-gray-500' : 'text-steel'}`}>
+                                <p className={`text-xs font-medium ${bid.status === 'accepted' ? 'text-green-400' : bid.status === 'rejected' ? 'text-white/50' : 'text-white/70'}`}>
                                   {bid.status === 'pending' && 'Na čekanju'}
                                   {bid.status === 'accepted' && 'Prihvaćena'}
                                   {bid.status === 'rejected' && 'Odbijena'}
                                 </p>
                               </div>
                             </div>
-                            {bid.message && <p className="text-sm text-gray-900 mt-2 bg-cloud rounded-lg p-3">{bid.message}</p>}
-                            <p className="text-xs text-steel mt-2">Poslano {formatDate(bid.created_at)}</p>
+                            {bid.message && <p className="text-sm text-white mt-2 bg-ink-950 rounded-lg p-3">{bid.message}</p>}
+                            <p className="text-xs text-white/70 mt-2">Poslano {formatDate(bid.created_at)}</p>
                             {(job.status === 'open' || job.status === 'bidding') && bid.status === 'pending' && (
                               <button
                                 onClick={() => acceptBid(bid.id)}
@@ -1061,8 +1061,8 @@ function JobDetail() {
               </div>
 
               {/* Right column: chat */}
-              <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
-                <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-5 shadow-sm">
+                <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <MessageSquare className="w-5 h-5 text-brand-orange" /> Razgovor
                 </h2>
                 {job.is_private && targetFirm ? (
@@ -1074,7 +1074,7 @@ function JobDetail() {
                     partnerIsAdmin={false}
                   />
                 ) : (
-                  <p className="text-steel text-sm">Razgovor je dostupan nakon prihvaćanja ponude.</p>
+                  <p className="text-white/70 text-sm">Razgovor je dostupan nakon prihvaćanja ponude.</p>
                 )}
               </div>
             </div>
@@ -1117,7 +1117,7 @@ export default function JobDetailPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-cloud">
+        <div className="min-h-screen flex flex-col bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />

@@ -152,7 +152,7 @@ export default function ClientProfilePage() {
 
   if (loading || authLoading) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center pt-24">
           <Loader2 className="w-6 h-6 animate-spin text-brand-orange" />
@@ -163,84 +163,84 @@ export default function ClientProfilePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 pb-12 px-4">
         <div className="max-w-3xl mx-auto">
           <Link
             href="/dashboard/"
-            className="inline-flex items-center text-sm text-steel hover:text-gray-900 mb-4"
+            className="inline-flex items-center text-sm text-white/70 hover:text-white mb-4"
           >
             <ArrowLeft className="w-4 h-4 mr-1" /> Nazad na dashboard
           </Link>
 
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Moj profil</h1>
-          <p className="text-steel mb-6">Upravljajte svojim podacima i sigurnošću.</p>
+          <h1 className="text-2xl font-bold text-white mb-2">Moj profil</h1>
+          <p className="text-white/70 mb-6">Upravljajte svojim podacima i sigurnošću.</p>
 
           {error && (
-            <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3 mb-6">
+            <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3 mb-6">
               <AlertCircle className="w-4 h-4 shrink-0" />
               {error}
             </div>
           )}
           {success && (
-            <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3 mb-6">
+            <div className="flex items-center gap-2 text-sm text-green-400 bg-green-500/10 rounded-xl px-4 py-3 mb-6">
               <Check className="w-4 h-4" />
               {success}
             </div>
           )}
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 md:p-8 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-5 flex items-center gap-2">
+          <div className="bg-ink-900/60 rounded-2xl border border-ink-800 shadow-card p-6 md:p-8 mb-6">
+            <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
               <User className="w-5 h-5 text-brand-orange" /> Lični podaci
             </h2>
             <form onSubmit={handleSave} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1.5">Ime i prezime</label>
+                <label className="block text-sm font-medium text-white mb-1.5">Ime i prezime</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
                   <input
                     type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     placeholder="npr. Amila Softić"
-                    className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                    className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1.5">Email adresa</label>
+                <label className="block text-sm font-medium text-white mb-1.5">Email adresa</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
                   <input
                     type="email"
                     value={profile?.email || user?.email || ''}
                     disabled
-                    className="w-full bg-gray-100 border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-500 cursor-not-allowed"
+                    className="w-full bg-ink-800 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white/50 cursor-not-allowed"
                   />
                 </div>
-                <p className="text-xs text-steel mt-1">Email za prijavu ne može se mijenjati ovdje.</p>
+                <p className="text-xs text-white/70 mt-1">Email za prijavu ne može se mijenjati ovdje.</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1.5">Telefon</label>
+                <label className="block text-sm font-medium text-white mb-1.5">Telefon</label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-steel" />
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+387 61 123 456"
-                    className="w-full bg-cloud border border-gray-200 rounded-xl pl-10 pr-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                    className="w-full bg-ink-900/80 border border-ink-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
                   />
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <div className="flex items-center gap-2 text-sm text-steel">
+                <div className="flex items-center gap-2 text-sm text-white/70">
                   <Shield className="w-4 h-4" />
-                  <span>Uloga: <span className="font-medium text-gray-900">Klijent</span></span>
+                  <span>Uloga: <span className="font-medium text-white">Klijent</span></span>
                 </div>
                 <button
                   type="submit"
@@ -254,48 +254,48 @@ export default function ClientProfilePage() {
             </form>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-card p-6 md:p-8 mb-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-5 flex items-center gap-2">
+          <div className="bg-ink-900/60 rounded-2xl border border-ink-800 shadow-card p-6 md:p-8 mb-6">
+            <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
               <KeyRound className="w-5 h-5 text-brand-orange" /> Promjena lozinke
             </h2>
             <form onSubmit={handleChangePassword} className="space-y-5">
               {passwordError && (
-                <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+                <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   {passwordError}
                 </div>
               )}
               {passwordSuccess && (
-                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3">
+                <div className="flex items-center gap-2 text-sm text-green-400 bg-green-500/10 rounded-xl px-4 py-3">
                   <Check className="w-4 h-4" />
                   {passwordSuccess}
                 </div>
               )}
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1.5">Nova lozinka</label>
+                <label className="block text-sm font-medium text-white mb-1.5">Nova lozinka</label>
                 <input
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-cloud border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                  className="w-full bg-ink-900/80 border border-ink-700 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-900 mb-1.5">Potvrdi novu lozinku</label>
+                <label className="block text-sm font-medium text-white mb-1.5">Potvrdi novu lozinku</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-cloud border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
+                  className="w-full bg-ink-900/80 border border-ink-700 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange outline-none"
                 />
               </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
                   disabled={changingPassword}
-                  className="bg-gray-900 text-[#ffffff] px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 transition-all disabled:opacity-50 inline-flex items-center gap-2"
+                  className="bg-ink-800 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-ink-700 transition-all disabled:opacity-50 inline-flex items-center gap-2"
                 >
                   {changingPassword ? <Loader2 className="w-4 h-4 animate-spin" /> : <KeyRound className="w-4 h-4" />}
                   {changingPassword ? 'Promjena...' : 'Promijeni lozinku'}
@@ -304,17 +304,17 @@ export default function ClientProfilePage() {
             </form>
           </div>
 
-          <div className="bg-white rounded-2xl border border-red-100 shadow-card p-6 md:p-8">
-            <h2 className="text-lg font-semibold text-red-700 mb-2 flex items-center gap-2">
+          <div className="bg-ink-900/60 rounded-2xl border border-red-500/20 shadow-card p-6 md:p-8">
+            <h2 className="text-lg font-semibold text-red-400 mb-2 flex items-center gap-2">
               <Trash2 className="w-5 h-5" /> Obriši nalog
             </h2>
-            <p className="text-sm text-steel mb-4">
+            <p className="text-sm text-white/70 mb-4">
               Za brisanje naloga i svih povezanih podataka, kontaktirajte našu podršku. Sigurnosno, nalog ne možemo obrisati direktno iz preglednika.
             </p>
             <button
               type="button"
               onClick={handleDeleteAccount}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-red-200 text-red-700 bg-red-50 text-sm font-semibold hover:bg-red-100 transition-all"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl border border-red-500/20 text-red-400 bg-red-500/10 text-sm font-semibold hover:bg-red-500/20 transition-all"
             >
               <Trash2 className="w-4 h-4" />
               Kontaktiraj podršku za brisanje

@@ -52,11 +52,11 @@ const statusLabels: Record<Job['status'], string> = {
 };
 
 const statusColors: Record<Job['status'], string> = {
-  open: 'bg-blue-50 text-blue-700',
-  bidding: 'bg-orange-50 text-brand-orange',
-  in_progress: 'bg-yellow-50 text-yellow-700',
-  completed: 'bg-green-50 text-green-700',
-  cancelled: 'bg-gray-100 text-gray-600',
+  open: 'bg-blue-500/10 text-blue-400',
+  bidding: 'bg-brand-orange/10 text-brand-orange',
+  in_progress: 'bg-yellow-500/10 text-yellow-400',
+  completed: 'bg-green-500/10 text-green-400',
+  cancelled: 'bg-ink-800 text-white/70',
 };
 
 const emptyEditForm: EditForm = {
@@ -296,10 +296,10 @@ export default function DashboardPage() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
-          <p className="text-steel">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
+          <p className="text-white/70">{loading ? 'Učitavanje...' : 'Preusmjeravanje...'}</p>
         </main>
         <Footer />
       </div>
@@ -307,18 +307,18 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Moji poslovi</h1>
-              <p className="text-steel text-sm flex items-center gap-2">
+              <h1 className="text-2xl font-bold text-white">Moji poslovi</h1>
+              <p className="text-white/70 text-sm flex items-center gap-2">
                 {user.email}
                 <Link
                   href="/dashboard/profil/"
-                  className="inline-flex items-center gap-1 text-brand-orange hover:text-brand-orange-dark font-medium text-xs"
+                  className="inline-flex items-center gap-1 text-brand-orange hover:text-brand-orange font-medium text-xs"
                 >
                   <User className="w-3.5 h-3.5" /> Uredi profil
                 </Link>
@@ -329,29 +329,29 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
+          {error && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-4">{error}</p>}
 
           {loadingJobs ? (
-            <div className="flex items-center justify-center py-12 text-steel">
+            <div className="flex items-center justify-center py-12 text-white/70">
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje poslova...
             </div>
           ) : jobs.length === 0 ? (
-            <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
-              <ClipboardList className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-              <h3 className="font-bold text-gray-900 mb-1">Nemate objavljenih poslova</h3>
-              <p className="text-steel text-sm mb-4">Objavite prvi posao i primite ponude od provjerenih firmi.</p>
+            <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-8 text-center">
+              <ClipboardList className="w-10 h-10 text-white/50 mx-auto mb-3" />
+              <h3 className="font-bold text-white mb-1">Nemate objavljenih poslova</h3>
+              <p className="text-white/70 text-sm mb-4">Objavite prvi posao i primite ponude od provjerenih firmi.</p>
               <Link href="/objavi-projekat/" className="btn-primary text-sm py-2.5 px-4">Objavi posao</Link>
             </div>
           ) : (
             <div className="grid gap-4">
               {jobs.map((job) => (
-                <div key={job.id} className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div key={job.id} className="bg-ink-900/60 rounded-xl border border-ink-800 p-4 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
                     <div>
-                      <h3 className="font-bold text-gray-900">{job.title}</h3>
-                      <div className="flex items-center gap-2 text-sm text-steel mt-1">
+                      <h3 className="font-bold text-white">{job.title}</h3>
+                      <div className="flex items-center gap-2 text-sm text-white/70 mt-1">
                         <MapPin className="w-4 h-4" /> {job.city}
-                        <span className="w-1 h-1 bg-steel rounded-full" />
+                        <span className="w-1 h-1 bg-white/50 rounded-full" />
                         <span>{job.bids?.length || 0} {plural(job.bids?.length || 0, ['ponuda', 'ponude', 'ponuda'])}</span>
                       </div>
                     </div>
@@ -399,13 +399,13 @@ export default function DashboardPage() {
                         <button
                           onClick={() => cancelJob(job.id)}
                           disabled={actionId === job.id}
-                          className="text-sm text-red-600 hover:bg-red-50 px-4 py-2 rounded-xl border border-red-100 transition-colors disabled:opacity-50 w-full sm:w-auto"
+                          className="text-sm text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl border border-red-500/20 transition-colors disabled:opacity-50 w-full sm:w-auto"
                         >
                           Otkaži
                         </button>
                         <button
                           onClick={() => setDeleteId(job.id)}
-                          className="text-sm text-red-600 hover:bg-red-50 px-4 py-2 rounded-xl border border-red-100 transition-colors inline-flex items-center justify-center gap-1.5 w-full sm:w-auto"
+                          className="text-sm text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl border border-red-500/20 transition-colors inline-flex items-center justify-center gap-1.5 w-full sm:w-auto"
                         >
                           <Trash2 className="w-3.5 h-3.5" /> Izbriši
                         </button>
@@ -423,34 +423,34 @@ export default function DashboardPage() {
       {/* Edit job modal */}
       {editingJob && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 animate-fade-in">
+          <div className="bg-ink-900/60 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 animate-fade-in">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-bold text-gray-900">Uredi posao</h2>
-              <button onClick={closeEdit} className="p-2 hover:bg-gray-100 rounded-full transition-colors" aria-label="Zatvori">
-                <X className="w-5 h-5 text-gray-500" />
+              <h2 className="text-xl font-bold text-white">Uredi posao</h2>
+              <button onClick={closeEdit} className="p-2 hover:bg-ink-800 rounded-full transition-colors" aria-label="Zatvori">
+                <X className="w-5 h-5 text-white/50" />
               </button>
             </div>
 
-            {editError && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{editError}</p>}
+            {editError && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-4">{editError}</p>}
 
             <form onSubmit={saveEdit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Naziv posla</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Naziv posla</label>
                 <input
                   type="text"
                   value={editForm.title}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, title: e.target.value }))}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Kategorija</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Kategorija</label>
                 <select
                   value={editForm.category}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                   required
                 >
                   <option value="">Odaberi kategoriju</option>
@@ -461,23 +461,23 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Opis</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Opis</label>
                 <textarea
                   value={editForm.description}
                   onChange={(e) => setEditForm((prev) => ({ ...prev, description: e.target.value }))}
                   rows={4}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none resize-none"
                   required
                 />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Grad</label>
+                  <label className="block text-sm font-medium text-white/70 mb-1">Grad</label>
                   <select
                     value={editForm.city}
                     onChange={(e) => setEditForm((prev) => ({ ...prev, city: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                     required
                   >
                     <option value="">Odaberi grad</option>
@@ -487,20 +487,20 @@ export default function DashboardPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Adresa (opcionalno)</label>
+                  <label className="block text-sm font-medium text-white/70 mb-1">Adresa (opcionalno)</label>
                   <input
                     type="text"
                     value={editForm.address}
                     onChange={(e) => setEditForm((prev) => ({ ...prev, address: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Budžet</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Budžet</label>
                 <div className="flex gap-4 mb-3">
-                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <label className="flex items-center gap-2 text-sm text-white/70">
                     <input
                       type="radio"
                       name="budgetMode"
@@ -511,7 +511,7 @@ export default function DashboardPage() {
                     />
                     Majstori predlažu cijenu
                   </label>
-                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                  <label className="flex items-center gap-2 text-sm text-white/70">
                     <input
                       type="radio"
                       name="budgetMode"
@@ -526,23 +526,23 @@ export default function DashboardPage() {
                 {editForm.budgetMode === 'fixed' && (
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
                       <input
                         type="number"
                         placeholder="Min. budžet (KM)"
                         value={editForm.budgetMin}
                         onChange={(e) => setEditForm((prev) => ({ ...prev, budgetMin: e.target.value }))}
-                        className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                        className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                       />
                     </div>
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
                       <input
                         type="number"
                         placeholder="Max. budžet (KM)"
                         value={editForm.budgetMax}
                         onChange={(e) => setEditForm((prev) => ({ ...prev, budgetMax: e.target.value }))}
-                        className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                        className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                       />
                     </div>
                   </div>
@@ -550,14 +550,14 @@ export default function DashboardPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Rok (opcionalno)</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Rok (opcionalno)</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/50" />
                   <input
                     type="date"
                     value={editForm.deadline}
                     onChange={(e) => setEditForm((prev) => ({ ...prev, deadline: e.target.value }))}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none"
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-ink-700 bg-ink-900/60 text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/30 outline-none"
                   />
                 </div>
               </div>
@@ -587,14 +587,14 @@ export default function DashboardPage() {
       {/* Delete confirmation modal */}
       {deleteId && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-fade-in">
+          <div className="bg-ink-900/60 rounded-2xl shadow-2xl max-w-md w-full p-6 animate-fade-in">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                <Trash2 className="w-5 h-5 text-red-600" />
+              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center shrink-0">
+                <Trash2 className="w-5 h-5 text-red-400" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-1">Izbriši posao?</h3>
-                <p className="text-sm text-steel">
+                <h3 className="font-bold text-white mb-1">Izbriši posao?</h3>
+                <p className="text-sm text-white/70">
                   Ova radnja se ne može poništiti. Ako posao ima ponude, one će također biti uklonjene.
                 </p>
               </div>

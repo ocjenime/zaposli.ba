@@ -184,7 +184,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12 text-steel">
+      <div className="flex items-center justify-center py-12 text-white/70">
         <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje...
       </div>
     );
@@ -193,71 +193,71 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   return (
     <section className="animate-fade-in space-y-6">
       <div className="grid md:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-brand-orange/10 text-brand-orange flex items-center justify-center">
               <Crown className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Trenutni paket</p>
-              <p className="font-bold text-gray-900 dark:text-white">{subscription?.plans?.name || 'Besplatno'}</p>
+              <p className="text-sm text-white/70">Trenutni paket</p>
+              <p className="font-bold text-white">{subscription?.plans?.name || 'Besplatno'}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center">
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Uključeni oglasi ovaj mjesec</p>
-              <p className="font-bold text-gray-900 dark:text-white">{includedRemaining} preostalo</p>
+              <p className="text-sm text-white/70">Uključeni oglasi ovaj mjesec</p>
+              <p className="font-bold text-white">{includedRemaining} preostalo</p>
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-5 shadow-sm">
+        <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-5 shadow-sm">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
               <Megaphone className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Cijena jednog oglasa</p>
-              <p className="font-bold text-gray-900 dark:text-white">{PAID_AD_PRICE} KM</p>
+              <p className="text-sm text-white/70">Cijena jednog oglasa</p>
+              <p className="font-bold text-white">{PAID_AD_PRICE} KM</p>
             </div>
           </div>
         </div>
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+        <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3">
           <AlertCircle className="w-4 h-4 shrink-0" />
           {error}
         </div>
       )}
       {success && (
-        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3">
+        <div className="flex items-center gap-2 text-sm text-green-400 bg-green-500/10 rounded-xl px-4 py-3">
           <CheckCircle className="w-4 h-4" />
           {success}
         </div>
       )}
 
-      <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-6 shadow-sm">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">Kreirajte novi oglas</h3>
-        <p className="text-sm text-steel mb-5">
+      <div className="bg-ink-900/60 rounded-2xl border border-ink-800 p-6 shadow-sm">
+        <h3 className="text-lg font-bold text-white mb-1">Kreirajte novi oglas</h3>
+        <p className="text-sm text-white/70 mb-5">
           Promovirajte svoju firmu/majstorstvo ili objavite da tražite radnike. Oglas ide na odobrenje admina prije objave.
         </p>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Tip oglasa</label>
+            <label className="block text-sm font-medium text-white/70 mb-1.5">Tip oglasa</label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setAdType('promotion')}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
                   adType === 'promotion'
-                    ? 'border-brand-orange bg-orange-50 text-brand-orange'
-                    : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
+                    ? 'border-brand-orange bg-brand-orange/10 text-brand-orange'
+                    : 'border-ink-700 text-white/50 hover:bg-ink-800'
                 }`}
               >
                 <Sparkles className="w-4 h-4" /> Promocija firme
@@ -267,8 +267,8 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                 onClick={() => setAdType('worker_search')}
                 className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
                   adType === 'worker_search'
-                    ? 'border-brand-orange bg-orange-50 text-brand-orange'
-                    : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
+                    ? 'border-brand-orange bg-brand-orange/10 text-brand-orange'
+                    : 'border-ink-700 text-white/50 hover:bg-ink-800'
                 }`}
               >
                 <Users className="w-4 h-4" /> Tražim radnike
@@ -277,32 +277,32 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Naslov oglasa</label>
+            <label className="block text-sm font-medium text-white/70 mb-1.5">Naslov oglasa</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder={adType === 'promotion' ? 'npr. Kvalitetne adaptacije stanova' : 'npr. Tražimo majstore za ekipu'}
-              className="w-full rounded-xl border border-gray-200 dark:border-ink-700 px-4 py-3 text-sm bg-white dark:bg-ink-900 text-gray-900 dark:text-white"
+              className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm bg-ink-900/60 text-white"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Opis</label>
+            <label className="block text-sm font-medium text-white/70 mb-1.5">Opis</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
               placeholder="Opišite ponudu ili potrebu..."
-              className="w-full rounded-xl border border-gray-200 dark:border-ink-700 px-4 py-3 text-sm bg-white dark:bg-ink-900 text-gray-900 dark:text-white resize-none"
+              className="w-full rounded-xl border border-ink-700 px-4 py-3 text-sm bg-ink-900/60 text-white resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
+            <label className="block text-sm font-medium text-white/70 mb-1.5">
               Banner oglasa
             </label>
-            <p className="text-xs text-steel mb-2">
+            <p className="text-xs text-white/70 mb-2">
               Preporučene dimenzije: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB.
               Savršeno se prikazuje na homepage traci i stranici izdvojenih oglasa.
             </p>
@@ -317,14 +317,14 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
               <button
                 type="button"
                 onClick={() => bannerInputRef.current?.click()}
-                className="w-full flex flex-col items-center justify-center gap-2 px-4 py-8 rounded-xl border-2 border-dashed border-gray-200 dark:border-ink-700 text-steel hover:border-brand-orange hover:text-brand-orange transition-colors"
+                className="w-full flex flex-col items-center justify-center gap-2 px-4 py-8 rounded-xl border-2 border-dashed border-ink-700 text-white/70 hover:border-brand-orange hover:text-brand-orange transition-colors"
               >
                 <Upload className="w-6 h-6" />
                 <span className="text-sm font-medium">Kliknite da dodate banner (max 5MB)</span>
-                <span className="text-xs text-steel">1200 × 400 px preporučeno</span>
+                <span className="text-xs text-white/70">1200 × 400 px preporučeno</span>
               </button>
             ) : (
-              <div className="relative rounded-xl overflow-hidden border border-gray-200 dark:border-ink-700 aspect-[3/1]">
+              <div className="relative rounded-xl overflow-hidden border border-ink-700 aspect-[3/1]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-cover" />
                 <button
@@ -349,19 +349,19 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 overflow-hidden shadow-sm">
-        <div className="p-4 border-b border-gray-100 dark:border-ink-800">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white">Vaši oglasi</h3>
+      <div className="bg-ink-900/60 rounded-2xl border border-ink-800 overflow-hidden shadow-sm">
+        <div className="p-4 border-b border-ink-800">
+          <h3 className="text-lg font-bold text-white">Vaši oglasi</h3>
         </div>
         {ads.length === 0 ? (
-          <p className="p-6 text-sm text-steel text-center">Još nemate oglasa. Kreirajte prvi iznad.</p>
+          <p className="p-6 text-sm text-white/70 text-center">Još nemate oglasa. Kreirajte prvi iznad.</p>
         ) : (
-          <div className="divide-y divide-gray-100 dark:divide-ink-800">
+          <div className="divide-y divide-ink-800">
             {ads.map((ad) => (
               <div key={ad.id} className="p-4">
                 <div className="flex flex-col sm:flex-row gap-4">
                   {ad.image_url && (
-                    <div className="relative w-full sm:w-32 h-24 rounded-xl overflow-hidden border border-gray-100 dark:border-ink-800 shrink-0">
+                    <div className="relative w-full sm:w-32 h-24 rounded-xl overflow-hidden border border-ink-800 shrink-0">
                       <NextImage
                         src={ad.image_url}
                         alt={ad.title}
@@ -373,25 +373,25 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                   )}
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <p className="font-medium text-gray-900 dark:text-white">{ad.title}</p>
+                      <p className="font-medium text-white">{ad.title}</p>
                       {ad.status === 'pending' && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">NA ČEKANJU</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-500/10 text-yellow-400 rounded-full">NA ČEKANJU</span>
                       )}
                       {ad.status === 'active' && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">AKTIVAN</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-green-500/10 text-green-400 rounded-full">AKTIVAN</span>
                       )}
                       {ad.status === 'expired' && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">ISTEKAO</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-ink-800 text-white/50 rounded-full">ISTEKAO</span>
                       )}
                       {ad.status === 'rejected' && (
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">ODBIJEN</span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 bg-red-500/10 text-red-400 rounded-full">ODBIJEN</span>
                       )}
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ad.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ad.source === 'included' ? 'bg-blue-500/10 text-blue-400' : 'bg-brand-orange/10 text-brand-orange'}`}>
                         {ad.source === 'included' ? 'Uključen u paket' : `Plaćeno ${ad.amount} KM`}
                       </span>
                     </div>
-                    <p className="text-sm text-steel line-clamp-2">{ad.description}</p>
-                    <p className="text-xs text-steel mt-2 flex items-center gap-1">
+                    <p className="text-sm text-white/70 line-clamp-2">{ad.description}</p>
+                    <p className="text-xs text-white/70 mt-2 flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" />
                       {ad.status === 'pending'
                         ? 'Čeka odobrenje admina'

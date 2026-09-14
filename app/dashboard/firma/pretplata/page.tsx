@@ -150,7 +150,7 @@ function FirmSubscriptionContent() {
 
   if (authLoading || (!user && !isFirmRole(role))) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
@@ -160,7 +160,7 @@ function FirmSubscriptionContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-5xl mx-auto">
@@ -173,7 +173,7 @@ function FirmSubscriptionContent() {
             actions={
               <Link
                 href="/dashboard/firma/"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-ink-700 text-white/70 hover:text-white hover:bg-ink-800 hover:border-ink-700 transition-all duration-200"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Nazad na dashboard
@@ -182,33 +182,33 @@ function FirmSubscriptionContent() {
           />
 
           {success && (
-            <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-xl px-4 py-3 mb-6">
+            <div className="flex items-center gap-2 text-sm text-green-400 bg-green-500/10 rounded-xl px-4 py-3 mb-6">
               <Check className="w-4 h-4" />
               {success}
             </div>
           )}
 
           {error && (
-            <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3 mb-6">
+            <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3 mb-6">
               <AlertCircle className="w-4 h-4 shrink-0" />
               {error}
             </div>
           )}
 
           {loading ? (
-            <div className="flex items-center justify-center py-12 text-steel">
+            <div className="flex items-center justify-center py-12 text-white/70">
               <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje paketa...
             </div>
           ) : (
             <>
               <div className="flex items-center justify-center mb-6">
-                <div className="bg-white rounded-xl border border-gray-100 p-1 inline-flex">
+                <div className="bg-ink-900/60 rounded-xl border border-ink-800 p-1 inline-flex">
                   <button
                     onClick={() => setInterval('monthly')}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       interval === 'monthly'
                         ? 'bg-brand-orange text-[#ffffff]'
-                        : 'text-steel hover:text-gray-900'
+                        : 'text-white/70 hover:text-white'
                     }`}
                   >
                     <Calendar className="w-4 h-4 inline mr-1.5" />
@@ -219,7 +219,7 @@ function FirmSubscriptionContent() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       interval === 'yearly'
                         ? 'bg-brand-orange text-[#ffffff]'
-                        : 'text-steel hover:text-gray-900'
+                        : 'text-white/70 hover:text-white'
                     }`}
                   >
                     <Building2 className="w-4 h-4 inline mr-1.5" />
@@ -238,10 +238,10 @@ function FirmSubscriptionContent() {
                     return (
                     <div
                       key={plan.id}
-                      className={`relative bg-white rounded-2xl border p-5 flex flex-col transition-all hover:shadow-md ${
+                      className={`relative bg-ink-900/60 rounded-2xl border p-5 flex flex-col transition-all hover:shadow-md ${
                         isCurrent(plan.id)
                           ? 'border-brand-orange shadow-md'
-                          : 'border-gray-100'
+                          : 'border-ink-800'
                       }`}
                     >
                       {isCurrent(plan.id) && (
@@ -256,29 +256,29 @@ function FirmSubscriptionContent() {
                       )}
 
                       <div className="mb-4">
-                        <h3 className="text-lg font-bold text-gray-900">{plan.name}</h3>
-                        <p className="text-sm text-steel mt-1">{plan.description}</p>
+                        <h3 className="text-lg font-bold text-white">{plan.name}</h3>
+                        <p className="text-sm text-white/70 mt-1">{plan.description}</p>
                       </div>
 
                       <div className="mb-4">
                         {isLaunchEligible && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[10px] font-bold uppercase tracking-wide mb-2">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-wide mb-2">
                             Launch ponuda
                           </span>
                         )}
-                        <p className="text-3xl font-bold text-gray-900">
+                        <p className="text-3xl font-bold text-white">
                           {formatPrice(displayPrice)}
-                          <span className="text-sm font-normal text-steel">
+                          <span className="text-sm font-normal text-white/70">
                             {' '}
                             KM/{interval === 'yearly' ? 'god' : 'mj'}
                           </span>
                         </p>
                         {isLaunchEligible ? (
                           <div className="space-y-0.5">
-                            <p className="text-xs text-steel line-through">
+                            <p className="text-xs text-white/70 line-through">
                               {formatPrice(regularPrice)} KM/{interval === 'yearly' ? 'god' : 'mj'}
                             </p>
-                            <p className="text-xs text-green-700 font-medium">
+                            <p className="text-xs text-green-400 font-medium">
                               {interval === 'yearly'
                                 ? `Prvih ${plan.launch_offer_months} mj. ${formatPrice(plan.launch_price_monthly ?? 0)} KM, zatim ${formatPrice(plan.price_monthly)} KM/mj`
                                 : `Prvih ${plan.launch_offer_months} mjeseca · zatim regularna cijena`}
@@ -287,12 +287,12 @@ function FirmSubscriptionContent() {
                         ) : (
                           <>
                             {interval === 'yearly' && plan.price_monthly > 0 && (
-                              <p className="text-xs text-green-700 font-medium">
+                              <p className="text-xs text-green-400 font-medium">
                                 Uštedite 10% · umjesto {formatPrice(plan.price_monthly * 12)} KM
                               </p>
                             )}
                             {interval === 'monthly' && plan.price_yearly > 0 && (
-                              <p className="text-xs text-green-700 font-medium">
+                              <p className="text-xs text-green-400 font-medium">
                                 Godišnje {formatPrice(plan.price_yearly)} KM (ušteda 10%)
                               </p>
                             )}
@@ -300,10 +300,10 @@ function FirmSubscriptionContent() {
                         )}
                       </div>
 
-                      <ul className="space-y-2.5 mb-6 text-sm text-gray-900 flex-1">
+                      <ul className="space-y-2.5 mb-6 text-sm text-white flex-1">
                         {(planFeatures[plan.slug] || []).map((feature) => (
                           <li key={feature} className="flex items-start gap-2">
-                            <Check className="w-4 h-4 text-green-600 mt-0.5 shrink-0" />
+                            <Check className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                             <span>{feature}</span>
                           </li>
                         ))}
@@ -312,12 +312,12 @@ function FirmSubscriptionContent() {
                       {isCurrent(plan.id) ? (
                         <button
                           disabled
-                          className="w-full py-2.5 rounded-xl text-sm font-semibold bg-orange-50 text-brand-orange cursor-default"
+                          className="w-full py-2.5 rounded-xl text-sm font-semibold bg-brand-orange/10 text-brand-orange cursor-default"
                         >
                           Aktivni paket
                         </button>
                       ) : plan.slug === 'besplatno' ? (
-                        <span className="w-full py-2.5 rounded-xl text-sm font-semibold bg-green-50 text-green-700 text-center block">
+                        <span className="w-full py-2.5 rounded-xl text-sm font-semibold bg-green-500/10 text-green-400 text-center block">
                           Aktivno po registraciji
                         </span>
                       ) : (
@@ -332,14 +332,14 @@ function FirmSubscriptionContent() {
                           </button>
                           <button
                             onClick={() => setInstructionsPlanId(instructionsPlanId === plan.id ? null : plan.id)}
-                            className="w-full py-2.5 rounded-xl text-sm font-semibold border border-gray-200 text-gray-700 hover:bg-gray-50 transition-colors inline-flex items-center justify-center gap-2"
+                            className="w-full py-2.5 rounded-xl text-sm font-semibold border border-ink-700 text-white/70 hover:bg-ink-800 transition-colors inline-flex items-center justify-center gap-2"
                           >
                             <Banknote className="w-4 h-4" />
                             {instructionsPlanId === plan.id ? 'Sakrij uplate' : 'Keš / kartica na licu mjesta'}
                           </button>
                           {instructionsPlanId === plan.id && (
-                            <div className="mt-3 p-3 bg-cloud rounded-xl text-xs text-steel border border-gray-100">
-                              <p className="font-medium text-gray-900 mb-1">Uplate u BiH:</p>
+                            <div className="mt-3 p-3 bg-ink-950 rounded-xl text-xs text-white/70 border border-ink-800">
+                              <p className="font-medium text-white mb-1">Uplate u BiH:</p>
                               <ul className="space-y-1 list-disc list-inside">
                                 <li>Platni nalog / uplatnica na žiro račun</li>
                                 <li>Keš prilikom susreta</li>
@@ -357,7 +357,7 @@ function FirmSubscriptionContent() {
             </>
           )}
 
-          <div className="mt-8 bg-white rounded-xl border border-gray-100 p-5 text-sm text-steel">
+          <div className="mt-8 bg-ink-900/60 rounded-xl border border-ink-800 p-5 text-sm text-white/70">
             <p className="mb-2">
               <strong>Plaćanje u Bosni i Hercegovini:</strong>
             </p>
@@ -381,7 +381,7 @@ export default function FirmSubscriptionPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-cloud">
+        <div className="min-h-screen flex flex-col bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />

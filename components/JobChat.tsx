@@ -136,15 +136,15 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
 
   return (
     <div className="flex flex-col h-full min-h-[360px]">
-      {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-3">{error}</p>}
+      {error && <p className="text-red-400 text-sm bg-red-500/10 rounded-lg px-3 py-2 mb-3">{error}</p>}
 
-      <div className="flex-grow bg-white rounded-xl border border-gray-100 p-4 shadow-sm overflow-y-auto">
+      <div className="flex-grow bg-ink-900/60 rounded-xl border border-ink-800 p-4 shadow-sm overflow-y-auto">
         {loading ? (
-          <div className="flex items-center justify-center h-full text-steel">
+          <div className="flex items-center justify-center h-full text-white/70">
             <Loader2 className="w-4 h-4 animate-spin mr-2" /> Učitavanje...
           </div>
         ) : messages.length === 0 ? (
-          <p className="text-center text-steel text-sm mt-8">Pošaljite prvu poruku i dogovorite detalje posla.</p>
+          <p className="text-center text-white/70 text-sm mt-8">Pošaljite prvu poruku i dogovorite detalje posla.</p>
         ) : (
           <div className="space-y-4">
             {messages.map((msg, idx) => {
@@ -155,19 +155,19 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
               return (
                 <div key={msg.id}>
                   {showDate && (
-                    <div className="text-center text-xs text-steel my-3">{formatDate(msg.created_at)}</div>
+                    <div className="text-center text-xs text-white/70 my-3">{formatDate(msg.created_at)}</div>
                   )}
                   <div className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                     <div
                       className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-2 text-sm ${
-                        isMe ? 'bg-brand-orange text-[#ffffff] rounded-br-none' : 'bg-cloud text-gray-900 rounded-bl-none'
+                        isMe ? 'bg-brand-orange text-[#ffffff] rounded-br-none' : 'bg-ink-950 text-white rounded-bl-none'
                       }`}
                     >
-                      <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
+                      <p className={`text-[10px] font-semibold mb-1 ${isMe ? 'text-[#ffffff]/80' : 'text-white/70'}`}>
                         {getSenderLabel(msg, isMe)}
                       </p>
                       <p className="whitespace-pre-wrap">{msg.content}</p>
-                      <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-steel'}`}>
+                      <p className={`text-[10px] mt-1 ${isMe ? 'text-[#ffffff]/80' : 'text-white/70'}`}>
                         {formatTime(msg.created_at)}
                       </p>
                     </div>
@@ -187,7 +187,7 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
           onChange={(e) => setInput(e.target.value)}
           placeholder="Napišite poruku..."
           aria-label="Poruka"
-          className="flex-grow rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange"
+          className="flex-grow rounded-xl border border-ink-700 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/30 focus:border-brand-orange"
           disabled={sending}
         />
         <button

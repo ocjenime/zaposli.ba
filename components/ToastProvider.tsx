@@ -67,14 +67,14 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
   }, []);
 
   const content = (
-      <div className="flex items-start gap-3 p-4 pr-10 bg-white dark:bg-ink-800 rounded-xl shadow-xl border border-gray-100 dark:border-ink-700 pointer-events-auto relative">
-      <div className="shrink-0 w-8 h-8 rounded-full bg-orange-50 dark:bg-orange-900/30 flex items-center justify-center text-brand-orange">
+      <div className="flex items-start gap-3 p-4 pr-10 bg-ink-800 rounded-xl shadow-xl border border-ink-800 pointer-events-auto relative">
+      <div className="shrink-0 w-8 h-8 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange">
         <Bell className="w-4 h-4" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold text-gray-900 dark:text-white">{toast.title}</p>
+        <p className="text-sm font-semibold text-white">{toast.title}</p>
         {toast.message && (
-          <p className="text-xs text-steel mt-0.5 line-clamp-2">{toast.message}</p>
+          <p className="text-xs text-white/70 mt-0.5 line-clamp-2">{toast.message}</p>
         )}
       </div>
       <button
@@ -83,7 +83,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
           e.stopPropagation();
           onClose();
         }}
-        className="absolute top-2 right-2 p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-ink-700 transition-colors"
+        className="absolute top-2 right-2 p-1.5 rounded-lg text-white/50 hover:text-white/70 hover:bg-ink-800 transition-colors"
         aria-label="Zatvori obavještenje"
       >
         <X className="w-4 h-4" />

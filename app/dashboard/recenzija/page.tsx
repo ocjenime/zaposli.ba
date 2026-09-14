@@ -236,7 +236,7 @@ function ReviewPage() {
 
   if (authLoading || (!user && !error)) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-ink-950">
         <Header />
         <main className="flex-grow flex items-center justify-center">
           <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
@@ -246,21 +246,21 @@ function ReviewPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-2xl mx-auto">
           <Link
             href="/dashboard/"
-            className="inline-flex items-center gap-2 text-sm text-steel hover:text-gray-900 mb-4"
+            className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white mb-4"
           >
             <ArrowLeft className="w-4 h-4" />
             Nazad na dashboard
           </Link>
 
-          <div className="bg-white rounded-2xl shadow-card border border-gray-100 p-6 sm:p-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Ostavite recenziju</h1>
-            <p className="text-steel mb-6">
+          <div className="bg-ink-900/60 rounded-2xl shadow-card border border-ink-800 p-6 sm:p-8">
+            <h1 className="text-2xl font-bold text-white mb-2">Ostavite recenziju</h1>
+            <p className="text-white/70 mb-6">
               {loading ? 'Učitavanje podataka...' : job?.title}
             </p>
 
@@ -270,16 +270,16 @@ function ReviewPage() {
               </div>
             ) : error && !bid ? (
               <div className="text-center py-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-50 mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-red-500/10 mb-4">
                   <AlertCircle className="w-8 h-8 text-red-500" />
                 </div>
-                <h2 className="text-lg font-bold text-gray-900 mb-2">Recenzija nije dostupna</h2>
-                <p className="text-steel">{error}</p>
+                <h2 className="text-lg font-bold text-white mb-2">Recenzija nije dostupna</h2>
+                <p className="text-white/70">{error}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-3">
+                  <label className="block text-sm font-medium text-white mb-3">
                     Vaša ocjena za {bid?.firms?.name}
                   </label>
                   <div className="flex items-center gap-2">
@@ -297,19 +297,19 @@ function ReviewPage() {
                           className={`w-8 h-8 sm:w-10 sm:h-10 transition-colors ${
                             star <= (hoverRating || rating)
                               ? 'text-brand-orange fill-brand-orange'
-                              : 'text-mist'
+                              : 'text-white/50'
                           }`}
                         />
                       </button>
                     ))}
-                    <span className="ml-2 text-sm font-medium text-gray-900">
+                    <span className="ml-2 text-sm font-medium text-white">
                       {rating > 0 ? `${rating} od 5` : 'Odaberite ocjenu'}
                     </span>
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="comment" className="block text-sm font-medium text-gray-900 mb-2">
+                  <label htmlFor="comment" className="block text-sm font-medium text-white mb-2">
                     Komentar
                   </label>
                   <textarea
@@ -318,25 +318,25 @@ function ReviewPage() {
                     onChange={(e) => setComment(e.target.value)}
                     rows={5}
                     placeholder="Opišite svoje iskustvo..."
-                    className="w-full bg-cloud border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
+                    className="w-full bg-ink-900/80 border border-ink-700 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/50 focus:ring-2 focus:ring-brand-orange focus:border-transparent resize-none"
                     maxLength={1000}
                     required
                   />
-                  <p className="text-xs text-steel mt-1 text-right">
+                  <p className="text-xs text-white/70 mt-1 text-right">
                     {comment.length}/1000
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Slika (opcionalno)
                   </label>
-                  <p className="text-xs text-steel mb-3">
+                  <p className="text-xs text-white/70 mb-3">
                     Maksimalno 2MB, formati: JPG, PNG, WEBP.
                   </p>
 
                   {imagePreview ? (
-                    <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
+                    <div className="relative inline-block rounded-xl overflow-hidden border border-ink-800">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={imagePreview}
@@ -346,7 +346,7 @@ function ReviewPage() {
                       <button
                         type="button"
                         onClick={removeImage}
-                        className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-steel hover:text-red-500 shadow-sm"
+                        className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-white/70 hover:text-red-500 shadow-sm"
                         aria-label="Ukloni sliku"
                       >
                         <X className="w-4 h-4" />
@@ -356,7 +356,7 @@ function ReviewPage() {
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors"
+                      className="flex items-center gap-2 px-4 py-3 bg-ink-900/80 border border-ink-700 rounded-xl text-sm text-white/70 hover:text-white hover:border-brand-orange transition-colors"
                     >
                       <Upload className="w-4 h-4" />
                       Dodaj sliku
@@ -373,7 +373,7 @@ function ReviewPage() {
                 </div>
 
                 {error && (
-                  <div className="flex items-center gap-2 text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
+                  <div className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 rounded-xl px-4 py-3">
                     <AlertCircle className="w-4 h-4 shrink-0" />
                     {error}
                   </div>
@@ -389,7 +389,7 @@ function ReviewPage() {
                   </button>
                   <Link
                     href="/dashboard/"
-                    className="px-6 py-3 rounded-xl border border-gray-200 text-sm font-medium text-steel hover:text-gray-900 hover:bg-cloud transition-colors"
+                    className="px-6 py-3 rounded-xl border border-ink-700 text-sm font-medium text-white/70 hover:text-white hover:bg-ink-950 transition-colors"
                   >
                     Odustani
                   </Link>
@@ -408,7 +408,7 @@ export default function ReviewPageWrapper() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-cloud">
+        <div className="min-h-screen flex flex-col bg-ink-950">
           <Header />
           <main className="flex-grow flex items-center justify-center">
             <div className="w-10 h-10 border-4 border-brand-orange border-t-transparent rounded-full animate-spin" />
