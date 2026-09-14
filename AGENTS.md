@@ -306,7 +306,15 @@
     - Admin can **delete** users.
     - Added `blocked` badge in the users list.
   - Updated login and auth callback to reject blocked accounts.
-- **ACTION REQUIRED**: Apply `supabase/migration-admin-user-management.sql` in Supabase SQL Editor and wait for the `admin-user-action` Edge Function to deploy via GitHub Actions.
+- User applied `supabase/migration-admin-user-management.sql`. The role-change-to-firm trigger still did not fire for an existing user; a manual SQL workaround created the firm row and set the role. The trigger root cause remains to be investigated.
+- Built and deployed **promoted ads public surfacing** (premium Higgsfield style):
+  - New reusable `components/PromotedAdCard.tsx` with glassmorphism dark card, image, type badge, firm info, verified badge, and CTA.
+  - New `components/PromotedAdsSection.tsx` on the homepage showing up to 6 active approved promoted ads with a "Pogledaj sve" link.
+  - New `/izdvojeni-oglasi/` page listing all active promoted ads in a responsive grid, with metadata, breadcrumbs JSON-LD, and empty state.
+  - Added `lib/promoted-ads.ts` helper for fetching active ads and building links.
+  - Added `supabase/migration-promoted-ads-rls.sql` to enable RLS and add public read + owner/admin policies for `promoted_ads`.
+  - Updated `app/sitemap.ts` to include `/izdvojeni-oglasi/`.
+- **ACTION REQUIRED**: Apply `supabase/migration-promoted-ads-rls.sql` in Supabase SQL Editor so public pages can read active promoted ads.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.

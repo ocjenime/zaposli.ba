@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     '', '/kategorije', '/poslovi', '/kako-funkcionise', '/za-firme', '/savjeti',
     '/faq', '/kontakt', '/o-nama', '/objavi-projekat', '/prijava', '/registracija',
-    '/zaboravljena-lozinka', '/pravila', '/privacy', '/gradovi', '/top-firme',
+    '/zaboravljena-lozinka', '/pravila', '/privacy', '/gradovi', '/top-firme', '/izdvojeni-oglasi',
   ].map((path) => ({
     url: `${site.url}${path}/`,
     lastModified: now,
