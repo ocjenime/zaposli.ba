@@ -747,16 +747,18 @@ export default function ZaFirmeContent() {
 
                   <div className="text-center mb-8 pt-4">
                     <h3 className="text-xl font-bold text-white mb-2">Istaknuti oglas</h3>
-                    <p className="text-white/60 text-sm mb-5">Prikazuje se na homepage-u 30 dana</p>
+                    <p className="text-white/60 text-sm mb-5">Odaberite gdje želite da vas vide</p>
                     <div className="flex items-end justify-center gap-1">
-                      <span className="text-5xl md:text-6xl font-extrabold text-white leading-none">49</span>
+                      <span className="text-5xl md:text-6xl font-extrabold text-white leading-none">19</span>
                       <span className="text-white/70 font-semibold mb-2">KM/mj</span>
                     </div>
-                    <p className="text-sm text-white/50 mt-2 line-through">79 KM/mj</p>
+                    <p className="text-sm text-white/50 mt-2">homepage mini oglas · Pro uključuje 1 · Premium 3</p>
                   </div>
 
                   <ul className="space-y-3 mb-8">
                     {[
+                      'Homepage mini oglas: 19 KM/mj (ili uključen u Pro/Premium)',
+                      'Stranica svih oglasa: samo 5 KM po oglasu',
                       'Banner dimenzija 1200 × 400 px',
                       'Prikaz u sekciji „Istaknuti oglasi"',
                       'Brojčana pozicija 1–5 na homepage-u',
@@ -772,7 +774,7 @@ export default function ZaFirmeContent() {
                   </ul>
 
                   <Link
-                    href="/dashboard/firma/"
+                    href="/dashboard/firma/?tab=ads"
                     className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-4 rounded-xl font-semibold text-base transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
                   >
                     Kreiraj oglas

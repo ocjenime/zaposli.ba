@@ -18,6 +18,21 @@
 
 ## Work State
 ### Completed
+- Implemented the new promoted-ads pricing model:
+  - Added `destination` column to `promoted_ads` via `supabase/migration-promoted-ads-destination.sql` (`homepage` vs `listing`).
+  - Homepage mini oglas: **19 KM** or included in Pro (1/mj) / Premium (3/mj).
+  - Listing-page oglas (`/izdvojeni-oglasi/`): **5 KM**, always paid.
+  - Updated `components/FirmAdsTab.tsx` with a destination selector, dynamic pricing, included-credit logic for homepage only, and destination badges in the ad list.
+  - Updated `/za-firme/#reklame` pricing card to 19 KM homepage / 5 KM listing with Pro/Premium inclusion notes.
+  - Added a CTA banner on `/izdvojeni-oglasi/` to publish a listing ad for 5 KM.
+  - Updated `lib/promoted-ads.ts` and `components/FeaturedAdsSection.tsx` to fetch `destination` and filter homepage ads so listing-only ads don't appear in the homepage carousel.
+  - Updated admin "Oglasi" tab (`app/admin/page.tsx`) to show each ad's destination.
+  - `app/dashboard/firma/page.tsx` now respects `?tab=ads` (and `?tab=stats|bids|direct`) from query parameters.
+- Made the category emergency CTA less intrusive on desktop:
+  - `components/EmergencyBottomBar.tsx` now supports a `position="corner"` variant that renders a compact top-right sticker on `md+` screens while keeping the bottom bar on mobile.
+  - `/kategorije/page.tsx` and featured category pages (`/kategorije/[slug]/`) use `position="corner"`.
+- Fixed invisible firm names in `components/FeaturedAdsSection.tsx` (real and demo cards) by replacing `truncate` with wrapping text, matching the previous fix in `RecommendedFirmsSection`.
+- `npm run lint` and `npm run build` both pass (2406 pages).
 - Switched canonical domain from `www.zaposli.ba` to `zaposli.ba`.
 - Fixed broken “back to firm profile” link in `app/zatrazi-ponudu/page.tsx`.
 - Fixed `NotificationBell.tsx` and `dashboard/notifications/page.tsx` RLS filters by `user_id`.

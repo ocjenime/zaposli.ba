@@ -162,7 +162,7 @@ export default function CategoriesPage() {
 
       </main>
 
-      <EmergencyBottomBar />
+      <EmergencyBottomBar position="corner" />
 
       <Footer />
     </div>

@@ -85,10 +85,10 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
             />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{firm?.name || 'Firma'}</p>
+            <div className="flex items-start gap-1">
+              <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{firm?.name || 'Firma'}</p>
               {firm?.verified && (
-                <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0" />
+                <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
               )}
             </div>
             <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
@@ -234,9 +234,9 @@ function DemoFeaturedAdCard({
             />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white truncate">{demo.firm}</p>
-              <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0" />
+            <div className="flex items-start gap-1">
+              <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{demo.firm}</p>
+              <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
             </div>
             <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
               <span>{demo.city}</span>
@@ -280,7 +280,7 @@ export default function FeaturedAdsSection() {
         const { data, error } = await supabase
           .from('promoted_ads')
           .select(
-            'id,title,description,image_url,banner_url,cta_url,ad_type,ends_at,created_at,homepage_position,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
+            'id,title,description,image_url,banner_url,cta_url,ad_type,destination,ends_at,created_at,homepage_position,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
           )
           .eq('status', 'active')
           .gt('ends_at', now)
@@ -291,7 +291,7 @@ export default function FeaturedAdsSection() {
         if (error) throw error;
 
         const typedAds = ((data || []) as unknown as PublicPromotedAd[]).filter(
-          (ad) => !ad.firms?.slug?.startsWith('test-')
+          (ad) => !ad.firms?.slug?.startsWith('test-') && ad.destination !== 'listing'
         );
         const sorted = typedAds.sort((a, b) => {
           const aPos = a.homepage_position || 99;
@@ -335,10 +335,10 @@ export default function FeaturedAdsSection() {
             </p>
           </div>
           <Link
-            href={hasRealAds ? '/izdvojeni-oglasi/' : '/za-firme/#reklame'}
+            href="/izdvojeni-oglasi/"
             className="text-xs md:text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors inline-flex items-center gap-1 shrink-0"
           >
-            {hasRealAds ? 'Pogledaj sve' : 'Reklamiraj se'}
+            Svi oglasi
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

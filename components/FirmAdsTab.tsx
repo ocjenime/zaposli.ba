@@ -3,10 +3,12 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Subscription, getFeaturedAdsUsedThisMonth, getIncludedAdsRemaining } from '@/lib/subscriptions';
-import { Megaphone, Loader2, CheckCircle, Clock, AlertCircle, Crown, Zap, Users, Sparkles, Upload, X, ImageIcon } from 'lucide-react';
+import { Megaphone, Loader2, CheckCircle, Clock, AlertCircle, Crown, Zap, Users, Sparkles, Upload, X, ImageIcon, LayoutGrid, Home } from 'lucide-react';
 import NextImage from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
-const PAID_AD_PRICE = 49;
+const HOMEPAGE_AD_PRICE = 19;
+const LISTING_AD_PRICE = 5;
 
 interface PromotedAd {
   id: string;
@@ -16,6 +18,7 @@ interface PromotedAd {
   banner_url: string | null;
   cta_url: string | null;
   ad_type: 'promotion' | 'worker_search';
+  destination: 'homepage' | 'listing' | null;
   amount: number;
   status: 'pending' | 'active' | 'expired' | 'rejected';
   source: 'included' | 'paid';
@@ -47,8 +50,16 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
 
+  const searchParams = useSearchParams();
+  const [destination, setDestination] = useState<'homepage' | 'listing'>(() => {
+    const d = searchParams.get('destination');
+    return d === 'listing' ? 'listing' : 'homepage';
+  });
+
   const includedRemaining = getIncludedAdsRemaining(subscription, adsUsed);
-  const canUseIncluded = includedRemaining > 0;
+  const isHomepage = destination === 'homepage';
+  const canUseIncluded = isHomepage && includedRemaining > 0;
+  const effectivePrice = isHomepage ? HOMEPAGE_AD_PRICE : LISTING_AD_PRICE;
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -148,7 +159,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     try {
       const [imageUrl, bannerUrl] = await Promise.all([uploadImage(), uploadBanner()]);
       const source = canUseIncluded ? 'included' : 'paid';
-      const amount = source === 'included' ? 0 : PAID_AD_PRICE;
+      const amount = source === 'included' ? 0 : effectivePrice;
 
       const { error: insertErr } = await supabase.from('promoted_ads').insert({
         firm_id: firmId,
@@ -157,6 +168,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
         image_url: imageUrl,
         banner_url: bannerUrl,
         ad_type: adType,
+        destination,
         amount,
         status: 'pending',
         source,
@@ -169,11 +181,12 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
       setAdType('promotion');
       removeImage();
       removeBanner();
-      setSuccess(
-        source === 'included'
-          ? 'Oglas je poslan na odobrenje (uključen u paket).'
-          : `Oglas je poslan na odobrenje. Nakon odobrenja plaćate ${PAID_AD_PRICE} KM.`
-      );
+      if (source === 'included') {
+        setSuccess('Oglas je poslan na odobrenje (uključen u paket).');
+      } else {
+        const place = isHomepage ? 'homepage-u' : 'stranici svih oglasa';
+        setSuccess(`Oglas je poslan na odobrenje. Nakon odobrenja plaćate ${amount} KM za prikaz na ${place}.`);
+      }
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Greška prilikom slanja oglasa.');
@@ -222,7 +235,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
             </div>
             <div>
               <p className="text-sm text-steel">Cijena jednog oglasa</p>
-              <p className="font-bold text-gray-900 dark:text-white">{PAID_AD_PRICE} KM</p>
+              <p className="font-bold text-gray-900 dark:text-white">Homepage {HOMEPAGE_AD_PRICE} KM / Svi oglasi {LISTING_AD_PRICE} KM</p>
             </div>
           </div>
         </div>
@@ -277,6 +290,42 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Lokacija prikaza</label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setDestination('homepage')}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
+                  destination === 'homepage'
+                    ? 'border-brand-orange bg-orange-50 text-brand-orange'
+                    : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
+                }`}
+              >
+                <Home className="w-4 h-4" /> Homepage mini oglas
+                <span className="ml-auto text-xs font-bold opacity-70">{HOMEPAGE_AD_PRICE} KM</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDestination('listing')}
+                className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-colors ${
+                  destination === 'listing'
+                    ? 'border-brand-orange bg-orange-50 text-brand-orange'
+                    : 'border-gray-200 dark:border-ink-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-ink-800'
+                }`}
+              >
+                <LayoutGrid className="w-4 h-4" /> Stranica svih oglasa
+                <span className="ml-auto text-xs font-bold opacity-70">{LISTING_AD_PRICE} KM</span>
+              </button>
+            </div>
+            {!isHomepage && (
+              <p className="text-xs text-steel mt-2">Oglas na stranici svih oglasa se naplaćuje pojedinačno i nije uključen u paket.</p>
+            )}
+            {isHomepage && includedRemaining > 0 && (
+              <p className="text-xs text-green-600 mt-2">Imate {includedRemaining} uključenih homepage oglasa ovaj mjesec.</p>
+            )}
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Naslov oglasa</label>
             <input
               type="text"
@@ -304,7 +353,9 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
             </label>
             <p className="text-xs text-steel mb-2">
               Preporučene dimenzije: <strong>1200 × 400 px</strong> (omjer 3:1), visoka kvaliteta, max 5MB.
-              Savršeno se prikazuje na homepage traci i stranici izdvojenih oglasa.
+              {isHomepage
+                ? ' Istaknuto se prikazuje na homepage traci i stranici izdvojenih oglasa.'
+                : ' Prikazuje se na stranici svih oglasa (/izdvojeni-oglasi/).'}
             </p>
             <input
               ref={bannerInputRef}
@@ -344,7 +395,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
             className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-orange text-white font-semibold hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
           >
             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Megaphone className="w-4 h-4" />}
-            {canUseIncluded ? 'Pošalji oglas (uključen u paket)' : `Pošalji oglas (${PAID_AD_PRICE} KM)`}
+            {canUseIncluded ? 'Pošalji oglas (uključen u paket)' : `Pošalji oglas (${effectivePrice} KM)`}
           </button>
         </div>
       </div>
@@ -389,6 +440,11 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ad.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
                         {ad.source === 'included' ? 'Uključen u paket' : `Plaćeno ${ad.amount} KM`}
                       </span>
+                      {ad.destination && (
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                          {ad.destination === 'homepage' ? 'Homepage' : 'Svi oglasi'}
+                        </span>
+                      )}
                     </div>
                     <p className="text-sm text-steel line-clamp-2">{ad.description}</p>
                     <p className="text-xs text-steel mt-2 flex items-center gap-1">

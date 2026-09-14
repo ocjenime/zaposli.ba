@@ -38,16 +38,9 @@ export default function PromoBanner() {
                   vaša reklama.
                 </span>
               </h2>
-              <p className="text-white/70 mb-6 max-w-md leading-relaxed">
+              <p className="text-white/70 max-w-md leading-relaxed">
                 Dosegnite hiljade klijenata na Zaposli.ba. Istaknite svoju firmu, privucite nove kupce i budite prvi izbor za projekte u vašem gradu.
               </p>
-              <Link
-                href="/za-firme/#reklame"
-                className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
-              >
-                Saznaj više
-                <ArrowRight className="w-4 h-4" />
-              </Link>
             </div>
 
             <div className="flex flex-col items-start lg:items-end">
@@ -75,7 +68,7 @@ export default function PromoBanner() {
           <div className="absolute inset-0 bg-gradient-to-r from-ink-900 via-ink-800 to-ink-900" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(249,115,22,0.15),_transparent_50%)]" />
 
-          <div className="relative flex items-center gap-4 p-4">
+          <Link href="/za-firme/#reklame" className="relative flex items-center gap-4 p-4 group">
             <div className="shrink-0 w-12 h-12 rounded-xl bg-brand-orange/15 border border-brand-orange/25 flex items-center justify-center backdrop-blur-sm">
               <Megaphone className="w-6 h-6 text-brand-orange" />
             </div>
@@ -89,14 +82,10 @@ export default function PromoBanner() {
               </p>
             </div>
 
-            <Link
-              href="/za-firme/#reklame"
-              className="shrink-0 inline-flex items-center gap-1 bg-brand-orange hover:bg-brand-orange-dark text-white px-3 py-2 rounded-lg text-xs font-semibold transition-colors shadow-lg shadow-brand-orange/25"
-            >
-              Saznaj više
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
+            <span className="shrink-0 w-9 h-9 rounded-full bg-white/10 border border-white/10 text-white flex items-center justify-center group-hover:bg-brand-orange group-hover:border-brand-orange transition-colors">
+              <ArrowRight className="w-4 h-4" />
+            </span>
+          </Link>
         </div>
       </div>
     </section>

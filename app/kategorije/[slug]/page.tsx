@@ -165,9 +165,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
       </main>
 
-      {cat.featured && (
-        <EmergencyBottomBar href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}`} />
-      )}
+        {cat.featured && (
+          <EmergencyBottomBar position="corner" href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}`} />
+        )}
 
       <Footer />
     </div>

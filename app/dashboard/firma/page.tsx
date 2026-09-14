@@ -231,12 +231,15 @@ function FirmDashboardContent() {
   useEffect(() => {
     const expandId = searchParams.get('expandJobId');
     const directId = searchParams.get('directJobId');
+    const tab = searchParams.get('tab');
     if (expandId) {
       setExpandedJob(expandId);
       setActiveTab('jobs');
     } else if (directId) {
       setExpandedDirectJob(directId);
       setActiveTab('direct');
+    } else if (tab === 'ads' || tab === 'stats' || tab === 'bids' || tab === 'direct') {
+      setActiveTab(tab);
     }
   }, [searchParams]);
 
