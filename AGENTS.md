@@ -295,6 +295,18 @@
   - The subscription request form now includes `plan_name` in metadata for better email/notifications.
 - User applied `supabase/migration-admin-request-notifications.sql`; admin now receives in-app and email notifications for subscription upgrade requests.
 - Added a pending subscription-requests list inside the admin **Pretplate** tab so admins can see and activate upgrade requests directly where they manage subscriptions.
+- Fixed admin role-change bug and added user management tools:
+  - Created `supabase/migration-admin-user-management.sql`:
+    - Recreates/ensures the trigger that auto-creates a `firms` row when a profile role is changed to `firm`/`majstor`.
+    - Adds `blocked` column to `profiles`.
+  - Created `supabase/functions/admin-user-action/index.ts` Edge Function (admin-only) for `set_password`, `delete_user`, and `block_user`.
+  - Updated admin `ProfileEditModal`:
+    - Admin can now **generate/view a new password** for any user (displayed once with copy button).
+    - Admin can **block/unblock** users.
+    - Admin can **delete** users.
+    - Added `blocked` badge in the users list.
+  - Updated login and auth callback to reject blocked accounts.
+- **ACTION REQUIRED**: Apply `supabase/migration-admin-user-management.sql` in Supabase SQL Editor and wait for the `admin-user-action` Edge Function to deploy via GitHub Actions.
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
