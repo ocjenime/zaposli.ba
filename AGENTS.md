@@ -346,13 +346,27 @@
   - `/za-firme/#reklame` anchor and 49 KM pricing card render.
   - `/izdvojeni-oglasi/` renders test promoted ads.
   - `npm run lint` and `npm run build` pass (2406 pages).
+- Full public-site WOW/Higgsfield dark redesign completed:
+  - `/poslovi/` converted to full dark theme (hero, filter bar, job cards, empty state, CTA).
+  - `/firma-profil/[slug]/` content area converted to dark glass cards.
+  - `/top-firme/` converted to dark theme (trust badges, firm cards, CTA).
+  - `/kategorije/` and `/kategorije/[slug]/` converted to dark theme; `CategoryCard`, `CategoryFirms`, `FeaturedJobsSection`, `CityCategoriesGrid` updated.
+  - `/gradovi/` and `/gradovi/[slug]/` converted to dark theme; `CityGrid` updated.
+- All dashboard pages and shared components converted to dark Higgsfield theme:
+  - `app/dashboard/**/*.tsx` pages.
+  - `components/JobChat.tsx`, `components/NotificationBell.tsx`, `components/FirmAdsTab.tsx`, `components/ToastProvider.tsx`.
+  - `components/ui/DashboardHeader.tsx`, `components/ui/DashboardStat.tsx`, `components/ui/EmptyState.tsx`.
+  - Status badges switched to dark translucent variants.
+- Promoted ad cards now link to `/izdvojeni-oglasi/[id]/` instead of firm profile; CTA text changed to "Pogledaj oglas".
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- Redesign the next highest-traffic public page(s) in the same WOW/Higgsfield style. Highest-priority candidates: `/poslovi/`, `/firma-profil/[slug]/`, `/top-firme/`, `/kategorije/`, `/gradovi/`, `/kako-funkcionise/` (already redesigned but can be polished), dashboard pages. Ask user which page to tackle first.
+- Smoke-test the redesigned pages on production and fix any visual/functionality issues reported by the user.
+- Optionally polish remaining public pages (`/kako-funkcionise/`, `/objavi-projekat/`, `/zatrazi-ponudu/`, `/o-nama/`, `/faq/`, `/savjeti/`, auth pages) if the user wants the entire site in the same dark WOW style.
+- Investigate and fix the admin role-change-to-firm trigger root cause if it resurfaces.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
