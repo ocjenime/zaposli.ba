@@ -42,7 +42,7 @@ function LatestAdCard({ job }: { job: LatestJob }) {
 
   return (
     <Link
-      href={`/poslovi/?job=${job.id}`}
+      href={`/poslovi/?expandId=${job.id}`}
       className="group flex flex-col rounded-2xl bg-ink-900/60 backdrop-blur-sm border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 overflow-hidden"
     >
       {/* Image */}

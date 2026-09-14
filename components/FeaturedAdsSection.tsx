@@ -138,7 +138,9 @@ export default function FeaturedAdsSection() {
 
         if (error) throw error;
 
-        const typedAds = (data || []) as unknown as PublicPromotedAd[];
+        const typedAds = ((data || []) as unknown as PublicPromotedAd[]).filter(
+          (ad) => !ad.firms?.slug?.startsWith('test-')
+        );
         const sorted = typedAds.sort((a, b) => {
           const aPos = a.homepage_position || 99;
           const bPos = b.homepage_position || 99;
