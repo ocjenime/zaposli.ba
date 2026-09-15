@@ -27,6 +27,7 @@
 - Fixed dark-mode text visibility on the homepage: category icon labels, "Preporučene firme" section/subtitle/card meta, and "Sponzorirani oglasi" section/subtitle/title/card meta now use explicit `#ffffff` colors so they stay readable in dark mode.
 - Made the homepage PromoBanner keep the same colors in dark mode by removing the `dark:bg-black/60` override on the benefits panel.
 - Fixed the homepage hero secondary "Pronađi majstora" CTA: it now uses explicit `#ffffff` translucent background/border/text so it stays visible in dark mode, and added an arrow icon in both light and dark modes.
+- Fixed the mobile bottom sticky "Pronađi poslove" button in dark mode: it now uses a muted gray (`#4b5563`) instead of the semantic near-white so it is clearly visible against the dark sticky bar.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
