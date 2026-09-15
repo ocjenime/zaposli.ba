@@ -1,4 +1,3 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 // These are the only routes that require login. Everything else is public.
@@ -14,7 +13,14 @@ function isStatic(pathname: string) {
   return STATIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
-export async function middleware(request: NextRequest) {
+function hasAuthCookie(request: NextRequest) {
+  return request.cookies.getAll().some((cookie) => {
+    const name = cookie.name.toLowerCase();
+    return name.includes('auth-token') || name.includes('refresh-token');
+  });
+}
+
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Static assets and all non-protected pages are always allowed.
@@ -22,37 +28,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let response = NextResponse.next({ request });
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            request.cookies.set(name, value);
-            response.cookies.set(name, value, options as CookieOptions);
-          });
-        },
-      },
-    }
-  );
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!session) {
-    const loginUrl = new URL('/prijava/', request.url);
-    loginUrl.searchParams.set('redirectTo', pathname);
-    return NextResponse.redirect(loginUrl);
+  if (hasAuthCookie(request)) {
+    return NextResponse.next();
   }
 
-  return response;
+  const loginUrl = new URL('/prijava/', request.url);
+  loginUrl.searchParams.set('redirectTo', pathname);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {

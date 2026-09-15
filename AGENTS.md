@@ -25,7 +25,7 @@
 - Fixed grammar in paid plan feature lists (`lib/plan-features.ts`): `mjesecno` → `mjesečno`.
 - Restored the previous `/kako-funkcionise/` role-selector page (`Tražim majstora` / `Nudim usluge`) with the Higgsfield dark hero, dynamic steps, benefits, FAQ tabs, and CTA.
 - Restored `CategoryIconRow` below the homepage hero.
-- Added auth-gating middleware (`middleware.ts`) that requires login only for `/poslovi/` and `/izdvojeni-oglasi/` (including ad detail pages). All other pages (`/gradovi/`, `/kategorije/`, `/za-firme/`, `/kako-funkcionise/`, `/faq/`, `/kontakt/`, `/o-nama/`, `/savjeti/`, `/top-firme/`, `/firma-profil/`, `/usluge/`, ...) remain public. Unauthenticated users on protected routes are redirected to `/prijava/?redirectTo=<path>`; login form honors `redirectTo`.
+- Added auth-gating middleware (`middleware.ts`) that requires login only for `/poslovi/` and `/izdvojeni-oglasi/` (including ad detail pages). All other pages remain public. The middleware now detects logged-in users by the presence of Supabase auth/refresh cookies, so already-authenticated firms/majstors are no longer incorrectly redirected to login.
 - Fixed verified badge on homepage covering long firm names (`Arilux D.o.o.`): `VerifiedBadge` now supports `showLabel={false}` for compact cards in `RecommendedFirmsSection` and `FeaturedAdsSection`.
 - Hidden the black arrow CTA buttons on mobile in `FeaturedAdsSection` (real and demo sponsored cards) for shorter, cleaner cards; arrows remain on desktop.
 - Added `RecommendedFirmsSection` above the job listings on `/poslovi/`.
