@@ -51,9 +51,9 @@ export default function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/25 to-ink-950/40" />
       </div>
 
-      {/* Emergency banner */}
+      {/* Emergency banner - desktop only (moved to categories on mobile) */}
       <div
-        className={`relative z-30 mt-14 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20 transition-all duration-300 ${
+        className={`hidden md:block relative z-30 mt-14 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20 transition-all duration-300 ${
           emergencyBannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
