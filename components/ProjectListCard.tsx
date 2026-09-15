@@ -123,12 +123,12 @@ export default function ProjectListCard({
       {/* Center content */}
       <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
         <div>
-          <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-white leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
+          <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-[#ffffff] leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
             {job.title}
           </h3>
 
           {job.description && (
-            <p className="hidden sm:block text-xs md:text-sm text-steel dark:text-gray-300 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
+            <p className="hidden sm:block text-xs md:text-sm text-gray-600 dark:text-[#ffffff]/70 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
               {job.description}
             </p>
           )}
@@ -139,7 +139,7 @@ export default function ProjectListCard({
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 text-[10px] sm:text-xs text-steel dark:text-gray-400">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 text-[10px] sm:text-xs text-gray-600 dark:text-[#ffffff]/60">
           <span className="inline-flex items-center gap-1">
             <MapPin className="w-3 h-3" />
             {job.city}
@@ -176,10 +176,10 @@ export default function ProjectListCard({
         </div>
 
         <div className="text-right mt-1 sm:mt-2">
-          <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-white leading-tight">
+          <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-tight">
             {formatBudget(job)}
           </div>
-          <div className="text-[9px] sm:text-[11px] text-steel dark:text-gray-400">
+          <div className="text-[9px] sm:text-[11px] text-gray-600 dark:text-[#ffffff]/60">
             {job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
           </div>
         </div>

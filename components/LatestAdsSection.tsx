@@ -49,13 +49,13 @@ export default function LatestAdsSection() {
               <Clock className="w-3.5 h-3.5" />
               Najnoviji poslovi
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-[#ffffff] mt-1">
               Poslovi koje klijenti trenutno objavljuju
             </h2>
           </div>
           <Link
             href="/poslovi/"
-            className="text-xs md:text-sm font-semibold text-gray-600 dark:text-white/60 hover:text-brand-orange transition-colors inline-flex items-center gap-1 shrink-0"
+            className="text-xs md:text-sm font-semibold text-gray-600 dark:text-[#ffffff]/70 hover:text-brand-orange transition-colors inline-flex items-center gap-1 shrink-0"
           >
             Pogledaj sve <ArrowRight className="w-3.5 h-3.5" />
           </Link>
