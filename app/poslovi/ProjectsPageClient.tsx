@@ -53,7 +53,6 @@ function ProjectsPageContent() {
   const [showFilters, setShowFilters] = useState(false);
   const [firmCategories, setFirmCategories] = useState<string[]>([]);
   const [categoryWarningJob, setCategoryWarningJob] = useState<Job | null>(null);
-  const [heroSearch, setHeroSearch] = useState('');
   const { user, role } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -132,14 +131,6 @@ function ProjectsPageContent() {
     router.push(`/dashboard/firma/?expandJobId=${job.id}`);
   }
 
-  function applyHeroSearch() {
-    if (heroSearch.trim()) {
-      setSearch(heroSearch.trim());
-      const section = document.getElementById('listings');
-      if (section) section.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-
   const filteredJobs = jobs
     .filter((job) => {
       const category = getCategory(job.category_slug);
@@ -181,7 +172,6 @@ function ProjectsPageContent() {
 
   function clearFilters() {
     setSearch('');
-    setHeroSearch('');
     setCategoryFilter('');
     setCityFilter('');
     setMinBudget('');
@@ -210,43 +200,15 @@ function ProjectsPageContent() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/35" />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-40 pb-16 md:pb-28">
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-36 pb-10 md:pb-14">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
                 <Sparkles className="w-4 h-4 text-brand-orange" />
                 Uživo objavljeni poslovi
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6">
-                Pronađite svoj <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">sljedeći posao</span>
-              </h1>
-              <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed mb-10">
-                Stvarni klijenti širom Bosne i Hercegovine svakodnevno objavljuju poslove.
-                Filtrirajte, sortirajte i pošaljite ponudu za manje od minuta.
-              </p>
 
-              <div className="max-w-2xl mx-auto">
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-2 shadow-2xl shadow-black/30">
-                  <div className="relative flex-1">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/60" />
-                    <input
-                      type="text"
-                      value={heroSearch}
-                      onChange={(e) => setHeroSearch(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && applyHeroSearch()}
-                      placeholder="npr. adaptacija kupatila u Sarajevu"
-                      className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/10 border border-white/10 text-white placeholder:text-white/50 outline-none text-base focus:bg-white/20 transition-all"
-                    />
-                  </div>
-                  <button
-                    onClick={applyHeroSearch}
-                    className="shrink-0 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-semibold transition-all active:scale-95 shadow-lg shadow-brand-orange/30"
-                  >
-                    Pretraži
-                  </button>
-                </div>
-
-                {/* Trust badges */}
-                <div className="mt-6 md:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
+              {/* Trust badges */}
+              <div className="max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
                   {[
                     { icon: Clock, label: 'Prve ponude u 24h' },
                     { icon: Wallet, label: 'Bez provizije' },
@@ -262,15 +224,14 @@ function ProjectsPageContent() {
                     );
                   })}
                 </div>
-              </div>
             </div>
           </div>
         </section>
 
         <section id="listings" className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Filter bar - sticky, pill-style */}
-            <div className="sticky top-16 md:top-20 z-30 bg-[#f8f7f4]/95 backdrop-blur-md -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60">
+            {/* Filter bar - static at top of listings */}
+            <div className="bg-[#f8f7f4] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60 rounded-xl">
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1">

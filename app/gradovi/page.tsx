@@ -3,10 +3,6 @@ import type { Metadata } from 'next';
 import {
   MapPin,
   ArrowRight,
-  ShieldCheck,
-  Clock,
-  Star,
-  Users,
   CheckCircle,
   Building2,
 } from 'lucide-react';
@@ -61,13 +57,6 @@ export const metadata: Metadata = {
   alternates: { canonical: `${site.url}/gradovi/` },
 };
 
-const trustBadges = [
-  { icon: ShieldCheck, label: 'Provjerene firme', value: 'ID + reference' },
-  { icon: Clock, label: 'Brze ponude', value: '24h prosjek' },
-  { icon: Star, label: 'Recenzije', value: 'Od stvarnih klijenata' },
-  { icon: Users, label: `${cities.length} gradova`, value: 'Širom BiH' },
-];
-
 export default async function CitiesPage() {
   const sortedCities = [...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs'));
   const citiesWithFirms = await getCitiesWithFirms();
@@ -102,41 +91,6 @@ export default async function CitiesPage() {
             <ArrowRight className="w-5 h-5" />
           </Link>
         </PageHero>
-
-        {/* Trust intro */}
-        <section className="relative py-16 md:py-20 bg-cloud overflow-hidden">
-          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <Building2 className="h-4 w-4" /> Lokalni majstori
-              </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Pronađite majstora u svom gradu
-              </h2>
-              <p className="text-steel text-lg">
-                Zaposli.ba pokriva sve veće gradove u Bosni i Hercegovini: od Sarajeva, Banja Luke, Mostara i Tuzle, preko
-                Bijeljine, Zenice, Brčkog i Prijedora, do manjih sredina. Objavite posao besplatno i dobijte ponude iz lokalne zajednice.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {trustBadges.map((badge) => (
-                <div
-                  key={badge.label}
-                  className="bg-white rounded-2xl border border-gray-100 p-5 shadow-card hover:shadow-lg transition-all duration-300 text-center"
-                >
-                  <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center mb-3">
-                    <badge.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                  </div>
-                  <p className="font-bold text-gray-900">{badge.value}</p>
-                  <p className="text-xs text-steel">{badge.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* City grid */}
         <section className="py-16 md:py-20 bg-white">
