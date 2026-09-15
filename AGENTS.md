@@ -18,7 +18,9 @@
 
 ## Work State
 ### Completed
-- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height and padding, smaller CTAs, hidden trust badges on mobile, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
+- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height and padding, smaller CTAs, hidden trust badges on mobile, hidden emergency banner on mobile, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
+- Compacted the two role CTA cards (`components/RoleCTACards.tsx`) on mobile so both "Tražim majstora" and "Za firme" fit on the initial screen.
+- Moved the homepage emergency banner to the category icon row on mobile (`components/CategoryIconRow.tsx`), so it appears right next to the category shortcuts.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
