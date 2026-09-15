@@ -22,6 +22,7 @@
 - Refined the category icon row (`components/CategoryIconRow.tsx`) on mobile: items now scroll naturally with more horizontal spacing to prevent label overlap.
 - Refined the two role CTA cards (`components/RoleCTACards.tsx`) on mobile: side-by-side vertical cards with the icon and arrow in the same top row to save space, smaller text, and reduced hero height so the cards are not covered by the sticky bottom CTA on first load.
 - Removed the emergency banner from the homepage category card and added it to the `/kategorije/` page instead, right below the hero.
+- Added a new `/oglasi/` page that reuses the promoted-ads listing, and added an "Oglasi" link to both the desktop and mobile header menus between "Poslovi" and "Kako funkcioniše".
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
