@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[480px] sm:min-h-[560px] lg:min-h-[640px] flex flex-col overflow-hidden">
+    <section className="relative min-h-[360px] sm:min-h-[460px] lg:min-h-[560px] flex flex-col overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -81,19 +81,19 @@ export default function HeroSection() {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-20 flex-1 flex items-center">
-        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-20 flex-1 flex items-start">
+        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-20 pb-8 sm:pb-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left content */}
             <div className="max-w-2xl">
               {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider mb-4 sm:mb-5 animate-fade-in">
-                <Crown className="w-3 h-3 sm:w-4 sm:h-4" />
+              <div className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-2.5 py-0.5 text-[10px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-3 sm:mb-4 animate-fade-in">
+                <Crown className="w-3 h-3" />
                 Tvoj projekt. Pravi majstori.
               </div>
 
               {/* Headline */}
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-4 sm:mb-5 animate-fade-in">
+              <h1 className="text-xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-3 sm:mb-4 animate-fade-in">
                 Vaš posao.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
@@ -102,22 +102,22 @@ export default function HeroSection() {
               </h1>
 
               {/* Subheadline */}
-              <p className="text-sm sm:text-lg text-white/80 leading-relaxed mb-5 sm:mb-6 max-w-xl animate-fade-in">
+              <p className="text-xs sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-5 max-w-xl animate-fade-in">
                 Besplatno objavite oglas i primite ponude od provjerenih majstora i firmi širom BiH.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6 sm:mb-8 animate-fade-in">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 mb-5 sm:mb-6 animate-fade-in">
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
+                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
                 >
                   Objavi posao besplatno
-                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/top-firme/"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-5 sm:px-6 py-3 sm:py-3.5 rounded-xl font-semibold text-sm sm:text-base transition-all active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
                 >
                   Pronađi majstora
                 </Link>
