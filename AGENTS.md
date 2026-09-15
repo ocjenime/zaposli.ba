@@ -18,6 +18,12 @@
 
 ## Work State
 ### Completed
+- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
+- Added a "Brza procjena cijene" widget (`components/QuickEstimateWidget.tsx`) to the homepage: category selector, real accepted-bid statistics via the new Supabase RPC `get_category_price_stats`, fallback estimates for all categories, and a CTA to publish a job. Added the RPC migration in `supabase/migration-category-price-stats.sql`.
+- Enabled multiple photos per review:
+  - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
+  - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
+  - Updated `/firma-profil/FirmProfileContent.tsx` to fetch review photos and render a gallery grid for each review, with a lightbox viewer.
 - Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
 - Restored the larger `PromoBanner` desktop layout with the dark background image, glass benefits panel, and a "Kreiraj oglas" CTA (removed the compact horizontal mobile strip).
 - Reordered homepage sections to: Hero → RoleCTACards → PromoBanner → Sponzorirani oglasi → Najnoviji poslovi → RecommendedFirmsSection, with reduced vertical padding (py-5/6 md:py-6/8) between sections for a tighter Higgsfield-style flow.
@@ -414,9 +420,14 @@
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- Commit and push the theme-respecting revert to `main`, then ask the user to verify `/top-firme/`, `/poslovi/`, `/firma-profil/`, `/kategorije/`, `/gradovi/`, `/kako-funkcionise/`, and dashboard pages in light mode.
-- If any remaining page still renders dark while light mode is active, identify and fix the specific component/page file.
-- Investigate and fix the admin role-change-to-firm trigger root cause if it resurfaces.
+- Apply the two new SQL migrations in Supabase SQL Editor:
+  1. `supabase/migration-category-price-stats.sql` (creates public `get_category_price_stats()` RPC).
+  2. `supabase/migration-review-images.sql` (creates `review_images` table and RLS policies).
+- Wait for the Vercel deployment of `main` to finish, then smoke-test:
+  - `/` homepage hero and sticky CTA on mobile, quick estimate widget.
+  - `/dashboard/recenzija/?job_id=<id>` multiple-image upload.
+  - `/firma-profil/<slug>/` review photo gallery and lightbox.
+- After verification, pick the next priority with the user.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.
@@ -471,3 +482,11 @@
 - `components/FeaturedAdsSection.tsx`: homepage promoted-ads carousel.
 - `components/PromoBanner.tsx`: homepage advertising CTA banner.
 - `components/RecommendedFirmsSection.tsx`: homepage recommended firms carousel.
+- `components/HeroSection.tsx`: homepage hero (mobile-simplified).
+- `components/HomeStickyCTA.tsx`: mobile sticky bottom CTA bar.
+- `components/QuickEstimateWidget.tsx`: homepage price estimate widget.
+- `lib/estimate-data.ts`: fallback price ranges for estimate widget.
+- `app/dashboard/recenzija/page.tsx`: review form with multiple-image upload.
+- `app/firma-profil/FirmProfileContent.tsx`: firm profile with review photo gallery.
+- `supabase/migration-category-price-stats.sql`: RPC for real accepted-bid statistics.
+- `supabase/migration-review-images.sql`: `review_images` table and policies.
