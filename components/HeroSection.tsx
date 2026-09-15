@@ -47,8 +47,8 @@ export default function HeroSection() {
           className="object-cover object-[60%_center]"
         />
         {/* Cinematic overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/92 via-ink-950/60 to-ink-950/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/25 to-ink-950/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/80 to-ink-950/45" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/30 to-ink-950/40" />
       </div>
 
       {/* Emergency banner - desktop only (moved to categories on mobile) */}
@@ -93,7 +93,7 @@ export default function HeroSection() {
               </div>
 
               {/* Headline */}
-              <h1 className="text-xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-3 sm:mb-4 animate-fade-in">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-4 animate-fade-in">
                 Vaš posao.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
@@ -102,7 +102,7 @@ export default function HeroSection() {
               </h1>
 
               {/* Subheadline */}
-              <p className="text-xs sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-5 max-w-xl animate-fade-in">
+              <p className="text-xs sm:text-base text-white/80 leading-snug sm:leading-relaxed mb-3 sm:mb-5 max-w-xl animate-fade-in">
                 Besplatno objavite oglas i primite ponude od provjerenih majstora i firmi širom BiH.
               </p>
 

@@ -124,7 +124,7 @@ export default function HowItWorksContent() {
     <>
       <main className="flex-grow">
         {/* Shared Higgsfield background wrapper: one continuous canvas for hero + steps */}
-        <div className="relative">
+        <div className="relative w-full overflow-x-hidden">
           {/* Continuous gradient background */}
           <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink-900 via-ink-800 via-ink-950 to-cloud" />
 
@@ -146,7 +146,7 @@ export default function HowItWorksContent() {
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-black/40" />
 
           {/* Animated Higgsfield hero with role selector */}
-          <section className="relative min-h-[840px] lg:min-h-[900px] flex flex-col overflow-hidden bg-transparent">
+          <section className="relative min-h-[720px] sm:min-h-[800px] lg:min-h-[900px] flex flex-col overflow-hidden bg-transparent">
 
             {/* Hero content */}
             <div className="relative z-20 flex-1 flex items-center">
