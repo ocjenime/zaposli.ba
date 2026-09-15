@@ -22,6 +22,7 @@
 - Added a "Brza procjena cijene" widget (`components/QuickEstimateWidget.tsx`) to the homepage: category selector, real accepted-bid statistics via the new Supabase RPC `get_category_price_stats`, fallback estimates for all categories, and a CTA to publish a job. Added the RPC migration in `supabase/migration-category-price-stats.sql`.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
+- Combined all new production SQL into `supabase/migrations-2026-09-15.sql` for one-click execution in Supabase SQL Editor.
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
   - Updated `/firma-profil/FirmProfileContent.tsx` to fetch review photos and render a gallery grid for each review, with a lightbox viewer.
 - Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
