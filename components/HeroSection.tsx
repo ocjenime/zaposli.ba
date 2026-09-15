@@ -117,9 +117,10 @@ export default function HeroSection() {
                 </Link>
                 <Link
                   href="/top-firme/"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-[#ffffff]/15 hover:bg-[#ffffff]/20 backdrop-blur-md border border-[#ffffff]/25 text-[#ffffff] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
                 >
                   Pronađi majstora
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
 

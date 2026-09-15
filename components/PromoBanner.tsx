@@ -54,7 +54,7 @@ export default function PromoBanner() {
           </div>
 
           <div className="flex flex-col items-start lg:items-end">
-            <div className="bg-ink-900/80 dark:bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-6 w-full max-w-sm">
+            <div className="bg-ink-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-6 w-full max-w-sm">
               <div className="mb-5">
                 <Logo variant="light" className="h-8" />
               </div>
