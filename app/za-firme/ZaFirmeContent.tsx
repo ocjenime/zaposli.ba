@@ -71,28 +71,6 @@ const benefits = [
   },
 ];
 
-const trustSignals = [
-  {
-    icon: BadgeCheck,
-    title: 'Verifikovani profili',
-    description: 'Svaki profil može proći provjeru identiteta i kvaliteta rada.',
-  },
-  {
-    icon: Wallet,
-    title: 'Bez skrivenih troškova',
-    description: 'Plaćate fiksnu mjesečnu naknadu. Bez provizija po dobijenom poslu.',
-  },
-  {
-    icon: Headphones,
-    title: 'Podrška na bosanskom',
-    description: 'Naš tim dostupan je putem emaila, chata i telefona.',
-  },
-  {
-    icon: Clock,
-    title: 'Otkazivanje u svakom trenutku',
-    description: 'Nema ugovorne obaveze. Mijenjajte ili otkažite paket kad god želite.',
-  },
-];
 
 const processSteps = [
   {
@@ -431,73 +409,6 @@ export default function ZaFirmeContent() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Trust signals */}
-        <section className="relative py-20 md:py-28 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-ink" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px] translate-x-1/4 translate-y-1/4" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              <div className="order-2 lg:order-1">
-                <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-gradient-to-br from-ink-800 via-ink-700 to-ink-600 p-8 md:p-10">
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
-                      <Award className="w-8 h-8 text-brand-orange" />
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Značka kvaliteta</h3>
-                    <p className="text-white/70 leading-relaxed mb-6">
-                      Verifikovani profili dobijaju značku &ldquo;Provjerena firma&rdquo; i bolju poziciju u listi.
-                      Klijenti više vjeruju firmama koje su prošle provjeru, što direktno utiče na stopu odabira.
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      {['ID broj firme', 'Reference', 'Portfolio', 'Ocjene klijenata'].map((item, i) => (
-                        <span
-                          key={i}
-                          className="inline-flex items-center gap-1.5 bg-white/10 text-white/80 text-sm px-3 py-1.5 rounded-full border border-white/10"
-                        >
-                          <BadgeCheck className="w-3.5 h-3.5 text-brand-orange" />
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
-                  <Shield className="h-4 w-4" /> Sigurnost i transparentnost
-                </span>
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                  Izgradite povjerenje klijenata
-                </h2>
-                <p className="text-white/70 text-lg mb-8">
-                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima transparentan model rasta.
-                  Bez skrivenih troškova, bez provizija, bez komplikacija.
-                </p>
-                <div className="space-y-4">
-                  {trustSignals.map((signal) => (
-                    <div
-                      key={signal.title}
-                      className="flex items-start gap-4 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 hover:bg-white/10 transition-colors duration-300"
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center flex-shrink-0">
-                        <signal.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-white mb-1">{signal.title}</h3>
-                        <p className="text-sm text-white/70 leading-relaxed">{signal.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </section>
