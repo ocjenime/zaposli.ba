@@ -25,12 +25,12 @@ export default function PricingCTA({ popular = false, children, className = '' }
   }
 
   return (
-    <Link
+      <Link
       href={targetHref}
       className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold transition-all duration-200 active:scale-95 ${
         popular
           ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-md shadow-brand-orange/20 hover:shadow-lg hover:shadow-brand-orange/30'
-          : 'border-2 border-gray-200 text-gray-900 hover:border-brand-orange hover:text-brand-orange hover:bg-orange-50/50'
+          : 'border-2 border-white/30 text-white hover:border-brand-orange hover:text-white hover:bg-white/10'
       } ${className}`}
     >
       {children}

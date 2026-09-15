@@ -316,7 +316,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Uključeni homepage mini ovaj period</p>
+              <p className="text-sm text-steel">Preostalo uključenih mini oglasa</p>
               <p className="font-bold text-gray-900 dark:text-white">{includedRemaining} preostalo</p>
             </div>
           </div>
@@ -597,7 +597,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                 {!canUseIncluded && !isFreeListing && (
                   <p className="text-xs text-steel flex items-start gap-2">
                     <Wallet className="w-4 h-4 shrink-0" />
-                    Nakon odobrenja oglasa od strane admina, dobijate uputstvo za uplatu {effectivePrice} KM. Oglas postaje aktivan nakon potvrde uplate.
+                    Nakon što admin odobri oglas, dobijate uputstvo za uplatu {effectivePrice} KM. Oglas postaje aktivan nakon potvrde uplate.
                   </p>
                 )}
               </div>
@@ -612,7 +612,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                   ? 'Pošalji oglas (uključen u paket)'
                   : isFreeListing
                   ? 'Pošalji oglas (besplatno)'
-                  : `Pošalji oglas i zatraži uputstvo za plaćanje`}
+                  : `Pošalji oglas i zatraži uputstvo za uplatu`}
               </button>
             </div>
           )}

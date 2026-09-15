@@ -41,7 +41,7 @@ export default function AdPricingCTA({
       className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm transition-all ${
         variant === 'primary'
           ? 'bg-brand-orange hover:bg-brand-orange-dark text-white'
-          : 'bg-white hover:bg-white/90 text-gray-900'
+          : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
       } ${className}`}
     >
       {children}

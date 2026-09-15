@@ -6,14 +6,11 @@ import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
 import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
-import { categories } from '@/lib/data';
 import { planFeatures } from '@/lib/plan-features';
 
 import {
   CheckCircle,
-  TrendingUp,
   Users,
-  Star,
   ArrowRight,
   Shield,
   BadgeCheck,
@@ -25,11 +22,6 @@ import {
   ChevronDown,
   HelpCircle,
   Phone,
-  Paintbrush,
-  Home,
-  Hammer,
-  Zap,
-  Sparkles,
   Briefcase,
   Rocket,
   Award,
@@ -38,39 +30,9 @@ import {
   LayoutGrid,
   Megaphone,
   Crown,
-  Eye,
-  MousePointerClick,
+  Home,
   Monitor,
 } from 'lucide-react';
-
-const benefits = [
-  {
-    icon: TrendingUp,
-    title: 'Rastite bez marketinga',
-    description:
-      'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i dru┼ítvene mre┼że.',
-    stat: 'Bez pla─çanja po kliku',
-  },
-  {
-    icon: Users,
-    title: 'Marketplace u BiH',
-    description:
-      'Pristupite bazi klijenata u Bosni i Hercegovini koji aktivno tra┼że majstore i firme.',
-    stat: '50+ kategorija',
-  },
-  {
-    icon: Star,
-    title: 'Izgradite reputaciju',
-    description: 'Skupljajte ocjene i recenzije koje vas isti─Źu ispred konkurencije.',
-    stat: '4.8 / 5 prosjek',
-  },
-  {
-    icon: Shield,
-    title: 'Verifikacija profila',
-    description: 'Verifikovani profil dobija zna─Źku povjerenja i bolju poziciju u listi.',
-    stat: 'Zna─Źka povjerenja',
-  },
-];
 
 const trustSignals = [
   {
@@ -81,7 +43,7 @@ const trustSignals = [
   {
     icon: Wallet,
     title: 'Bez skrivenih tro┼íkova',
-    description: 'Pla─çate fiksnu mjese─Źnu naknadu. Bez provizija po dobijenom poslu.',
+    description: 'Pla─çate fiksnu mjese─Źnu naknadu bez provizije po dobijenom poslu.',
   },
   {
     icon: Headphones,
@@ -112,50 +74,9 @@ const processSteps = [
     number: '03',
     icon: Wallet,
     title: 'Naplatite i gradite reputaciju',
-    description: 'Primajte uplatu direktno od klijenta i skupljajte ocjene koje donose nove poslove.',
+    description: 'Primajte uplatu direktno od klijenta i skupljajte ocjene koje vam donose nove poslove.',
   },
 ];
-
-const projectCards = [
-  {
-    icon: Paintbrush,
-    title: 'Malterski i bojad┼żijski radovi',
-    description: 'Molerski radovi, gletovanje, kre─Źenje i bojenje enterijera.',
-    gradient: 'from-orange-50 to-white border-orange-100',
-  },
-  {
-    icon: Home,
-    title: 'Renovacija kuhinja i stanova',
-    description: 'Adaptacije, demonta┼ża, postavljanje plo─Źica i ugradnja elementa.',
-    gradient: 'from-blue-50 to-white border-blue-100',
-  },
-  {
-    icon: Hammer,
-    title: 'Zavr┼íni i gra─Ĺevinski radovi',
-    description: 'Keramika, parket, instalacije, elektrika i vodoinstalateri.',
-    gradient: 'from-stone-50 to-white border-stone-100',
-  },
-  {
-    icon: Zap,
-    title: 'Elektro i vodoinstalacije',
-    description: 'Rasvjeta, struja, cijevi, bojleri i hitne intervencije.',
-    gradient: 'from-amber-50 to-white border-amber-100',
-  },
-  {
-    icon: Sparkles,
-    title: '─îi┼í─çenje i odr┼żavanje',
-    description: 'Stanovi, ku─çe, poslovni prostori i dubinsko ─Źi┼í─çenje.',
-    gradient: 'from-emerald-50 to-white border-emerald-100',
-  },
-  {
-    icon: Briefcase,
-    title: 'Projektovanje i dizajn',
-    description: 'Arhitektura, 3D vizualizacije i dizajn enterijera.',
-    gradient: 'from-violet-50 to-white border-violet-100',
-  },
-];
-
-const categoryCount = categories.filter((c) => !c.noSeo).length;
 
 const pricingPlans = [
   {
@@ -211,9 +132,9 @@ const faqs = [
       'Registracija je potpuno besplatna. Pla─çate tek kada odlu─Źite nadograditi paket radi vi┼íe ponuda i dodatnih pogodnosti.',
   },
   {
-    question: '┼áta zna─Źi "ponuda mjese─Źno"?',
+    question: '┼áto zna─Źi "ponuda mjese─Źno"?',
     answer:
-      'To je broj poslova na koje mo┼żete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
+      'To je broj poslova na koje mo┼żete poslati ponudu tokom jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
   },
   {
     question: 'Mogu li otkazati pretplatu u bilo kom trenutku?',
@@ -233,7 +154,7 @@ const faqs = [
   {
     question: 'Kako se pla─çaju paketi?',
     answer:
-      'Paketi se pla─çaju mjese─Źno ili godi┼ínje, a godi┼ínje pla─çanje donosi 10% popusta. Uplata se vr┼íi bankovnom uplatom preko platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
+      'Paketi se pla─çaju mjese─Źno ili godi┼ínje, a godi┼ínje pla─çanje donosi 10% popusta. Uplata se vr┼íi bankovnom uplatom putem platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
   },
 ];
 
@@ -361,50 +282,6 @@ export default function ZaFirmeContent() {
           </div>
         </section>
 
-        {/* Benefits - 2x2 dark glass cards */}
-        <section className="relative py-20 md:py-28 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
-
-          <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
-                <Building2 className="h-4 w-4" /> Prednosti platforme
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Za┼íto se profesionalci pridru┼żuju Zaposli.ba?
-              </h2>
-              <p className="text-white/70 text-lg">
-                Platforma koja vam donosi klijente, poma┼że da gradite reputaciju i rastete bez velikih po─Źetnih ulaganja.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {benefits.map((benefit) => (
-                <div
-                  key={benefit.title}
-                  className="group bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                      <benefit.icon className="w-7 h-7 text-brand-orange" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                        <h3 className="text-xl font-bold text-white">{benefit.title}</h3>
-                        <span className="text-brand-orange font-extrabold text-xs bg-brand-orange/10 px-3 py-1 rounded-full border border-brand-orange/20 whitespace-nowrap">
-                          {benefit.stat}
-                        </span>
-                      </div>
-                      <p className="text-white/70 leading-relaxed">{benefit.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* How it works - vertical timeline */}
         <section className="relative py-20 md:py-28 bg-cloud overflow-hidden">
           <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
@@ -471,59 +348,6 @@ export default function ZaFirmeContent() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Project showcase - bento grid */}
-        <section className="relative py-20 md:py-28 bg-white overflow-hidden">
-          <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
-                <Briefcase className="h-4 w-4" /> Kategorije poslova
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Prona─Ĺite projekte u svojoj oblasti
-              </h2>
-              <p className="text-steel text-lg">
-                Klijenti svakodnevno objavljuju nove poslove u {categoryCount} kategorija. Od adaptacija stanova do kuhinja,
-                kupatila, farbanja, zavr┼ínih radova i mnogih drugi usluga.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projectCards.map((card) => (
-                <div
-                  key={card.title}
-                  className={`group bg-gradient-to-br ${card.gradient} rounded-2xl border p-6 shadow-card hover:shadow-xl transition-all duration-300`}
-                >
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <card.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2 text-lg">{card.title}</h3>
-                  <p className="text-sm text-steel leading-relaxed">{card.description}</p>
-                </div>
-              ))}
-              <Link
-                href="/kategorije/"
-                className="group md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-6 shadow-card hover:shadow-xl transition-all duration-300 flex items-center justify-between gap-4"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                    <LayoutGrid className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 text-lg">Ostale kategorije</h3>
-                    <p className="text-sm text-steel leading-relaxed">
-                      Jo┼í {categoryCount - projectCards.length} oblasti - selidbe, ─Źi┼í─çenje, hidroizolacija, energetska obnova,
-                      dizajn eksterijera i mnoge druge.
-                    </p>
-                  </div>
-                </div>
-                <ArrowRight className="w-6 h-6 text-brand-orange shrink-0 group-hover:translate-x-1 transition-transform" />
-              </Link>
             </div>
           </div>
         </section>
@@ -715,7 +539,7 @@ export default function ZaFirmeContent() {
                 </span>
               </h2>
               <p className="text-white/70 text-lg max-w-2xl mx-auto">
-                Tri na─Źina promocije. Izaberite onaj koji vam najvi┼íe odgovara ÔÇö mini oglas, veliki banner ili pregled svih oglasa.
+                Tri na─Źina promocije. Izaberite onaj koji vam najvi┼íe odgovara - mini oglas, veliki banner ili pregled svih oglasa.
               </p>
             </div>
 
@@ -732,10 +556,10 @@ export default function ZaFirmeContent() {
                     <span className="text-4xl font-extrabold text-white leading-none">19</span>
                     <span className="text-white/70 font-semibold mb-1">KM/mj</span>
                   </div>
-                  <p className="text-xs text-white/40 mt-2">Pro uklju─Źuje 1 ┬Ě Premium 3</p>
+                  <p className="text-xs text-white/40 mt-2">Pro uklju─Źuje 1 ┬Ě Premium uklju─Źuje 3</p>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
-                  {['Prikaz u traci istaknutih oglasa', 'Broj─Źana pozicija 1ÔÇô5', 'Logo, naziv i kratak opis'].map((f) => (
+                  {['Prikaz u traci istaknutih oglasa', 'Broj─Źana pozicija 1-5', 'Logo, naziv i kratak opis'].map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-white/80">
                       <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
                       {f}
