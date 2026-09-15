@@ -18,11 +18,12 @@
 
 ## Work State
 ### Completed
-- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height and padding, smaller CTAs, hidden trust badges on mobile, hidden emergency banner on mobile, content aligned to the bottom so the eyebrow badge and CTAs are visible, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
+- Simplified the homepage hero for mobile: slightly larger headline, tighter subheadline spacing, stronger left-side overlay to hide the jacket logo behind the text, smaller CTAs, hidden trust badges on mobile, hidden emergency banner on mobile, content aligned to the bottom so the eyebrow badge and CTAs are visible, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
 - Refined the category icon row (`components/CategoryIconRow.tsx`) on mobile: items now scroll naturally with more horizontal spacing to prevent label overlap.
 - Refined the two role CTA cards (`components/RoleCTACards.tsx`) on mobile: side-by-side vertical cards with the icon and arrow in the same top row to save space, smaller text, and reduced hero height so the cards are not covered by the sticky bottom CTA on first load.
 - Removed the emergency banner from the homepage category card and added it to the `/kategorije/` page instead, right below the hero.
 - Added a new `/oglasi/` page that reuses the promoted-ads listing, and added an "Oglasi" link to both the desktop and mobile header menus between "Poslovi" and "Kako funkcioniše".
+- Fixed `/kako-funkcionise/` layout on mobile: added `w-full overflow-x-hidden` to the shared dark background wrapper and reduced the hero min-height so the page fills the screen like other pages and the menu bar stays full-width.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
