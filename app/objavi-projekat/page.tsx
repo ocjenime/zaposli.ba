@@ -161,7 +161,7 @@ function PostProjectContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!loading && !user) router.push('/prijava/');
+    if (!loading && !user) router.push('/prijava/?redirectTo=/objavi-projekat/');
     if (!loading && user && isFirmRole(role)) router.push('/dashboard/firma/');
   }, [user, loading, role, router]);
 
@@ -274,7 +274,7 @@ function PostProjectContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!user) { router.push('/prijava/'); return; }
+    if (!user) { router.push('/prijava/?redirectTo=/objavi-projekat/'); return; }
 
     const cat = categories.find((c) => c.name === formData.category);
     if (!cat) { setError('Odaberite kategoriju'); return; }

@@ -25,8 +25,9 @@
 - Fixed grammar in paid plan feature lists (`lib/plan-features.ts`): `mjesecno` → `mjesečno`.
 - Restored the previous `/kako-funkcionise/` role-selector page (`Tražim majstora` / `Nudim usluge`) with the Higgsfield dark hero, dynamic steps, benefits, FAQ tabs, and CTA.
 - Restored `CategoryIconRow` below the homepage hero.
-- Added auth-gating middleware (`middleware.ts`) that requires login only for `/poslovi/` and `/izdvojeni-oglasi/` (including ad detail pages). All other pages remain public.
-- Switched the client Supabase client (`lib/supabase.ts`) from `@supabase/supabase-js` to `createBrowserClient` from `@supabase/ssr` so the session is persisted in cookies instead of localStorage. Middleware now reliably detects logged-in users by the presence of Supabase `auth-token`/`access-token`/`refresh-token` cookies, fixing the bug where logged-in users were still redirected to `/prijava/`.
+- Switched the client Supabase client (`lib/supabase.ts`) from `@supabase/supabase-js` to `createBrowserClient` from `@supabase/ssr` so the session is persisted in cookies instead of localStorage, fixing the bug where logged-in users were still redirected to `/prijava/`.
+- Removed blanket auth gating from middleware. Public pages (`/poslovi/`, `/izdvojeni-oglasi/`, `/top-firme/`, `/kategorije/`, `/gradovi/`, `/usluge/`, `/firma-profil/`, `/savjeti/`, `/za-firme/`, `/kontakt/`, `/o-nama/`, `/faq/`, etc.) are now fully open for SEO and browsing. Auth checks are handled page-level only for client-only actions such as posting a job (`/objavi-projekat/`) and sending a private request (`/zatrazi-ponodu/`).
+- Updated `/objavi-projekat/` redirects to include `?redirectTo=/objavi-projekat/` so guests return to the form after login; firm/majstor users are still redirected to `/dashboard/firma/` because job posting is for clients only.
 - Fixed verified badge on homepage covering long firm names (`Arilux D.o.o.`): `VerifiedBadge` now supports `showLabel={false}` for compact cards in `RecommendedFirmsSection` and `FeaturedAdsSection`.
 - Hidden the black arrow CTA buttons on mobile in `FeaturedAdsSection` (real and demo sponsored cards) for shorter, cleaner cards; arrows remain on desktop.
 - Added `RecommendedFirmsSection` above the job listings on `/poslovi/`.
