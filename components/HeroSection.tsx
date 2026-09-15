@@ -81,8 +81,8 @@ export default function HeroSection() {
       </div>
 
       {/* Hero content */}
-      <div className="relative z-20 flex-1 flex items-start">
-        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-10 sm:pt-14 lg:pt-20 pb-8 sm:pb-12">
+      <div className="relative z-20 flex-1 flex items-end">
+        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-12">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left content */}
             <div className="max-w-2xl">
