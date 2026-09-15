@@ -29,7 +29,7 @@ export default function CategoryIconRow() {
                 <Link
                   key={category!.slug}
                   href={`/kategorije/${category!.slug}/`}
-                  className="group flex flex-col items-center gap-2 min-w-[84px] sm:min-w-[92px] text-center"
+                  className="group flex flex-col items-center gap-2 min-w-[100px] sm:min-w-[92px] text-center"
                 >
                   <span className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-white/80 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -42,7 +42,7 @@ export default function CategoryIconRow() {
             })}
             <Link
               href="/kategorije/"
-              className="group flex flex-col items-center gap-2 min-w-[84px] sm:min-w-[92px] text-center"
+              className="group flex flex-col items-center gap-2 min-w-[100px] sm:min-w-[92px] text-center"
             >
               <span className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-white/80 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                 <LayoutGrid className="w-5 h-5 sm:w-6 sm:h-6" />
