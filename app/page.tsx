@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import HeroSection from '@/components/HeroSection';
 import AppStickerPopup from '@/components/AppStickerPopup';
+import CategoryIconRow from '@/components/CategoryIconRow';
 import RoleCTACards from '@/components/RoleCTACards';
 import PromoBanner from '@/components/PromoBanner';
 import FeaturedAdsSection from '@/components/FeaturedAdsSection';
@@ -57,6 +58,7 @@ export default function Home() {
       <AppStickerPopup />
       <main className="flex-grow">
         <HeroSection />
+        <CategoryIconRow />
         <RoleCTACards />
         <PromoBanner />
         <FeaturedAdsSection />

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader2 } from 'lucide-react';
@@ -16,6 +16,13 @@ export default function LoginForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get('redirectTo');
+
+  const isSafeRedirect = (url: string | null) => {
+    if (!url) return false;
+    return url.startsWith('/') && !url.startsWith('//') && !url.startsWith('/api');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +50,11 @@ export default function LoginForm() {
       await supabase.auth.signOut();
       setError('Vaš nalog je blokiran. Kontaktirajte podršku.');
       setLoading(false);
+      return;
+    }
+
+    if (redirectTo && isSafeRedirect(redirectTo)) {
+      router.push(redirectTo);
       return;
     }
 
