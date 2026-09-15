@@ -39,18 +39,18 @@ function FirmCard({ firm }: { firm: Firm }) {
       />
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-1.5 mb-1">
-            <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
+            <h3 className="text-sm font-bold text-gray-900 dark:text-[#ffffff] leading-tight group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
               {firm.name}
             </h3>
             {firm.verified && <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />}
           </div>
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-steel dark:text-gray-400">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-gray-600 dark:text-[#ffffff]/70">
             <span className="inline-flex items-center gap-0.5 font-medium">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
               {(firm.average_rating || 0).toFixed(1)}
             </span>
             <span>({firm.review_count || 0})</span>
-            {firm.city && <span className="text-gray-300 dark:text-gray-600">·</span>}
+            {firm.city && <span className="text-gray-300 dark:text-[#ffffff]/40">·</span>}
             {firm.city && <span className="line-clamp-1">{firm.city}</span>}
           </div>
         </div>
@@ -115,10 +115,10 @@ export default function RecommendedFirmsSection() {
               <Megaphone className="w-3.5 h-3.5" />
               Preporučene firme
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-[#ffffff] mt-1">
               Provjereni majstori i firme
             </h2>
-            <p className="text-sm text-steel dark:text-white/60 mt-1">
+            <p className="text-sm text-gray-600 dark:text-[#ffffff]/70 mt-1">
               Firme koje pružaju kvalitetne usluge i imaju najbolje ocjene.
             </p>
           </div>

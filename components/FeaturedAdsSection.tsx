@@ -59,7 +59,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-4">
-        <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors">
+        <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-snug line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors">
           {ad.title}
         </h3>
 
@@ -86,12 +86,12 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start gap-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{firm?.name || 'Firma'}</p>
+              <p className="text-xs font-bold text-gray-900 dark:text-[#ffffff] leading-tight whitespace-normal break-words">{firm?.name || 'Firma'}</p>
               {firm?.verified && (
                 <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
               )}
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
+            <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-[#ffffff]/70">
               {firm?.city && <span>{firm.city}</span>}
               <span className="inline-flex items-center gap-0.5">
                 <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
@@ -208,7 +208,7 @@ function DemoFeaturedAdCard({
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-4">
-        <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-white leading-snug line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors">
+        <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-snug line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors">
           {demo.title}
         </h3>
 
@@ -235,10 +235,10 @@ function DemoFeaturedAdCard({
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-start gap-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{demo.firm}</p>
+              <p className="text-xs font-bold text-gray-900 dark:text-[#ffffff] leading-tight whitespace-normal break-words">{demo.firm}</p>
               <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
+            <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-[#ffffff]/70">
               <span>{demo.city}</span>
               <span className="inline-flex items-center gap-0.5">
                 <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
@@ -328,10 +328,10 @@ export default function FeaturedAdsSection() {
               <Crown className="w-3.5 h-3.5" />
               Sponzorirani oglasi
             </span>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mt-1">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-[#ffffff] mt-1">
               Premium oglasi firmi i majstora
             </h2>
-            <p className="text-sm text-steel dark:text-white/60 mt-1">
+            <p className="text-sm text-gray-600 dark:text-[#ffffff]/70 mt-1">
               {hasRealAds
                 ? 'Premium oglasi firmi, potražnja za radnicima i najatraktivniji projekti.'
                 : 'Reklamirajte svoju firmu ili pronađite radnike na vrhunskom mjestu.'}
