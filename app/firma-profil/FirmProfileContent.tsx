@@ -46,6 +46,7 @@ interface ReviewRow {
   rating: number;
   comment: string | null;
   image_url: string | null;
+  images?: { url: string }[];
   status: 'pending' | 'approved' | 'rejected';
   reply: string | null;
   replied_at: string | null;
@@ -88,6 +89,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   const [firmCategories, setFirmCategories] = useState<FirmCategoryRow[]>([]);
   const [portfolioImages, setPortfolioImages] = useState<string[]>([]);
   const [selectedPortfolioImage, setSelectedPortfolioImage] = useState<string | null>(null);
+  const [selectedReviewImage, setSelectedReviewImage] = useState<string | null>(null);
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -113,7 +115,26 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
 
       const typedFirm = data as unknown as FirmRow & { reviews: ReviewRow[] };
       setFirm(typedFirm);
-      setReviews((typedFirm.reviews || []).filter((r) => r.status === 'approved'));
+      const approvedReviews = (typedFirm.reviews || []).filter((r) => r.status === 'approved');
+
+      const reviewIds = approvedReviews.map((r) => r.id);
+      let reviewImages: { review_id: string; url: string }[] = [];
+      if (reviewIds.length > 0) {
+        const { data: reviewImagesData, error: reviewImagesError } = await supabase
+          .from('review_images')
+          .select('review_id, url')
+          .in('review_id', reviewIds);
+        if (!reviewImagesError) {
+          reviewImages = (reviewImagesData || []) as { review_id: string; url: string }[];
+        }
+      }
+
+      setReviews(
+        approvedReviews.map((r) => ({
+          ...r,
+          images: reviewImages.filter((img) => img.review_id === r.id),
+        }))
+      );
 
       const { data: catData } = await supabase
         .from('firm_categories')
@@ -606,16 +627,29 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                 <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
                               </div>
                             )}
-                            {review.image_url && (
-                              <a
-                                href={review.image_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-sm text-brand-orange hover:underline"
-                              >
-                                <ImageIcon className="w-4 h-4" />
-                                Pogledaj sliku
-                              </a>
+                            {(review.images?.length ? review.images : review.image_url ? [{ url: review.image_url }] : []).length > 0 && (
+                              <div className="mt-3">
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                                  {(review.images?.length ? review.images : review.image_url ? [{ url: review.image_url }] : []).map((img, idx) => (
+                                    <button
+                                      key={idx}
+                                      type="button"
+                                      onClick={() => setSelectedReviewImage(img.url)}
+                                      className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
+                                      aria-label={`Fotografija recenzije ${idx + 1}`}
+                                    >
+                                      <Image
+                                        src={img.url}
+                                        alt={`Fotografija recenzije ${idx + 1}`}
+                                        fill
+                                        unoptimized
+                                        sizes="(max-width: 640px) 33vw, 20vw"
+                                        className="object-cover group-hover:scale-105 transition-transform"
+                                      />
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
                             )}
                             {review.reply && (
                               <div className="mt-4 bg-white rounded-xl p-4 border border-gray-100">
