@@ -21,7 +21,7 @@ export default function AdPricingCTA({
   const { loading, role } = useAuth();
 
   const href = isFirmRole(role)
-    ? `/dashboard/firma/?tab=ads&destination=${destination}`
+    ? `/kupi-oglas/?destination=${destination}`
     : '/pretplata-auth/';
 
   if (loading) {

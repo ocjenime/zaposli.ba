@@ -15,7 +15,7 @@ const benefits = [
 
 export default function PromoBanner() {
   const { role } = useAuth();
-  const href = isFirmRole(role) ? '/dashboard/firma/?tab=ads' : '/pretplata-auth/';
+  const href = isFirmRole(role) ? '/kupi-oglas/' : '/pretplata-auth/';
 
   return (
     <section className="relative py-5 md:py-6 bg-cloud px-4 sm:px-6 lg:px-8">

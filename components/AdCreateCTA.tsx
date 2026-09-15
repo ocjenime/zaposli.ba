@@ -14,7 +14,7 @@ export default function AdCreateCTA({ destination = 'listing', variant = 'banner
   const { role } = useAuth();
   const isFirm = isFirmRole(role);
   const href = isFirm
-    ? `/dashboard/firma/?tab=ads${destination ? `&destination=${destination}` : ''}`
+    ? `/kupi-oglas/${destination ? `?destination=${destination}` : ''}`
     : '/pretplata-auth/';
 
   if (variant === 'button') {
