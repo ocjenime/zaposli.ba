@@ -4,8 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
-import { useAuth } from '@/lib/auth-context';
-import { isFirmRole } from '@/lib/roles';
+import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
 import { categories } from '@/lib/data';
 import { planFeatures } from '@/lib/plan-features';
@@ -239,11 +238,6 @@ const faqs = [
 ];
 
 export default function ZaFirmeContent() {
-  const { role } = useAuth();
-  const isFirm = isFirmRole(role);
-  const adHref = (destination: string) =>
-    isFirm ? `/dashboard/firma/?tab=ads&destination=${destination}` : '/pretplata-auth/';
-
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
@@ -748,12 +742,9 @@ export default function ZaFirmeContent() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href={adHref('homepage')}
-                  className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all"
-                >
-                  Kreiraj oglas <ArrowRight className="w-4 h-4" />
-                </Link>
+                <AdPricingCTA destination="homepage" variant="primary" className="w-full">
+                  Kreiraj oglas
+                </AdPricingCTA>
               </div>
 
               {/* Homepage banner */}
@@ -783,12 +774,9 @@ export default function ZaFirmeContent() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href={adHref('homepage_banner')}
-                  className="flex items-center justify-center gap-2 w-full bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-3 rounded-xl font-semibold text-sm transition-all"
-                >
-                  Kreiraj banner <ArrowRight className="w-4 h-4" />
-                </Link>
+                <AdPricingCTA destination="homepage_banner" variant="primary" className="w-full">
+                  Kreiraj banner
+                </AdPricingCTA>
               </div>
 
               {/* Listing ad */}
@@ -813,12 +801,9 @@ export default function ZaFirmeContent() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href={adHref('listing')}
-                  className="flex items-center justify-center gap-2 w-full bg-white hover:bg-white/90 text-gray-900 px-5 py-3 rounded-xl font-semibold text-sm transition-all"
-                >
-                  Kreiraj oglas <ArrowRight className="w-4 h-4" />
-                </Link>
+                <AdPricingCTA destination="listing" variant="secondary" className="w-full">
+                  Kreiraj oglas
+                </AdPricingCTA>
               </div>
             </div>
           </div>

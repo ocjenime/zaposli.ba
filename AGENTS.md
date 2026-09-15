@@ -21,6 +21,9 @@
 - Swapped homepage section order: `LatestAdsSection` ("Najnoviji oglasi") now appears at position #3, and `FeaturedAdsSection` (renamed to "Sponzorirani oglasi") moved to position #6.
 - Restored the larger `PromoBanner` desktop layout with the dark background image, glass benefits panel, and a "Kreiraj oglas" CTA (removed the compact horizontal mobile strip).
 - Reordered homepage sections to: Hero → RoleCTACards → PromoBanner → Sponzorirani oglasi → Najnoviji poslovi → RecommendedFirmsSection, with reduced vertical padding (py-5/6 md:py-6/8) between sections for a tighter Higgsfield-style flow.
+- Fixed broken CTA buttons on `/za-firme/#reklame` paid-ads cards by introducing `components/AdPricingCTA.tsx`, which waits for auth to load and then routes firm/majstor users to the correct dashboard ad tab and everyone else to `/pretplata-auth/`.
+- Fixed grammar in paid plan feature lists (`lib/plan-features.ts`): `mjesecno` → `mjesečno`.
+- Restored the previous `/kako-funkcionise/` role-selector page (`Tražim majstora` / `Nudim usluge`) with the Higgsfield dark hero, dynamic steps, benefits, FAQ tabs, and CTA.
 - Cleaned up `/gradovi/` by removing the duplicate “Lokalni majstori” trust-intro text block (description already exists in the hero).
 - Cleaned up `/poslovi/` hero: removed the duplicate headline, subtitle, and hero search bar; kept only the eyebrow and trust badges. Also made the listings filter bar static instead of sticky so it no longer moves on scroll.
 - Expanded promoted-ads product model to three placements:

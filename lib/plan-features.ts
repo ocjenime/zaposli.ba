@@ -22,7 +22,7 @@ export const planFeatures: Record<string, string[]> = {
     'Verifikacija profila',
     'Prioritetna podrška',
     'Statistika posjetitelja',
-    '1 oglas mjesecno',
+    '1 oglas mjesečno',
     'Vlastiti logotip na profilu',
   ],
   premium: [
@@ -31,7 +31,7 @@ export const planFeatures: Record<string, string[]> = {
     'Verifikacija profila',
     'Prioritetna podrška',
     'Napredna analitika',
-    '3 oglasa mjesecno',
+    '3 oglasa mjesečno',
     'Vlastiti logotip na profilu',
   ],
 };
