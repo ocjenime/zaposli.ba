@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[720px] lg:min-h-[780px] flex flex-col overflow-hidden">
+    <section className="relative min-h-[600px] sm:min-h-[680px] lg:min-h-[780px] flex flex-col overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -93,31 +93,31 @@ export default function HeroSection() {
               </div>
 
               {/* Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight mb-6 animate-fade-in">
-                Objavite posao.
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight mb-5 sm:mb-6 animate-fade-in">
+                Vaš posao.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                  Pronađite pravog majstora.
+                  Pravi majstor.
                 </span>
               </h1>
 
               {/* Subheadline */}
-              <p className="text-lg sm:text-xl text-white/80 leading-relaxed mb-8 max-w-xl animate-fade-in">
-                Besplatno objavite oglas i dobijte ponude od provjerenih firmi i majstora.
+              <p className="text-base sm:text-xl text-white/80 leading-relaxed mb-6 sm:mb-8 max-w-xl animate-fade-in">
+                Besplatno objavite oglas i primite ponude od provjerenih majstora i firmi širom BiH.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-10 animate-fade-in">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-8 sm:mb-10 animate-fade-in">
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-7 py-4 rounded-xl font-semibold text-base transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
+                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 sm:px-7 py-3.5 sm:py-4 rounded-xl font-semibold text-base transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
                 >
-                  Objavi oglas
+                  Objavi posao besplatno
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/top-firme/"
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-7 py-4 rounded-xl font-semibold text-base transition-all active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 text-white px-5 sm:px-7 py-3.5 sm:py-4 rounded-xl font-semibold text-base transition-all active:scale-95"
                 >
                   Pronađi majstora
                 </Link>
