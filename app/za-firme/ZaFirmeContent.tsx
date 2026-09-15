@@ -6,7 +6,6 @@ import Link from 'next/link';
 import PricingCTA from '@/components/PricingCTA';
 import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
-import { categories } from '@/lib/data';
 import { planFeatures } from '@/lib/plan-features';
 
 import {
@@ -116,46 +115,7 @@ const processSteps = [
   },
 ];
 
-const projectCards = [
-  {
-    icon: Paintbrush,
-    title: 'Malterski i bojadžijski radovi',
-    description: 'Molerski radovi, gletovanje, krečenje i bojenje enterijera.',
-    gradient: 'from-orange-50 to-white border-orange-100',
-  },
-  {
-    icon: Home,
-    title: 'Renovacija kuhinja i stanova',
-    description: 'Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.',
-    gradient: 'from-blue-50 to-white border-blue-100',
-  },
-  {
-    icon: Hammer,
-    title: 'Završni i građevinski radovi',
-    description: 'Keramika, parket, instalacije, elektrika i vodoinstalateri.',
-    gradient: 'from-stone-50 to-white border-stone-100',
-  },
-  {
-    icon: Zap,
-    title: 'Elektro i vodoinstalacije',
-    description: 'Rasvjeta, struja, cijevi, bojleri i hitne intervencije.',
-    gradient: 'from-amber-50 to-white border-amber-100',
-  },
-  {
-    icon: Sparkles,
-    title: 'Čišćenje i održavanje',
-    description: 'Stanovi, kuće, poslovni prostori i dubinsko čišćenje.',
-    gradient: 'from-emerald-50 to-white border-emerald-100',
-  },
-  {
-    icon: Briefcase,
-    title: 'Projektovanje i dizajn',
-    description: 'Arhitektura, 3D vizualizacije i dizajn enterijera.',
-    gradient: 'from-violet-50 to-white border-violet-100',
-  },
-];
 
-const categoryCount = categories.filter((c) => !c.noSeo).length;
 
 const pricingPlans = [
   {
@@ -471,59 +431,6 @@ export default function ZaFirmeContent() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Project showcase - bento grid */}
-        <section className="relative py-20 md:py-28 bg-white overflow-hidden">
-          <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-50 text-brand-orange text-sm font-semibold mb-4 border border-orange-100">
-                <Briefcase className="h-4 w-4" /> Kategorije poslova
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Pronađite projekte u svojoj oblasti
-              </h2>
-              <p className="text-steel text-lg">
-                Klijenti svakodnevno objavljuju nove poslove u {categoryCount} kategorija. Od adaptacija stanova do kuhinja,
-                kupatila, farbanja, završnih radova i mnogih drugi usluga.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projectCards.map((card) => (
-                <div
-                  key={card.title}
-                  className={`group bg-gradient-to-br ${card.gradient} rounded-2xl border p-6 shadow-card hover:shadow-xl transition-all duration-300`}
-                >
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <card.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2 text-lg">{card.title}</h3>
-                  <p className="text-sm text-steel leading-relaxed">{card.description}</p>
-                </div>
-              ))}
-              <Link
-                href="/kategorije/"
-                className="group md:col-span-2 lg:col-span-3 bg-gradient-to-br from-gray-50 to-white border border-gray-100 rounded-2xl p-6 shadow-card hover:shadow-xl transition-all duration-300 flex items-center justify-between gap-4"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                    <LayoutGrid className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-gray-900 text-lg">Ostale kategorije</h3>
-                    <p className="text-sm text-steel leading-relaxed">
-                      Još {categoryCount - projectCards.length} oblasti - selidbe, čišćenje, hidroizolacija, energetska obnova,
-                      dizajn eksterijera i mnoge druge.
-                    </p>
-                  </div>
-                </div>
-                <ArrowRight className="w-6 h-6 text-brand-orange shrink-0 group-hover:translate-x-1 transition-transform" />
-              </Link>
             </div>
           </div>
         </section>
