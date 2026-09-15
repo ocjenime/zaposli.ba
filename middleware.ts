@@ -1,42 +1,24 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-const PUBLIC_PATHS = new Set([
-  '/',
-  '/prijava/',
-  '/registracija/',
-  '/auth/callback/',
-  '/zaboravljena-lozinka/',
-  '/nova-lozinka/',
-  '/pretplata-auth/',
-  '/privacy/',
-  '/uslovi-koristenja/',
-  '/pravila/',
-  '/sitemap.xml',
-  '/robots.txt',
-  '/icon.png',
-]);
+// These are the only routes that require login. Everything else is public.
+const PROTECTED_PREFIXES = ['/poslovi/', '/izdvojeni-oglasi/'];
 
-const PUBLIC_PREFIXES = [
-  '/_next/',
-  '/images/',
-  '/fonts/',
-  '/favicon',
-  '/api/',
-  '/poslovi/',
-  '/izdvojeni-oglasi/',
-];
+const STATIC_PREFIXES = ['/_next/', '/images/', '/fonts/', '/favicon', '/api/'];
 
-function isPublic(pathname: string) {
-  if (PUBLIC_PATHS.has(pathname)) return true;
-  return PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+function isProtected(pathname: string) {
+  return PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
+
+function isStatic(pathname: string) {
+  return STATIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always allow public assets and marketing/legal pages.
-  if (isPublic(pathname)) {
+  // Static assets and all non-protected pages are always allowed.
+  if (isStatic(pathname) || !isProtected(pathname)) {
     return NextResponse.next();
   }
 
