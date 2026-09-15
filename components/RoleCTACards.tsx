@@ -43,8 +43,8 @@ export default function RoleCTACards() {
                 <card.icon className="w-4 h-4 md:w-8 md:h-8" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-xs md:text-xl font-bold text-white">{card.title}</h3>
-                <p className="hidden md:block text-sm text-white/60 line-clamp-2">{card.description}</p>
+                <h3 className="text-sm md:text-xl font-bold text-white">{card.title}</h3>
+                <p className="text-[11px] md:text-sm text-white/60 line-clamp-1 md:line-clamp-2">{card.description}</p>
               </div>
               <span className="shrink-0 w-6 h-6 md:w-10 md:h-10 rounded-full bg-ink-800 text-white/60 group-hover:bg-brand-orange group-hover:text-white transition-colors flex items-center justify-center">
                 <ArrowRight className="w-3 h-3 md:w-5 md:h-5" />
