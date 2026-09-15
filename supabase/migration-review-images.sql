@@ -13,7 +13,8 @@ create index if not exists idx_review_images_review_id on public.review_images(r
 alter table public.review_images enable row level security;
 
 -- Public read
-create policy if not exists "Review images are publicly viewable"
+drop policy if exists "Review images are publicly viewable" on public.review_images;
+create policy "Review images are publicly viewable"
   on public.review_images
   for select
   to anon, authenticated
@@ -21,14 +22,16 @@ create policy if not exists "Review images are publicly viewable"
 
 -- Authenticated users can insert images for their own reviews
 -- (the application ensures the review belongs to the client before inserting images).
-create policy if not exists "Users can insert review images"
+drop policy if exists "Users can insert review images" on public.review_images;
+create policy "Users can insert review images"
   on public.review_images
   for insert
   to authenticated
   with check (true);
 
 -- Only admins or the review owner can delete images (handled in application).
-create policy if not exists "Users can delete own review images"
+drop policy if exists "Users can delete own review images" on public.review_images;
+create policy "Users can delete own review images"
   on public.review_images
   for delete
   to authenticated

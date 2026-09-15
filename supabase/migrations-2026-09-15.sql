@@ -11,7 +11,8 @@ values ('review-images', 'review-images', true)
 on conflict (id) do nothing;
 
 -- Public read access to review images
-create policy if not exists "Public can view review images"
+drop policy if exists "Public can view review images" on storage.objects;
+create policy "Public can view review images"
   on storage.objects
   for select
   to anon, authenticated
@@ -19,7 +20,8 @@ create policy if not exists "Public can view review images"
 
 -- Authenticated users can upload review images
 -- (the application validates ownership before uploading)
-create policy if not exists "Authenticated users can upload review images"
+drop policy if exists "Authenticated users can upload review images" on storage.objects;
+create policy "Authenticated users can upload review images"
   on storage.objects
   for insert
   to authenticated
@@ -27,7 +29,8 @@ create policy if not exists "Authenticated users can upload review images"
 
 -- Authenticated users can delete their own review images
 -- (the application validates ownership before deleting)
-create policy if not exists "Authenticated users can delete own review images"
+drop policy if exists "Authenticated users can delete own review images" on storage.objects;
+create policy "Authenticated users can delete own review images"
   on storage.objects
   for delete
   to authenticated
@@ -82,7 +85,8 @@ create index if not exists idx_review_images_review_id on public.review_images(r
 alter table public.review_images enable row level security;
 
 -- Public read
-create policy if not exists "Review images are publicly viewable"
+drop policy if exists "Review images are publicly viewable" on public.review_images;
+create policy "Review images are publicly viewable"
   on public.review_images
   for select
   to anon, authenticated
@@ -90,7 +94,8 @@ create policy if not exists "Review images are publicly viewable"
 
 -- Authenticated users can insert images for reviews they own
 -- (the application checks that the review belongs to the client).
-create policy if not exists "Users can insert review images"
+drop policy if exists "Users can insert review images" on public.review_images;
+create policy "Users can insert review images"
   on public.review_images
   for insert
   to authenticated
@@ -98,7 +103,8 @@ create policy if not exists "Users can insert review images"
 
 -- Authenticated users can delete their own review images
 -- (the application validates ownership before deleting).
-create policy if not exists "Users can delete own review images"
+drop policy if exists "Users can delete own review images" on public.review_images;
+create policy "Users can delete own review images"
   on public.review_images
   for delete
   to authenticated
