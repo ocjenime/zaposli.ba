@@ -39,8 +39,8 @@ function ReviewPage() {
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -128,33 +128,50 @@ function ReviewPage() {
   }, [authLoading, user, jobId, router, loadReviewData]);
 
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0] || null;
+    const files = Array.from(e.target.files || []);
     setError('');
 
-    if (!file) return;
+    if (files.length === 0) return;
 
     const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-    if (!allowedTypes.includes(file.type)) {
-      setError('Dozvoljeni formati: JPG, PNG, WEBP.');
-      return;
-    }
-
     const maxSize = 2 * 1024 * 1024;
-    if (file.size > maxSize) {
-      setError('Slika mora biti manja od 2MB.');
-      return;
+
+    const remainingSlots = 5 - imageFiles.length;
+    const toAdd = files.slice(0, remainingSlots);
+
+    for (const file of toAdd) {
+      if (!allowedTypes.includes(file.type)) {
+        setError('Dozvoljeni formati: JPG, PNG, WEBP.');
+        return;
+      }
+      if (file.size > maxSize) {
+        setError('Svaka slika mora biti manja od 2MB.');
+        return;
+      }
     }
 
-    setImageFile(file);
-    const reader = new FileReader();
-    reader.onload = () => setImagePreview(reader.result as string);
-    reader.readAsDataURL(file);
+    const newFiles = [...imageFiles, ...toAdd];
+    setImageFiles(newFiles);
+
+    Promise.all(
+      toAdd.map(
+        (file) =>
+          new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          })
+      )
+    ).then((previews) => {
+      setImagePreviews((prev) => [...prev, ...previews]);
+    });
+
+    if (fileInputRef.current) fileInputRef.current.value = '';
   }
 
-  function removeImage() {
-    setImageFile(null);
-    setImagePreview(null);
-    if (fileInputRef.current) fileInputRef.current.value = '';
+  function removeImage(index: number) {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -179,11 +196,11 @@ function ReviewPage() {
     setSubmitting(true);
 
     try {
-      let imageUrl: string | null = null;
+      const uploadedUrls: string[] = [];
 
-      if (imageFile) {
+      for (const imageFile of imageFiles) {
         const ext = imageFile.name.split('.').pop() || 'jpg';
-        const path = `${user.id}/${jobId}/${Date.now()}.${ext}`;
+        const path = `${user.id}/${jobId}/${Date.now()}_${uploadedUrls.length}.${ext}`;
         const { error: uploadError } = await supabase.storage
           .from('review-images')
           .upload(path, imageFile, {
@@ -192,29 +209,42 @@ function ReviewPage() {
           });
 
         if (uploadError) {
-          setError('Greška pri otpremanju slike. Pokušajte ponovo.');
+          setError('Greška pri otpremanju slika. Pokušajte ponovo.');
           setSubmitting(false);
           return;
         }
 
         const { data: publicUrl } = supabase.storage.from('review-images').getPublicUrl(path);
-        imageUrl = publicUrl.publicUrl;
+        uploadedUrls.push(publicUrl.publicUrl);
       }
 
-      const { error: insertError } = await supabase.from('reviews').insert({
-        job_id: jobId,
-        client_id: user.id,
-        firm_id: bid.firms.id,
-        rating,
-        comment: comment.trim(),
-        image_url: imageUrl,
-        status: 'approved',
-      });
+      const { data: reviewData, error: insertError } = await supabase
+        .from('reviews')
+        .insert({
+          job_id: jobId,
+          client_id: user.id,
+          firm_id: bid.firms.id,
+          rating,
+          comment: comment.trim(),
+          image_url: uploadedUrls[0] || null,
+          status: 'approved',
+        })
+        .select('id')
+        .single();
 
-      if (insertError) {
+      if (insertError || !reviewData) {
         setError('Greška pri spremanju recenzije.');
         setSubmitting(false);
         return;
+      }
+
+      if (uploadedUrls.length > 0) {
+        const { error: imagesError } = await supabase.from('review_images').insert(
+          uploadedUrls.map((url) => ({ review_id: reviewData.id, url }))
+        );
+        if (imagesError) {
+          console.error('Greška pri spremanju slika recenzije:', imagesError);
+        }
       }
 
       if (bid?.firms?.owner_id) {
@@ -329,37 +359,43 @@ function ReviewPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">
-                    Slika (opcionalno)
+                    Fotografije (opcionalno)
                   </label>
                   <p className="text-xs text-steel mb-3">
-                    Maksimalno 2MB, formati: JPG, PNG, WEBP.
+                    Do 5 fotografija. Maksimalno 2MB po slici, formati: JPG, PNG, WEBP.
                   </p>
 
-                  {imagePreview ? (
-                    <div className="relative inline-block rounded-xl overflow-hidden border border-gray-100">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={imagePreview}
-                        alt="Pregled fotografije za recenziju"
-                        className="w-full max-w-xs h-auto object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={removeImage}
-                        className="absolute top-2 right-2 p-1 bg-[#ffffff]/90 rounded-full text-steel hover:text-red-500 shadow-sm"
-                        aria-label="Ukloni sliku"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
+                  {imagePreviews.length > 0 && (
+                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
+                      {imagePreviews.map((preview, index) => (
+                        <div key={index} className="relative aspect-square rounded-xl overflow-hidden border border-gray-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={preview}
+                            alt={`Pregled fotografije ${index + 1}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => removeImage(index)}
+                            className="absolute top-1 right-1 p-1 bg-white/90 rounded-full text-steel hover:text-red-500 shadow-sm"
+                            aria-label="Ukloni sliku"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ) : (
+                  )}
+
+                  {imagePreviews.length < 5 && (
                     <button
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-3 bg-cloud border border-gray-200 rounded-xl text-sm text-steel hover:text-gray-900 hover:border-brand-orange transition-colors"
                     >
                       <Upload className="w-4 h-4" />
-                      Dodaj sliku
+                      Dodaj fotografiju
                     </button>
                   )}
 
@@ -367,6 +403,7 @@ function ReviewPage() {
                     ref={fileInputRef}
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
+                    multiple
                     onChange={handleImageChange}
                     className="hidden"
                   />

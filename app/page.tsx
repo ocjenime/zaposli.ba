@@ -15,6 +15,7 @@ import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 import LazySection from '@/components/LazySection';
 import HomeStickyCTA from '@/components/HomeStickyCTA';
+import QuickEstimateWidget from '@/components/QuickEstimateWidget';
 import { JsonLd, organizationSchema, websiteSchema, breadcrumbSchema } from '@/lib/jsonld';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
@@ -60,6 +61,7 @@ export default function Home() {
       <main className="flex-grow">
         <HeroSection />
         <CategoryIconRow />
+        <QuickEstimateWidget />
         <RoleCTACards />
         <PromoBanner />
         <FeaturedAdsSection />
