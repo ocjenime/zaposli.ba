@@ -23,6 +23,8 @@ const PUBLIC_PREFIXES = [
   '/fonts/',
   '/favicon',
   '/api/',
+  '/poslovi/',
+  '/izdvojeni-oglasi/',
 ];
 
 function isPublic(pathname: string) {

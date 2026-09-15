@@ -88,7 +88,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
             <div className="flex items-start gap-1">
               <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{firm?.name || 'Firma'}</p>
               {firm?.verified && (
-                <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
+                <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
               )}
             </div>
             <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
@@ -236,7 +236,7 @@ function DemoFeaturedAdCard({
           <div className="flex-1 min-w-0">
             <div className="flex items-start gap-1">
               <p className="text-xs font-bold text-gray-900 dark:text-white leading-tight whitespace-normal break-words">{demo.firm}</p>
-              <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
+              <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
             </div>
             <div className="flex items-center gap-2 text-[11px] text-steel dark:text-gray-400">
               <span>{demo.city}</span>

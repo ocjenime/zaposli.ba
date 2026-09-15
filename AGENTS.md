@@ -25,7 +25,10 @@
 - Fixed grammar in paid plan feature lists (`lib/plan-features.ts`): `mjesecno` → `mjesečno`.
 - Restored the previous `/kako-funkcionise/` role-selector page (`Tražim majstora` / `Nudim usluge`) with the Higgsfield dark hero, dynamic steps, benefits, FAQ tabs, and CTA.
 - Restored `CategoryIconRow` below the homepage hero.
-- Added auth-gating middleware (`middleware.ts`): only the homepage and public auth/legal/static pages are accessible without login. All other routes (`/poslovi/`, `/izdvojeni-oglasi/`, `/firma-profil/`, `/kategorije/`, `/gradovi/`, `/top-firme/`, `/za-firme/`, `/kako-funkcionise/`, `/faq/`, `/kontakt/`, `/o-nama/`, `/savjeti/`, `/usluge/`, ...) now redirect unauthenticated users to `/prijava/?redirectTo=<path>`. Updated `/prijava/LoginForm.tsx` to honor the `redirectTo` query parameter after successful login.
+- Added auth-gating middleware (`middleware.ts`) so most pages require login, but kept `/poslovi/` and `/izdvojeni-oglasi/` public as requested. Unauthenticated users hitting protected routes are redirected to `/prijava/?redirectTo=<path>`; login form honors `redirectTo`.
+- Fixed verified badge on homepage covering long firm names (`Arilux D.o.o.`): `VerifiedBadge` now supports `showLabel={false}` for compact cards in `RecommendedFirmsSection` and `FeaturedAdsSection`.
+- Added `RecommendedFirmsSection` above the job listings on `/poslovi/`.
+- Improved `/poslovi/` hero fade with a bottom `bg-gradient-to-t from-[#f8f7f4] to-transparent` strip so it blends smoothly into the listings area.
 - Cleaned up `/gradovi/` by removing the duplicate “Lokalni majstori” trust-intro text block (description already exists in the hero).
 - Cleaned up `/poslovi/` hero: removed the duplicate headline, subtitle, and hero search bar; kept only the eyebrow and trust badges. Also made the listings filter bar static instead of sticky so it no longer moves on scroll.
 - Expanded promoted-ads product model to three placements:

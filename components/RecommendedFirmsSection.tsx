@@ -42,7 +42,7 @@ function FirmCard({ firm }: { firm: Firm }) {
             <h3 className="text-sm font-bold text-gray-900 dark:text-white leading-tight group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
               {firm.name}
             </h3>
-            {firm.verified && <VerifiedBadge size="sm" className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />}
+            {firm.verified && <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />}
           </div>
           <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-steel dark:text-gray-400">
             <span className="inline-flex items-center gap-0.5 font-medium">

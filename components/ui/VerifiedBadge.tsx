@@ -1,9 +1,10 @@
 interface VerifiedBadgeProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  showLabel?: boolean;
 }
 
-export default function VerifiedBadge({ size = 'md', className = '' }: VerifiedBadgeProps) {
+export default function VerifiedBadge({ size = 'md', className = '', showLabel = true }: VerifiedBadgeProps) {
   const sizes = {
     sm: 'text-[10px] px-2 py-0.5 gap-1',
     md: 'text-[11px] px-2.5 py-1 gap-1.5',
@@ -47,7 +48,7 @@ export default function VerifiedBadge({ size = 'md', className = '' }: VerifiedB
           strokeLinejoin="round"
         />
       </svg>
-      {size === 'sm' ? 'Provjerena' : 'Provjerena firma'}
+      {showLabel && (size === 'sm' ? 'Provjerena' : 'Provjerena firma')}
     </span>
   );
 }
