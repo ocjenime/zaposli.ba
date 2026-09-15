@@ -39,7 +39,7 @@ export default function HomeStickyCTA() {
         </Link>
         <Link
           href="/poslovi/"
-          className="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95"
+          className="flex-1 inline-flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 dark:bg-[#4b5563] dark:hover:bg-[#374151] text-white px-4 py-3 rounded-xl font-bold text-sm transition-all active:scale-95"
         >
           <Search className="w-4 h-4" />
           Pronađi poslove
