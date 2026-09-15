@@ -20,7 +20,7 @@
 ### Completed
 - Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height and padding, smaller CTAs, hidden trust badges on mobile, hidden emergency banner on mobile, content aligned to the bottom so the eyebrow badge and CTAs are visible, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
 - Refined the category icon row (`components/CategoryIconRow.tsx`) on mobile: items now scroll naturally with more horizontal spacing to prevent label overlap.
-- Refined the two role CTA cards (`components/RoleCTACards.tsx`) on mobile: slightly taller cards with larger titles and a bottom padding buffer so they sit cleanly above the sticky bottom CTA.
+- Refined the two role CTA cards (`components/RoleCTACards.tsx`) on mobile: full descriptions visible, larger cards, no bottom section padding on mobile so the cards sit flush against the sticky bottom CTA.
 - Removed the emergency banner from the homepage category card and added it to the `/kategorije/` page instead, right below the hero.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
