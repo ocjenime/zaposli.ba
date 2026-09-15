@@ -19,7 +19,6 @@ import {
   Siren,
 } from 'lucide-react';
 import CategoryCard from '@/components/CategoryCard';
-import EmergencyBottomBar from '@/components/EmergencyBottomBar';
 
 const seoCategories = categories.filter((c) => !c.noSeo);
 
@@ -61,6 +60,23 @@ export default function CategoriesPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
+        {/* Emergency interventions banner at the top, like the old homepage bar */}
+        <div className="mt-14 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3">
+            <Link
+              href="/kategorije/hitne-intervencije/"
+              className="flex items-center gap-2 text-xs sm:text-sm font-semibold hover:opacity-90 transition-opacity min-w-0"
+            >
+              <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                <Siren className="w-2 h-2" />
+                24/7
+              </span>
+              <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0 hidden sm:block" />
+            </Link>
+          </div>
+        </div>
+
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
         <PageHero
@@ -81,23 +97,6 @@ export default function CategoriesPage() {
             <ArrowRight className="w-5 h-5" />
           </Link>
         </PageHero>
-
-        {/* Emergency interventions banner */}
-        <div className="bg-gradient-to-r from-red-600 to-red-700 text-white border-b border-white/10 shadow-lg shadow-red-900/20">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-3">
-            <Link
-              href="/kategorije/hitne-intervencije/"
-              className="flex items-center gap-3 text-sm sm:text-base font-semibold hover:opacity-90 transition-opacity min-w-0"
-            >
-              <span className="inline-flex items-center gap-1 bg-white text-red-600 text-xs font-bold px-2 py-1 rounded-full">
-                <Siren className="w-3 h-3" />
-                24/7
-              </span>
-              <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
-              <ArrowRight className="w-4 h-4 shrink-0 hidden sm:block" />
-            </Link>
-          </div>
-        </div>
 
         {/* Trust badges */}
         <section className="relative py-10 md:py-12 bg-cloud overflow-hidden">
@@ -179,8 +178,6 @@ export default function CategoriesPage() {
         </section>
 
       </main>
-
-      <EmergencyBottomBar position="corner" />
 
       <Footer />
     </div>
