@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[360px] sm:min-h-[460px] lg:min-h-[560px] flex flex-col overflow-hidden">
+    <section className="relative min-h-[320px] sm:min-h-[420px] lg:min-h-[520px] flex flex-col overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -176,7 +176,7 @@ export default function HeroSection() {
       </div>
 
       {/* Bottom fade for smooth transition to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-cloud to-transparent z-10" />
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cloud to-transparent z-10" />
     </section>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { LayoutGrid, Siren, ArrowRight } from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import { categories } from '@/lib/categories';
 
 const FEATURED_SLUGS = [
@@ -21,22 +21,8 @@ export default function CategoryIconRow() {
   return (
     <section className="relative -mt-4 md:-mt-8 z-30 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 overflow-hidden">
-          {/* Mobile emergency banner moved here, next to categories */}
-          <Link
-            href="/kategorije/hitne-intervencije/"
-            className="flex md:hidden items-center justify-between gap-3 bg-gradient-to-r from-red-600 to-red-700 text-white px-4 py-2.5 text-xs font-semibold hover:opacity-95 transition-opacity"
-          >
-            <span className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                <Siren className="w-2 h-2" />
-                24/7
-              </span>
-              <span className="truncate">Hitne intervencije - majstori odmah</span>
-            </span>
-            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
-          </Link>
-          <div className="p-3 sm:p-5 flex items-center justify-between gap-3 overflow-x-auto no-scrollbar pb-1">
+        <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 p-3 sm:p-5">
+          <div className="flex items-center justify-between gap-3 overflow-x-auto no-scrollbar pb-1">
             {featured.map((category) => {
               const Icon = category!.icon;
               return (
