@@ -27,6 +27,7 @@
 - Restored `CategoryIconRow` below the homepage hero.
 - Added auth-gating middleware (`middleware.ts`) that requires login only for `/poslovi/` and `/izdvojeni-oglasi/` (including ad detail pages). All other pages (`/gradovi/`, `/kategorije/`, `/za-firme/`, `/kako-funkcionise/`, `/faq/`, `/kontakt/`, `/o-nama/`, `/savjeti/`, `/top-firme/`, `/firma-profil/`, `/usluge/`, ...) remain public. Unauthenticated users on protected routes are redirected to `/prijava/?redirectTo=<path>`; login form honors `redirectTo`.
 - Fixed verified badge on homepage covering long firm names (`Arilux D.o.o.`): `VerifiedBadge` now supports `showLabel={false}` for compact cards in `RecommendedFirmsSection` and `FeaturedAdsSection`.
+- Hidden the black arrow CTA buttons on mobile in `FeaturedAdsSection` (real and demo sponsored cards) for shorter, cleaner cards; arrows remain on desktop.
 - Added `RecommendedFirmsSection` above the job listings on `/poslovi/`.
 - Improved `/poslovi/` hero fade with a bottom `bg-gradient-to-t from-[#f8f7f4] to-transparent` strip so it blends smoothly into the listings area.
 - Cleaned up `/gradovi/` by removing the duplicate “Lokalni majstori” trust-intro text block (description already exists in the hero).

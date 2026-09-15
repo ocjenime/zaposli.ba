@@ -101,7 +101,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
           </div>
         </div>
 
-        <span className="mt-auto inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors self-end">
+        <span className="mt-auto hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors self-end">
           <ArrowRight className="w-4 h-4" />
         </span>
       </div>
@@ -248,7 +248,7 @@ function DemoFeaturedAdCard({
           </div>
         </div>
 
-        <span className="mt-auto inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors self-end">
+        <span className="mt-auto hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors self-end">
           <ArrowRight className="w-4 h-4" />
         </span>
       </div>
