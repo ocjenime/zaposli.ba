@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -48,27 +48,27 @@ const benefits = [
     icon: TrendingUp,
     title: 'Rastite bez marketinga',
     description:
-      'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i dru┼ítvene mre┼że.',
-    stat: 'Bez pla─çanja po kliku',
+      'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i društvene mreže.',
+    stat: 'Bez plaćanja po kliku',
   },
   {
     icon: Users,
     title: 'Marketplace u BiH',
     description:
-      'Pristupite bazi klijenata u Bosni i Hercegovini koji aktivno tra┼że majstore i firme.',
+      'Pristupite bazi klijenata u Bosni i Hercegovini koji aktivno traže majstore i firme.',
     stat: '50+ kategorija',
   },
   {
     icon: Star,
     title: 'Izgradite reputaciju',
-    description: 'Skupljajte ocjene i recenzije koje vas isti─Źu ispred konkurencije.',
+    description: 'Skupljajte ocjene i recenzije koje vas ističu ispred konkurencije.',
     stat: '4.8 / 5 prosjek',
   },
   {
     icon: Shield,
     title: 'Verifikacija profila',
-    description: 'Verifikovani profil dobija zna─Źku povjerenja i bolju poziciju u listi.',
-    stat: 'Zna─Źka povjerenja',
+    description: 'Verifikovani profil dobija značku povjerenja i bolju poziciju u listi.',
+    stat: 'Značka povjerenja',
   },
 ];
 
@@ -76,22 +76,22 @@ const trustSignals = [
   {
     icon: BadgeCheck,
     title: 'Verifikovani profili',
-    description: 'Svaki profil mo┼że pro─çi provjeru identiteta i kvaliteta rada.',
+    description: 'Svaki profil može proći provjeru identiteta i kvaliteta rada.',
   },
   {
     icon: Wallet,
-    title: 'Bez skrivenih tro┼íkova',
-    description: 'Pla─çate fiksnu mjese─Źnu naknadu. Bez provizija po dobijenom poslu.',
+    title: 'Bez skrivenih troškova',
+    description: 'Plaćate fiksnu mjesečnu naknadu. Bez provizija po dobijenom poslu.',
   },
   {
     icon: Headphones,
-    title: 'Podr┼íka na bosanskom',
-    description: 'Na┼í tim dostupan je putem emaila, chata i telefona.',
+    title: 'Podrška na bosanskom',
+    description: 'Naš tim dostupan je putem emaila, chata i telefona.',
   },
   {
     icon: Clock,
     title: 'Otkazivanje u svakom trenutku',
-    description: 'Nema ugovorne obaveze. Mijenjajte ili otka┼żite paket kad god ┼żelite.',
+    description: 'Nema ugovorne obaveze. Mijenjajte ili otkažite paket kad god želite.',
   },
 ];
 
@@ -105,8 +105,8 @@ const processSteps = [
   {
     number: '02',
     icon: Briefcase,
-    title: 'Prona─Ĺite i odradite posao',
-    description: 'Dobijajte upite, ┼íaljite ponude i rje┼íavajte projekte u svom okrugu.',
+    title: 'Pronađite i odradite posao',
+    description: 'Dobijajte upite, šaljite ponude i rješavajte projekte u svom okrugu.',
   },
   {
     number: '03',
@@ -119,19 +119,19 @@ const processSteps = [
 const projectCards = [
   {
     icon: Paintbrush,
-    title: 'Malterski i bojad┼żijski radovi',
-    description: 'Molerski radovi, gletovanje, kre─Źenje i bojenje enterijera.',
+    title: 'Malterski i bojadžijski radovi',
+    description: 'Molerski radovi, gletovanje, krečenje i bojenje enterijera.',
     gradient: 'from-orange-50 to-white border-orange-100',
   },
   {
     icon: Home,
     title: 'Renovacija kuhinja i stanova',
-    description: 'Adaptacije, demonta┼ża, postavljanje plo─Źica i ugradnja elementa.',
+    description: 'Adaptacije, demontaža, postavljanje pločica i ugradnja elementa.',
     gradient: 'from-blue-50 to-white border-blue-100',
   },
   {
     icon: Hammer,
-    title: 'Zavr┼íni i gra─Ĺevinski radovi',
+    title: 'Završni i građevinski radovi',
     description: 'Keramika, parket, instalacije, elektrika i vodoinstalateri.',
     gradient: 'from-stone-50 to-white border-stone-100',
   },
@@ -143,8 +143,8 @@ const projectCards = [
   },
   {
     icon: Sparkles,
-    title: '─îi┼í─çenje i odr┼żavanje',
-    description: 'Stanovi, ku─çe, poslovni prostori i dubinsko ─Źi┼í─çenje.',
+    title: 'Čišćenje i održavanje',
+    description: 'Stanovi, kuće, poslovni prostori i dubinsko čišćenje.',
     gradient: 'from-emerald-50 to-white border-emerald-100',
   },
   {
@@ -164,8 +164,8 @@ const pricingPlans = [
     price: '0',
     regularPrice: '0',
     period: 'KM/mj',
-    description: 'Idealno za po─Źetak i testiranje tr┼żi┼íta.',
-    cta: 'Po─Źnite besplatno',
+    description: 'Idealno za početak i testiranje tržišta.',
+    cta: 'Počnite besplatno',
     popular: false,
     launch: false,
   },
@@ -175,7 +175,7 @@ const pricingPlans = [
     price: '19',
     regularPrice: '29',
     period: 'KM/mj',
-    description: 'Za po─Źetnike koji ┼żele vi┼íe poslova.',
+    description: 'Za početnike koji žele više poslova.',
     cta: 'Odaberite Start',
     popular: false,
     launch: true,
@@ -186,7 +186,7 @@ const pricingPlans = [
     price: '49',
     regularPrice: '79',
     period: 'KM/mj',
-    description: 'Za aktivne firme i majstore koji ┼żele rasti.',
+    description: 'Za aktivne firme i majstore koji žele rasti.',
     cta: 'Odaberite Pro',
     popular: true,
     launch: true,
@@ -206,34 +206,34 @@ const pricingPlans = [
 
 const faqs = [
   {
-    question: 'Koliko ko┼íta registracija firme ili majstora?',
+    question: 'Koliko košta registracija firme ili majstora?',
     answer:
-      'Registracija je potpuno besplatna. Pla─çate tek kada odlu─Źite nadograditi paket radi vi┼íe ponuda i dodatnih pogodnosti.',
+      'Registracija je potpuno besplatna. Plaćate tek kada odlučite nadograditi paket radi više ponuda i dodatnih pogodnosti.',
   },
   {
-    question: '┼áta zna─Źi "ponuda mjese─Źno"?',
+    question: 'Šta znači "ponuda mjesečno"?',
     answer:
-      'To je broj poslova na koje mo┼żete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
+      'To je broj poslova na koje možete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
   },
   {
     question: 'Mogu li otkazati pretplatu u bilo kom trenutku?',
     answer:
-      'Da. Bez ugovorne obaveze i bez skrivenih naknadi. Pretplatu mo┼żete otkazati ili promijeniti iz svog dashboarda.',
+      'Da. Bez ugovorne obaveze i bez skrivenih naknadi. Pretplatu možete otkazati ili promijeniti iz svog dashboarda.',
   },
   {
-    question: 'Kako funkcioni┼íe verifikacija profila?',
+    question: 'Kako funkcioniše verifikacija profila?',
     answer:
-      'Verifikacija uklju─Źuje provjeru dokumentacije i kvaliteta prethodnih radova. Verifikovani profili dobijaju zna─Źku i bolju poziciju.',
+      'Verifikacija uključuje provjeru dokumentacije i kvaliteta prethodnih radova. Verifikovani profili dobijaju značku i bolju poziciju.',
   },
   {
     question: 'Da li postoji provizija po dobijenom poslu?',
     answer:
-      'Ne. Zaposli.ba ne napla─çuje proviziju po dobijenom poslu. Pla─çate samo fiksnu mjese─Źnu naknadu prema odabranom paketu.',
+      'Ne. Zaposli.ba ne naplaćuje proviziju po dobijenom poslu. Plaćate samo fiksnu mjesečnu naknadu prema odabranom paketu.',
   },
   {
-    question: 'Kako se pla─çaju paketi?',
+    question: 'Kako se plaćaju paketi?',
     answer:
-      'Paketi se pla─çaju mjese─Źno ili godi┼ínje, a godi┼ínje pla─çanje donosi 10% popusta. Uplata se vr┼íi bankovnom uplatom preko platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
+      'Paketi se plaćaju mjesečno ili godišnje, a godišnje plaćanje donosi 10% popusta. Uplata se vrši bankovnom uplatom preko platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
   },
 ];
 
@@ -259,12 +259,12 @@ export default function ZaFirmeContent() {
                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 text-balance">
                   Novi poslovi,{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                    direktno u va┼í inbox
+                    direktno u vaš inbox
                   </span>
                 </h1>
                 <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-xl">
-                  Pridru┼żite se najve─çem tr┼żi┼ítu za majstore i gra─Ĺevinske firme u Bosni i
-                  Hercegovini. Dobijajte upite, ┼íaljite ponude i rastite bez velikih po─Źetnih
+                  Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i
+                  Hercegovini. Dobijajte upite, šaljite ponude i rastite bez velikih početnih
                   ulaganja.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -288,11 +288,11 @@ export default function ZaFirmeContent() {
                   </span>
                   <span className="inline-flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-brand-orange" />
-                    5 besplatnih ponuda mjese─Źno
+                    5 besplatnih ponuda mjesečno
                   </span>
                   <span className="inline-flex items-center gap-2">
                     <CheckCircle className="h-4 w-4 text-brand-orange" />
-                    Podr┼íka na bosanskom
+                    Podrška na bosanskom
                   </span>
                 </div>
               </div>
@@ -305,12 +305,12 @@ export default function ZaFirmeContent() {
                     <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
                       <Rocket className="w-8 h-8 text-brand-orange" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-4">Za┼íto firme rastu na Zaposli.ba?</h3>
+                    <h3 className="text-2xl font-bold text-white mb-4">Zašto firme rastu na Zaposli.ba?</h3>
                     <ul className="space-y-4">
                       {[
-                        'Nema pla─çanja po kliku ili po ogledu',
+                        'Nema plaćanja po kliku ili po ogledu',
                         'Direktan kontakt sa klijentom',
-                        'Recenzije koje grade dugoro─Źni ugled',
+                        'Recenzije koje grade dugoročni ugled',
                         'Alati za upravljanje ponudama',
                       ].map((item, i) => (
                         <li key={i} className="flex items-center gap-3 text-white/70">
@@ -327,7 +327,7 @@ export default function ZaFirmeContent() {
                       </div>
                       <div>
                         <p className="text-white font-bold">4.8 / 5</p>
-                        <p className="text-white/60 text-sm">Prosje─Źna ocjena verifikovanih firmi</p>
+                        <p className="text-white/60 text-sm">Prosječna ocjena verifikovanih firmi</p>
                       </div>
                     </div>
                   </div>
@@ -372,10 +372,10 @@ export default function ZaFirmeContent() {
                 <Building2 className="h-4 w-4" /> Prednosti platforme
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Za┼íto se profesionalci pridru┼żuju Zaposli.ba?
+                Zašto se profesionalci pridružuju Zaposli.ba?
               </h2>
               <p className="text-white/70 text-lg">
-                Platforma koja vam donosi klijente, poma┼że da gradite reputaciju i rastete bez velikih po─Źetnih ulaganja.
+                Platforma koja vam donosi klijente, pomaže da gradite reputaciju i rastete bez velikih početnih ulaganja.
               </p>
             </div>
 
@@ -412,13 +412,13 @@ export default function ZaFirmeContent() {
           <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <Target className="h-4 w-4" /> Kako funkcioni┼íe
+                <Target className="h-4 w-4" /> Kako funkcioniše
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
                 Tri koraka do novih klijenata
               </h2>
               <p className="text-steel text-lg">
-                Registrujte se, prona─Ĺite posao i gradite reputaciju bez komplikacija.
+                Registrujte se, pronađite posao i gradite reputaciju bez komplikacija.
               </p>
             </div>
 
@@ -485,11 +485,11 @@ export default function ZaFirmeContent() {
                 <Briefcase className="h-4 w-4" /> Kategorije poslova
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Prona─Ĺite projekte u svojoj oblasti
+                Pronađite projekte u svojoj oblasti
               </h2>
               <p className="text-steel text-lg">
                 Klijenti svakodnevno objavljuju nove poslove u {categoryCount} kategorija. Od adaptacija stanova do kuhinja,
-                kupatila, farbanja, zavr┼ínih radova i mnogih drugi usluga.
+                kupatila, farbanja, završnih radova i mnogih drugi usluga.
               </p>
             </div>
 
@@ -517,7 +517,7 @@ export default function ZaFirmeContent() {
                   <div>
                     <h3 className="font-bold text-gray-900 text-lg">Ostale kategorije</h3>
                     <p className="text-sm text-steel leading-relaxed">
-                      Jo┼í {categoryCount - projectCards.length} oblasti - selidbe, ─Źi┼í─çenje, hidroizolacija, energetska obnova,
+                      Još {categoryCount - projectCards.length} oblasti - selidbe, čišćenje, hidroizolacija, energetska obnova,
                       dizajn eksterijera i mnoge druge.
                     </p>
                   </div>
@@ -543,10 +543,10 @@ export default function ZaFirmeContent() {
                     <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
                       <Award className="w-8 h-8 text-brand-orange" />
                     </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Zna─Źka kvaliteta</h3>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">Značka kvaliteta</h3>
                     <p className="text-white/70 leading-relaxed mb-6">
-                      Verifikovani profili dobijaju zna─Źku &ldquo;Provjerena firma&rdquo; i bolju poziciju u listi.
-                      Klijenti vi┼íe vjeruju firmama koje su pro┼íle provjeru, ┼íto direktno uti─Źe na stopu odabira.
+                      Verifikovani profili dobijaju značku &ldquo;Provjerena firma&rdquo; i bolju poziciju u listi.
+                      Klijenti više vjeruju firmama koje su prošle provjeru, što direktno utiče na stopu odabira.
                     </p>
                     <div className="flex flex-wrap gap-3">
                       {['ID broj firme', 'Reference', 'Portfolio', 'Ocjene klijenata'].map((item, i) => (
@@ -571,8 +571,8 @@ export default function ZaFirmeContent() {
                   Izgradite povjerenje klijenata
                 </h2>
                 <p className="text-white/70 text-lg mb-8">
-                  Zaposli.ba je dizajniran da klijentima pru┼żi sigurnost i profesionalcima transparentan model rasta.
-                  Bez skrivenih tro┼íkova, bez provizija, bez komplikacija.
+                  Zaposli.ba je dizajniran da klijentima pruži sigurnost i profesionalcima transparentan model rasta.
+                  Bez skrivenih troškova, bez provizija, bez komplikacija.
                 </p>
                 <div className="space-y-4">
                   {trustSignals.map((signal) => (
@@ -606,13 +606,13 @@ export default function ZaFirmeContent() {
                 <Wallet className="h-4 w-4" /> Cijene
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Jednostavne cijene, bez iznena─Ĺenja
+                Jednostavne cijene, bez iznenađenja
               </h2>
               <p className="text-white/70 text-lg mb-6">
-                Po─Źnite besplatno. Nadogradite kada platforma po─Źne da vam donosi poslove.
+                Počnite besplatno. Nadogradite kada platforma počne da vam donosi poslove.
               </p>
               <p className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
-                Godi┼ínje pla─çanje: 10% popusta
+                Godišnje plaćanje: 10% popusta
               </p>
             </div>
 
@@ -629,7 +629,7 @@ export default function ZaFirmeContent() {
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
                       <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
-                        Preporu─Źeno
+                        Preporučeno
                       </span>
                     </div>
                   )}
@@ -654,7 +654,7 @@ export default function ZaFirmeContent() {
                           {plan.regularPrice} KM/mj
                         </p>
                         <p className="text-sm text-green-300 font-medium">
-                          Prvih 3 mjeseca ┬Ě zatim {plan.regularPrice} KM/mj
+                          Prvih 3 mjeseca · zatim {plan.regularPrice} KM/mj
                         </p>
                       </div>
                     ) : (
@@ -689,10 +689,10 @@ export default function ZaFirmeContent() {
                 <Clock className="w-4 h-4 text-brand-orange" /> Bez ugovorne obaveze
               </span>
               <span className="flex items-center gap-2">
-                <Wallet className="w-4 h-4 text-brand-orange" /> Otka┼żite bilo kada
+                <Wallet className="w-4 h-4 text-brand-orange" /> Otkažite bilo kada
               </span>
               <span className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-brand-orange" /> Podr┼íka na bosanskom
+                <Phone className="w-4 h-4 text-brand-orange" /> Podrška na bosanskom
               </span>
             </div>
           </div>
@@ -715,7 +715,7 @@ export default function ZaFirmeContent() {
                 </span>
               </h2>
               <p className="text-white/70 text-lg max-w-2xl mx-auto">
-                Tri na─Źina promocije. Izaberite onaj koji vam najvi┼íe odgovara ÔÇö mini oglas, veliki banner ili pregled svih oglasa.
+                Tri načina promocije. Izaberite onaj koji vam najviše odgovara — mini oglas, veliki banner ili pregled svih oglasa.
               </p>
             </div>
 
@@ -732,10 +732,10 @@ export default function ZaFirmeContent() {
                     <span className="text-4xl font-extrabold text-white leading-none">19</span>
                     <span className="text-white/70 font-semibold mb-1">KM/mj</span>
                   </div>
-                  <p className="text-xs text-white/40 mt-2">Pro uklju─Źuje 1 ┬Ě Premium 3</p>
+                  <p className="text-xs text-white/40 mt-2">Pro uključuje 1 · Premium 3</p>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
-                  {['Prikaz u traci istaknutih oglasa', 'Broj─Źana pozicija 1ÔÇô5', 'Logo, naziv i kratak opis'].map((f) => (
+                  {['Prikaz u traci istaknutih oglasa', 'Brojčana pozicija 1–5', 'Logo, naziv i kratak opis'].map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-white/80">
                       <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
                       {f}
@@ -759,15 +759,15 @@ export default function ZaFirmeContent() {
                     <Monitor className="w-6 h-6 text-brand-orange" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-1">Homepage banner</h3>
-                  <p className="text-white/50 text-sm mb-4">Veliki banner 1200 ├Ś 400 px</p>
+                  <p className="text-white/50 text-sm mb-4">Veliki banner 1200 × 400 px</p>
                   <div className="flex items-end justify-center gap-1">
                     <span className="text-4xl font-extrabold text-white leading-none">49</span>
                     <span className="text-white/70 font-semibold mb-1">KM/mj</span>
                   </div>
-                  <p className="text-xs text-white/40 mt-2">Nije uklju─Źen u pakete</p>
+                  <p className="text-xs text-white/40 mt-2">Nije uključen u pakete</p>
                 </div>
                 <ul className="space-y-2 mb-6 flex-1">
-                  {['Dominantna pozicija na homepage-u', 'Dimenzije 1200 ├Ś 400 px', 'Banner, naslov, opis i CTA'].map((f) => (
+                  {['Dominantna pozicija na homepage-u', 'Dimenzije 1200 × 400 px', 'Banner, naslov, opis i CTA'].map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm text-white/80">
                       <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
                       {f}
@@ -819,9 +819,9 @@ export default function ZaFirmeContent() {
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                ─îesto postavljana pitanja
+                Često postavljana pitanja
               </h2>
-              <p className="text-steel text-lg">Sve ┼íto trebate znati prije registracije.</p>
+              <p className="text-steel text-lg">Sve što trebate znati prije registracije.</p>
             </div>
 
             <div className="space-y-4">
@@ -853,7 +853,7 @@ export default function ZaFirmeContent() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
               <Target className="h-4 w-4 text-brand-orange" />
-              Po─Źnite ve─ç danas
+              Počnite već danas
             </div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
               Spremni ste da{' '}
@@ -862,7 +862,7 @@ export default function ZaFirmeContent() {
               </span>
             </h2>
             <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-              Registrujte firmu besplatno i po─Źnite da primate nove poslove ve─ç sutra. Bez rizika, bez ugovorne obaveze.
+              Registrujte firmu besplatno i počnite da primate nove poslove već sutra. Bez rizika, bez ugovorne obaveze.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <PricingCTA
@@ -886,7 +886,7 @@ export default function ZaFirmeContent() {
       <JsonLd
         data={[
           breadcrumbSchema([
-            { name: 'Po─Źetna', url: '/' },
+            { name: 'Početna', url: '/' },
             { name: 'Za firme', url: '/za-firme/' },
           ]),
           faqSchema(faqs),

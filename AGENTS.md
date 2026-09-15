@@ -164,7 +164,7 @@
 - Updated static list pages `/kategorije/`, `/gradovi/`, `/savjeti/`, and `/top-firme/` to use the new premium `PageHero`.
 - Redesigned `/poslovi/` hero to dark Higgsfield style with glassmorphism search and trust badges.
 - Redesigned `/objavi-projekat/` with a premium dark hero, overlapping form card, and an improved stepper.
-- Restored `/za-firme/ZaFirmeContent.tsx` from commit `185d0c49` because the previous text-editing pass corrupted Bosnian diacritics. The page content is now back to its original, correct form.
+- Restored `/za-firme/ZaFirmeContent.tsx` from commit `b3db6fae` (the last known-good version with correct Bosnian diacritics) because the previous restores introduced corrupted characters. Verified the file now contains proper Bosnian letters (`š`, `đ`, `č`, `ć`, `ž`) and no BOM.
 - Redesigned `/kako-radi/` with a premium Higgsfield-style layout: centered `PageHero`, alternating dark timeline for clients, vertical numbered list for firms, bento-style category cards with unique gradients, dark glass benefit cards, and improved FAQ/CTA. Added `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD schemas.
 - Redesigned `/kontakt/` with a luxury Higgsfield layout: centered `PageHero` with direct email/phone CTAs, dark glass contact-info panel with trust badges, premium floating white contact form card, and improved success/error states. Added `ContactPage` JSON-LD schema.
 - Redesigned `/o-nama/` in premium Higgsfield style: cinematic hero with a large glowing logo badge, a full "Značka kvaliteta" trust section with the logo as a seal of quality, manifesto-style mission statement, large-year dark timeline, bento-style values grid, and premium CTA. Added `Organization` and `BreadcrumbList` JSON-LD schemas.
