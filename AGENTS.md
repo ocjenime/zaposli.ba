@@ -18,7 +18,7 @@
 
 ## Work State
 ### Completed
-- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
+- Simplified the homepage hero for mobile: smaller headline, shorter subheadline, reduced min-height and padding, smaller CTAs, hidden trust badges on mobile, and a new floating sticky bottom CTA bar (`components/HomeStickyCTA.tsx`) with role-aware routing.
 - Enabled multiple photos per review:
   - Added the `review_images` table and RLS policies (`supabase/migration-review-images.sql`).
   - Updated `/dashboard/recenzija/` to allow up to 5 photos per review and upload them to the `review-images` storage bucket.
