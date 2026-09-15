@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -95,7 +95,13 @@ export default function BuyAdPage() {
           {error ? (
             <div className="rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm">{error}</div>
           ) : (
-            <FirmAdsTab firmId={firmId} subscription={subscription} />
+            <Suspense fallback={
+              <div className="flex items-center justify-center py-12 text-steel">
+                <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje...
+              </div>
+            }>
+              <FirmAdsTab firmId={firmId} subscription={subscription} />
+            </Suspense>
           )}
         </div>
       </main>

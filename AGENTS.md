@@ -40,8 +40,10 @@
   - `listing` oglas na `/izdvojeni-oglasi/`: **5 KM**, but **besplatan** za sve plaćene pakete (Start, Pro, Premium).
   - Updated `components/FirmAdsTab.tsx` with three destination options, free-listing logic, dynamic pricing, and improved status badges.
   - Added `components/HomepageBannerAd.tsx` to display one active 1200×400 homepage banner below the category icon row.
-- Created dedicated `/kupi-oglas/` page for firm/majstor ad purchases with the redesigned step-by-step `FirmAdsTab` wizard.
+- Created dedicated `/kupi-oglas/` page for firm/majstor ad purchases with the redesigned step-by-step `FirmAdsTab` wizard, wrapped in `Suspense` to safely use `useSearchParams`.
 - Updated `PromoBanner`, `AdCreateCTA`, and `AdPricingCTA` CTAs so firm/majstor users go directly to `/kupi-oglas/` (with optional `?destination=` parameter) instead of the general dashboard; guests still go to `/pretplata-auth/`.
+- Adjusted recommended ad dimensions: homepage mini 640 × 400 px, listing ad 900 × 300 px, homepage banner stays 1200 × 400 px.
+- Fixed date formatting in `FirmAdsTab` ad list to use deterministic `formatDate` helper instead of `toLocaleDateString('bs-BA')`.
   - Added `supabase/migration-promoted-ads-listing-free.sql` to allow `homepage_banner` and ensure only `homepage` mini ads consume included credits.
 - Implemented the new promoted-ads pricing model:
   - Added `destination` column to `promoted_ads` via `supabase/migration-promoted-ads-destination.sql` (`homepage` vs `listing`).

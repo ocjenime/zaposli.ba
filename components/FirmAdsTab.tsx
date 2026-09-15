@@ -22,9 +22,11 @@ import {
   ChevronRight,
   Eye,
   Wallet,
+  ImageIcon,
 } from 'lucide-react';
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import { formatDate } from '@/lib/date';
 
 const HOMEPAGE_MINI_PRICE = 19;
 const HOMEPAGE_BANNER_PRICE = 49;
@@ -74,7 +76,7 @@ const destinationMeta: Record<
     price: HOMEPAGE_MINI_PRICE,
     aspect: '16:10',
     aspectClass: 'aspect-[16/10]',
-    dimensions: '960 × 600 px',
+    dimensions: '640 × 400 px',
     description: 'Istaknuto mjesto u homepage traci sponzorisanih oglasa.',
   },
   homepage_banner: {
@@ -94,7 +96,7 @@ const destinationMeta: Record<
     price: LISTING_AD_PRICE,
     aspect: '3:1',
     aspectClass: 'aspect-[3/1]',
-    dimensions: '1200 × 400 px',
+    dimensions: '900 × 300 px',
     description: 'Prikazuje se u galeriji na /izdvojeni-oglasi/.',
   },
 };
@@ -704,7 +706,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                       {ad.status === 'pending'
                         ? 'Čeka odobrenje admina'
                         : ad.ends_at
-                        ? `Vrijedi do ${new Date(ad.ends_at).toLocaleDateString('bs-BA')}`
+                        ? `Vrijedi do ${formatDate(ad.ends_at)}`
                         : 'Aktivan'}
                     </p>
                   </div>
