@@ -16,7 +16,11 @@ function isStatic(pathname: string) {
 function hasAuthCookie(request: NextRequest) {
   return request.cookies.getAll().some((cookie) => {
     const name = cookie.name.toLowerCase();
-    return name.includes('auth-token') || name.includes('refresh-token');
+    return (
+      name.includes('auth-token') ||
+      name.includes('access-token') ||
+      name.includes('refresh-token')
+    );
   });
 }
 
