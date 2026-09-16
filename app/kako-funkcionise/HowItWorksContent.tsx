@@ -219,7 +219,7 @@ export default function HowItWorksContent() {
                         <Users className="h-7 w-7" />
                       </div>
                       <h3 className="text-sm md:text-xl lg:text-2xl font-bold text-white mb-1 md:mb-2">Tražim majstora</h3>
-                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base line-clamp-2 md:line-clamp-none">
+                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base">
                         Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u vašem gradu.
                       </p>
                       <span
@@ -261,7 +261,7 @@ export default function HowItWorksContent() {
                         <Briefcase className="h-7 w-7" />
                       </div>
                       <h3 className="text-sm md:text-xl lg:text-2xl font-bold text-white mb-1 md:mb-2">Nudim usluge</h3>
-                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base line-clamp-2 md:line-clamp-none">
+                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base">
                         Registrujte se kao firma ili majstor, pronađite nove poslove i širite klijentelu.
                       </p>
                       <span

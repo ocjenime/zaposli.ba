@@ -63,7 +63,7 @@ export default function RoleCTACards() {
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm md:text-xl font-bold text-white">{card.title}</h3>
                 <p className="hidden md:block text-sm text-white/60">{card.description}</p>
-                <p className="md:hidden text-[10px] leading-snug text-white/60 line-clamp-2">{card.description}</p>
+                <p className="md:hidden text-[10px] leading-snug text-white/60">{card.description}</p>
               </div>
 
               {/* Desktop arrow */}
