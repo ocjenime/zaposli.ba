@@ -243,6 +243,16 @@ function FirmDashboardContent() {
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    if (!expandedJob) return;
+    const el = document.getElementById(`job-row-${expandedJob}`);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [expandedJob]);
+
   const fetchDirectJobs = useCallback(async (id: string) => {
     setLoadingDirect(true);
     const { data, error: err } = await supabase
@@ -812,6 +822,7 @@ function FirmDashboardContent() {
                         return (
                           <div
                             key={job.id}
+                            id={`job-row-${job.id}`}
                             className={`group bg-white dark:bg-ink-900 rounded-2xl border p-5 shadow-sm transition-all duration-200 ${
                               alreadyBid || !canBid
                                 ? 'border-gray-100 dark:border-ink-800 opacity-80'

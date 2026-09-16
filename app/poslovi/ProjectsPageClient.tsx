@@ -54,6 +54,7 @@ function ProjectsPageContent() {
   const [showFilters, setShowFilters] = useState(false);
   const [firmCategories, setFirmCategories] = useState<string[]>([]);
   const [categoryWarningJob, setCategoryWarningJob] = useState<Job | null>(null);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const { user, role } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -103,6 +104,11 @@ function ProjectsPageContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    const expandId = searchParams.get('expandId');
+    if (expandId) setExpandedId(expandId);
+  }, [searchParams]);
+
+  useEffect(() => {
     if (user && isFirmRole(role)) loadFirmCategories();
   }, [user, role, loadFirmCategories]);
 
@@ -113,6 +119,17 @@ function ProjectsPageContent() {
 
   function isCategoryAllowed(job: Job) {
     return firmCategories.length > 0 && firmCategories.includes(job.category_slug);
+  }
+
+  function handleToggleExpand(jobId: string, next: boolean) {
+    setExpandedId(next ? jobId : null);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next) {
+      params.set('expandId', jobId);
+    } else {
+      params.delete('expandId');
+    }
+    router.replace(`/poslovi/?${params.toString()}`, { scroll: false });
   }
 
   function handleBidClick(job: Job) {
@@ -444,6 +461,8 @@ function ProjectsPageContent() {
                     key={job.id}
                     job={job as unknown as import('@/components/ProjectListCard').ProjectListCardJob}
                     onSendOffer={() => handleBidClick(job)}
+                    expanded={expandedId === job.id}
+                    onToggleExpand={handleToggleExpand}
                   />
                 ))}
               </div>

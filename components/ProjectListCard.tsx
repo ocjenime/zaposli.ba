@@ -1,13 +1,22 @@
 'use client';
 
-import Link from 'next/link';
 import NextImage from 'next/image';
-import { MapPin, Clock, Heart, ArrowRight, Send, Tag } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import {
+  MapPin,
+  Clock,
+  Heart,
+  ArrowRight,
+  Send,
+  Tag,
+  Loader2,
+  Lock,
+} from 'lucide-react';
 import { categories } from '@/lib/data';
 import { plural } from '@/lib/plural';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface JobImage {
   image_url: string;
@@ -41,7 +50,7 @@ function relativeTime(iso: string) {
   return `Prije ${days} dana`;
 }
 
-function formatBudget(job: ProjectListCardJob) {
+export function formatBudget(job: ProjectListCardJob) {
   if (job.budget_mode === 'open') return 'Majstori predlažu';
   if (job.budget_min && job.budget_max)
     return `${job.budget_min.toLocaleString('bs')} - ${job.budget_max.toLocaleString('bs')} KM`;
@@ -54,6 +63,8 @@ interface ProjectListCardProps {
   job: ProjectListCardJob;
   detailHref?: string;
   onSendOffer?: (job: ProjectListCardJob) => void;
+  expanded?: boolean;
+  onToggleExpand?: (jobId: string, nextExpanded: boolean) => void;
   className?: string;
 }
 
@@ -61,141 +72,301 @@ export default function ProjectListCard({
   job,
   detailHref,
   onSendOffer,
+  expanded,
+  onToggleExpand,
   className = '',
 }: ProjectListCardProps) {
-  const { user, role } = useAuth();
+  const router = useRouter();
+  const { user, role, loading: authLoading } = useAuth();
   const category = categories.find((c) => c.slug === job.category_slug);
   const imageUrl = job.job_images?.[0]?.image_url;
   const [liked, setLiked] = useState(false);
+  const [internalExpanded, setInternalExpanded] = useState(false);
 
-  const href = detailHref || `/poslovi/?expandId=${job.id}`;
+  const isExpanded = expanded !== undefined ? expanded : internalExpanded;
 
-  const ctaHref = useMemo(() => {
-    if (!user) return '/registracija/';
-    if (!isFirmRole(role)) return '/dashboard/';
-    return `/dashboard/firma/?expandJobId=${job.id}`;
-  }, [user, role, job.id]);
+  const isFirm = useMemo(() => isFirmRole(role), [role]);
 
-  const ctaLabel = useMemo(() => {
-    if (!user) return 'Ponuda';
-    if (!isFirmRole(role)) return 'Dashboard';
-    return 'Pošalji';
-  }, [user, role]);
-
-  function handleOfferClick(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onSendOffer) {
-      onSendOffer(job);
-    } else if (typeof window !== 'undefined') {
-      window.location.href = ctaHref;
+  function toggleExpand() {
+    const next = !isExpanded;
+    if (onToggleExpand) {
+      onToggleExpand(job.id, next);
+    } else {
+      setInternalExpanded(next);
     }
   }
 
+  function handleRowKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleExpand();
+    }
+  }
+
+  function handleBid(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (authLoading) return;
+
+    if (!user) {
+      router.push(`/registracija/?redirectTo=${encodeURIComponent('/poslovi/')}`);
+      return;
+    }
+
+    if (!isFirm) return;
+
+    if (onSendOffer) {
+      onSendOffer(job);
+    } else {
+      router.push(`/dashboard/firma/?expandJobId=${job.id}`);
+    }
+  }
+
+  const ctaLabel = useMemo(() => {
+    if (authLoading) return 'Učitavanje';
+    if (!user) return 'Prijavi se';
+    if (!isFirm) return 'Samo firme';
+    return 'Pošalji ponudu';
+  }, [authLoading, user, isFirm]);
+
+  const ctaDisabled = authLoading || (!!user && !isFirm);
+
   return (
-    <Link
-      href={href}
-      className={`group flex flex-row bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 ${className}`}
+    <div
+      className={`group flex flex-col bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 ${className}`}
     >
-      {/* Image - fixed square, compact */}
-      <div className="relative w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:aspect-square shrink-0 bg-gray-100 dark:bg-ink-950 overflow-hidden">
-        {imageUrl ? (
-          <NextImage
-            src={imageUrl}
-            alt={job.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 640px) 96px, (max-width: 768px) 144px, 176px"
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-ink-950 dark:to-ink-900">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-ink-800 shadow-sm flex items-center justify-center">
-              {category?.icon ? (
-                <category.icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
-              ) : (
-                <Tag className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
-              )}
+      {/* Main row - clickable to expand */}
+      <div
+        onClick={toggleExpand}
+        onKeyDown={handleRowKeyDown}
+        tabIndex={0}
+        className="flex flex-row cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/50"
+      >
+        {/* Image - fixed square, compact */}
+        <div className="relative w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:aspect-square shrink-0 bg-gray-100 dark:bg-ink-950 overflow-hidden">
+          {imageUrl ? (
+            <NextImage
+              src={imageUrl}
+              alt={job.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 640px) 96px, (max-width: 768px) 144px, 176px"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-ink-950 dark:to-ink-900">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-ink-800 shadow-sm flex items-center justify-center">
+                {category?.icon ? (
+                  <category.icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
+                ) : (
+                  <Tag className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Center content */}
+        <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
+          <div>
+            <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-[#ffffff] leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
+              {job.title}
+            </h3>
+
+            {job.description && (
+              <p className="hidden sm:block text-xs md:text-sm text-gray-600 dark:text-[#ffffff]/70 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
+                {job.description}
+              </p>
+            )}
+
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold bg-orange-50 dark:bg-orange-500/10 text-brand-orange border border-orange-100 dark:border-orange-500/20">
+              {category?.icon && <category.icon className="w-3 h-3" />}
+              {category?.name || job.category_slug}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 text-[10px] sm:text-xs text-gray-600 dark:text-[#ffffff]/60">
+            <span className="inline-flex items-center gap-1">
+              <MapPin className="w-3 h-3" />
+              {job.city}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              {relativeTime(job.created_at)}
+            </span>
+          </div>
+        </div>
+
+        {/* Right meta column */}
+        <div className="w-[6.5rem] sm:w-36 md:w-44 shrink-0 flex flex-col justify-between items-stretch p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
+          <div className="flex items-center justify-end gap-1.5">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setLiked((v) => !v);
+              }}
+              aria-label={liked ? 'Ukloni iz spašenih' : 'Sačuvaj oglas'}
+              className={`shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-colors ${
+                liked
+                  ? 'bg-red-50 border-red-100 text-red-500 dark:bg-red-500/15 dark:border-red-500/30'
+                  : 'bg-white border-gray-100 text-gray-300 hover:text-red-500 dark:bg-ink-800 dark:border-ink-700 dark:hover:text-red-400'
+              }`}
+            >
+              <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${liked ? 'fill-current' : ''}`} />
+            </button>
+            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-500/20">
+              Otvoreno
+            </span>
+          </div>
+
+          <div className="text-right mt-1 sm:mt-2">
+            <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-tight">
+              {formatBudget(job)}
+            </div>
+            <div className="text-[9px] sm:text-[11px] text-gray-600 dark:text-[#ffffff]/60">
+              {job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
             </div>
           </div>
-        )}
-      </div>
 
-      {/* Center content */}
-      <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
-        <div>
-          <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-[#ffffff] leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
-            {job.title}
-          </h3>
-
-          {job.description && (
-            <p className="hidden sm:block text-xs md:text-sm text-gray-600 dark:text-[#ffffff]/70 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
-              {job.description}
-            </p>
-          )}
-
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold bg-orange-50 dark:bg-orange-500/10 text-brand-orange border border-orange-100 dark:border-orange-500/20">
-            {category?.icon && <category.icon className="w-3 h-3" />}
-            {category?.name || job.category_slug}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 text-[10px] sm:text-xs text-gray-600 dark:text-[#ffffff]/60">
-          <span className="inline-flex items-center gap-1">
-            <MapPin className="w-3 h-3" />
-            {job.city}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            {relativeTime(job.created_at)}
-          </span>
-        </div>
-      </div>
-
-      {/* Right meta column */}
-      <div className="w-[6.5rem] sm:w-36 md:w-44 shrink-0 flex flex-col justify-between items-stretch p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
-        <div className="flex items-center justify-end gap-1.5">
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setLiked((v) => !v);
-            }}
-            aria-label={liked ? 'Ukloni iz spašenih' : 'Sačuvaj oglas'}
-            className={`shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full border flex items-center justify-center transition-colors ${
-              liked
-                ? 'bg-red-50 border-red-100 text-red-500 dark:bg-red-500/15 dark:border-red-500/30'
-                : 'bg-white border-gray-100 text-gray-300 hover:text-red-500 dark:bg-ink-800 dark:border-ink-700 dark:hover:text-red-400'
+            onClick={handleBid}
+            disabled={ctaDisabled}
+            className={`w-full mt-1.5 inline-flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg font-semibold text-[10px] sm:text-xs transition-colors active:scale-95 ${
+              ctaDisabled
+                ? 'bg-gray-100 dark:bg-ink-800 text-gray-400 dark:text-[#ffffff]/40 cursor-not-allowed'
+                : 'bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900'
             }`}
           >
-            <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${liked ? 'fill-current' : ''}`} />
+            {authLoading ? (
+              <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin" />
+            ) : !user ? (
+              <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            ) : !isFirm ? (
+              <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            ) : (
+              <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            )}
+            <span className="hidden sm:inline">
+              {ctaDisabled && !authLoading && user && !isFirm
+                ? 'Samo firme/majstori'
+                : ctaLabel}
+            </span>
+            <span className="sm:hidden">{ctaLabel}</span>
           </button>
-          <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-500/20">
-            Otvoreno
-          </span>
         </div>
-
-        <div className="text-right mt-1 sm:mt-2">
-          <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-tight">
-            {formatBudget(job)}
-          </div>
-          <div className="text-[9px] sm:text-[11px] text-gray-600 dark:text-[#ffffff]/60">
-            {job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
-          </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={handleOfferClick}
-          className="w-full mt-1.5 inline-flex items-center justify-center gap-1 bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg font-semibold text-[10px] sm:text-xs transition-colors active:scale-95"
-        >
-          <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          <span className="hidden sm:inline">Pošalji ponudu</span>
-          <span className="sm:hidden">{ctaLabel}</span>
-          <ArrowRight className="w-3 h-3 hidden sm:block" />
-        </button>
       </div>
-    </Link>
+
+      {/* Expandable detail panel */}
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+        }`}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <div className="border-t border-gray-100 dark:border-ink-800 bg-gray-50/70 dark:bg-ink-950/60">
+            <div className="p-3 sm:p-5">
+              {job.job_images && job.job_images.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mb-4">
+                  {job.job_images.map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 dark:border-ink-800 bg-gray-100 dark:bg-ink-900"
+                    >
+                      <NextImage
+                        src={img.image_url}
+                        alt={`Slika ${idx + 1}`}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 25vw"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="flex flex-col lg:flex-row gap-4 lg:gap-6">
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-brand-orange mb-1.5">
+                    Detalji posla
+                  </h4>
+                  <p className="text-sm sm:text-base text-gray-700 dark:text-[#ffffff]/80 leading-relaxed whitespace-pre-line">
+                    {job.description || 'Nema dodatnog opisa.'}
+                  </p>
+                </div>
+
+                <div className="w-full lg:w-72 shrink-0 space-y-3">
+                  <div className="bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 p-3.5 space-y-2.5 shadow-sm">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-[#ffffff]/60">Budžet</span>
+                      <span className="font-semibold text-gray-900 dark:text-[#ffffff]">
+                        {formatBudget(job)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-[#ffffff]/60">Lokacija</span>
+                      <span className="font-semibold text-gray-900 dark:text-[#ffffff]">
+                        {job.city}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-[#ffffff]/60">Objavljeno</span>
+                      <span className="font-semibold text-gray-900 dark:text-[#ffffff]">
+                        {relativeTime(job.created_at)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-[#ffffff]/60">Ponuda</span>
+                      <span className="font-semibold text-gray-900 dark:text-[#ffffff]">
+                        {job.bids_count}{' '}
+                        {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleBid}
+                    disabled={ctaDisabled}
+                    className={`w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-semibold text-sm transition-colors active:scale-95 ${
+                      ctaDisabled
+                        ? 'bg-gray-100 dark:bg-ink-800 text-gray-400 dark:text-[#ffffff]/40 cursor-not-allowed'
+                        : 'bg-brand-orange hover:bg-brand-orange-dark text-white shadow-md shadow-brand-orange/20'
+                    }`}
+                  >
+                    {authLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : !user ? (
+                      <ArrowRight className="w-4 h-4" />
+                    ) : !isFirm ? (
+                      <Lock className="w-4 h-4" />
+                    ) : (
+                      <Send className="w-4 h-4" />
+                    )}
+                    {ctaDisabled && !authLoading && user && !isFirm
+                      ? 'Samo firme i majstori mogu slati ponude'
+                      : ctaLabel}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleExpand();
+                    }}
+                    className="w-full text-center text-xs font-medium text-gray-500 dark:text-[#ffffff]/60 hover:text-gray-900 dark:hover:text-[#ffffff] transition-colors py-1"
+                  >
+                    Zatvori detalje
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
