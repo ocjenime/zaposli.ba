@@ -322,8 +322,12 @@
   - Desktop keeps the previous overview + tab layout; mobile defaults to the new home view and uses bottom nav / icon menu to reach existing tabs.
 - Unified mobile header across all pages (`components/Header.tsx`):
   - Mobile layout now matches the screenshot: hamburger menu left, centered logo, notification bell + user avatar with name/role dropdown right.
-  - Kept the existing light theme for mobile (white background, dark text) as requested.
+  - Public pages keep the light mobile header; `/dashboard/firma/` uses a new `dark` prop so the mobile header is dark with a white logo and light dropdown.
   - Desktop header remains unchanged; theme toggle moved into the mobile menu settings section.
+- Fixed `/dashboard/firma/` mobile layout to match `dash.png`:
+  - Hidden the old desktop `FirmDashboardHero` on mobile so only the new home overview renders.
+  - Set the mobile page background to white and kept the dark bottom navigation.
+  - Added `components/dashboard/FirmMoreMenu.tsx`: a bottom sheet that opens from the "Više" bottom-nav item with links to Dashboard, Profil firme, Poruke, Obavještenja, Tema, Pretplata, and Odjavi se.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
