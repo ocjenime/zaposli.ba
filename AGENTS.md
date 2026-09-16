@@ -24,11 +24,12 @@
 - Removed the emergency banner from the homepage category card and added it to the `/kategorije/` page instead, right below the hero.
 - Added a new `/oglasi/` page that reuses the promoted-ads listing, and added an "Oglasi" link to both the desktop and mobile header menus between "Poslovi" and "Kako funkcioniše".
 - Fixed `/kako-funkcionise/` layout on mobile: added `w-full overflow-x-hidden` to the shared dark background wrapper and reduced the hero min-height so the page fills the screen like other pages and the menu bar stays full-width.
+- Made `/kako-funkcionise/` role-selector cards ("Tražim majstora" / "Nudim usluge") display side-by-side horizontally on mobile, matching the homepage `RoleCTACards` compact style.
 - Fixed dark-mode text visibility on the homepage: category icon labels, "Preporučene firme" section/subtitle/card meta, and "Sponzorirani oglasi" section/subtitle/title/card meta now use explicit `#ffffff` colors so they stay readable in dark mode.
 - Made the homepage PromoBanner keep the same colors in dark mode by removing the `dark:bg-black/60` override on the benefits panel and switching image overlays/shadow/border from semantic `black`/`white` to explicit `#000000`/`#ffffff` so the dark overlay stays dark in dark mode.
 - Fixed the homepage hero secondary "Pronađi majstora" CTA: it now uses explicit `#ffffff` translucent background/border/text so it stays visible in dark mode, and added an arrow icon in both light and dark modes.
 - Tightened homepage hero vertical spacing: reduced top/bottom padding and margins between eyebrow, headline, subheadline, and CTAs so the buttons sit closer to the category icon row below.
-- Reduced mobile homepage hero size slightly while keeping the premium look: lower mobile min-height, smaller mobile headline, and slightly smaller CTA padding.
+- Reduced mobile homepage hero size slightly while keeping the premium look: lower mobile min-height, slightly smaller CTA padding, and then reverted mobile headline back to `text-2xl` with `text-sm` subheadline so text remains readable.
 - Fixed the mobile bottom sticky "Pronađi poslove" button in dark mode: it now uses a darker gray (`#374151`) instead of the semantic near-white so the white text is clearly visible.
 - Fixed dark-mode text visibility for "Najnoviji poslovi" section and `ProjectListCard` job cards: section title, "Pogledaj sve" link, card titles, descriptions, location/time, budget (including "Majstori predlažu"), and bid counts now use explicit `#ffffff` shades so they remain readable in dark mode.
 - Enabled multiple photos per review:
