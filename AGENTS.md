@@ -425,6 +425,11 @@
   - `components/RecentProjects.tsx` (homepage bottom "Nedavno objavljeni poslovi") replaced its old two-column cards with the same vertical premium list.
   - `components/FeaturedJobsSection.tsx` (category/city "Istaknuti poslovi") now uses the premium card list and fetches job images.
   - `app/poslovi/ProjectsPageClient.tsx` replaced expandable list rows with the premium cards; removed inline expansion/lightbox and uses `onSendOffer` for category warnings.
+- Made `ProjectListCard` fully interactive and secure:
+  - Clicking anywhere on a job card now expands a premium inline detail panel with the full description, image gallery, budget/location/time/offer metadata, and a prominent "Pošalji ponudu" CTA.
+  - Only registered **firm/majstor** users can send an offer; guests are redirected to `/registracija/` with a `redirectTo`, and logged-in clients see a disabled "Samo firme/majstori" state.
+  - `/poslovi/` reads the `expandId` query parameter, opens the matching job, and syncs the URL when the user expands/collapses a card.
+  - `/dashboard/firma/` now auto-scrolls to a job opened via `expandJobId` so the bid form is immediately visible.
 - Restyled homepage premium sections to match the provided mockup:
   - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop. When no real promoted ads exist, it now shows 5 Higgsfield-style demo placeholder cards (ranked 1–5) to advertise the ad product to firms/majstors, linking to `/za-firme/#reklame`.
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel on desktop; on mobile it collapses into a compact horizontal strip (icon + headline + CTA) so it no longer takes excessive scroll space.
