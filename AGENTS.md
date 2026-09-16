@@ -329,6 +329,14 @@
   - Set the mobile page background to white and kept the dark bottom navigation.
   - Added `components/dashboard/FirmMoreMenu.tsx`: a bottom sheet that opens from the "Više" bottom-nav item with links to Dashboard, Profil firme, Poruke, Obavještenja, Tema, Pretplata, and Odjavi se.
   - Relaxed the profile-completion blocker so the mobile dashboard overview always renders; an inline warning now appears at the top if the firm is missing a city or categories, with a direct link to complete the profile.
+- Polished the mobile dashboard to match the homepage light theme and made all interactive elements functional:
+  - Removed the dark mobile header override; dashboard now uses the same light `Header` as the rest of the site.
+  - Lightened `FirmBottomNav` to white background with gray/active-orange icons.
+  - Lightened `FirmIconMenu` to white cards with orange active state.
+  - Replaced the dark welcome hero with a bright version using the homepage hero image (`herozaposli.png`) and light overlays, dark text.
+  - Lightened `FirmPlanCard` to a white card with orange accents.
+  - Made `FirmQuickStats` cards clickable: ads → Oglasi, bids → Ponude, views → Statistika, rating → Profil firme.
+  - Removed the non-functional 3-dot menu from `FirmMyAdsList` so users only see the working ad link and status badge.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
