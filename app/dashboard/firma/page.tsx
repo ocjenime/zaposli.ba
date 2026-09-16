@@ -446,7 +446,7 @@ function FirmDashboardContent() {
     );
 
     await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id), loadStats(data.id, false)]);
-  }, [user, fetchOpenJobs, fetchMyBids, fetchDirectJobs, loadPlan]);
+  }, [user, fetchOpenJobs, fetchMyBids, fetchDirectJobs, loadPlan, loadStats]);
 
   useEffect(() => {
     if (user && isFirmRole(role)) fetchFirm();
