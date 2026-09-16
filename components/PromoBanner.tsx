@@ -19,7 +19,7 @@ export default function PromoBanner() {
 
   return (
     <section className="relative py-5 md:py-6 bg-cloud px-4 sm:px-6 lg:px-8">
-      <div className="relative mx-auto max-w-7xl rounded-3xl overflow-hidden shadow-2xl shadow-black/10">
+      <div className="relative mx-auto max-w-7xl rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/10">
         {/* Background image */}
         <div className="absolute inset-0">
           <NextImage
@@ -29,8 +29,8 @@ export default function PromoBanner() {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/85 via-[#000000]/60 to-[#000000]/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/60 via-transparent to-[#000000]/30" />
         </div>
 
         <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center p-6 md:p-10 lg:p-12">
@@ -54,7 +54,7 @@ export default function PromoBanner() {
           </div>
 
           <div className="flex flex-col items-start lg:items-end">
-            <div className="bg-ink-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 md:p-6 w-full max-w-sm">
+            <div className="bg-ink-900/80 backdrop-blur-xl border border-[#ffffff]/10 rounded-2xl p-5 md:p-6 w-full max-w-sm">
               <div className="mb-5">
                 <Logo variant="light" className="h-8" />
               </div>
