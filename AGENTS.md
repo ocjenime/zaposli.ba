@@ -333,9 +333,10 @@
   - Removed the dark mobile header override; dashboard now uses the same light `Header` as the rest of the site.
   - Lightened `FirmBottomNav` to white background with gray/active-orange icons.
   - Lightened `FirmIconMenu` to white cards with orange active state.
-  - Replaced the dark welcome hero with a bright version using the homepage hero image (`herozaposli.png`) and light overlays, dark text.
+  - Reverted the dashboard welcome hero back to the original `majstor-hero.webp` image with a lighter overlay so the photo is brighter but still readable.
   - Lightened `FirmPlanCard` to a white card with orange accents.
   - Made `FirmQuickStats` cards clickable: ads → Oglasi, bids → Ponude, views → Statistika, rating → Profil firme.
+  - Fixed `FirmQuickStats` dark-mode text to use explicit `#ffffff` so numbers and labels remain readable.
   - Removed the non-functional 3-dot menu from `FirmMyAdsList` so users only see the working ad link and status badge.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
