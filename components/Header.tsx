@@ -105,14 +105,14 @@ export default function Header() {
         }`}
       >
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-14 md:h-16 items-center lg:justify-between">
+          <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-12 md:h-16 items-center lg:justify-between">
             <div className="lg:hidden col-start-1 justify-self-start">
               <ThemeToggle simple />
             </div>
 
             <Link
               href="/"
-              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-110"
+              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-100 md:scale-110"
             >
               <Logo variant="dark" />
             </Link>
@@ -195,7 +195,7 @@ export default function Header() {
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
               >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
@@ -207,7 +207,7 @@ export default function Header() {
         <div
           ref={mobileMenuRef}
           id="mobile-menu"
-          className="lg:hidden fixed inset-x-0 top-14 md:top-16 bottom-0 z-[60] bg-white dark:bg-ink overflow-y-auto shadow-2xl"
+          className="lg:hidden fixed inset-x-0 top-12 md:top-16 bottom-0 z-[60] bg-white dark:bg-ink overflow-y-auto shadow-2xl"
         >
           <div className="px-4 py-6 space-y-6">
             {/* Primary CTA */}

@@ -61,7 +61,7 @@ export default function CategoriesPage() {
       <Header />
       <main className="flex-grow">
         {/* Emergency interventions banner at the top, like the old homepage bar */}
-        <div className="mt-14 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20">
+        <div className="mt-12 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between gap-3">
             <Link
               href="/kategorije/hitne-intervencije/"
