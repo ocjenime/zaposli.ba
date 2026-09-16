@@ -305,6 +305,10 @@
 - Added `components/CookieConsent.tsx` and wired it into `app/layout.tsx`: a premium Higgsfield cookie-consent banner that loads Google Analytics only after the user grants consent.
 - Added `components/ScrollToTop.tsx` and wired it into `app/layout.tsx` so the page always starts at the top on load, preventing the browser from restoring a previous scroll position.
 - Redesigned the firm/majstor dashboard (`/dashboard/firma/`) with a premium Higgsfield hero section (`components/FirmDashboardHero.tsx`) that welcomes the user by name, shows the city, and displays four glassmorphism KPI cards: remaining bids, acceptance rate, average rating, and total profile views. Also added a compact plan-status strip with package name, featured badge, active-until date, and bid-reset countdown.
+- Extended the firm/majstor dashboard with an overview section below the hero:
+  - `components/FirmActivityFeed.tsx`: a timeline of the latest notifications (new jobs, accepted bids, messages, reviews, etc.) pulled from the existing notifications table.
+  - `components/FirmRecommendedJobs.tsx`: up to 5 open jobs matching the firm's categories and city, with a one-click "Pošalji ponudu" link.
+  - `components/FirmJobPipeline.tsx`: a visual pipeline showing counts of offered, accepted, in-progress, and completed jobs.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
