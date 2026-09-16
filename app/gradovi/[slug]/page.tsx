@@ -45,7 +45,7 @@ function score(f: CityFirm): number {
   return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.plan_priority || 0);
 }
 
-async function getVerifiedCityFirms(cityName: string): Promise<CityFirm[]> {
+async function getCityFirms(cityName: string): Promise<CityFirm[]> {
   try {
     const target = normalizeCityName(cityName);
     const supabase = createServerSupabase();
@@ -53,7 +53,6 @@ async function getVerifiedCityFirms(cityName: string): Promise<CityFirm[]> {
       .from('firms')
       .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority')
       .not('city', 'is', null)
-      .eq('verified', true)
       .not('slug', 'like', 'test-%');
     if (firmsError) throw firmsError;
 
@@ -94,7 +93,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const city = cities.find((c) => c.slug === slug);
   if (!city) notFound();
 
-  const cityFirms = await getVerifiedCityFirms(city.name);
+  const cityFirms = await getCityFirms(city.name);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -132,7 +131,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
               <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-brand-orange mb-2">
-                    Verifikovane firme u gradu
+                    Firme i majstori u gradu
                   </p>
                   <h2 className="text-xl md:text-2xl font-bold text-gray-900">
                     Majstori i firme {city.loc}
