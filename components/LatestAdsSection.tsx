@@ -49,6 +49,9 @@ export default function LatestAdsSection() {
               <Clock className="w-5 h-5 md:w-6 md:h-6" />
               Najnoviji poslovi
             </span>
+            <p className="text-sm text-gray-600 dark:text-[#ffffff]/70 mt-1">
+              Poslovi koje klijenti trenutno objavljuju.
+            </p>
           </div>
           <Link
             href="/poslovi/"
