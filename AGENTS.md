@@ -304,6 +304,7 @@
 - Replaced the `/kontakt/` PageHero background with `public/images/kontakt-hero.png` (zaposlifirma.png) and kept the dark Higgsfield overlay.
 - Added `components/CookieConsent.tsx` and wired it into `app/layout.tsx`: a premium Higgsfield cookie-consent banner that loads Google Analytics only after the user grants consent.
 - Added `components/ScrollToTop.tsx` and wired it into `app/layout.tsx` so the page always starts at the top on load, preventing the browser from restoring a previous scroll position.
+- Redesigned the firm/majstor dashboard (`/dashboard/firma/`) with a premium Higgsfield hero section (`components/FirmDashboardHero.tsx`) that welcomes the user by name, shows the city, and displays four glassmorphism KPI cards: remaining bids, acceptance rate, average rating, and total profile views. Also added a compact plan-status strip with package name, featured badge, active-until date, and bid-reset countdown.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
