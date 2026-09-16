@@ -173,7 +173,7 @@
   - Verified `npm run build` succeeds and generates 2403 static pages.
 - Added `powered by Luxari` credit in the footer bottom bar, next to the copyright.
 - Removed phone and location from footer to avoid implying a single regional presence; kept only email.
-- Redesigned homepage hero (`components/HeroSection.tsx`) into a full-bleed cinematic layout using the new `public/images/herozaposli.png` image with gradient overlays for readability, glassmorphism search form, trust badges, and quick stats.
+- Redesigned homepage hero (`components/HeroSection.tsx`) into a full-bleed cinematic layout using the new `public/images/herozaposli.png` image with gradient overlays for readability, glassmorphism search form, trust badges, and quick stats. Later lightened the hero overlays so the background image is brighter, similar to the homepage PromoBanner.
 - Upgraded `components/ui/PageHero.tsx` to a premium full-bleed hero with gradient/image background, overlay, icon, eyebrow, and children support. The homepage (`/`) uses the cinematic hero image (`/images/herozaposli.png`); all other pages keep their own premium dark-gradient heroes.
 - Added `lib/hero.ts` with group-based gradient presets for all 15 category groups.
 - Redesigned dynamic page heroes:
