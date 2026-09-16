@@ -328,6 +328,7 @@
   - Hidden the old desktop `FirmDashboardHero` on mobile so only the new home overview renders.
   - Set the mobile page background to white and kept the dark bottom navigation.
   - Added `components/dashboard/FirmMoreMenu.tsx`: a bottom sheet that opens from the "Više" bottom-nav item with links to Dashboard, Profil firme, Poruke, Obavještenja, Tema, Pretplata, and Odjavi se.
+  - Relaxed the profile-completion blocker so the mobile dashboard overview always renders; an inline warning now appears at the top if the firm is missing a city or categories, with a direct link to complete the profile.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
