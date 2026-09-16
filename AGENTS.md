@@ -28,6 +28,7 @@
 - Made the homepage PromoBanner keep the same colors in dark mode by removing the `dark:bg-black/60` override on the benefits panel and switching image overlays/shadow/border from semantic `black`/`white` to explicit `#000000`/`#ffffff` so the dark overlay stays dark in dark mode.
 - Fixed the homepage hero secondary "Pronađi majstora" CTA: it now uses explicit `#ffffff` translucent background/border/text so it stays visible in dark mode, and added an arrow icon in both light and dark modes.
 - Tightened homepage hero vertical spacing: reduced top/bottom padding and margins between eyebrow, headline, subheadline, and CTAs so the buttons sit closer to the category icon row below.
+- Reduced mobile homepage hero size slightly while keeping the premium look: lower mobile min-height, smaller mobile headline, and slightly smaller CTA padding.
 - Fixed the mobile bottom sticky "Pronađi poslove" button in dark mode: it now uses a darker gray (`#374151`) instead of the semantic near-white so the white text is clearly visible.
 - Fixed dark-mode text visibility for "Najnoviji poslovi" section and `ProjectListCard` job cards: section title, "Pogledaj sve" link, card titles, descriptions, location/time, budget (including "Majstori predlažu"), and bid counts now use explicit `#ffffff` shades so they remain readable in dark mode.
 - Enabled multiple photos per review:
@@ -300,6 +301,7 @@
 - Slimmed down the homepage emergency banner height and font/icon sizes.
 - Replaced the `/kontakt/` PageHero background with `public/images/kontakt-hero.png` (zaposlifirma.png) and kept the dark Higgsfield overlay.
 - Added `components/CookieConsent.tsx` and wired it into `app/layout.tsx`: a premium Higgsfield cookie-consent banner that loads Google Analytics only after the user grants consent.
+- Added `components/ScrollToTop.tsx` and wired it into `app/layout.tsx` so the page always starts at the top on load, preventing the browser from restoring a previous scroll position.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
