@@ -423,8 +423,10 @@
 - Restyled homepage premium sections to match the provided mockup:
   - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop. When no real promoted ads exist, it now shows 5 Higgsfield-style demo placeholder cards (ranked 1–5) to advertise the ad product to firms/majstors, linking to `/za-firme/#reklame`.
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel on desktop; on mobile it collapses into a compact horizontal strip (icon + headline + CTA) so it no longer takes excessive scroll space.
-  - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated.
+  - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated. Later simplified the section header to a single large orange label "Preporučene firme" (removed the secondary black heading).
   - `components/RoleCTACards.tsx`: side-by-side mobile cards with icon+arrow top row and full description text below; removed mobile `line-clamp-2` so descriptions are no longer cut off.
+  - `components/FeaturedAdsSection.tsx`: simplified section header to a single large orange label "Sponzorirani oglasi" (removed the secondary black heading).
+  - `components/LatestAdsSection.tsx`: simplified section header to a single large orange label "Najnoviji poslovi" (removed the secondary black heading).
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
   - Removed `RecentProjects` from `app/page.tsx` because the same latest jobs already appear at the top in `LatestAdsSection`.
   - `npm run lint` and `npm run build` pass (2406 pages).
