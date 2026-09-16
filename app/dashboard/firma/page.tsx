@@ -669,7 +669,7 @@ function FirmDashboardContent() {
           )}
 
           {firmId && !loadingFirm && (!firmCity?.trim() || firmCategories.length === 0) && (
-            <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-6 text-sm text-amber-800 animate-fade-in">
+            <div className="hidden md:block rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-6 text-sm text-amber-800 animate-fade-in">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
                   <AlertTriangle className="w-6 h-6 text-amber-700" />
@@ -690,7 +690,7 @@ function FirmDashboardContent() {
             </div>
           )}
 
-          {firmId && !loadingFirm && firmCity?.trim() && firmCategories.length > 0 && (
+          {firmId && !loadingFirm && (
             <>
               {!canBid && !loadingPlan && (
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-900/10 border border-red-100 dark:border-red-900/30 px-4 py-3 text-sm text-red-800 dark:text-red-200 animate-fade-in">
@@ -710,6 +710,28 @@ function FirmDashboardContent() {
               {/* Mobile home overview */}
               {activeTab === 'home' && (
                 <div className="md:hidden space-y-4">
+                  {(!firmCity?.trim() || firmCategories.length === 0) && (
+                    <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-4 text-sm text-amber-800 animate-fade-in">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center shrink-0">
+                          <AlertTriangle className="w-5 h-5 text-amber-700" />
+                        </div>
+                        <div>
+                          <p className="font-bold mb-0.5">Dovršite profil firme</p>
+                          <p className="text-xs mb-2">
+                            Unesite grad i odaberite bar jednu kategoriju da biste mogli slati ponude.
+                          </p>
+                          <Link
+                            href="/dashboard/firma/profil/"
+                            className="inline-flex items-center gap-1 font-semibold text-amber-700 hover:underline"
+                          >
+                            Idi na Profil firme <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   <FirmDashboardWelcome firmName={firmName} />
                   <FirmPlanCard
                     planName={planName}
