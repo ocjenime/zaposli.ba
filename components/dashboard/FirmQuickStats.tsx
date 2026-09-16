@@ -42,7 +42,7 @@ export default function FirmQuickStats({
           key={item.key}
           type="button"
           onClick={() => onTabChange?.(item.key)}
-          className="group relative bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-4 shadow-sm hover:shadow-md transition-all text-left"
+          className="group relative bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-4 shadow-sm hover:shadow-md transition-all text-left dark:text-[#ffffff]"
         >
           <div className="flex items-start justify-between mb-3">
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
@@ -50,8 +50,8 @@ export default function FirmQuickStats({
             </div>
             <ChevronRight className="w-4 h-4 text-gray-300 dark:text-white/20 group-hover:text-brand-orange transition-colors" />
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">{values[item.key]}</p>
-          <p className="text-xs text-gray-500 dark:text-white/60 mt-0.5 leading-tight">
+          <p className="text-2xl font-bold text-gray-900 dark:text-[#ffffff]">{values[item.key]}</p>
+          <p className="text-xs text-gray-500 dark:text-[#ffffff]/60 mt-0.5 leading-tight">
             {item.label}
             {item.key === 'profile' && reviewCount ? ` (${reviewCount})` : ''}
           </p>
