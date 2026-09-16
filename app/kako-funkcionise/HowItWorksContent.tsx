@@ -190,12 +190,12 @@ export default function HowItWorksContent() {
                 </div>
 
                 {/* Glassmorphic role selector cards */}
-                <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto animate-fade-in">
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-3 md:gap-5 max-w-4xl mx-auto animate-fade-in">
                   {/* Client card */}
                   <button
                     type="button"
                     onClick={() => handleRoleChange('client')}
-                    className={`group relative overflow-hidden rounded-3xl border p-6 sm:p-8 text-left transition-all duration-300 ${
+                    className={`group relative overflow-hidden rounded-2xl md:rounded-3xl border p-3 md:p-6 lg:p-8 text-left transition-all duration-300 ${
                       role === 'client'
                         ? 'border-brand-orange/50 bg-white/10 backdrop-blur-xl shadow-2xl shadow-brand-orange/15'
                         : 'border-white/10 bg-white/5 backdrop-blur-md hover:border-white/25 hover:bg-white/10'
@@ -204,15 +204,26 @@ export default function HowItWorksContent() {
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/50 to-transparent" />
                     <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-orange/10 blur-[60px] opacity-0 transition-opacity group-hover:opacity-100" />
                     <div className="relative flex flex-col h-full">
-                      <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                      {/* Mobile: icon + arrow in one row */}
+                      <div className="flex md:hidden items-center justify-between mb-2">
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                          <Users className="h-5 w-5" />
+                        </div>
+                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/10 ${role === 'client' ? 'text-brand-orange' : 'text-white/60'}`}>
+                          <ArrowRight className="h-3 w-3" />
+                        </span>
+                      </div>
+
+                      {/* Desktop: original icon */}
+                      <div className="hidden md:inline-flex mb-5 h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
                         <Users className="h-7 w-7" />
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Tražim majstora</h3>
-                      <p className="text-white/60 leading-relaxed mb-5 flex-grow text-sm sm:text-base">
+                      <h3 className="text-sm md:text-xl lg:text-2xl font-bold text-white mb-1 md:mb-2">Tražim majstora</h3>
+                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base line-clamp-2 md:line-clamp-none">
                         Objavite posao besplatno i primite ponude od provjerenih firmi i majstora u vašem gradu.
                       </p>
                       <span
-                        className={`inline-flex items-center gap-2 text-sm font-semibold ${
+                        className={`hidden md:inline-flex items-center gap-2 text-sm font-semibold ${
                           role === 'client' ? 'text-brand-orange' : 'text-white/70 group-hover:text-white'
                         }`}
                       >
@@ -226,7 +237,7 @@ export default function HowItWorksContent() {
                   <button
                     type="button"
                     onClick={() => handleRoleChange('firm')}
-                    className={`group relative overflow-hidden rounded-3xl border p-6 sm:p-8 text-left transition-all duration-300 ${
+                    className={`group relative overflow-hidden rounded-2xl md:rounded-3xl border p-3 md:p-6 lg:p-8 text-left transition-all duration-300 ${
                       role === 'firm'
                         ? 'border-brand-amber/50 bg-white/10 backdrop-blur-xl shadow-2xl shadow-brand-amber/15'
                         : 'border-white/10 bg-white/5 backdrop-blur-md hover:border-white/25 hover:bg-white/10'
@@ -235,15 +246,26 @@ export default function HowItWorksContent() {
                     <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-amber/50 to-transparent" />
                     <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-brand-amber/10 blur-[60px] opacity-0 transition-opacity group-hover:opacity-100" />
                     <div className="relative flex flex-col h-full">
-                      <div className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 text-brand-amber ring-1 ring-inset ring-brand-amber/20">
+                      {/* Mobile: icon + arrow in one row */}
+                      <div className="flex md:hidden items-center justify-between mb-2">
+                        <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 text-brand-amber ring-1 ring-inset ring-brand-amber/20">
+                          <Briefcase className="h-5 w-5" />
+                        </div>
+                        <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full bg-white/10 ${role === 'firm' ? 'text-brand-amber' : 'text-white/60'}`}>
+                          <ArrowRight className="h-3 w-3" />
+                        </span>
+                      </div>
+
+                      {/* Desktop: original icon */}
+                      <div className="hidden md:inline-flex mb-5 h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-amber/20 to-brand-amber/5 text-brand-amber ring-1 ring-inset ring-brand-amber/20">
                         <Briefcase className="h-7 w-7" />
                       </div>
-                      <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Nudim usluge</h3>
-                      <p className="text-white/60 leading-relaxed mb-5 flex-grow text-sm sm:text-base">
+                      <h3 className="text-sm md:text-xl lg:text-2xl font-bold text-white mb-1 md:mb-2">Nudim usluge</h3>
+                      <p className="text-white/60 leading-relaxed mb-3 md:mb-5 flex-grow text-[10px] md:text-sm lg:text-base line-clamp-2 md:line-clamp-none">
                         Registrujte se kao firma ili majstor, pronađite nove poslove i širite klijentelu.
                       </p>
                       <span
-                        className={`inline-flex items-center gap-2 text-sm font-semibold ${
+                        className={`hidden md:inline-flex items-center gap-2 text-sm font-semibold ${
                           role === 'firm' ? 'text-brand-amber' : 'text-white/70 group-hover:text-white'
                         }`}
                       >

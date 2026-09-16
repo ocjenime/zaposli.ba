@@ -93,7 +93,7 @@ export default function HeroSection() {
               </div>
 
               {/* Headline */}
-              <h1 className="text-xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
                 Vaš posao.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
@@ -102,7 +102,7 @@ export default function HeroSection() {
               </h1>
 
               {/* Subheadline */}
-              <p className="text-xs sm:text-base text-white/80 leading-snug sm:leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
+              <p className="text-sm sm:text-base text-white/80 leading-snug sm:leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
                 Besplatno objavite oglas i primite ponude od provjerenih majstora i firmi širom BiH.
               </p>
 
@@ -110,14 +110,14 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 mb-3 sm:mb-4 animate-fade-in">
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
+                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
                 >
                   Objavi posao besplatno
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/top-firme/"
-                  className="inline-flex items-center justify-center gap-2 bg-[#ffffff]/15 hover:bg-[#ffffff]/20 backdrop-blur-md border border-[#ffffff]/25 text-[#ffffff] px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-[#ffffff]/15 hover:bg-[#ffffff]/20 backdrop-blur-md border border-[#ffffff]/25 text-[#ffffff] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
                 >
                   Pronađi majstora
                   <ArrowRight className="w-4 h-4" />
