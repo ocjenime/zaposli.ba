@@ -24,7 +24,7 @@
 - Removed the emergency banner from the homepage category card and added it to the `/kategorije/` page instead, right below the hero.
 - Added a new `/oglasi/` page that reuses the promoted-ads listing, and added an "Oglasi" link to both the desktop and mobile header menus between "Poslovi" and "Kako funkcioniše".
 - Fixed `/kako-funkcionise/` layout on mobile: added `w-full overflow-x-hidden` to the shared dark background wrapper and reduced the hero min-height so the page fills the screen like other pages and the menu bar stays full-width.
-- Made `/kako-funkcionise/` role-selector cards ("Tražim majstora" / "Nudim usluge") display side-by-side horizontally on mobile, matching the homepage `RoleCTACards` compact style.
+- Made `/kako-funkcionise/` role-selector cards ("Tražim majstora" / "Nudim usluge") display side-by-side horizontally on mobile, matching the homepage `RoleCTACards` compact style; removed the mobile `line-clamp-2` so the full description text is visible.
 - Fixed dark-mode text visibility on the homepage: category icon labels, "Preporučene firme" section/subtitle/card meta, and "Sponzorirani oglasi" section/subtitle/title/card meta now use explicit `#ffffff` colors so they stay readable in dark mode.
 - Made the homepage PromoBanner keep the same colors in dark mode by removing the `dark:bg-black/60` override on the benefits panel and switching image overlays/shadow/border from semantic `black`/`white` to explicit `#000000`/`#ffffff` so the dark overlay stays dark in dark mode.
 - Fixed the homepage hero secondary "Pronađi majstora" CTA: it now uses explicit `#ffffff` translucent background/border/text so it stays visible in dark mode, and added an arrow icon in both light and dark modes.
@@ -424,6 +424,7 @@
   - `components/FeaturedAdsSection.tsx`: light premium sponsored-ad cards with rank badges, "Sponzorirano" pill, type labels, firm info, rating, and dark arrow CTA; horizontal scroll on mobile, 5-column grid on desktop. When no real promoted ads exist, it now shows 5 Higgsfield-style demo placeholder cards (ranked 1–5) to advertise the ad product to firms/majstors, linking to `/za-firme/#reklame`.
   - `components/PromoBanner.tsx`: full-bleed banner with left headline/CTA and right dark glass benefits panel on desktop; on mobile it collapses into a compact horizontal strip (icon + headline + CTA) so it no longer takes excessive scroll space.
   - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated.
+  - `components/RoleCTACards.tsx`: side-by-side mobile cards with icon+arrow top row and full description text below; removed mobile `line-clamp-2` so descriptions are no longer cut off.
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
   - Removed `RecentProjects` from `app/page.tsx` because the same latest jobs already appear at the top in `LatestAdsSection`.
   - `npm run lint` and `npm run build` pass (2406 pages).
