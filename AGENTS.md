@@ -285,7 +285,7 @@
 - Updated `/gradovi/` city cards to show a green tint for cities that have at least one registered firm/majstor and a red tint for cities without any, fetching firm counts at build time.
 - Fixed mobile hamburger menu in dark mode: items were invisible because `dark:text-white` resolved to the semantic dark `white` color instead of real white; added CSS overrides for `.dark .dark\:text-white` (and alpha variants) in `app/globals.css`.
 - Fixed mobile menu top offset so it starts exactly below the slimmed header (`top-14 md:top-16`; later updated to `top-12 md:top-16` when the mobile header was reduced further).
-- Switched `Header.tsx` and `ThemeToggle.tsx` dark-mode text to explicit `dark:text-[#ffffff]` so menu items and icons are always readable regardless of semantic color swaps.
+- Switched `Header.tsx` and `ThemeToggle.tsx` dark-mode text to explicit `dark:text-[#ffffff]` so menu items and icons are always readable regardless of semantic color swaps. Later refined the mobile theme toggle to a circular, bordered button with thinner-stroke outlined Sun/Moon icons for a cleaner premium look.
 - Made `/gradovi/` city firm counts update automatically by adding ISR (`revalidate = 60`) and a client-side refresh in the new `CityGrid` component, so a newly registered firm/majstor turns its city green right away.
 - Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium. Later changed the section to show all firms/majstors from the city (not only verified ones) so newly registered profiles also appear; renamed label from "Verifikovane firme u gradu" to "Firme i majstori u gradu".
 - Hidden the visible "Početna - ..." breadcrumb bar on all public pages (`/kontakt/`, `/gradovi/`, `/kategorije/`, etc.) while keeping the JSON-LD `BreadcrumbList` schema for SEO.
@@ -303,7 +303,7 @@
 - Slimmed down the homepage emergency banner height and font/icon sizes.
 - Replaced the `/kontakt/` PageHero background with `public/images/kontakt-hero.png` (zaposlifirma.png) and kept the dark Higgsfield overlay.
 - Added `components/CookieConsent.tsx` and wired it into `app/layout.tsx`: a premium Higgsfield cookie-consent banner that loads Google Analytics only after the user grants consent.
-- Added `components/ScrollToTop.tsx` and wired it into `app/layout.tsx` so the page always starts at the top on load, preventing the browser from restoring a previous scroll position.
+- Added `components/ScrollToTop.tsx` and wired it into `app/layout.tsx` so the page always starts at the top on load, preventing the browser from restoring a previous scroll position. Switched it to `useLayoutEffect` and set `history.scrollRestoration = 'manual'` so the scroll happens before paint.
 - Redesigned the firm/majstor dashboard (`/dashboard/firma/`) with a premium Higgsfield hero section (`components/FirmDashboardHero.tsx`) that welcomes the user by name, shows the city, and displays four glassmorphism KPI cards: remaining bids, acceptance rate, average rating, and total profile views. Also added a compact plan-status strip with package name, featured badge, active-until date, and bid-reset countdown.
 - Extended the firm/majstor dashboard with an overview section below the hero:
   - `components/FirmActivityFeed.tsx`: a timeline of the latest notifications (new jobs, accepted bids, messages, reviews, etc.) pulled from the existing notifications table.
