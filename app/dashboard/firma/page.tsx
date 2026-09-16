@@ -621,8 +621,8 @@ function FirmDashboardContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-ink-950">
-      <Header dark />
-      <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6 bg-white md:bg-cloud dark:bg-ink-950">
+      <Header />
+      <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6 bg-cloud dark:bg-ink-950">
         <div className="max-w-6xl mx-auto space-y-6">
           {error && (
             <div className="flex items-start gap-3 text-sm text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-200 rounded-xl px-4 py-3 border border-red-100 dark:border-red-900/30 animate-fade-in">
@@ -745,6 +745,7 @@ function FirmDashboardContent() {
                     viewsCount={visitStats?.total || 0}
                     rating={averageRating}
                     reviewCount={reviewCount}
+                    onTabChange={setActiveTab}
                   />
                   <FirmQuickActions />
                   <FirmIconMenu

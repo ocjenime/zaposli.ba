@@ -38,14 +38,14 @@ export default function FirmIconMenu({
             key={item.key}
             type="button"
             onClick={() => onTabChange?.(item.key)}
-            className={`relative flex flex-col items-center justify-center gap-2 p-3 rounded-2xl transition-all active:scale-95 ${
+            className={`relative flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border transition-all active:scale-95 ${
               active
-                ? 'bg-ink-900 text-white shadow-lg'
-                : 'bg-ink-900 text-white/80 hover:bg-ink-800'
+                ? 'bg-white border-brand-orange text-brand-orange shadow-sm'
+                : 'bg-white border-gray-100 text-gray-600 hover:border-gray-200 hover:bg-gray-50'
             }`}
           >
             <div className="relative">
-              <item.icon className={`w-5 h-5 ${active ? 'text-brand-orange' : 'text-white/90'}`} />
+              <item.icon className="w-5 h-5" />
               {badge ? (
                 <span className="absolute -top-2 -right-2 min-w-[16px] h-4 px-1 flex items-center justify-center rounded-full bg-red-500 text-white text-[9px] font-bold">
                   {badge > 99 ? '99+' : badge}

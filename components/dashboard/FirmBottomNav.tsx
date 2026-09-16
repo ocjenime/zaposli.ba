@@ -24,7 +24,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0, onMor
   const moreActive = tab === 'more';
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-ink-950 border-t border-white/5 px-2 pb-safe">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-ink-950 border-t border-gray-100 dark:border-ink-800 px-2 pb-safe shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
       <div className="flex items-center justify-around h-16">
         {items.map((item) => {
           const active = tab === item.key || (tab === null && item.key === 'home');
@@ -33,7 +33,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0, onMor
               key={item.key}
               href={item.href}
               className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full rounded-xl transition-colors ${
-                active ? 'text-brand-orange' : 'text-white/60'
+                active ? 'text-brand-orange' : 'text-gray-400 dark:text-white/50'
               }`}
             >
               <div className="relative">
@@ -53,7 +53,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0, onMor
           type="button"
           onClick={onMoreClick}
           className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full rounded-xl transition-colors ${
-            moreActive ? 'text-brand-orange' : 'text-white/60'
+            moreActive ? 'text-brand-orange' : 'text-gray-400 dark:text-white/50'
           }`}
         >
           <MoreHorizontal className="w-5 h-5" />

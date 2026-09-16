@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Megaphone, MoreVertical, Loader2, ArrowRight, Calendar } from 'lucide-react';
+import { Megaphone, Loader2, ArrowRight, Calendar } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getAdTypeLabel } from '@/lib/promoted-ads';
 import { formatDate } from '@/lib/date';
@@ -128,13 +128,6 @@ export default function FirmMyAdsList({ firmId }: FirmMyAdsListProps) {
               >
                 {statusLabel(ad.status)}
               </span>
-              <button
-                type="button"
-                className="p-1 text-gray-300 dark:text-white/20 hover:text-gray-500"
-                aria-label="Više opcija"
-              >
-                <MoreVertical className="w-4 h-4" />
-              </button>
             </div>
           ))}
         </div>
