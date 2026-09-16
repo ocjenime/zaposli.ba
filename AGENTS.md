@@ -309,6 +309,18 @@
   - `components/FirmActivityFeed.tsx`: a timeline of the latest notifications (new jobs, accepted bids, messages, reviews, etc.) pulled from the existing notifications table.
   - `components/FirmRecommendedJobs.tsx`: up to 5 open jobs matching the firm's categories and city, with a one-click "Pošalji ponudu" link.
   - `components/FirmJobPipeline.tsx`: a visual pipeline showing counts of offered, accepted, in-progress, and completed jobs.
+- Rebuilt the firm/majstor dashboard (`/dashboard/firma/`) into a premium mobile-first experience inspired by the user's screenshot:
+  - New `components/dashboard/FirmMobileHeader.tsx`: hamburger menu left, logo center, notification bell + avatar with firm name and role dropdown right.
+  - New `components/dashboard/FirmBottomNav.tsx`: fixed bottom bar with Početna / Oglasi / Ponude / Poruke / Više and unread/badge indicators.
+  - New `components/dashboard/FirmDashboardWelcome.tsx`: cinematic welcome hero with firm name and background image.
+  - New `components/dashboard/FirmPlanCard.tsx`: dark-glass premium plan status card.
+  - New `components/dashboard/FirmQuickStats.tsx`: 4 KPI cards (active ads, bids sent, profile views, rating).
+  - New `components/dashboard/FirmQuickActions.tsx`: orange "Objavi oglas" and dark "Pronađi poslove" CTAs.
+  - New `components/dashboard/FirmIconMenu.tsx`: 5-icon shortcut row (Moji oglasi / Moje ponude / Statistika / Poruke / Profil firme).
+  - New `components/dashboard/FirmMyAdsList.tsx`: recent promoted ads with status badges.
+  - New `components/dashboard/FirmRecentBids.tsx`: recent bids/offers list.
+  - New `components/dashboard/FirmMiniChart.tsx`: simple SVG area chart for 30-day profile visits.
+  - Desktop keeps the previous overview + tab layout; mobile defaults to the new home view and uses bottom nav / icon menu to reach existing tabs.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
