@@ -11,6 +11,16 @@ import FirmActivityFeed from '@/components/FirmActivityFeed';
 import FirmRecommendedJobs from '@/components/FirmRecommendedJobs';
 import FirmJobPipeline from '@/components/FirmJobPipeline';
 import FirmAdsTab from '@/components/FirmAdsTab';
+import FirmMobileHeader from '@/components/dashboard/FirmMobileHeader';
+import FirmBottomNav from '@/components/dashboard/FirmBottomNav';
+import FirmDashboardWelcome from '@/components/dashboard/FirmDashboardWelcome';
+import FirmPlanCard from '@/components/dashboard/FirmPlanCard';
+import FirmQuickStats from '@/components/dashboard/FirmQuickStats';
+import FirmQuickActions from '@/components/dashboard/FirmQuickActions';
+import FirmIconMenu from '@/components/dashboard/FirmIconMenu';
+import FirmMyAdsList from '@/components/dashboard/FirmMyAdsList';
+import FirmRecentBids from '@/components/dashboard/FirmRecentBids';
+import FirmMiniChart from '@/components/dashboard/FirmMiniChart';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
 import { useAuth } from '@/lib/auth-context';
@@ -208,7 +218,7 @@ function FirmDashboardContent() {
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [reviewCount, setReviewCount] = useState<number | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads' | 'stats'>('jobs');
+  const [activeTab, setActiveTab] = useState<'home' | 'jobs' | 'bids' | 'direct' | 'ads' | 'stats' | 'profile' | 'messages'>('home');
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
   const [loadingDirect, setLoadingDirect] = useState(true);
   const [expandedDirectJob, setExpandedDirectJob] = useState<string | null>(null);
@@ -218,6 +228,7 @@ function FirmDashboardContent() {
   const [dailyVisits, setDailyVisits] = useState<DailyVisit[]>([]);
   const [referrers, setReferrers] = useState<ReferrerCount[]>([]);
   const [loadingStats, setLoadingStats] = useState(false);
+  const [adsCount, setAdsCount] = useState(0);
 
   useEffect(() => {
     if (loading) return;
@@ -238,10 +249,16 @@ function FirmDashboardContent() {
     } else if (directId) {
       setExpandedDirectJob(directId);
       setActiveTab('direct');
+    } else if (tab === 'profile') {
+      router.push('/dashboard/firma/profil/');
+    } else if (tab === 'messages') {
+      router.push('/dashboard/razgovor/');
     } else if (tab === 'ads' || tab === 'stats' || tab === 'bids' || tab === 'direct') {
       setActiveTab(tab);
+    } else if (tab === 'home' || tab === null) {
+      setActiveTab('home');
     }
-  }, [searchParams]);
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (!expandedJob) return;
@@ -458,8 +475,17 @@ function FirmDashboardContent() {
       }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
     );
 
-    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id), loadStats(data.id, false)]);
+    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id), loadStats(data.id, false), loadAdsCount(data.id)]);
   }, [user, fetchOpenJobs, fetchMyBids, fetchDirectJobs, loadPlan, loadStats]);
+
+  async function loadAdsCount(id: string) {
+    const { count, error } = await supabase
+      .from('promoted_ads')
+      .select('*', { count: 'exact', head: true })
+      .eq('firm_id', id)
+      .eq('status', 'active');
+    if (!error) setAdsCount(count || 0);
+  }
 
   useEffect(() => {
     if (user && isFirmRole(role)) fetchFirm();
@@ -594,8 +620,11 @@ function FirmDashboardContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
-      <Header />
-      <main className="flex-grow pt-24 md:pt-28 pb-10 md:pb-14 px-4 sm:px-6">
+      <div className="hidden md:block">
+        <Header />
+      </div>
+      <FirmMobileHeader firmName={firmName} role={role} />
+      <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto space-y-6">
           {error && (
             <div className="flex items-start gap-3 text-sm text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-200 rounded-xl px-4 py-3 border border-red-100 dark:border-red-900/30 animate-fade-in">
@@ -678,24 +707,61 @@ function FirmDashboardContent() {
                 </div>
               )}
 
-              {/* Dashboard overview: activity feed, pipeline, recommended jobs */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-1 space-y-6">
-                  <FirmActivityFeed />
-                  <FirmJobPipeline myBids={myBids} directJobs={directJobs} />
-                </div>
-                <div className="lg:col-span-2">
-                  <FirmRecommendedJobs
-                    openJobs={openJobs}
-                    myBids={myBids}
-                    firmCategories={firmCategories}
-                    firmCity={firmCity}
+              {/* Mobile home overview */}
+              {activeTab === 'home' && (
+                <div className="md:hidden space-y-4">
+                  <FirmDashboardWelcome firmName={firmName} />
+                  <FirmPlanCard
+                    planName={planName}
+                    planFeatured={planFeatured}
+                    planActiveDate={planActiveDate}
+                    loadingPlan={loadingPlan}
                   />
+                  <FirmQuickStats
+                    adsCount={adsCount}
+                    bidsCount={myBids.length}
+                    viewsCount={visitStats?.total || 0}
+                    rating={averageRating}
+                    reviewCount={reviewCount}
+                  />
+                  <FirmQuickActions />
+                  <FirmIconMenu
+                    activeTab={activeTab}
+                    onTabChange={setActiveTab}
+                    bidsCount={myBids.length}
+                  />
+                  <FirmMyAdsList firmId={firmId} />
+                  <div className="grid grid-cols-1 gap-4">
+                    <FirmRecentBids bids={myBids} />
+                    <FirmMiniChart
+                      data={dailyVisits}
+                      total={visitStats?.thisMonth}
+                      growth={visitStats?.total ? 28 : 0}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="inline-flex flex-wrap p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
+              {/* Desktop overview + tab bar */}
+              <div className="hidden md:block space-y-6">
+                {/* Dashboard overview: activity feed, pipeline, recommended jobs */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-1 space-y-6">
+                    <FirmActivityFeed />
+                    <FirmJobPipeline myBids={myBids} directJobs={directJobs} />
+                  </div>
+                  <div className="lg:col-span-2">
+                    <FirmRecommendedJobs
+                      openJobs={openJobs}
+                      myBids={myBids}
+                      firmCategories={firmCategories}
+                      firmCity={firmCity}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="inline-flex flex-wrap p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
                   <button
                     onClick={() => setActiveTab('jobs')}
                     className={`relative inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${
@@ -794,6 +860,7 @@ function FirmDashboardContent() {
                     : 'Pregled posjeta vašeg profila.'}
                 </p>
               </div>
+            </div>
 
               {activeTab === 'jobs' && (
                 <section className="animate-fade-in space-y-4">
@@ -1499,7 +1566,10 @@ function FirmDashboardContent() {
           )}
         </div>
       </main>
-      <Footer />
+      <FirmBottomNav bidsCount={myBids.length} />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 }
