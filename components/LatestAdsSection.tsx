@@ -45,13 +45,13 @@ export default function LatestAdsSection() {
       <div className="relative mx-auto max-w-7xl">
         <div className="flex items-end justify-between gap-4 mb-6 animate-fade-in">
           <div>
-            <span className="inline-flex items-center gap-2 text-xl md:text-2xl font-bold text-brand-orange">
-              <Clock className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-brand-orange uppercase">
+              <Clock className="w-3.5 h-3.5" />
               Najnoviji poslovi
             </span>
-            <p className="text-sm text-gray-600 dark:text-[#ffffff]/70 mt-1">
-              Poslovi koje klijenti trenutno objavljuju.
-            </p>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-[#ffffff] mt-1">
+              Poslovi koje klijenti trenutno objavljuju
+            </h2>
           </div>
           <Link
             href="/poslovi/"

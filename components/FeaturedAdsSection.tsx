@@ -324,10 +324,13 @@ export default function FeaturedAdsSection() {
       <div className="relative mx-auto max-w-7xl">
         <div className="flex items-end justify-between gap-4 mb-6 animate-fade-in">
           <div>
-            <span className="inline-flex items-center gap-2 text-xl md:text-2xl font-bold text-brand-orange">
-              <Crown className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold tracking-widest text-brand-orange uppercase">
+              <Crown className="w-3.5 h-3.5" />
               Sponzorirani oglasi
             </span>
+            <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-[#ffffff] mt-1">
+              Premium oglasi firmi i majstora
+            </h2>
             <p className="text-sm text-gray-600 dark:text-[#ffffff]/70 mt-1">
               {hasRealAds
                 ? 'Premium oglasi firmi, potražnja za radnicima i najatraktivniji projekti.'
