@@ -426,7 +426,7 @@
   - `components/RecommendedFirmsSection.tsx`: light premium firm cards (logo, name, verified badge, rating, city, dark arrow CTA); horizontal scroll on mobile, 5-column grid on desktop. Firm names wrap to multiple lines instead of being truncated. Later simplified the section header to a single large orange label "Preporučene firme" (removed the secondary black heading).
   - `components/RoleCTACards.tsx`: side-by-side mobile cards with icon+arrow top row and full description text below; removed mobile `line-clamp-2` so descriptions are no longer cut off.
   - `components/FeaturedAdsSection.tsx`: simplified section header to a single large orange label "Sponzorirani oglasi" (removed the secondary black heading).
-  - `components/LatestAdsSection.tsx`: simplified section header to a single large orange label "Najnoviji poslovi" (removed the secondary black heading).
+  - `components/LatestAdsSection.tsx`: simplified section header to a single large orange label "Najnoviji poslovi" (removed the secondary black heading) and later re-added the subtitle "Poslovi koje klijenti trenutno objavljuju." in the same small gray/light style as the other sections.
   - Section order remains: RoleCTACards → FeaturedAdsSection → PromoBanner → RecommendedFirmsSection → LatestAdsSection.
   - Removed `RecentProjects` from `app/page.tsx` because the same latest jobs already appear at the top in `LatestAdsSection`.
   - `npm run lint` and `npm run build` pass (2406 pages).
