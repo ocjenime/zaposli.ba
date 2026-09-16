@@ -5,9 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import DashboardHeader from '@/components/ui/DashboardHeader';
-import DashboardStat from '@/components/ui/DashboardStat';
 import EmptyState from '@/components/ui/EmptyState';
+import FirmDashboardHero from '@/components/FirmDashboardHero';
 import FirmAdsTab from '@/components/FirmAdsTab';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
@@ -18,8 +17,6 @@ import { getCategory } from '@/lib/data';
 import {
   getPlanAndUsage,
   Subscription,
-  remainingBidsText,
-  getResetCountdownText,
   formatDateTime,
 } from '@/lib/subscriptions';
 import {
@@ -42,14 +39,11 @@ import {
   XCircle,
   Clock,
   Briefcase,
-  Crown,
   AlertTriangle,
   DollarSign,
   Calendar,
   ImageIcon,
   ArrowRight,
-  Settings,
-  Timer,
   Bell,
   Mail,
   Save,
@@ -207,6 +201,9 @@ function FirmDashboardContent() {
   const [savingPrefs, setSavingPrefs] = useState(false);
   const [prefsSaved, setPrefsSaved] = useState(false);
   const [firmCity, setFirmCity] = useState<string | null>(null);
+  const [firmName, setFirmName] = useState<string | null>(null);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [reviewCount, setReviewCount] = useState<number | null>(null);
 
   const [activeTab, setActiveTab] = useState<'jobs' | 'bids' | 'direct' | 'ads' | 'stats'>('jobs');
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
@@ -415,7 +412,7 @@ function FirmDashboardContent() {
 
     const { data, error: err } = await supabase
       .from('firms')
-      .select('id, city')
+      .select('id, name, city, average_rating, review_count')
       .eq('owner_id', user.id)
       .single();
 
@@ -426,7 +423,10 @@ function FirmDashboardContent() {
     }
 
     setFirmId(data.id);
+    setFirmName(data.name || null);
     setFirmCity(data.city || null);
+    setAverageRating(data.average_rating ?? null);
+    setReviewCount(data.review_count ?? null);
     setLoadingFirm(false);
 
     const { data: catData } = await supabase
@@ -445,7 +445,7 @@ function FirmDashboardContent() {
       }, {} as Record<string, { notify_enabled: boolean; email_enabled: boolean }>)
     );
 
-    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id)]);
+    await Promise.all([fetchOpenJobs(), fetchMyBids(data.id), fetchDirectJobs(data.id), loadPlan(data.id), loadStats(data.id, false)]);
   }, [user, fetchOpenJobs, fetchMyBids, fetchDirectJobs, loadPlan]);
 
   useEffect(() => {
@@ -591,67 +591,24 @@ function FirmDashboardContent() {
             </div>
           )}
 
-          <DashboardHeader
-            label="Panel firme"
-            title="Dobro došli natrag"
-            email={user.email || ''}
-            planName={firmId && !loadingPlan ? planName : undefined}
-            planFeatured={planFeatured}
-            actions={
-              <>
-                <Link
-                  href="/dashboard/firma/profil/"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border border-gray-200 dark:border-ink-700 text-steel dark:text-steel hover:text-gray-900 dark:hover:text-white hover:bg-white dark:hover:bg-ink-800 hover:border-gray-300 transition-all duration-200"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="hidden sm:inline">Uredi profil</span>
-                  <span className="sm:hidden">Profil</span>
-                </Link>
-                <Link
-                  href="/dashboard/firma/pretplata/"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-sm hover:shadow-lg hover:shadow-brand-orange/25 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
-                >
-                  <Crown className="w-4 h-4" />
-                  Pretplata
-                </Link>
-              </>
-            }
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <DashboardStat
-                label="Trenutni paket"
-                value={loadingPlan ? 'Učitavanje...' : planName}
-                sub={planFeatured ? 'Istaknut profil' : 'Aktivni paket'}
-                icon={Crown}
-                tone={planFeatured ? 'orange' : 'neutral'}
-                isLoading={loadingPlan}
-              />
-              <DashboardStat
-                label="Ponude ovaj mjesec"
-                value={loadingPlan ? 'Učitavanje...' : remainingBidsText(bidsUsed, bidsLimit)}
-                sub={canBid ? 'Možete slati ponude' : 'Dostignuto ograničenje'}
-                icon={Send}
-                tone={canBid ? 'green' : 'red'}
-                isLoading={loadingPlan}
-              />
-              <DashboardStat
-                label="Reset ponuda"
-                value={loadingPlan ? 'Učitavanje...' : getResetCountdownText(nextReset)}
-                sub={nextReset ? 'Reset svakih 30 dana od početka pretplate' : 'Ponude se resetuju 1. u mjesecu'}
-                icon={Timer}
-                tone="neutral"
-                isLoading={loadingPlan}
-              />
-              <DashboardStat
-                label="Pretplata aktivna do"
-                value={loadingPlan ? 'Učitavanje...' : planActiveDate || '-'}
-                sub={planActiveDate ? 'Nakon toga se podrazumijeva besplatni paket' : 'Besplatan paket'}
-                icon={Calendar}
-                tone="neutral"
-                isLoading={loadingPlan}
-              />
-            </div>
-          </DashboardHeader>
+          {firmId && !loadingFirm && (
+            <FirmDashboardHero
+              firmName={firmName}
+              city={firmCity}
+              planName={planName}
+              planFeatured={planFeatured}
+              planActiveDate={planActiveDate}
+              bidsUsed={bidsUsed}
+              bidsLimit={bidsLimit}
+              canBid={canBid}
+              nextReset={nextReset}
+              averageRating={averageRating}
+              reviewCount={reviewCount}
+              profileViews={visitStats?.total || 0}
+              myBids={myBids}
+              loadingPlan={loadingPlan}
+            />
+          )}
 
           {!loadingFirm && !firmId && (
             <EmptyState
