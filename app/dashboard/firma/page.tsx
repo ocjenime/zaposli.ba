@@ -7,6 +7,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import EmptyState from '@/components/ui/EmptyState';
 import FirmDashboardHero from '@/components/FirmDashboardHero';
+import FirmActivityFeed from '@/components/FirmActivityFeed';
+import FirmRecommendedJobs from '@/components/FirmRecommendedJobs';
+import FirmJobPipeline from '@/components/FirmJobPipeline';
 import FirmAdsTab from '@/components/FirmAdsTab';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
@@ -664,6 +667,22 @@ function FirmDashboardContent() {
                   </Link>
                 </div>
               )}
+
+              {/* Dashboard overview: activity feed, pipeline, recommended jobs */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-1 space-y-6">
+                  <FirmActivityFeed />
+                  <FirmJobPipeline myBids={myBids} directJobs={directJobs} />
+                </div>
+                <div className="lg:col-span-2">
+                  <FirmRecommendedJobs
+                    openJobs={openJobs}
+                    myBids={myBids}
+                    firmCategories={firmCategories}
+                    firmCity={firmCity}
+                  />
+                </div>
+              </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="inline-flex flex-wrap p-1 bg-white dark:bg-ink-900 rounded-xl border border-gray-100 dark:border-ink-800 shadow-sm">
