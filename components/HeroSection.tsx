@@ -34,7 +34,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[380px] sm:min-h-[440px] lg:min-h-[540px] flex flex-col overflow-hidden">
+    <section className="relative min-h-[340px] sm:min-h-[420px] lg:min-h-[540px] flex flex-col overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -82,7 +82,7 @@ export default function HeroSection() {
 
       {/* Hero content */}
       <div className="relative z-20 flex-1 flex items-end">
-        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-5 sm:pb-7">
+        <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-7">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Left content */}
             <div className="max-w-2xl">
@@ -93,7 +93,7 @@ export default function HeroSection() {
               </div>
 
               {/* Headline */}
-              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
+              <h1 className="text-xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
                 Vaš posao.
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
@@ -110,14 +110,14 @@ export default function HeroSection() {
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 mb-3 sm:mb-4 animate-fade-in">
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
+                  className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95 shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
                 >
                   Objavi posao besplatno
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href="/top-firme/"
-                  className="inline-flex items-center justify-center gap-2 bg-[#ffffff]/15 hover:bg-[#ffffff]/20 backdrop-blur-md border border-[#ffffff]/25 text-[#ffffff] px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 bg-[#ffffff]/15 hover:bg-[#ffffff]/20 backdrop-blur-md border border-[#ffffff]/25 text-[#ffffff] px-3.5 sm:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-sm transition-all active:scale-95"
                 >
                   Pronađi majstora
                   <ArrowRight className="w-4 h-4" />
