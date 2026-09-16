@@ -44,7 +44,7 @@ function isActive(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 
-export default function Header() {
+export default function Header({ dark = false }: { dark?: boolean }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -128,16 +128,22 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/90 dark:bg-ink-900/90 backdrop-blur-xl border-b border-gray-100/80 dark:border-ink-800/80 ${
-          scrolled ? 'shadow-sm dark:shadow-ink-900/50' : ''
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-xl border-b ${
+          dark
+            ? 'bg-ink-950/95 border-white/5'
+            : 'bg-white/90 dark:bg-ink-900/90 border-gray-100/80 dark:border-ink-800/80'
+        } ${scrolled ? 'shadow-sm dark:shadow-ink-900/50' : ''}`}
       >
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-12 md:h-16 items-center lg:justify-between">
             <button
               ref={mobileButtonRef}
               type="button"
-              className="lg:hidden col-start-1 justify-self-start p-2 rounded-xl transition-colors text-gray-900 hover:bg-gray-100 dark:text-[#ffffff] dark:hover:bg-ink-800 touch-manipulation cursor-pointer"
+              className={`lg:hidden col-start-1 justify-self-start p-2 rounded-xl transition-colors touch-manipulation cursor-pointer ${
+                dark
+                  ? 'text-white hover:bg-white/10'
+                  : 'text-gray-900 hover:bg-gray-100 dark:text-[#ffffff] dark:hover:bg-ink-800'
+              }`}
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-label={mobileMenuOpen ? 'Zatvori meni' : 'Otvori meni'}
               aria-expanded={mobileMenuOpen}
@@ -150,7 +156,7 @@ export default function Header() {
               href="/"
               className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-100 md:scale-110"
             >
-              <Logo variant="dark" />
+              <Logo variant={dark ? 'light' : 'dark'} />
             </Link>
 
             {/* Desktop nav */}
@@ -230,30 +236,42 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={() => setProfileOpen((v) => !v)}
-                    className="flex items-center gap-1 pl-1 pr-1.5 py-1 rounded-full bg-gray-100/80 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 transition-colors"
+                    className={`flex items-center gap-1 pl-1 pr-1.5 py-1 rounded-full transition-colors ${
+                      dark
+                        ? 'bg-white/10 hover:bg-white/15'
+                        : 'bg-gray-100/80 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10'
+                    }`}
                   >
                     <div className="w-7 h-7 rounded-full bg-brand-orange text-white text-xs font-bold flex items-center justify-center">
                       {initials || 'K'}
                     </div>
-                    <ChevronDown className={`w-3.5 h-3.5 text-gray-500 dark:text-white/60 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 ${dark ? 'text-white/70' : 'text-gray-500 dark:text-white/60'} transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
                   </button>
                   {profileOpen && (
-                    <div className="absolute right-0 top-11 w-56 bg-white dark:bg-ink-900 rounded-2xl shadow-2xl border border-gray-100 dark:border-ink-800 p-2 animate-fade-in z-50">
-                      <div className="px-3 py-2 border-b border-gray-100 dark:border-ink-800 mb-1">
-                        <p className="font-semibold text-gray-900 dark:text-white truncate">{displayName}</p>
-                        <p className="text-xs text-gray-500 dark:text-white/60">{roleLabel}</p>
+                    <div className={`absolute right-0 top-11 w-56 rounded-2xl shadow-2xl border p-2 animate-fade-in z-50 ${dark ? 'bg-ink-900 border-ink-800' : 'bg-white dark:bg-ink-900 border-gray-100 dark:border-ink-800'}`}>
+                      <div className={`px-3 py-2 border-b mb-1 ${dark ? 'border-ink-800' : 'border-gray-100 dark:border-ink-800'}`}>
+                        <p className={`font-semibold truncate ${dark ? 'text-white' : 'text-gray-900 dark:text-white'}`}>{displayName}</p>
+                        <p className={`text-xs ${dark ? 'text-white/60' : 'text-gray-500 dark:text-white/60'}`}>{roleLabel}</p>
                       </div>
                       <Link
                         href={dashboardHref}
                         onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-white/90 hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
+                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                          dark
+                            ? 'text-white/90 hover:bg-ink-800'
+                            : 'text-gray-700 dark:text-white/90 hover:bg-gray-50 dark:hover:bg-ink-800'
+                        }`}
                       >
                         <Building2 className="w-4 h-4" /> Dashboard
                       </Link>
                       <Link
                         href={profileHref}
                         onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-white/90 hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
+                        className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                          dark
+                            ? 'text-white/90 hover:bg-ink-800'
+                            : 'text-gray-700 dark:text-white/90 hover:bg-gray-50 dark:hover:bg-ink-800'
+                        }`}
                       >
                         <User className="w-4 h-4" /> Moj profil
                       </Link>
@@ -270,7 +288,11 @@ export default function Header() {
               ) : (
                 <Link
                   href="/prijava/"
-                  className="px-3 py-1.5 rounded-xl text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:text-white transition-colors"
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
+                    dark
+                      ? 'bg-white/10 text-white hover:bg-white/20'
+                      : 'text-gray-700 bg-gray-100 hover:bg-gray-200 dark:bg-white/10 dark:text-white'
+                  }`}
                 >
                   Prijava
                 </Link>

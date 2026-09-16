@@ -7,9 +7,10 @@ import { useSearchParams } from 'next/navigation';
 interface FirmBottomNavProps {
   unreadMessages?: number;
   bidsCount?: number;
+  onMoreClick?: () => void;
 }
 
-export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: FirmBottomNavProps) {
+export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0, onMoreClick }: FirmBottomNavProps) {
   const searchParams = useSearchParams();
   const tab = searchParams.get('tab') || 'home';
 
@@ -18,8 +19,9 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: Fir
     { href: '/dashboard/firma/?tab=ads', label: 'Oglasi', icon: Megaphone, key: 'ads' },
     { href: '/dashboard/firma/?tab=bids', label: 'Ponude', icon: Send, key: 'bids', badge: bidsCount },
     { href: '/dashboard/razgovor/', label: 'Poruke', icon: MessageSquare, key: 'messages', badge: unreadMessages },
-    { href: '/dashboard/firma/?tab=more', label: 'Više', icon: MoreHorizontal, key: 'more' },
   ];
+
+  const moreActive = tab === 'more';
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-ink-950 border-t border-white/5 px-2 pb-safe">
@@ -47,6 +49,17 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: Fir
             </Link>
           );
         })}
+        <button
+          type="button"
+          onClick={onMoreClick}
+          className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full rounded-xl transition-colors ${
+            moreActive ? 'text-brand-orange' : 'text-white/60'
+          }`}
+        >
+          <MoreHorizontal className="w-5 h-5" />
+          <span className="text-[10px] font-medium">Više</span>
+          {moreActive && <span className="absolute -bottom-0.5 w-8 h-0.5 rounded-full bg-brand-orange" />}
+        </button>
       </div>
     </nav>
   );

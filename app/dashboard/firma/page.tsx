@@ -12,6 +12,7 @@ import FirmRecommendedJobs from '@/components/FirmRecommendedJobs';
 import FirmJobPipeline from '@/components/FirmJobPipeline';
 import FirmAdsTab from '@/components/FirmAdsTab';
 import FirmBottomNav from '@/components/dashboard/FirmBottomNav';
+import FirmMoreMenu from '@/components/dashboard/FirmMoreMenu';
 import FirmDashboardWelcome from '@/components/dashboard/FirmDashboardWelcome';
 import FirmPlanCard from '@/components/dashboard/FirmPlanCard';
 import FirmQuickStats from '@/components/dashboard/FirmQuickStats';
@@ -218,6 +219,7 @@ function FirmDashboardContent() {
   const [reviewCount, setReviewCount] = useState<number | null>(null);
 
   const [activeTab, setActiveTab] = useState<'home' | 'jobs' | 'bids' | 'direct' | 'ads' | 'stats' | 'profile' | 'messages'>('home');
+  const [moreOpen, setMoreOpen] = useState(false);
   const [directJobs, setDirectJobs] = useState<DirectJob[]>([]);
   const [loadingDirect, setLoadingDirect] = useState(true);
   const [expandedDirectJob, setExpandedDirectJob] = useState<string | null>(null);
@@ -618,9 +620,9 @@ function FirmDashboardContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
-      <Header />
-      <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-ink-950">
+      <Header dark />
+      <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6 bg-white md:bg-cloud dark:bg-ink-950">
         <div className="max-w-6xl mx-auto space-y-6">
           {error && (
             <div className="flex items-start gap-3 text-sm text-red-700 bg-red-50 dark:bg-red-900/20 dark:text-red-200 rounded-xl px-4 py-3 border border-red-100 dark:border-red-900/30 animate-fade-in">
@@ -630,22 +632,24 @@ function FirmDashboardContent() {
           )}
 
           {firmId && !loadingFirm && (
-            <FirmDashboardHero
-              firmName={firmName}
-              city={firmCity}
-              planName={planName}
-              planFeatured={planFeatured}
-              planActiveDate={planActiveDate}
-              bidsUsed={bidsUsed}
-              bidsLimit={bidsLimit}
-              canBid={canBid}
-              nextReset={nextReset}
-              averageRating={averageRating}
-              reviewCount={reviewCount}
-              profileViews={visitStats?.total || 0}
-              myBids={myBids}
-              loadingPlan={loadingPlan}
-            />
+            <div className="hidden md:block">
+              <FirmDashboardHero
+                firmName={firmName}
+                city={firmCity}
+                planName={planName}
+                planFeatured={planFeatured}
+                planActiveDate={planActiveDate}
+                bidsUsed={bidsUsed}
+                bidsLimit={bidsLimit}
+                canBid={canBid}
+                nextReset={nextReset}
+                averageRating={averageRating}
+                reviewCount={reviewCount}
+                profileViews={visitStats?.total || 0}
+                myBids={myBids}
+                loadingPlan={loadingPlan}
+              />
+            </div>
           )}
 
           {!loadingFirm && !firmId && (
@@ -1562,7 +1566,8 @@ function FirmDashboardContent() {
           )}
         </div>
       </main>
-      <FirmBottomNav bidsCount={myBids.length} />
+      <FirmBottomNav bidsCount={myBids.length} onMoreClick={() => setMoreOpen(true)} />
+      <FirmMoreMenu open={moreOpen} onClose={() => setMoreOpen(false)} />
       <div className="hidden md:block">
         <Footer />
       </div>
