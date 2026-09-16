@@ -22,7 +22,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: Fir
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-ink-950 border-t border-gray-100 dark:border-ink-800 px-2 pb-safe">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-ink-950 border-t border-white/5 px-2 pb-safe">
       <div className="flex items-center justify-around h-16">
         {items.map((item) => {
           const active = tab === item.key || (tab === null && item.key === 'home');
@@ -31,7 +31,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: Fir
               key={item.key}
               href={item.href}
               className={`relative flex flex-col items-center justify-center gap-0.5 w-full h-full rounded-xl transition-colors ${
-                active ? 'text-brand-orange' : 'text-gray-500 dark:text-white/50'
+                active ? 'text-brand-orange' : 'text-white/60'
               }`}
             >
               <div className="relative">
@@ -43,7 +43,7 @@ export default function FirmBottomNav({ unreadMessages = 0, bidsCount = 0 }: Fir
                 ) : null}
               </div>
               <span className="text-[10px] font-medium">{item.label}</span>
-              {active && <span className="absolute -bottom-1 w-8 h-0.5 rounded-full bg-brand-orange" />}
+              {active && <span className="absolute -bottom-0.5 w-8 h-0.5 rounded-full bg-brand-orange" />}
             </Link>
           );
         })}

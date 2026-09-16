@@ -36,11 +36,11 @@ export default function FirmQuickStats({
       {items.map((item) => (
         <div
           key={item.key}
-          className="group relative bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-3.5 shadow-sm hover:shadow-md transition-all"
+          className="group relative bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-4 shadow-sm hover:shadow-md transition-all"
         >
           <div className="flex items-start justify-between mb-3">
-            <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${item.color}`}>
-              <item.icon className="w-4.5 h-4.5" />
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
+              <item.icon className="w-5 h-5" />
             </div>
             <ChevronRight className="w-4 h-4 text-gray-300 dark:text-white/20 group-hover:text-brand-orange transition-colors" />
           </div>

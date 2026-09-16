@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Megaphone, MoreVertical, Loader2, ArrowRight } from 'lucide-react';
+import { Megaphone, MoreVertical, Loader2, ArrowRight, Calendar } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getAdTypeLabel } from '@/lib/promoted-ads';
+import { formatDate } from '@/lib/date';
 
 interface Ad {
   id: string;
@@ -98,12 +99,11 @@ export default function FirmMyAdsList({ firmId }: FirmMyAdsListProps) {
       ) : (
         <div className="space-y-3">
           {ads.map((ad) => (
-            <Link
+            <div
               key={ad.id}
-              href={`/izdvojeni-oglasi/${ad.id}/`}
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
             >
-              <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gray-100 dark:bg-ink-950 shrink-0">
+              <Link href={`/izdvojeni-oglasi/${ad.id}/`} className="relative w-14 h-14 rounded-xl overflow-hidden bg-gray-100 dark:bg-ink-950 shrink-0">
                 {ad.image_url ? (
                   <Image src={ad.image_url} alt={ad.title} fill className="object-cover" sizes="56px" />
                 ) : (
@@ -111,18 +111,31 @@ export default function FirmMyAdsList({ firmId }: FirmMyAdsListProps) {
                     <Megaphone className="w-5 h-5 text-steel" />
                   </div>
                 )}
-              </div>
+              </Link>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{ad.title}</p>
-                <p className="text-xs text-steel">{getAdTypeLabel(ad.ad_type)}</p>
+                <Link href={`/izdvojeni-oglasi/${ad.id}/`}>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{ad.title}</p>
+                </Link>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-steel mt-0.5">
+                  <span>{getAdTypeLabel(ad.ad_type)}</span>
+                  <span className="inline-flex items-center gap-0.5">
+                    <Calendar className="w-3 h-3" /> {formatDate(ad.created_at)}
+                  </span>
+                </div>
               </div>
               <span
                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusClass(ad.status)}`}
               >
                 {statusLabel(ad.status)}
               </span>
-              <MoreVertical className="w-4 h-4 text-gray-300 dark:text-white/20" />
-            </Link>
+              <button
+                type="button"
+                className="p-1 text-gray-300 dark:text-white/20 hover:text-gray-500"
+                aria-label="Više opcija"
+              >
+                <MoreVertical className="w-4 h-4" />
+              </button>
+            </div>
           ))}
         </div>
       )}

@@ -1,5 +1,8 @@
 'use client';
 
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
 interface DailyVisit {
   date: string;
   count: number;
@@ -22,8 +25,8 @@ export default function FirmMiniChart({ data, total, growth }: FirmMiniChartProp
   }
 
   const width = 300;
-  const height = 120;
-  const padding = 8;
+  const height = 110;
+  const padding = 6;
   const max = Math.max(1, ...data.map((d) => d.count));
   const points = data.map((d, i) => {
     const x = padding + (i / (data.length - 1 || 1)) * (width - padding * 2);
@@ -40,7 +43,7 @@ export default function FirmMiniChart({ data, total, growth }: FirmMiniChartProp
           Posljednjih 30 dana
         </span>
       </div>
-      <div className="flex items-baseline gap-2 mb-3">
+      <div className="flex items-baseline gap-2 mb-1">
         <p className="text-2xl font-bold text-gray-900 dark:text-white">{total?.toLocaleString('bs') || '0'}</p>
         {growth !== undefined && (
           <span className={`text-xs font-bold ${growth >= 0 ? 'text-green-600' : 'text-red-600'}`}>
@@ -71,11 +74,17 @@ export default function FirmMiniChart({ data, total, growth }: FirmMiniChartProp
           })}
         </svg>
       </div>
-      <div className="flex justify-between text-[10px] text-steel mt-2">
+      <div className="flex justify-between text-[10px] text-steel mt-1">
         {data.filter((_, i) => i % Math.ceil(data.length / 4) === 0).map((d) => (
           <span key={d.date}>{d.date.slice(0, 5)}</span>
         ))}
       </div>
+      <Link
+        href="/dashboard/firma/?tab=stats"
+        className="mt-3 w-full inline-flex items-center justify-center gap-1 px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-ink-800 text-gray-700 dark:text-white text-sm font-semibold hover:bg-gray-200 dark:hover:bg-ink-700 transition-colors"
+      >
+        Detaljna statistika <ArrowRight className="w-4 h-4" />
+      </Link>
     </div>
   );
 }

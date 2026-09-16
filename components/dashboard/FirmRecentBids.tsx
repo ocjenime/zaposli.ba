@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { User, ArrowRight } from 'lucide-react';
+import { User, ArrowRight, ChevronRight } from 'lucide-react';
 import { formatDate } from '@/lib/date';
 
 interface Job {
@@ -81,7 +81,7 @@ export default function FirmRecentBids({ bids }: FirmRecentBidsProps) {
           {recent.map((bid) => (
             <Link
               key={bid.id}
-              href={`/dashboard/firma/?tab=bids`}
+              href="/dashboard/firma/?tab=bids"
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
             >
               <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-ink-800 flex items-center justify-center shrink-0">
@@ -91,11 +91,15 @@ export default function FirmRecentBids({ bids }: FirmRecentBidsProps) {
                 <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                   {bid.jobs?.title || 'Posao'}
                 </p>
-                <p className="text-xs text-steel">{formatDate(bid.created_at)}</p>
+                <p className="text-xs text-steel">{bid.amount.toLocaleString('bs')} KM</p>
               </div>
-              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusClass(bid.status)}`}>
-                {statusLabel(bid.status)}
-              </span>
+              <div className="text-right">
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${statusClass(bid.status)}`}>
+                  {statusLabel(bid.status)}
+                </span>
+                <p className="text-[10px] text-steel mt-0.5">{formatDate(bid.created_at)}</p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-gray-300 dark:text-white/20" />
             </Link>
           ))}
         </div>

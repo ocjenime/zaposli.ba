@@ -11,7 +11,6 @@ import FirmActivityFeed from '@/components/FirmActivityFeed';
 import FirmRecommendedJobs from '@/components/FirmRecommendedJobs';
 import FirmJobPipeline from '@/components/FirmJobPipeline';
 import FirmAdsTab from '@/components/FirmAdsTab';
-import FirmMobileHeader from '@/components/dashboard/FirmMobileHeader';
 import FirmBottomNav from '@/components/dashboard/FirmBottomNav';
 import FirmDashboardWelcome from '@/components/dashboard/FirmDashboardWelcome';
 import FirmPlanCard from '@/components/dashboard/FirmPlanCard';
@@ -620,10 +619,7 @@ function FirmDashboardContent() {
 
   return (
     <div className="min-h-screen flex flex-col bg-cloud dark:bg-ink-950">
-      <div className="hidden md:block">
-        <Header />
-      </div>
-      <FirmMobileHeader firmName={firmName} role={role} />
+      <Header />
       <main className="flex-grow pt-14 md:pt-28 pb-24 md:pb-14 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto space-y-6">
           {error && (
