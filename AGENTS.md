@@ -27,6 +27,7 @@
 - Fixed dark-mode text visibility on the homepage: category icon labels, "Preporučene firme" section/subtitle/card meta, and "Sponzorirani oglasi" section/subtitle/title/card meta now use explicit `#ffffff` colors so they stay readable in dark mode.
 - Made the homepage PromoBanner keep the same colors in dark mode by removing the `dark:bg-black/60` override on the benefits panel and switching image overlays/shadow/border from semantic `black`/`white` to explicit `#000000`/`#ffffff` so the dark overlay stays dark in dark mode.
 - Fixed the homepage hero secondary "Pronađi majstora" CTA: it now uses explicit `#ffffff` translucent background/border/text so it stays visible in dark mode, and added an arrow icon in both light and dark modes.
+- Tightened homepage hero vertical spacing: reduced top/bottom padding and margins between eyebrow, headline, subheadline, and CTAs so the buttons sit closer to the category icon row below.
 - Fixed the mobile bottom sticky "Pronađi poslove" button in dark mode: it now uses a darker gray (`#374151`) instead of the semantic near-white so the white text is clearly visible.
 - Fixed dark-mode text visibility for "Najnoviji poslovi" section and `ProjectListCard` job cards: section title, "Pogledaj sve" link, card titles, descriptions, location/time, budget (including "Majstori predlažu"), and bid counts now use explicit `#ffffff` shades so they remain readable in dark mode.
 - Enabled multiple photos per review:
