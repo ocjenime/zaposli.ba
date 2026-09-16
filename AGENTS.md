@@ -287,7 +287,7 @@
 - Fixed mobile menu top offset so it starts exactly below the slimmed header (`top-14 md:top-16`; later updated to `top-12 md:top-16` when the mobile header was reduced further).
 - Switched `Header.tsx` and `ThemeToggle.tsx` dark-mode text to explicit `dark:text-[#ffffff]` so menu items and icons are always readable regardless of semantic color swaps.
 - Made `/gradovi/` city firm counts update automatically by adding ISR (`revalidate = 60`) and a client-side refresh in the new `CityGrid` component, so a newly registered firm/majstor turns its city green right away.
-- Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium.
+- Added verified-firm section at the top of every `/gradovi/[slug]/` page, showing verified firms/majstors from that city ranked by rating + verification + premium. Later changed the section to show all firms/majstors from the city (not only verified ones) so newly registered profiles also appear; renamed label from "Verifikovane firme u gradu" to "Firme i majstori u gradu".
 - Hidden the visible "Početna - ..." breadcrumb bar on all public pages (`/kontakt/`, `/gradovi/`, `/kategorije/`, etc.) while keeping the JSON-LD `BreadcrumbList` schema for SEO.
 - Made the 6 homepage trust/info cards (`StatsSection`) titles and descriptions pure white in dark mode so the text is readable.
 - Fixed yearly subscription pricing:
