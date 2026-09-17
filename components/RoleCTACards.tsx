@@ -1,12 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { Home, Briefcase, ArrowRight } from 'lucide-react';
 
 const cards = [
   {
     href: '/objavi-projekat/',
     icon: Home,
+    image: '/images/renovacija-enterijer.webp',
+    imageAlt: 'Adaptacija enterijera stana',
     title: 'Tražim majstora',
     description: 'Opiši šta ti treba i primi ponude od provjerenih majstora.',
     cta: 'Objavi posao',
@@ -15,6 +18,8 @@ const cards = [
   {
     href: '/za-firme/',
     icon: Briefcase,
+    image: '/images/majstor-hero.webp',
+    imageAlt: 'Majstor na terenu',
     title: 'Za firme',
     description: 'Reklamirajte svoju firmu, tražite radnike i ostvarite veću vidljivost.',
     cta: 'Saznaj više',
@@ -31,43 +36,57 @@ export default function RoleCTACards() {
             <Link
               key={card.href}
               href={card.href}
-              className="group relative flex flex-col md:flex-row md:items-center gap-2 md:gap-5 rounded-xl md:rounded-2xl bg-ink-900/60 backdrop-blur-sm border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-2.5 md:p-6 overflow-hidden"
+              className="group relative flex flex-col md:flex-row md:items-center gap-2 md:gap-5 rounded-xl md:rounded-2xl bg-ink-900 border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-2.5 md:p-6 overflow-hidden"
             >
+              {/* Photo background */}
+              <Image
+                src={card.image}
+                alt={card.imageAlt}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, 600px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/35 to-ink-950/10" />
+
               {/* Mobile: icon + arrow in one row to save vertical space */}
-              <div className="flex md:hidden items-center justify-between w-full">
-                <div
-                  className={`shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+              <div className="relative z-10 flex md:hidden items-center justify-between w-full">
+                <div className="shrink-0 w-9 h-9 rounded-lg bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center">
+                  <card.icon
+                    className={`w-4 h-4 ${card.theme === 'orange' ? 'text-brand-orange' : 'text-blue-400'}`}
+                  />
+                </div>
+                <span
+                  className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                     card.theme === 'orange'
-                      ? 'bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white'
-                      : 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white'
+                      ? 'bg-brand-orange text-white group-hover:bg-brand-orange-dark'
+                      : 'bg-ink-950/60 backdrop-blur-md border border-white/15 text-white group-hover:bg-brand-orange group-hover:border-brand-orange'
                   }`}
                 >
-                  <card.icon className="w-4 h-4" />
-                </div>
-                <span className="shrink-0 w-6 h-6 rounded-full bg-ink-800 text-white/60 group-hover:bg-brand-orange group-hover:text-white transition-colors flex items-center justify-center">
                   <ArrowRight className="w-3 h-3" />
                 </span>
               </div>
 
               {/* Desktop: original icon */}
-              <div
-                className={`hidden md:flex shrink-0 w-16 h-16 rounded-2xl items-center justify-center transition-colors ${
-                  card.theme === 'orange'
-                    ? 'bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white'
-                    : 'bg-blue-500/10 text-blue-400 group-hover:bg-blue-500 group-hover:text-white'
-                }`}
-              >
-                <card.icon className="w-8 h-8" />
+              <div className="relative z-10 hidden md:flex shrink-0 w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 items-center justify-center">
+                <card.icon
+                  className={`w-8 h-8 ${card.theme === 'orange' ? 'text-brand-orange' : 'text-blue-400'}`}
+                />
               </div>
 
-              <div className="flex-1 min-w-0">
+              <div className="relative z-10 flex-1 min-w-0">
                 <h3 className="text-sm md:text-xl font-bold text-white">{card.title}</h3>
                 <p className="hidden md:block text-sm text-white/60">{card.description}</p>
                 <p className="md:hidden text-[10px] leading-snug text-white/60">{card.description}</p>
               </div>
 
               {/* Desktop arrow */}
-              <span className="hidden md:flex shrink-0 w-10 h-10 rounded-full bg-ink-800 text-white/60 group-hover:bg-brand-orange group-hover:text-white transition-colors items-center justify-center">
+              <span
+                className={`relative z-10 hidden md:flex shrink-0 w-10 h-10 rounded-full items-center justify-center transition-colors ${
+                  card.theme === 'orange'
+                    ? 'bg-brand-orange text-white group-hover:bg-brand-orange-dark'
+                    : 'bg-ink-950/60 backdrop-blur-md border border-white/15 text-white group-hover:bg-brand-orange group-hover:border-brand-orange'
+                }`}
+              >
                 <ArrowRight className="w-5 h-5" />
               </span>
             </Link>

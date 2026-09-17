@@ -511,6 +511,8 @@
   - New `components/PromotedAdRowCard.tsx` mirroring `ProjectListCard` (square banner thumbnail, title, description, type pill, firm/city/relative-time/rating meta, right column with `Sponzorirano` badge, firm name, active-until date, and dark `Pogledaj oglas` CTA; click-to-expand detail panel with full banner, firm card, and orange CTA).
   - `app/oglasi/PromotedAdsPageClient.tsx` now renders a vertical list; deleted the obsolete grid `components/PromotedAdListCard.tsx`.
   - `npm run lint` and `npm run build` pass (2409 pages).
+- Premium photo finish for homepage `RoleCTACards` matching the mobile mockup (layout and card sizes unchanged): photographic backgrounds with dark gradient, glass icon boxes, orange filled arrow on `Tražim majstora` and dark glass arrow on `Za firme`, subtle hover zoom.
+  - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
