@@ -24,6 +24,11 @@ import {
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
 import SubscriptionEditModal from './SubscriptionEditModal';
+import AdminDashboardWelcome from '@/components/dashboard/AdminDashboardWelcome';
+import AdminQuickStats from '@/components/dashboard/AdminQuickStats';
+import AdminIconMenu from '@/components/dashboard/AdminIconMenu';
+import AdminBottomNav from '@/components/dashboard/AdminBottomNav';
+import AdminMoreMenu from '@/components/dashboard/AdminMoreMenu';
 import { roleLabel, isFirmRole } from '@/lib/roles';
 import { formatDateTime, getResetCountdownText } from '@/lib/subscriptions';
 import { formatDate } from '@/lib/date';
@@ -188,15 +193,16 @@ const tabs = [
   { id: 'requests', label: 'Zahtjevi', icon: Bell },
 ];
 
+const validTabs = [
+  'overview', 'users', 'firms', 'verifications', 'reviews', 'conversations',
+  'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'promotions', 'requests',
+];
+
 function AdminPage() {
   const { user, loading: authLoading, isAdmin } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get('tab');
-  const validTabs = [
-    'overview', 'users', 'firms', 'verifications', 'reviews', 'conversations',
-    'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'promotions', 'requests',
-  ];
   const [activeTab, setActiveTab] = useState(tabParam && validTabs.includes(tabParam) ? tabParam : 'overview');
 
   const [profiles, setProfiles] = useState<AdminProfile[]>([]);
@@ -237,6 +243,7 @@ function AdminPage() {
   const [editingFirm, setEditingFirm] = useState<AdminFirm | null>(null);
   const [editingSubscription, setEditingSubscription] = useState<FirmPlan | null>(null);
   const [promoCount, setPromoCount] = useState(0);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const loadProfiles = useCallback(async () => {
     const { data, error: err } = await supabase
@@ -375,6 +382,11 @@ function AdminPage() {
     if (user && isAdmin) loadAll();
   }, [authLoading, user, isAdmin, loadAll]);
 
+  useEffect(() => {
+    const t = searchParams.get('tab');
+    if (t && validTabs.includes(t)) setActiveTab(t);
+  }, [searchParams]);
+
   const loadConversations = useCallback(async () => {
     const { data, error } = await supabase
       .from('bids')
@@ -502,6 +514,11 @@ function AdminPage() {
   }, []);
 
   useEffect(() => {
+    if (activeTab === 'overview') {
+      loadVerifications();
+      loadReviews();
+      loadMediations();
+    }
     if (activeTab === 'subscriptions' && firms.length > 0) {
       loadFirmPlans();
       loadPromoCount();
@@ -812,9 +829,9 @@ function AdminPage() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow pt-24 pb-10 px-4">
+      <main className="flex-grow pt-14 md:pt-24 pb-24 md:pb-10 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="hidden md:flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Admin panel</h1>
               <p className="text-steel text-sm">Upravljanje korisnicima, firmama i pretplatama</p>
@@ -837,8 +854,8 @@ function AdminPage() {
             </div>
           )}
 
-          <div className="relative mb-6">
-            <div className="flex gap-2 border-b border-gray-200 pb-2 overflow-x-auto no-scrollbar md:flex-wrap md:overflow-visible pr-8 md:pr-0">
+          <div className="hidden md:block relative mb-6">
+            <div className="flex gap-2 border-b border-gray-200 pb-2 md:flex-wrap">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 return (
@@ -867,7 +884,78 @@ function AdminPage() {
           ) : (
             <>
               {activeTab === 'overview' && (
-                <div className="space-y-6">
+                <div className="md:hidden space-y-4">
+                  <AdminDashboardWelcome />
+                  <AdminQuickStats
+                    users={stats?.users ?? profiles.length}
+                    firms={stats ? stats.firms + stats.majstors : firms.length}
+                    jobs={stats?.jobs ?? 0}
+                    bids={stats?.bids ?? 0}
+                    reviews={stats?.reviews ?? 0}
+                    revenue={stats?.revenue ?? 0}
+                    onTabChange={setActiveTab}
+                  />
+                  <AdminIconMenu
+                    pendingVerifications={verifications.filter((v) => v.verification_status === 'pending').length}
+                    pendingReviews={reviews.filter((r) => r.status === 'pending').length}
+                    openMediations={mediations.filter((m) => !m.mediation_resolved).length}
+                    onTabChange={setActiveTab}
+                  />
+                  {stats && (
+                    <>
+                      <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                        <h3 className="font-semibold text-gray-900 mb-4">Status poslova</h3>
+                        <div className="space-y-3">
+                          <StatusBar label="Otvoreni" value={stats.openJobs} total={stats.jobs} color="bg-blue-500" />
+                          <StatusBar label="U toku" value={stats.inProgressJobs} total={stats.jobs} color="bg-yellow-500" />
+                          <StatusBar label="Završeni" value={stats.completedJobs} total={stats.jobs} color="bg-green-500" />
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                        <h3 className="font-semibold text-gray-900 mb-4">Korisnici po ulogama</h3>
+                        <div className="space-y-3">
+                          <StatusBar label="Klijenti" value={stats.clients} total={stats.users} color="bg-brand-orange" />
+                          <StatusBar label="Firme" value={stats.firms} total={stats.users} color="bg-blue-500" />
+                          <StatusBar label="Majstori" value={stats.majstors} total={stats.users} color="bg-green-500" />
+                        </div>
+                      </div>
+                      <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                        <h3 className="font-semibold text-gray-900 mb-3">Nedavni poslovi</h3>
+                        {stats.recentJobs.length === 0 ? (
+                          <p className="text-sm text-steel">Nema nedavnih poslova.</p>
+                        ) : (
+                          <ul className="space-y-3">
+                            {stats.recentJobs.map((job, i) => (
+                              <li key={i} className="flex items-center justify-between text-sm">
+                                <span className="text-gray-900 font-medium truncate max-w-[60%]">{job.title}</span>
+                                <span className="text-steel">{job.city}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                        <h3 className="font-semibold text-gray-900 mb-3">Nedavne ponude</h3>
+                        {stats.recentBids.length === 0 ? (
+                          <p className="text-sm text-steel">Nema nedavnih ponuda.</p>
+                        ) : (
+                          <ul className="space-y-3">
+                            {stats.recentBids.map((bid, i) => (
+                              <li key={i} className="flex items-center justify-between text-sm">
+                                <span className="text-gray-900 font-medium">{bid.firm_name}</span>
+                                <span className="text-brand-orange font-semibold">{bid.amount} KM</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'overview' && (
+                <div className="hidden md:block space-y-6">
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                     <StatCard label="Korisnici" value={stats?.users ?? profiles.length} icon={Users} />
                     <StatCard label="Firme / Majstori" value={stats ? stats.firms + stats.majstors : firms.length} icon={Building2} />
@@ -1934,6 +2022,19 @@ function AdminPage() {
         </div>
       </main>
       <Footer />
+
+      <AdminBottomNav
+        unreadRequests={requests.filter((r) => !r.read).length}
+        onMoreClick={() => setMoreOpen(true)}
+      />
+      <AdminMoreMenu
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        unreadRequests={requests.filter((r) => !r.read).length}
+        pendingVerifications={verifications.filter((v) => v.verification_status === 'pending').length}
+        pendingReviews={reviews.filter((r) => r.status === 'pending').length}
+        openMediations={mediations.filter((m) => !m.mediation_resolved).length}
+      />
     </div>
   );
 }

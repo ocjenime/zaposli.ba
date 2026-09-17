@@ -348,6 +348,13 @@
   - New `components/dashboard/ClientRecentBids.tsx` + `ClientMiniChart.tsx`: recent received bids and a 30-day SVG bid chart.
   - New `components/dashboard/ClientBottomNav.tsx` (Početna / Poslovi / Ponude / Poruke / Više) and `ClientMoreMenu.tsx` bottom sheet (Dashboard, Moj profil, Poruke, Obavještenja, Tema, Postavke, Odjavi se).
   - `app/dashboard/page.tsx` now supports `?tab=home|jobs|bids|settings` (messages/profile redirect as before), fetches bids joined to jobs/firms, renders the new mobile home overview, and wraps the existing job list in the mobile jobs tab. Page wrapped in `Suspense` for `useSearchParams`.
+- Admin panel (`/admin/`) updated with the same premium mobile-first shell as the firm/client dashboards:
+  - New `components/dashboard/AdminDashboardWelcome.tsx`: dark cinematic welcome hero ("Administrator") reusing `majstor-hero.webp`.
+  - New `components/dashboard/AdminQuickStats.tsx`: 6 clickable KPI cards (Korisnici / Firme i majstori / Poslovi / Ponude / Recenzije / Prihod) that switch admin tabs.
+  - New `components/dashboard/AdminIconMenu.tsx`: 5-icon shortcut row (Verifikacije / Recenzije / Pretplate / Razgovori / Sporovi) with pending-count badges.
+  - New `components/dashboard/AdminBottomNav.tsx` (Pregled / Korisnici / Firme / Verifikacije / Više) and `AdminMoreMenu.tsx` bottom sheet listing all 14 admin sections in a 2-column grid, plus "Nazad na dashboard" and "Odjavi se".
+  - `app/admin/page.tsx`: mobile shows the new overview home (welcome + KPIs + icon menu + status bars + recent jobs/bids) while the old tab bar and title are `hidden md:block` (desktop unchanged); `activeTab` now syncs from `?tab=` via a `useEffect`; shell padding is `pt-14 md:pt-24 pb-24 md:pb-10`; verifications/reviews/mediations load on overview so badges are populated.
+  - `validTabs` moved to module scope so it is not referenced as an unstable hook dependency.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.
