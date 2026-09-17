@@ -10,12 +10,12 @@ export default function AdminDashboardWelcome() {
           src="/images/majstor-hero.webp"
           alt="Majstor na poslu"
           fill
-          className="object-cover object-[60%_center] opacity-60"
+          className="object-cover object-[60%_center] opacity-85"
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/70 to-ink-950/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-ink-950/45 to-ink-950/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/25 to-transparent" />
       </div>
 
       <div className="relative z-10 p-5 sm:p-6 min-h-[200px] flex flex-col justify-end">
