@@ -18,8 +18,9 @@ const cards = [
   {
     href: '/za-firme/',
     icon: Briefcase,
-    image: '/images/majstor-hero.webp',
-    imageAlt: 'Majstor na terenu',
+    image: '/images/za-firme-card.jpg',
+    imageAlt: 'Vlasnik firme na gradilištu',
+    imagePosition: 'object-[72%_center]',
     title: 'Za firme',
     description: 'Reklamirajte svoju firmu, tražite radnike i ostvarite veću vidljivost.',
     cta: 'Saznaj više',
@@ -43,7 +44,7 @@ export default function RoleCTACards() {
                 src={card.image}
                 alt={card.imageAlt}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className={`object-cover ${'imagePosition' in card && card.imagePosition ? card.imagePosition : 'object-center'} transition-transform duration-700 group-hover:scale-105`}
                 sizes="(max-width: 768px) 50vw, 600px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/35 to-ink-950/10" />

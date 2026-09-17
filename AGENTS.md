@@ -512,6 +512,7 @@
   - `app/oglasi/PromotedAdsPageClient.tsx` now renders a vertical list; deleted the obsolete grid `components/PromotedAdListCard.tsx`.
   - `npm run lint` and `npm run build` pass (2409 pages).
 - Premium photo finish for homepage `RoleCTACards` matching the mobile mockup (layout and card sizes unchanged): photographic backgrounds with dark gradient, glass icon boxes, orange filled arrow on `Tražim majstora` and dark glass arrow on `Za firme`, subtle hover zoom.
+  - `Za firme` card now uses a small optimized `public/images/za-firme-card.jpg` (from `biz.png`, 1536px → 800px JPG 54KB) cropped to keep the businessman fully visible (`object-[72%_center]`).
   - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
