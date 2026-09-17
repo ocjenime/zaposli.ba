@@ -101,7 +101,7 @@ export default function Footer() {
         <p className="text-gray-400 text-[15px] leading-relaxed mt-4">
           Pronađi pouzdane majstore.
           <br />
-          Objavi projekat i primi ponude.
+          Objavi projekt i primi ponude.
         </p>
         <p className="text-gray-500 text-xs font-semibold tracking-[0.18em] mt-5 leading-relaxed">
           BOLJI LJUDI.
@@ -218,7 +218,7 @@ export default function Footer() {
         </div>
 
         <p className="font-serif italic text-white/70 text-xl mt-6 text-right">
-          Gradimo bolju sutra<span className="text-brand-orange">.</span>
+          Gradimo bolje sutra<span className="text-brand-orange">.</span>
         </p>
 
         <a
