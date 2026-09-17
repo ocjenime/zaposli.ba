@@ -57,15 +57,28 @@ const companyLinks = [
   { name: 'Česta pitanja', href: '/faq/' },
 ];
 
+// TODO: zamijeniti pravim URL-ovima za Instagram, YouTube i LinkedIn kad stignu
 const socialLinks = [
   {
     name: 'Facebook',
     href: 'https://www.facebook.com/share/18X8fQ3FxZ/?mibextid=wwXlfr',
     icon: Facebook,
   },
-  { name: 'Instagram', href: null, icon: Instagram },
-  { name: 'YouTube', href: null, icon: Youtube },
-  { name: 'LinkedIn', href: null, icon: Linkedin },
+  {
+    name: 'Instagram',
+    href: 'https://www.facebook.com/share/18X8fQ3FxZ/?mibextid=wwXlfr',
+    icon: Instagram,
+  },
+  {
+    name: 'YouTube',
+    href: 'https://www.facebook.com/share/18X8fQ3FxZ/?mibextid=wwXlfr',
+    icon: Youtube,
+  },
+  {
+    name: 'LinkedIn',
+    href: 'https://www.facebook.com/share/18X8fQ3FxZ/?mibextid=wwXlfr',
+    icon: Linkedin,
+  },
 ];
 
 function BosniaFlag({ className = 'w-10 h-10' }: { className?: string }) {
@@ -105,37 +118,36 @@ export default function Footer() {
   return (
     <footer className="bg-ink text-[#ffffff]">
       {/* Mobilni premium footer */}
-      <div className="md:hidden px-6 pt-12 pb-8">
-        <Link
-          href="/"
-          className="inline-flex items-center origin-left scale-110"
-          aria-label="Zaposli.ba početna"
-        >
-          <Logo variant="light" />
-        </Link>
-        <p className="text-gray-200 text-lg leading-relaxed mt-5">
-          Pronađi pouzdane majstore.
-          <br />
-          Objavi projekt i primi ponude.
-        </p>
-        <p className="text-slate-400 text-sm font-bold tracking-[0.22em] mt-6 leading-loose">
-          BOLJI LJUDI.
-          <br />
-          BOLJI PROJEKTI.
-        </p>
-
+      <div className="md:hidden px-4 pt-10 pb-8">
         {/* Direktorij */}
-        <div className="grid grid-cols-2 gap-5 mt-9">
-          <div className="border-l border-white/10 pl-5">
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-4">
+        <div className="grid grid-cols-[1fr_1.12fr_1fr] gap-3">
+          <div>
+            <Link
+              href="/"
+              className="inline-flex items-center origin-left scale-[0.68]"
+              aria-label="Zaposli.ba početna"
+            >
+              <Logo variant="light" />
+            </Link>
+            <p className="text-gray-200 text-[13px] leading-snug mt-3">
+              Pronađi pouzdane majstore. Objavi projekt i primi ponude.
+            </p>
+            <p className="text-slate-400 text-[10px] font-bold tracking-[0.18em] mt-4 leading-relaxed">
+              BOLJI LJUDI.
+              <br />
+              BOLJI PROJEKTI.
+            </p>
+          </div>
+          <div className="border-l border-white/10 pl-3">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-3">
               Najtraženije kategorije
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {topCategories.map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     href={`/kategorije/${cat.slug}/`}
-                    className="text-gray-100 text-base leading-snug hover:text-brand-orange transition-colors"
+                    className="text-gray-100 text-[13px] leading-tight tracking-tight hover:text-brand-orange transition-colors"
                   >
                     {getCategoryShortName(cat)}
                   </Link>
@@ -144,22 +156,22 @@ export default function Footer() {
             </ul>
             <Link
               href="/kategorije/"
-              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-base mt-4"
+              className="inline-flex items-center gap-1 text-brand-orange font-bold text-[13px] mt-3"
             >
               Sve kategorije
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
-          <div className="border-l border-white/10 pl-5">
-            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-4">
+          <div className="border-l border-white/10 pl-3">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-3">
               Popularni gradovi
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {popularCities.map((city) => (
                 <li key={city.slug}>
                   <Link
                     href={`/gradovi/${city.slug}/`}
-                    className="text-gray-100 text-base leading-snug hover:text-brand-orange transition-colors"
+                    className="text-gray-100 text-[13px] leading-tight tracking-tight hover:text-brand-orange transition-colors"
                   >
                     {city.name}
                   </Link>
@@ -168,54 +180,43 @@ export default function Footer() {
             </ul>
             <Link
               href="/gradovi/"
-              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-base mt-4"
+              className="inline-flex items-center gap-1 text-brand-orange font-bold text-[13px] mt-3"
             >
               Svi gradovi
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
 
         <div className="h-px bg-white/10 my-8" />
 
-        {/* Info linkovi */}
-        <nav className="flex flex-wrap gap-x-6 gap-y-3" aria-label="Informacije">
-          {companyLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-gray-300 text-[15px] hover:text-white transition-colors"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Društvene mreže */}
-        <div className="flex gap-2 mt-4">
-          {socialLinks.map((social) =>
-            social.href ? (
+        {/* Info linkovi + društvene mreže */}
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2.5 flex-1" aria-label="Informacije">
+            {companyLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-gray-300 text-[13px] hover:text-white transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          <div className="flex gap-1.5 shrink-0 ml-auto">
+            {socialLinks.map((social) => (
               <a
                 key={social.name}
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-brand-orange/50 hover:text-brand-orange transition-colors"
+                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-brand-orange/50 hover:text-brand-orange transition-colors"
               >
-                <social.icon className="w-5 h-5" />
+                <social.icon className="w-[18px] h-[18px]" />
               </a>
-            ) : (
-              <span
-                key={social.name}
-                title={`${social.name} - uskoro`}
-                aria-label={`${social.name} - uskoro`}
-                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30"
-              >
-                <social.icon className="w-5 h-5" />
-              </span>
-            )
-          )}
+            ))}
+          </div>
         </div>
 
         {/* Aplikacije + BiH */}
