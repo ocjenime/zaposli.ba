@@ -507,8 +507,6 @@
   - `app/kategorije/page.tsx` is now a thin server wrapper keeping metadata; grouping/filtering logic unchanged (featured/noSeo exclusions preserved).
   - Added a homepage-style cinematic hero to `/kategorije/` using the new optimized `public/images/kategorije-majstori.jpg` (from `kat.png`, 1842px → 1536px JPG 144KB): left-aligned glass eyebrow, white h1 with orange gradient span, glass search input, glass `Popularno` pills, glass trust badges, and bottom fade into the listings.
   - `npm run lint` and `npm run build` pass (2409 pages).
-- Redesigned homepage `RoleCTACards` to the premium photo style from the mobile mockup: side-by-side photographic cards (`renovacija-enterijer.webp` for `Tražim majstora`, `majstor-hero.webp` for `Za firme`) with dark bottom gradient, glass icon box top-left, circular arrow button top-right, white title + description; hover zoom + orange arrow.
-  - `npm run lint` and `npm run build` pass (2409 pages).
 - Switched `/oglasi/` and `/izdvojeni-oglasi/` from a 3-column card grid to the `/poslovi/` horizontal list-row style:
   - New `components/PromotedAdRowCard.tsx` mirroring `ProjectListCard` (square banner thumbnail, title, description, type pill, firm/city/relative-time/rating meta, right column with `Sponzorirano` badge, firm name, active-until date, and dark `Pogledaj oglas` CTA; click-to-expand detail panel with full banner, firm card, and orange CTA).
   - `app/oglasi/PromotedAdsPageClient.tsx` now renders a vertical list; deleted the obsolete grid `components/PromotedAdListCard.tsx`.
