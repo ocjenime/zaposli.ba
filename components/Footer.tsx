@@ -254,9 +254,9 @@ export default function Footer() {
             <div className="flex-1 flex items-center gap-2.5">
               <BosniaFlag className="w-9 h-9" />
               <p className="text-gray-400 text-xs leading-snug">
-                Iz Bosne i Hercegovine
+                Iz Bosne i Hercegovine.
                 <br />
-                za bolje majstore.
+                Za pravi izbor.
               </p>
             </div>
           </div>
