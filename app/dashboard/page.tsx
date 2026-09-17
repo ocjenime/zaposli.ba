@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState, useRef, useCallback, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { plural } from '@/lib/plural';
 import Header from '@/components/Header';
@@ -9,8 +9,17 @@ import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
-import { Plus, MapPin, ClipboardList, Loader2, User, Pencil, Trash2, X, DollarSign, Calendar } from 'lucide-react';
+import { Plus, MapPin, ClipboardList, Loader2, User, Pencil, Trash2, X, DollarSign, Calendar, ArrowRight } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
+import ClientBottomNav from '@/components/dashboard/ClientBottomNav';
+import ClientMoreMenu from '@/components/dashboard/ClientMoreMenu';
+import ClientDashboardWelcome from '@/components/dashboard/ClientDashboardWelcome';
+import ClientQuickStats from '@/components/dashboard/ClientQuickStats';
+import ClientQuickActions from '@/components/dashboard/ClientQuickActions';
+import ClientIconMenu from '@/components/dashboard/ClientIconMenu';
+import ClientMyJobsList from '@/components/dashboard/ClientMyJobsList';
+import ClientRecentBids from '@/components/dashboard/ClientRecentBids';
+import ClientMiniChart from '@/components/dashboard/ClientMiniChart';
 
 const categories = allCategories.filter((c) => !c.noSeo);
 const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'bs'));
@@ -43,6 +52,15 @@ interface EditForm {
   deadline: string;
 }
 
+interface Bid {
+  id: string;
+  amount: number;
+  status: 'pending' | 'accepted' | 'rejected';
+  created_at: string;
+  jobs: { title: string }[] | null;
+  firms: { name: string | null }[] | null;
+}
+
 const statusLabels: Record<Job['status'], string> = {
   open: 'Otvoren',
   bidding: 'U ponudama',
@@ -71,11 +89,14 @@ const emptyEditForm: EditForm = {
   deadline: '',
 };
 
-export default function DashboardPage() {
+function DashboardPageContent() {
   const { user, loading, role } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [bids, setBids] = useState<Bid[]>([]);
   const [loadingJobs, setLoadingJobs] = useState(true);
+  const [loadingBids, setLoadingBids] = useState(true);
   const [error, setError] = useState('');
   const [actionId, setActionId] = useState<string | null>(null);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
@@ -84,6 +105,8 @@ export default function DashboardPage() {
   const [editError, setEditError] = useState('');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'home' | 'jobs' | 'bids' | 'messages' | 'profile' | 'settings'>('home');
+  const [moreOpen, setMoreOpen] = useState(false);
   const editParamOpened = useRef(false);
 
   useEffect(() => {
@@ -94,6 +117,19 @@ export default function DashboardPage() {
       router.push('/dashboard/firma/');
     }
   }, [user, role, loading, router]);
+
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'messages') {
+      router.push('/dashboard/razgovor/');
+    } else if (tab === 'profile') {
+      router.push('/dashboard/profil/');
+    } else if (tab === 'settings' || tab === 'jobs' || tab === 'bids') {
+      setActiveTab(tab);
+    } else if (tab === 'home' || tab === null) {
+      setActiveTab('home');
+    }
+  }, [searchParams, router]);
 
   useEffect(() => {
     if (editParamOpened.current || loadingJobs || jobs.length === 0) return;
@@ -129,9 +165,24 @@ export default function DashboardPage() {
     setLoadingJobs(false);
   }, [user]);
 
+  const fetchBids = useCallback(async () => {
+    if (!user) return;
+    setLoadingBids(true);
+    const { data, error: err } = await supabase
+      .from('bids')
+      .select('id,amount,status,created_at,jobs!inner(title),firms(name)')
+      .eq('jobs.client_id', user.id)
+      .order('created_at', { ascending: false });
+    if (!err) setBids(((data as unknown) as Bid[]) || []);
+    setLoadingBids(false);
+  }, [user]);
+
   useEffect(() => {
-    if (user && role === 'client') fetchJobs();
-  }, [user, role, fetchJobs]);
+    if (user && role === 'client') {
+      fetchJobs();
+      fetchBids();
+    }
+  }, [user, role, fetchJobs, fetchBids]);
 
   function openEdit(job: Job) {
     const cat = getCategory(job.category_slug);
@@ -309,11 +360,59 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
-      <main className="flex-grow pt-24 pb-10 px-4">
+      <main className="flex-grow pt-14 md:pt-24 pb-24 md:pb-10 px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Moji poslovi</h1>
+          {/* Mobile home overview */}
+          {activeTab === 'home' && (
+            <div className="md:hidden space-y-4 mb-6">
+              <ClientDashboardWelcome name={user?.email?.split('@')[0]} />
+              <ClientQuickActions />
+              <ClientQuickStats
+                activeJobs={jobs.filter((j) => j.status === 'open' || j.status === 'bidding').length}
+                totalBids={bids.length}
+                completedJobs={jobs.filter((j) => j.status === 'completed').length}
+                unreadMessages={0}
+                onTabChange={setActiveTab}
+              />
+              <ClientIconMenu
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+                bidsCount={bids.length}
+              />
+              <ClientMyJobsList jobs={jobs} loading={loadingJobs} />
+              <div className="grid grid-cols-1 gap-4">
+                <ClientRecentBids bids={bids} />
+                <ClientMiniChart bids={bids} />
+              </div>
+            </div>
+          )}
+
+          {/* Mobile bids view */}
+          <div className={`${activeTab === 'bids' ? 'block' : 'hidden'} md:hidden space-y-4 mb-6`}>
+            <h2 className="text-xl font-bold text-gray-900">Ponude na moje poslove</h2>
+            <ClientRecentBids bids={bids} />
+          </div>
+
+          {/* Mobile settings view */}
+          {activeTab === 'settings' && (
+            <div className="md:hidden space-y-4 mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Postavke</h2>
+              <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 p-4 shadow-sm">
+                <p className="text-sm text-steel">Postavke računa dostupne su na stranici profila.</p>
+                <Link
+                  href="/dashboard/profil/"
+                  className="inline-flex items-center gap-1 mt-2 text-sm font-semibold text-brand-orange hover:underline"
+                >
+                  Idi na profil <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          )}
+
+          <div className={`${activeTab === 'jobs' ? 'block' : 'hidden'} md:block`}>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Moji poslovi</h1>
               <p className="text-steel text-sm flex items-center gap-2">
                 {user.email}
                 <Link
@@ -416,9 +515,13 @@ export default function DashboardPage() {
               ))}
             </div>
           )}
+          </div>
         </div>
       </main>
       <Footer />
+
+      <ClientBottomNav bidsCount={bids.length} onMoreClick={() => setMoreOpen(true)} />
+      <ClientMoreMenu open={moreOpen} onClose={() => setMoreOpen(false)} />
 
       {/* Edit job modal */}
       {editingJob && (
@@ -620,5 +723,13 @@ export default function DashboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-cloud" />}>
+      <DashboardPageContent />
+    </Suspense>
   );
 }

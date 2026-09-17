@@ -338,6 +338,16 @@
   - Made `FirmQuickStats` cards clickable: ads → Oglasi, bids → Ponude, views → Statistika, rating → Profil firme.
   - Fixed `FirmQuickStats` dark-mode text to use explicit `#ffffff` so numbers and labels remain readable.
   - Removed the non-functional 3-dot menu from `FirmMyAdsList` so users only see the working ad link and status badge.
+- Client dashboard (`/dashboard/`) rebuilt as a premium mobile-first panel matching the firm dashboard style:
+  - Dark cinematic welcome hero (`components/dashboard/ClientDashboardWelcome.tsx`) reusing `majstor-hero.webp` with dark gradient overlays like the homepage hero.
+  - Firm dashboard hero (`components/dashboard/FirmDashboardWelcome.tsx`) also switched back to the dark overlay style to match the homepage hero.
+  - New `components/dashboard/ClientQuickActions.tsx` (green/orange "Objavi posao" + dark "Pronađi majstora" CTAs).
+  - New `components/dashboard/ClientQuickStats.tsx`: 4 KPI cards (active jobs, received bids, unread messages, completed jobs) that navigate via tab state; dark-mode text uses explicit `#ffffff`.
+  - New `components/dashboard/ClientIconMenu.tsx`: 5-icon shortcut row (Moji poslovi / Ponude / Poruke / Profil / Postavke) with badge support.
+  - New `components/dashboard/ClientMyJobsList.tsx`: recent jobs preview with status badges and bid counts.
+  - New `components/dashboard/ClientRecentBids.tsx` + `ClientMiniChart.tsx`: recent received bids and a 30-day SVG bid chart.
+  - New `components/dashboard/ClientBottomNav.tsx` (Početna / Poslovi / Ponude / Poruke / Više) and `ClientMoreMenu.tsx` bottom sheet (Dashboard, Moj profil, Poruke, Obavještenja, Tema, Postavke, Odjavi se).
+  - `app/dashboard/page.tsx` now supports `?tab=home|jobs|bids|settings` (messages/profile redirect as before), fetches bids joined to jobs/firms, renders the new mobile home overview, and wraps the existing job list in the mobile jobs tab. Page wrapped in `Suspense` for `useSearchParams`.
 - Added the app sticker in the footer below the "Majstori po gradovima" column on desktop only (centered, larger, no glass frame, no animation).
 - Removed the homepage hero sticker from desktop to reduce visual clutter; the mobile scroll-triggered popup remains.
 - Fixed homepage emergency banner flash on load: it now starts hidden and fades in only when localStorage confirms it was not dismissed.

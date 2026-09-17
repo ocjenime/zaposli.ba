@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 
-interface FirmDashboardWelcomeProps {
-  firmName?: string | null;
+interface ClientDashboardWelcomeProps {
+  name?: string | null;
 }
 
-export default function FirmDashboardWelcome({ firmName }: FirmDashboardWelcomeProps) {
-  const name = firmName || 'Firma';
+export default function ClientDashboardWelcome({ name }: ClientDashboardWelcomeProps) {
+  const displayName = name || 'Klijent';
 
   return (
     <section className="relative overflow-hidden rounded-3xl bg-ink-900 text-white shadow-lg">
@@ -26,9 +26,9 @@ export default function FirmDashboardWelcome({ firmName }: FirmDashboardWelcomeP
 
       <div className="relative z-10 p-5 sm:p-6 min-h-[200px] flex flex-col justify-end">
         <p className="text-sm text-white/70 mb-1">Dobro došli,</p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight drop-shadow-lg">{name}</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2 leading-tight drop-shadow-lg">{displayName}</h1>
         <p className="text-sm sm:text-base text-white/80 max-w-md leading-relaxed drop-shadow">
-          Upravljajte oglasima, pronađite nove poslove i gradite svoju reputaciju.
+          Vaši poslovi, primljene ponude i komunikacija - sve na jednom mjestu.
         </p>
       </div>
     </section>
