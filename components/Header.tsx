@@ -30,6 +30,7 @@ import {
   ArrowRight,
   Apple,
   Play,
+  ClipboardList,
 } from 'lucide-react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -56,6 +57,7 @@ const mobilePrimaryLinks = [
   { href: '/', label: 'Početna', icon: Home },
   { href: '/kategorije/', label: 'Kategorije', icon: Search },
   { href: '/gradovi/', label: 'Gradovi', icon: MapPin },
+  { href: '/poslovi/', label: 'Poslovi', icon: ClipboardList },
   { href: '/objavi-projekat/', label: 'Objavi posao', icon: Briefcase, badge: 'Besplatno' },
   { href: '/top-firme/', label: 'Pronađi majstora', icon: HardHat },
   { href: '/oglasi/', label: 'Oglasi', icon: Megaphone },

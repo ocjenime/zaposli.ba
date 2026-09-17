@@ -497,7 +497,7 @@
 - Redesigned the mobile menu in `components/Header.tsx` into a premium left drawer matching the provided mockup (`menu.png`):
   - Drawer panel (88% width, max 340px) with dimmed backdrop, slide-in animation, `role="dialog"` + `aria-modal`, ESC/backdrop/X close, and body scroll lock.
   - Top bar with X button, centered `Logo` + "Ljudi. Poslovi. Povjerenje." tagline; account row shows "Prijavi se / Brže do svojih projekata" for guests or avatar + name + role for logged-in users (links to dashboard).
-  - Primary nav (`Početna`, `Kategorije`, `Gradovi`, `Objavi posao` with `Besplatno` pill, `Pronađi majstora` → `/top-firme/`, `Oglasi`) and secondary nav (`Kako funkcioniše`, `Za firme`, `Kontakt`), all rows with icons + chevrons and orange active state; admin users also get an `Admin panel` row, logged-in users an `Odjavi se` row.
+  - Primary nav (`Početna`, `Kategorije`, `Gradovi`, `Poslovi` → `/poslovi/` with `ClipboardList` icon, `Objavi posao` with `Besplatno` pill, `Pronađi majstora` → `/top-firme/`, `Oglasi`) and secondary nav (`Kako funkcioniše`, `Za firme`, `Kontakt`), all rows with icons + chevrons and orange active state; admin users also get an `Admin panel` row, logged-in users an `Odjavi se` row.
   - Promo card ("Tvoj sljedeći majstor je ovdje." + `Objavi posao` CTA + `majstor-cekic.webp` photo with handwritten note), "Uskoro dostupno" app section with static App Store / Google Play badges (no dead links - app does not exist yet), and footer with "Podržavamo lokalne majstore.", static BA locale label, and `ThemeToggle simple`.
   - Desktop header/nav unchanged; old mobile menu sections (CTA, generic nav/auth/settings/contact blocks) removed.
   - `npm run lint` and `npm run build` pass (2409 pages).
