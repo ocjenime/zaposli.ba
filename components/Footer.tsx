@@ -88,16 +88,21 @@ function BosniaFlag({ className = 'w-10 h-10' }: { className?: string }) {
         <clipPath id="bihFlagClip">
           <circle cx="24" cy="24" r="24" />
         </clipPath>
+        <polygon
+          id="bihStar"
+          points="0,-2.1 0.49,-0.68 1.99,-0.65 0.8,0.26 1.23,1.7 0,0.84 -1.23,1.7 -0.8,0.26 -1.99,-0.65 -0.49,-0.68"
+        />
       </defs>
       <g clipPath="url(#bihFlagClip)">
         <rect width="48" height="48" fill="#002395" />
-        <polygon points="21,0 48,0 48,48 21,48" fill="#FECB00" />
-        <circle cx="24" cy="9" r="1.8" fill="#ffffff" />
-        <circle cx="27.5" cy="15" r="1.8" fill="#ffffff" />
-        <circle cx="31" cy="21" r="1.8" fill="#ffffff" />
-        <circle cx="34.5" cy="27" r="1.8" fill="#ffffff" />
-        <circle cx="38" cy="33" r="1.8" fill="#ffffff" />
-        <circle cx="41.5" cy="39" r="1.8" fill="#ffffff" />
+        <polygon points="24,0 48,0 48,48" fill="#FECB00" />
+        <use href="#bihStar" transform="translate(19.5,8)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(22.5,13.5)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(25.5,19)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(28.5,24.5)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(31.5,30)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(34.5,35.5)" fill="#ffffff" />
+        <use href="#bihStar" transform="translate(37.5,41)" fill="#ffffff" />
       </g>
     </svg>
   );
@@ -129,9 +134,6 @@ export default function Footer() {
             >
               <Logo variant="light" />
             </Link>
-            <p className="text-gray-200 text-[13px] leading-snug mt-3">
-              Pronađi pouzdane majstore. Objavi projekt i primi ponude.
-            </p>
             <p className="text-slate-400 text-[10px] font-bold tracking-[0.18em] mt-4 leading-relaxed">
               BOLJI LJUDI.
               <br />
@@ -191,19 +193,19 @@ export default function Footer() {
         <div className="h-px bg-white/10 my-8" />
 
         {/* Info linkovi + društvene mreže */}
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-          <nav className="flex flex-wrap items-center gap-x-5 gap-y-2.5 flex-1" aria-label="Informacije">
+        <div className="flex items-center gap-4 overflow-x-auto no-scrollbar -mx-4 px-4">
+          <nav className="flex items-center gap-5 shrink-0" aria-label="Informacije">
             {companyLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-gray-300 text-[13px] hover:text-white transition-colors"
+                className="text-gray-300 text-[13px] whitespace-nowrap hover:text-white transition-colors"
               >
                 {link.name}
               </Link>
             ))}
           </nav>
-          <div className="flex gap-1.5 shrink-0 ml-auto">
+          <div className="flex gap-1.5 shrink-0 ml-auto pl-1">
             {socialLinks.map((social) => (
               <a
                 key={social.name}
@@ -227,7 +229,7 @@ export default function Footer() {
           <div className="flex items-stretch gap-3 mt-2.5">
             <div className="flex-[1.4] flex flex-col gap-2">
               <div
-                className="flex-1 flex items-center gap-1.5 bg-black border border-white/20 rounded-xl px-2.5 py-1.5"
+                className="flex-1 flex items-center gap-1.5 bg-black border border-white/40 rounded-lg px-2.5 py-1.5"
                 title="Uskoro dostupno"
                 aria-label="App Store - uskoro dostupno"
               >
@@ -238,13 +240,13 @@ export default function Footer() {
                 </span>
               </div>
               <div
-                className="flex-1 flex items-center gap-1.5 bg-black border border-white/20 rounded-xl px-2.5 py-1.5"
+                className="flex-1 flex items-center gap-1.5 bg-black border border-white/40 rounded-lg px-2.5 py-1.5"
                 title="Uskoro dostupno"
                 aria-label="Google Play - uskoro dostupno"
               >
                 <Play className="w-5 h-5 shrink-0 fill-current text-white" />
                 <span className="leading-tight">
-                  <span className="block text-[8px] uppercase text-white/70">Dostupno na</span>
+                  <span className="block text-[8px] uppercase text-white/70">Preuzmite na</span>
                   <span className="block text-[13px] font-semibold text-white">Google Play</span>
                 </span>
               </div>
@@ -262,25 +264,18 @@ export default function Footer() {
         </div>
 
         {/* Dno */}
-        <div className="flex items-end justify-between gap-4 mt-8">
-          <div className="min-w-0">
-            <a
-              href={`mailto:${site.email}`}
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-orange transition-colors"
-            >
-              <Mail className="w-4 h-4 shrink-0" />
-              <span className="truncate">{site.email}</span>
-            </a>
-            <p className="text-gray-600 text-xs mt-1.5 leading-relaxed">
-              &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
-              <br />
-              Powered by Luxari
-            </p>
-          </div>
-          <p className="font-serif italic text-white/70 text-xl text-right leading-snug shrink-0">
-            Gradimo bolje
+        <div className="mt-8">
+          <a
+            href={`mailto:${site.email}`}
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-orange transition-colors"
+          >
+            <Mail className="w-4 h-4 shrink-0" />
+            <span className="truncate">{site.email}</span>
+          </a>
+          <p className="text-gray-600 text-xs mt-1.5 leading-relaxed">
+            &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
             <br />
-            sutra<span className="text-brand-orange">.</span>
+            Powered by Luxari
           </p>
         </div>
       </div>
