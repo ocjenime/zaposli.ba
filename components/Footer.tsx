@@ -139,6 +139,18 @@ export default function Footer() {
               <br />
               BOLJI PROJEKTI.
             </p>
+            <ul className="space-y-2 mt-4">
+              {companyLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-gray-300 text-[13px] hover:text-white transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
           <div className="border-l border-white/10 pl-3">
             <h3 className="text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400 mb-3">
@@ -190,39 +202,26 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="h-px bg-white/10 my-8" />
-
-        {/* Info linkovi + društvene mreže */}
-        <div className="flex items-center gap-4 overflow-x-auto no-scrollbar -mx-4 px-4">
-          <nav className="flex items-center gap-5 shrink-0" aria-label="Informacije">
-            {companyLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-gray-300 text-[13px] whitespace-nowrap hover:text-white transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
-          <div className="flex gap-1.5 shrink-0 ml-auto pl-1">
-            {socialLinks.map((social) => (
-              <a
-                key={social.name}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={social.name}
-                className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-brand-orange/50 hover:text-brand-orange transition-colors"
-              >
-                <social.icon className="w-[18px] h-[18px]" />
-              </a>
-            ))}
-          </div>
+        {/* Društvene mreže */}
+        <div className="flex gap-2 mt-6">
+          {socialLinks.map((social) => (
+            <a
+              key={social.name}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={social.name}
+              className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-brand-orange/50 hover:text-brand-orange transition-colors"
+            >
+              <social.icon className="w-5 h-5" />
+            </a>
+          ))}
         </div>
 
+        <div className="h-px bg-white/10 my-6" />
+
         {/* Aplikacije + BiH */}
-        <div className="mt-7">
+        <div>
           <span className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] text-brand-orange bg-brand-orange/10 border border-brand-orange/20 rounded-full px-2.5 py-1">
             Uskoro dostupno
           </span>
