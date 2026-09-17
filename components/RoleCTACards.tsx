@@ -37,7 +37,7 @@ export default function RoleCTACards() {
             <Link
               key={card.href}
               href={card.href}
-              className="group relative flex flex-col md:flex-row md:items-center gap-2 md:gap-5 rounded-xl md:rounded-2xl bg-ink-900 border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 p-2.5 md:p-6 overflow-hidden"
+              className="group relative flex flex-col md:flex-row md:items-center gap-2 md:gap-5 rounded-xl md:rounded-2xl bg-ink-900 border border-ink-800 hover:border-brand-orange/40 transition-all duration-300 px-2.5 pt-2.5 pb-2 md:px-6 md:pt-6 md:pb-4 overflow-hidden"
             >
               {/* Photo background */}
               <Image
@@ -47,7 +47,8 @@ export default function RoleCTACards() {
                 className={`object-cover ${'imagePosition' in card && card.imagePosition ? card.imagePosition : 'object-center'} transition-transform duration-700 group-hover:scale-105`}
                 sizes="(max-width: 768px) 50vw, 600px"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/85 via-ink-950/35 to-ink-950/10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink-950/95 via-ink-950/50 to-ink-950/10" />
+              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/60 to-transparent" />
 
               {/* Mobile: icon + arrow in one row to save vertical space */}
               <div className="relative z-10 flex md:hidden items-center justify-between w-full">
