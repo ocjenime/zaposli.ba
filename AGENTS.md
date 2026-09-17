@@ -515,6 +515,8 @@
   - `Za firme` card now uses a small optimized `public/images/za-firme-card.jpg` (from `biz.png`, 1536px → 800px JPG 54KB) cropped to keep the businessman fully visible (`object-[72%_center]`).
   - `Tražim majstora` card now uses a small optimized `public/images/trazim-majstora-card.jpg` (from `trazim.png`, 1536px → 800px JPG 57KB), centered so the renovation scene stays fully visible.
   - Strengthened the bottom dark scrim on role cards (`from-ink-950/95 via-ink-950/50` + extra bottom `black/60` fade) so text stays readable on bright photos, and lowered the text closer to the card bottom edge like the mockup.
+- Removed the `PopularCategories` (`Istražite kategorije`) section from the homepage (`app/page.tsx` import + usage; component file kept for reuse).
+- Slimmed the homepage `CTASection` (`Započnite danas`) to match the scale of other sections: tighter padding, smaller heading/text/buttons, and a more compact firm card.
   - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
