@@ -10,7 +10,7 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PromotedAdListCard from '@/components/PromotedAdListCard';
+import PromotedAdRowCard from '@/components/PromotedAdRowCard';
 import AdCreateCTA from '@/components/AdCreateCTA';
 import { plural } from '@/lib/plural';
 import type { PublicPromotedAd } from '@/lib/promoted-ads';
@@ -383,9 +383,9 @@ export default function PromotedAdsPageClient({
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-12">
+              <div className="flex flex-col gap-4 md:gap-5 mb-12">
                 {filteredAds.map((ad) => (
-                  <PromotedAdListCard key={ad.id} ad={ad} />
+                  <PromotedAdRowCard key={ad.id} ad={ad} />
                 ))}
               </div>
             )}

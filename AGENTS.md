@@ -506,6 +506,10 @@
   - New client component `app/kategorije/CategoriesClient.tsx`: compact centered header (eyebrow pill, h1, subtitle), live category search with clear button and result count, `Popularno` quick-link pills, slim inline trust strip, tighter group cards with per-group counts, empty state with reset + post-job CTA, and a `/poslovi/`-style light bottom CTA card.
   - `app/kategorije/page.tsx` is now a thin server wrapper keeping metadata; grouping/filtering logic unchanged (featured/noSeo exclusions preserved).
   - `npm run lint` and `npm run build` pass (2409 pages).
+- Switched `/oglasi/` and `/izdvojeni-oglasi/` from a 3-column card grid to the `/poslovi/` horizontal list-row style:
+  - New `components/PromotedAdRowCard.tsx` mirroring `ProjectListCard` (square banner thumbnail, title, description, type pill, firm/city/relative-time/rating meta, right column with `Sponzorirano` badge, firm name, active-until date, and dark `Pogledaj oglas` CTA; click-to-expand detail panel with full banner, firm card, and orange CTA).
+  - `app/oglasi/PromotedAdsPageClient.tsx` now renders a vertical list; deleted the obsolete grid `components/PromotedAdListCard.tsx`.
+  - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
