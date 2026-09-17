@@ -88,29 +88,29 @@ function MobileMenuRow({
     <Link
       href={href}
       onClick={onNavigate}
-      className={`flex items-center gap-3.5 px-3 py-[13px] rounded-2xl transition-colors active:scale-[0.99] ${
+      className={`flex items-center gap-3 px-2.5 py-[7px] rounded-xl transition-colors active:scale-[0.99] ${
         active ? 'bg-orange-50 dark:bg-white/5' : 'hover:bg-gray-50 dark:hover:bg-white/5'
       }`}
       aria-current={active ? 'page' : undefined}
     >
       <Icon
-        className={`w-[22px] h-[22px] shrink-0 ${active ? 'text-brand-orange' : 'text-gray-900 dark:text-[#ffffff]'}`}
+        className={`w-5 h-5 shrink-0 ${active ? 'text-brand-orange' : 'text-gray-900 dark:text-[#ffffff]'}`}
         strokeWidth={1.8}
       />
       <span
-        className={`flex-1 text-[17px] leading-snug ${
+        className={`flex-1 text-[15px] leading-snug ${
           active ? 'text-brand-orange font-semibold' : 'text-gray-900 dark:text-[#ffffff] font-medium'
         }`}
       >
         {label}
       </span>
       {badge && (
-        <span className="text-[13px] font-semibold text-brand-orange bg-orange-100/80 dark:bg-brand-orange/15 px-2.5 py-1 rounded-full shrink-0">
+        <span className="text-xs font-semibold text-brand-orange bg-orange-100/80 dark:bg-brand-orange/15 px-2 py-0.5 rounded-full shrink-0">
           {badge}
         </span>
       )}
       <ChevronRight
-        className={`w-5 h-5 shrink-0 ${active ? 'text-brand-orange' : 'text-gray-400 dark:text-white/40'}`}
+        className={`w-[18px] h-[18px] shrink-0 ${active ? 'text-brand-orange' : 'text-gray-400 dark:text-white/40'}`}
       />
     </Link>
   );
@@ -387,22 +387,22 @@ export default function Header({ dark = false }: { dark?: boolean }) {
             id="mobile-menu"
             className="absolute left-0 top-0 bottom-0 w-[88%] max-w-[340px] bg-white dark:bg-ink-900 shadow-2xl overflow-y-auto overscroll-contain animate-slide-in"
           >
-            <div className="px-5 pt-4 pb-6 space-y-5">
+            <div className="px-4 pt-2.5 pb-3 space-y-3">
               {/* Top bar */}
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setMobileMenuOpen(false)}
                   aria-label="Zatvori meni"
-                  className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-900 dark:text-white shrink-0"
+                  className="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-900 dark:text-white shrink-0"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-[18px] h-[18px]" />
                 </button>
                 <div className="flex-1 flex flex-col items-center min-w-0">
                   <Logo />
-                  <span className="text-[11px] text-gray-400 dark:text-white/50 mt-1">Ljudi. Poslovi. Povjerenje.</span>
+                  <span className="text-[10px] text-gray-400 dark:text-white/50 mt-0.5">Ljudi. Poslovi. Povjerenje.</span>
                 </div>
-                <div className="w-10 shrink-0" aria-hidden="true" />
+                <div className="w-9 shrink-0" aria-hidden="true" />
               </div>
 
               {/* Account */}
@@ -410,31 +410,31 @@ export default function Header({ dark = false }: { dark?: boolean }) {
                 <Link
                   href={dashboardHref}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 py-1"
+                  className="flex items-center gap-2.5 py-0"
                 >
-                  <div className="w-12 h-12 rounded-full bg-brand-orange text-white text-lg font-bold flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-brand-orange text-white text-base font-bold flex items-center justify-center shrink-0">
                     {initials || 'K'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[17px] font-semibold text-gray-900 dark:text-white truncate">{displayName}</p>
-                    <p className="text-sm text-gray-500 dark:text-white/60">{roleLabel} - Idi na dashboard</p>
+                    <p className="text-[15px] font-semibold text-gray-900 dark:text-white truncate">{displayName}</p>
+                    <p className="text-xs text-gray-500 dark:text-white/60">{roleLabel} - Idi na dashboard</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 dark:text-white/40 shrink-0" />
+                  <ChevronRight className="w-[18px] h-[18px] text-gray-400 dark:text-white/40 shrink-0" />
                 </Link>
               ) : (
                 <Link
                   href="/prijava/"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-3 py-1"
+                  className="flex items-center gap-2.5 py-0"
                 >
-                  <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center shrink-0">
-                    <User className="w-6 h-6 text-gray-600 dark:text-white/80" />
+                  <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center shrink-0">
+                    <User className="w-5 h-5 text-gray-600 dark:text-white/80" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[17px] font-semibold text-gray-900 dark:text-white">Prijavi se</p>
-                    <p className="text-sm text-gray-500 dark:text-white/60">Brže do svojih projekata</p>
+                    <p className="text-[15px] font-semibold text-gray-900 dark:text-white">Prijavi se</p>
+                    <p className="text-xs text-gray-500 dark:text-white/60">Brže do svojih projekata</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 dark:text-white/40 shrink-0" />
+                  <ChevronRight className="w-[18px] h-[18px] text-gray-400 dark:text-white/40 shrink-0" />
                 </Link>
               )}
 
@@ -483,36 +483,36 @@ export default function Header({ dark = false }: { dark?: boolean }) {
                       setMobileMenuOpen(false);
                       signOut();
                     }}
-                    className="w-full flex items-center gap-3.5 px-3 py-[13px] rounded-2xl transition-colors hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.99]"
+                    className="w-full flex items-center gap-3 px-2.5 py-[7px] rounded-xl transition-colors hover:bg-gray-50 dark:hover:bg-white/5 active:scale-[0.99]"
                   >
-                    <LogOut className="w-[22px] h-[22px] shrink-0 text-gray-900 dark:text-[#ffffff]" strokeWidth={1.8} />
-                    <span className="flex-1 text-left text-[17px] font-medium text-gray-900 dark:text-[#ffffff]">
+                    <LogOut className="w-5 h-5 shrink-0 text-gray-900 dark:text-[#ffffff]" strokeWidth={1.8} />
+                    <span className="flex-1 text-left text-[15px] font-medium text-gray-900 dark:text-[#ffffff]">
                       Odjavi se
                     </span>
-                    <ChevronRight className="w-5 h-5 shrink-0 text-gray-400 dark:text-white/40" />
+                    <ChevronRight className="w-[18px] h-[18px] shrink-0 text-gray-400 dark:text-white/40" />
                   </button>
                 )}
               </nav>
 
               {/* Promo card */}
-              <div className="relative overflow-hidden rounded-3xl bg-[#FFF3E8] dark:bg-ink-800">
-                <div className="relative z-10 p-4 pr-[44%]">
-                  <p className="text-[10px] font-bold tracking-[0.14em] text-brand-orange mb-1.5">
+              <div className="relative overflow-hidden rounded-2xl bg-[#FFF3E8] dark:bg-ink-800">
+                <div className="relative z-10 p-3 pr-[44%]">
+                  <p className="text-[9px] font-bold tracking-[0.14em] text-brand-orange mb-1">
                     REALNI LJUDI. STVARNI REZULTATI.
                   </p>
-                  <p className="text-[21px] leading-[1.15] font-extrabold text-gray-900 dark:text-white">
+                  <p className="text-base leading-[1.15] font-extrabold text-gray-900 dark:text-white">
                     Tvoj sljedeći majstor je ovdje.
                   </p>
-                  <p className="text-[13px] text-gray-500 dark:text-white/60 mt-1 mb-3">
+                  <p className="text-xs text-gray-500 dark:text-white/60 mt-0.5 mb-2">
                     Brzo, jednostavno i sigurno.
                   </p>
                   <Link
                     href="/objavi-projekat/"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white text-[15px] font-semibold px-4 py-2.5 rounded-2xl shadow-lg shadow-brand-orange/30 transition-colors"
+                    className="inline-flex items-center gap-1.5 bg-brand-orange hover:bg-brand-orange-dark text-white text-sm font-semibold px-3.5 py-2 rounded-xl shadow-lg shadow-brand-orange/30 transition-colors"
                   >
                     Objavi posao
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
                 <div className="absolute inset-y-0 right-0 w-[46%]">
@@ -525,56 +525,56 @@ export default function Header({ dark = false }: { dark?: boolean }) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-[#FFF3E8] via-[#FFF3E8]/20 to-transparent dark:from-ink-800 dark:via-ink-800/20 dark:to-transparent" />
                 </div>
-                <p className="absolute z-20 bottom-2 right-2 max-w-[42%] font-serif italic text-[12px] leading-tight text-gray-900 bg-white/70 backdrop-blur-sm rounded-lg px-2 py-1">
+                <p className="absolute z-20 bottom-2 right-2 max-w-[42%] font-serif italic text-[11px] leading-tight text-gray-900 bg-white/70 backdrop-blur-sm rounded-lg px-2 py-1">
                   Majstori koje <span className="border-b-2 border-brand-orange">preporučuješ</span>.
                 </p>
               </div>
 
               {/* App badges */}
               <div>
-                <p className="text-[11px] font-semibold tracking-[0.22em] text-gray-400 dark:text-white/50 mb-1">
+                <p className="text-[10px] font-semibold tracking-[0.22em] text-gray-400 dark:text-white/50 mb-0.5">
                   USKORO DOSTUPNO
                 </p>
-                <p className="text-[17px] font-extrabold text-gray-900 dark:text-white">Zaposli.ba aplikacija</p>
-                <p className="text-sm text-gray-500 dark:text-white/60 mb-3">Još brže do majstora, bilo gdje.</p>
+                <p className="text-[15px] font-extrabold text-gray-900 dark:text-white">Zaposli.ba aplikacija</p>
+                <p className="text-xs text-gray-500 dark:text-white/60 mb-1.5">Još brže do majstora, bilo gdje.</p>
                 <div className="flex gap-2">
                   <div
-                    className="flex-1 flex items-center gap-2 bg-black text-white rounded-xl px-3 py-2"
+                    className="flex-1 flex items-center gap-2 bg-black text-white rounded-xl px-2.5 py-1.5"
                     title="Uskoro dostupno"
                     aria-label="App Store - uskoro dostupno"
                   >
-                    <Apple className="w-6 h-6 shrink-0" />
+                    <Apple className="w-5 h-5 shrink-0" />
                     <span className="leading-tight">
-                      <span className="block text-[9px] uppercase opacity-80">Preuzmi na</span>
-                      <span className="block text-[15px] font-semibold">App Store</span>
+                      <span className="block text-[8px] uppercase opacity-80">Preuzmi na</span>
+                      <span className="block text-[13px] font-semibold">App Store</span>
                     </span>
                   </div>
                   <div
-                    className="flex-1 flex items-center gap-2 bg-black text-white rounded-xl px-3 py-2"
+                    className="flex-1 flex items-center gap-2 bg-black text-white rounded-xl px-2.5 py-1.5"
                     title="Uskoro dostupno"
                     aria-label="Google Play - uskoro dostupno"
                   >
-                    <Play className="w-6 h-6 shrink-0 fill-current" />
+                    <Play className="w-5 h-5 shrink-0 fill-current" />
                     <span className="leading-tight">
-                      <span className="block text-[9px] uppercase opacity-80">Dostupno na</span>
-                      <span className="block text-[15px] font-semibold">Google Play</span>
+                      <span className="block text-[8px] uppercase opacity-80">Dostupno na</span>
+                      <span className="block text-[13px] font-semibold">Google Play</span>
                     </span>
                   </div>
                 </div>
               </div>
 
               {/* Footer */}
-              <div className="pt-4 border-t border-gray-100 dark:border-white/10 space-y-3">
-                <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-white/60">
-                  <Heart className="w-4 h-4 text-brand-orange fill-current shrink-0" />
+              <div className="pt-2.5 border-t border-gray-100 dark:border-white/10 space-y-2">
+                <p className="flex items-center gap-2 text-xs text-gray-500 dark:text-white/60">
+                  <Heart className="w-3.5 h-3.5 text-brand-orange fill-current shrink-0" />
                   Podržavamo lokalne majstore.
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-white/60">
-                    <Globe className="w-4 h-4 shrink-0" />
+                  <span className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-white/60">
+                    <Globe className="w-3.5 h-3.5 shrink-0" />
                     BA
                   </span>
-                  <span className="flex items-center gap-2 text-sm text-gray-500 dark:text-white/60">
+                  <span className="flex items-center gap-2 text-xs text-gray-500 dark:text-white/60">
                     Tema
                     <ThemeToggle simple />
                   </span>
