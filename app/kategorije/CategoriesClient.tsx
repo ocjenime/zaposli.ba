@@ -2,12 +2,13 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   ArrowRight,
   ShieldCheck,
   Clock,
-  Star,
-  Users,
+  LayoutGrid,
+  MapPin,
   Briefcase,
   CheckCircle,
   Search,
@@ -33,8 +34,7 @@ const POPULAR_SLUGS = [
 const TRUST_ITEMS = [
   { icon: ShieldCheck, label: 'Provjerene firme' },
   { icon: Clock, label: 'Ponude u 24h' },
-  { icon: Star, label: 'Recenzije klijenata' },
-  { icon: Users, label: `${cities.length} gradova širom BiH` },
+  { icon: MapPin, label: 'Cijela BiH' },
 ];
 
 export default function CategoriesClient() {
@@ -94,70 +94,98 @@ export default function CategoriesClient() {
 
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
-        {/* Compact header */}
-        <section className="pt-8 md:pt-10 pb-6 md:pb-8">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-              <Briefcase className="h-4 w-4" /> Kategorije
-            </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight mb-3 text-balance">
-              Kategorije usluga
-            </h1>
-            <p className="text-steel text-base md:text-lg max-w-2xl mx-auto mb-6">
-              Pronađite majstora u {cities.length} gradova i {totalCount} kategorija. Od građevine do
-              čišćenja - sve na jednom mjestu.
-            </p>
+        {/* Hero in homepage style */}
+        <section className="relative min-h-[420px] sm:min-h-[470px] lg:min-h-[540px] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/kategorije-majstori.jpg"
+              alt="Majstori na poslu - adaptacija moderne kuće"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/85 via-ink-950/60 to-ink-950/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/30" />
+          </div>
 
-            {/* Search */}
-            <div className="relative max-w-md mx-auto">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Pretraži kategorije..."
-                aria-label="Pretraži kategorije"
-                className="w-full pl-11 pr-10 py-3 rounded-full border border-gray-200 bg-white text-sm text-gray-900 shadow-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all"
-              />
-              {search && (
-                <button
-                  onClick={() => setSearch('')}
-                  aria-label="Očisti pretragu"
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
-                >
-                  <X className="w-3.5 h-3.5" aria-hidden="true" />
-                </button>
-              )}
-            </div>
+          <div className="relative z-20 flex-1 flex items-end">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 lg:pt-32 pb-10 sm:pb-12">
+              <div className="max-w-2xl">
+                <div className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-2.5 py-0.5 text-[10px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 sm:mb-3 animate-fade-in">
+                  <LayoutGrid className="w-3 h-3" />
+                  Sve usluge na jednom mjestu
+                </div>
 
-            {/* Popular */}
-            {!search.trim() && (
-              <div className="flex items-center justify-center gap-2 flex-wrap mt-4">
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mr-1">
-                  Popularno:
-                </span>
-                {popular.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={`/kategorije/${c.slug}/`}
-                    className="px-3.5 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-700 hover:border-brand-orange hover:text-brand-orange transition-colors shadow-sm"
-                  >
-                    {c.name}
-                  </Link>
-                ))}
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
+                  Kategorije usluga
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                    širom BiH.
+                  </span>
+                </h1>
+
+                <p className="text-sm sm:text-base text-white/80 leading-snug sm:leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
+                  Pronađite majstora u {cities.length} gradova i {totalCount} kategorija. Od građevine
+                  do čišćenja - brzo i besplatno.
+                </p>
+
+                {/* Search */}
+                <div className="relative max-w-md mb-3 sm:mb-4 animate-fade-in">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Pretraži kategorije..."
+                    aria-label="Pretraži kategorije"
+                    className="w-full pl-11 pr-10 py-2.5 sm:py-3 rounded-xl border border-white/20 bg-white/10 backdrop-blur-md text-sm text-white placeholder-white/60 shadow-lg outline-none transition-all focus:border-brand-orange/60 focus:bg-white/15"
+                  />
+                  {search && (
+                    <button
+                      onClick={() => setSearch('')}
+                      aria-label="Očisti pretragu"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white"
+                    >
+                      <X className="w-3.5 h-3.5" aria-hidden="true" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Popular */}
+                {!search.trim() && (
+                  <div className="flex items-center gap-2 flex-wrap mb-3 sm:mb-4 animate-fade-in">
+                    <span className="text-[11px] font-bold text-white/60 uppercase tracking-wider mr-1">
+                      Popularno:
+                    </span>
+                    {popular.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/kategorije/${c.slug}/`}
+                        className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs sm:text-sm font-medium text-white/90 hover:bg-white/20 hover:text-white transition-colors"
+                      >
+                        {c.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {/* Trust badges */}
+                <div className="hidden sm:flex flex-wrap items-center gap-6 animate-fade-in">
+                  {TRUST_ITEMS.map((badge) => (
+                    <div key={badge.label} className="flex items-center gap-2 text-sm text-white/80">
+                      <span className="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center">
+                        <badge.icon className="w-4 h-4 text-brand-orange" />
+                      </span>
+                      {badge.label}
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-
-            {/* Trust strip */}
-            <div className="flex items-center justify-center gap-x-6 gap-y-2 flex-wrap mt-6 text-sm text-steel">
-              {TRUST_ITEMS.map((item) => (
-                <span key={item.label} className="inline-flex items-center gap-1.5">
-                  <item.icon className="w-4 h-4 text-brand-orange" />
-                  {item.label}
-                </span>
-              ))}
             </div>
           </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
         </section>
 
         {/* Groups */}

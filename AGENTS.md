@@ -505,6 +505,7 @@
 - Redesigned `/kategorije/` in the premium homepage/`/poslovi/` listing style without a space-hogging hero:
   - New client component `app/kategorije/CategoriesClient.tsx`: compact centered header (eyebrow pill, h1, subtitle), live category search with clear button and result count, `Popularno` quick-link pills, slim inline trust strip, tighter group cards with per-group counts, empty state with reset + post-job CTA, and a `/poslovi/`-style light bottom CTA card.
   - `app/kategorije/page.tsx` is now a thin server wrapper keeping metadata; grouping/filtering logic unchanged (featured/noSeo exclusions preserved).
+  - Added a homepage-style cinematic hero to `/kategorije/` using the new optimized `public/images/kategorije-majstori.jpg` (from `kat.png`, 1842px → 1536px JPG 144KB): left-aligned glass eyebrow, white h1 with orange gradient span, glass search input, glass `Popularno` pills, glass trust badges, and bottom fade into the listings.
   - `npm run lint` and `npm run build` pass (2409 pages).
 - Switched `/oglasi/` and `/izdvojeni-oglasi/` from a 3-column card grid to the `/poslovi/` horizontal list-row style:
   - New `components/PromotedAdRowCard.tsx` mirroring `ProjectListCard` (square banner thumbnail, title, description, type pill, firm/city/relative-time/rating meta, right column with `Sponzorirano` badge, firm name, active-until date, and dark `Pogledaj oglas` CTA; click-to-expand detail panel with full banner, firm card, and orange CTA).
