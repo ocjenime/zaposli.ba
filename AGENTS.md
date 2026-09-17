@@ -487,14 +487,21 @@
   - `npm run lint` and `npm run build` pass (2406 pages).
 - Fixed city/firm matching when diacritics differ between the canonical city name (e.g., `Tešanj`) and the value stored in `firms.city` (e.g., `Tesanj`). Added `lib/city-utils.ts` with `normalizeCityName()` and updated `app/gradovi/page.tsx`, `components/CityGrid.tsx`, `app/gradovi/[slug]/page.tsx`, and `components/ServiceCityFirms.tsx` to compare normalized names.
   - `npm run lint` and `npm run build` pass (2406 pages).
+- Redesigned the ads listing pages (`/oglasi/` and `/izdvojeni-oglasi/`) to match the premium homepage and `/poslovi/` look while being fully functional:
+  - New reusable client component `app/oglasi/PromotedAdsPageClient.tsx` (full-bleed cinematic `poslovi-hero.jpg` hero with eyebrow + h1 + subtitle + `AdCreateCTA` button + 4 trust badges; filter bar with search, always-visible type tabs `Svi oglasi` / `Promocije` / `Tražim radnike`, sort `Najnovije` / `Ističu uskoro` / `Naziv: A-Ž`, expandable city + type + sort filters, active-filter chips with clear, live result count, empty state, and an ad-focused bottom CTA).
+  - New reusable light/dark premium card `components/PromotedAdListCard.tsx` (16:9 banner, verified firm logo overlap, firm name + city + rating, sponsored + type badges, title, description, active-until date, "Pogledaj oglas" CTA) linking to the ad detail page.
+  - Both `app/oglasi/page.tsx` and `app/izdvojeni-oglasi/page.tsx` now fetch ads server-side via `fetchActivePromotedAds()` and render the shared client component with page-specific breadcrumb/eyebrow/title/subtitle.
+  - `lib/promoted-ads.ts` `fetchActivePromotedAds` select now includes `firms.average_rating, review_count`; `components/AdCreateCTA.tsx` gained an optional `className` prop for the button variant.
+  - Deleted the obsolete `components/PromotedAdsListing.tsx`.
+  - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
 
 ## Next Move
-- `supabase/migration-review-images.sql` is already applied; verify `/dashboard/recenzija/?job_id=<id>` allows multiple-image upload and `/firma-profil/<slug>/` shows the review photo gallery/lightbox after the Vercel deploy.
-- After verification, pick the next priority with the user.
+- Verify the redesigned `/oglasi/` and `/izdvojeni-oglasi/` pages on production (mobile + desktop): hero renders, filters/search/sort/tabs work, cards link to ad detail pages, and the "Objavi oglas" CTA routes firms to `/kupi-oglas/` and guests to `/pretplata-auth/`.
+- Pick the next priority with the user.
 
 ## Relevant Files
 - `components/HeroSection.tsx`: hero banner text and emergency badge.

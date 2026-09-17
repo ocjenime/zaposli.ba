@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import PromotedAdsListing from '@/components/PromotedAdsListing';
+import PromotedAdsPageClient from './PromotedAdsPageClient';
+import { fetchActivePromotedAds } from '@/lib/promoted-ads';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
@@ -18,6 +19,21 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
-export default function OglasiPage() {
-  return <PromotedAdsListing breadcrumbLabel="Oglasi" />;
+export default async function OglasiPage() {
+  let ads: Awaited<ReturnType<typeof fetchActivePromotedAds>> = [];
+  try {
+    ads = await fetchActivePromotedAds();
+  } catch {
+    ads = [];
+  }
+
+  return (
+    <PromotedAdsPageClient
+      ads={ads}
+      breadcrumbLabel="Oglasi"
+      eyebrow="Premium oglasi"
+      title="Premium oglasi i reklame"
+      subtitle="Pregledajte promocije provjerenih firmi i majstora ili pronađite radnike spremne za posao. Sve na jednom mjestu."
+    />
+  );
 }

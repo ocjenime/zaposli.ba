@@ -8,9 +8,10 @@ import { isFirmRole } from '@/lib/roles';
 interface AdCreateCTAProps {
   destination?: 'homepage' | 'homepage_banner' | 'listing';
   variant?: 'banner' | 'button';
+  className?: string;
 }
 
-export default function AdCreateCTA({ destination = 'listing', variant = 'banner' }: AdCreateCTAProps) {
+export default function AdCreateCTA({ destination = 'listing', variant = 'banner', className }: AdCreateCTAProps) {
   const { role } = useAuth();
   const isFirm = isFirmRole(role);
   const href = isFirm
@@ -21,7 +22,10 @@ export default function AdCreateCTA({ destination = 'listing', variant = 'banner
     return (
       <Link
         href={href}
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white text-sm font-semibold transition-colors"
+        className={
+          className ||
+          'inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white text-sm font-semibold transition-colors'
+        }
       >
         Objavi oglas <ArrowRight className="w-4 h-4" />
       </Link>

@@ -41,7 +41,7 @@ export async function fetchActivePromotedAds(limit?: number): Promise<PublicProm
   let query = publicAdsClient
     .from('promoted_ads')
     .select(
-      'id,title,description,image_url,banner_url,cta_url,ad_type,destination,ends_at,created_at,firms(name,slug,city,logo_url,verified)'
+      'id,title,description,image_url,banner_url,cta_url,ad_type,destination,ends_at,created_at,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
     )
     .eq('status', 'active')
     .gt('ends_at', new Date().toISOString())
