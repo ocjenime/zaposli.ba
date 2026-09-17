@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Mail, ArrowUpRight, ArrowRight, Apple, Play } from 'lucide-react';
+import { Mail, ArrowUpRight, ArrowRight, Apple, Play, Facebook, Instagram, Youtube, Linkedin } from 'lucide-react';
 import Logo from '@/components/Logo';
 import { categories, cities, getCategory, getCategoryShortName } from '@/lib/data';
 import { site } from '@/lib/site';
@@ -54,7 +54,18 @@ const companyLinks = [
   { name: 'Kontakt', href: '/kontakt/' },
   { name: 'Uslovi korištenja', href: '/uslovi-koristenja/' },
   { name: 'Privatnost', href: '/privacy/' },
-  { name: 'Centar pomoći', href: '/faq/' },
+  { name: 'Česta pitanja', href: '/faq/' },
+];
+
+const socialLinks = [
+  {
+    name: 'Facebook',
+    href: 'https://www.facebook.com/share/18X8fQ3FxZ/?mibextid=wwXlfr',
+    icon: Facebook,
+  },
+  { name: 'Instagram', href: null, icon: Instagram },
+  { name: 'YouTube', href: null, icon: Youtube },
+  { name: 'LinkedIn', href: null, icon: Linkedin },
 ];
 
 function BosniaFlag({ className = 'w-10 h-10' }: { className?: string }) {
@@ -94,33 +105,37 @@ export default function Footer() {
   return (
     <footer className="bg-ink text-[#ffffff]">
       {/* Mobilni premium footer */}
-      <div className="md:hidden px-5 pt-10 pb-8">
-        <Link href="/" className="inline-flex items-center" aria-label="Zaposli.ba početna">
+      <div className="md:hidden px-6 pt-12 pb-8">
+        <Link
+          href="/"
+          className="inline-flex items-center origin-left scale-110"
+          aria-label="Zaposli.ba početna"
+        >
           <Logo variant="light" />
         </Link>
-        <p className="text-gray-400 text-[15px] leading-relaxed mt-4">
+        <p className="text-gray-200 text-lg leading-relaxed mt-5">
           Pronađi pouzdane majstore.
           <br />
           Objavi projekt i primi ponude.
         </p>
-        <p className="text-gray-500 text-xs font-semibold tracking-[0.18em] mt-5 leading-relaxed">
+        <p className="text-slate-400 text-sm font-bold tracking-[0.22em] mt-6 leading-loose">
           BOLJI LJUDI.
           <br />
           BOLJI PROJEKTI.
         </p>
 
         {/* Direktorij */}
-        <div className="grid grid-cols-2 gap-6 mt-7">
-          <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-gray-500 mb-3.5">
+        <div className="grid grid-cols-2 gap-5 mt-9">
+          <div className="border-l border-white/10 pl-5">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-4">
               Najtraženije kategorije
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {topCategories.map((cat) => (
                 <li key={cat.slug}>
                   <Link
                     href={`/kategorije/${cat.slug}/`}
-                    className="text-gray-300 text-[15px] leading-snug hover:text-brand-orange transition-colors"
+                    className="text-gray-100 text-base leading-snug hover:text-brand-orange transition-colors"
                   >
                     {getCategoryShortName(cat)}
                   </Link>
@@ -129,22 +144,22 @@ export default function Footer() {
             </ul>
             <Link
               href="/kategorije/"
-              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-[15px] mt-3.5"
+              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-base mt-4"
             >
               Sve kategorije
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-          <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-gray-500 mb-3.5">
+          <div className="border-l border-white/10 pl-5">
+            <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400 mb-4">
               Popularni gradovi
             </h3>
-            <ul className="space-y-2.5">
+            <ul className="space-y-3">
               {popularCities.map((city) => (
                 <li key={city.slug}>
                   <Link
                     href={`/gradovi/${city.slug}/`}
-                    className="text-gray-300 text-[15px] leading-snug hover:text-brand-orange transition-colors"
+                    className="text-gray-100 text-base leading-snug hover:text-brand-orange transition-colors"
                   >
                     {city.name}
                   </Link>
@@ -153,7 +168,7 @@ export default function Footer() {
             </ul>
             <Link
               href="/gradovi/"
-              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-[15px] mt-3.5"
+              className="inline-flex items-center gap-1.5 text-brand-orange font-bold text-base mt-4"
             >
               Svi gradovi
               <ArrowRight className="w-4 h-4" />
@@ -161,76 +176,112 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="h-px bg-white/10 my-7" />
+        <div className="h-px bg-white/10 my-8" />
 
         {/* Info linkovi */}
-        <nav className="flex flex-wrap gap-x-5 gap-y-2.5" aria-label="Informacije">
+        <nav className="flex flex-wrap gap-x-6 gap-y-3" aria-label="Informacije">
           {companyLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-gray-400 text-[15px] hover:text-white transition-colors"
+              className="text-gray-300 text-[15px] hover:text-white transition-colors"
             >
               {link.name}
             </Link>
           ))}
         </nav>
 
-        {/* Aplikacije */}
-        <div className="mt-6">
+        {/* Društvene mreže */}
+        <div className="flex gap-2 mt-4">
+          {socialLinks.map((social) =>
+            social.href ? (
+              <a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.name}
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-brand-orange/50 hover:text-brand-orange transition-colors"
+              >
+                <social.icon className="w-5 h-5" />
+              </a>
+            ) : (
+              <span
+                key={social.name}
+                title={`${social.name} - uskoro`}
+                aria-label={`${social.name} - uskoro`}
+                className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/30"
+              >
+                <social.icon className="w-5 h-5" />
+              </span>
+            )
+          )}
+        </div>
+
+        {/* Aplikacije + BiH */}
+        <div className="mt-7">
           <span className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] text-brand-orange bg-brand-orange/10 border border-brand-orange/20 rounded-full px-2.5 py-1">
             Uskoro dostupno
           </span>
-          <div className="flex gap-2 mt-2.5">
-            <div
-              className="flex-1 flex items-center gap-2 bg-black border border-white/20 rounded-xl px-3 py-2"
-              title="Uskoro dostupno"
-              aria-label="App Store - uskoro dostupno"
-            >
-              <Apple className="w-6 h-6 shrink-0 text-white" />
-              <span className="leading-tight">
-                <span className="block text-[9px] uppercase text-white/70">Preuzmite na</span>
-                <span className="block text-[15px] font-semibold text-white">App Store</span>
-              </span>
+          <div className="flex items-stretch gap-3 mt-2.5">
+            <div className="flex-[1.4] flex flex-col gap-2">
+              <div
+                className="flex-1 flex items-center gap-1.5 bg-black border border-white/20 rounded-xl px-2.5 py-1.5"
+                title="Uskoro dostupno"
+                aria-label="App Store - uskoro dostupno"
+              >
+                <Apple className="w-5 h-5 shrink-0 text-white" />
+                <span className="leading-tight">
+                  <span className="block text-[8px] uppercase text-white/70">Preuzmite na</span>
+                  <span className="block text-[13px] font-semibold text-white">App Store</span>
+                </span>
+              </div>
+              <div
+                className="flex-1 flex items-center gap-1.5 bg-black border border-white/20 rounded-xl px-2.5 py-1.5"
+                title="Uskoro dostupno"
+                aria-label="Google Play - uskoro dostupno"
+              >
+                <Play className="w-5 h-5 shrink-0 fill-current text-white" />
+                <span className="leading-tight">
+                  <span className="block text-[8px] uppercase text-white/70">Dostupno na</span>
+                  <span className="block text-[13px] font-semibold text-white">Google Play</span>
+                </span>
+              </div>
             </div>
-            <div
-              className="flex-1 flex items-center gap-2 bg-black border border-white/20 rounded-xl px-3 py-2"
-              title="Uskoro dostupno"
-              aria-label="Google Play - uskoro dostupno"
-            >
-              <Play className="w-6 h-6 shrink-0 fill-current text-white" />
-              <span className="leading-tight">
-                <span className="block text-[9px] uppercase text-white/70">Dostupno na</span>
-                <span className="block text-[15px] font-semibold text-white">Google Play</span>
-              </span>
+            <div className="w-px bg-white/10" aria-hidden="true" />
+            <div className="flex-1 flex items-center gap-2.5">
+              <BosniaFlag className="w-9 h-9" />
+              <p className="text-gray-400 text-xs leading-snug">
+                Iz Bosne i Hercegovine
+                <br />
+                za bolje majstore.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* BiH */}
-        <div className="flex items-center gap-3 mt-6">
-          <BosniaFlag />
-          <p className="text-gray-400 text-sm leading-snug">
-            Iz Bosne i Hercegovine
+        {/* Dno */}
+        <div className="flex items-end justify-between gap-4 mt-8">
+          <div className="min-w-0">
+            <a
+              href={`mailto:${site.email}`}
+              className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-orange transition-colors"
+            >
+              <Mail className="w-4 h-4 shrink-0" />
+              <span className="truncate">{site.email}</span>
+            </a>
+            <p className="text-gray-600 text-xs mt-1.5 leading-relaxed">
+              &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana.
+              <br />
+              Powered by Luxari
+            </p>
+          </div>
+          <p className="font-serif italic text-white/70 text-xl text-right leading-snug shrink-0">
+            Gradimo bolje
             <br />
-            za bolje majstore.
+            sutra<span className="text-brand-orange">.</span>
           </p>
         </div>
-
-        <p className="font-serif italic text-white/70 text-xl mt-6 text-right">
-          Gradimo bolje sutra<span className="text-brand-orange">.</span>
-        </p>
-
-        <a
-          href={`mailto:${site.email}`}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-orange transition-colors mt-6"
-        >
-          <Mail className="w-4 h-4" />
-          <span>{site.email}</span>
-        </a>
-        <p className="text-gray-600 text-[13px] mt-2">
-          &copy; {new Date().getFullYear()} Zaposli.ba. Sva prava zadržana. Powered by Luxari
-        </p>
       </div>
 
       {/* Glavni footer - desktop */}
