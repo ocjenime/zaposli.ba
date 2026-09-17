@@ -8,7 +8,7 @@ const cards = [
   {
     href: '/objavi-projekat/',
     icon: Home,
-    image: '/images/renovacija-enterijer.webp',
+    image: '/images/trazim-majstora-card.jpg',
     imageAlt: 'Adaptacija enterijera stana',
     title: 'Tražim majstora',
     description: 'Opiši šta ti treba i primi ponude od provjerenih majstora.',
