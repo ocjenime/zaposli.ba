@@ -502,6 +502,10 @@
   - Desktop header/nav unchanged; old mobile menu sections (CTA, generic nav/auth/settings/contact blocks) removed.
   - Compacted the drawer so it fits one phone screen without scrolling: 15px nav text, 20px icons, tighter rows/padding, smaller promo card and app badges.
   - `npm run lint` and `npm run build` pass (2409 pages).
+- Redesigned `/kategorije/` in the premium homepage/`/poslovi/` listing style without a space-hogging hero:
+  - New client component `app/kategorije/CategoriesClient.tsx`: compact centered header (eyebrow pill, h1, subtitle), live category search with clear button and result count, `Popularno` quick-link pills, slim inline trust strip, tighter group cards with per-group counts, empty state with reset + post-job CTA, and a `/poslovi/`-style light bottom CTA card.
+  - `app/kategorije/page.tsx` is now a thin server wrapper keeping metadata; grouping/filtering logic unchanged (featured/noSeo exclusions preserved).
+  - `npm run lint` and `npm run build` pass (2409 pages).
 
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
