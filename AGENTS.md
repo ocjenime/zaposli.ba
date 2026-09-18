@@ -513,7 +513,7 @@
   - `npm run lint` and `npm run build` pass (2409 pages).
 - Premium photo finish for homepage `RoleCTACards` matching the mobile mockup (layout and card sizes unchanged): photographic backgrounds with dark gradient, glass icon boxes, orange filled arrow on `Tražim majstora` and dark glass arrow on `Za firme`, subtle hover zoom.
 - Compacted the homepage `StatsSection` (`Zašto baš mi?`) into a tighter Higgsfield block: slimmer padding/header, live stats merged into a single glass strip with dividers (skeleton while loading), trust cards as compact horizontal rows.
-- `/kategorije/` hero image now uses `object-contain` on mobile so the whole photo is visible (dark backdrop behind), `object-cover` stays on desktop.
+- `/kategorije/` hero image uses `object-cover` with `object-[25%_center]` like the homepage hero so the main worker (left side of the photo) stays visible on mobile.
 - Renamed `/savjeti/` to `/blog/` and removed the duplicate `/pravila/` page:
   - `git mv app/savjeti app/blog`; all `/savjeti` URL refs rewritten to `/blog` (article canonicals, breadcrumbs now labelled `Blog`, `ArticleLayout`, `articleSchema` JSON-LD, sitemap, footers); listing hero/breadcrumbs retitled to `Blog` with `Najnoviji članci` heading; permanent redirect `/savjeti/:path*` → `/blog/:path*` in `next.config.js`.
   - Moved `app/pravila/page.tsx` content to `app/uslovi-koristenja/page.tsx` (retitled metadata/breadcrumb/hero to `Uslovi korištenja`); deleted the old redirect stub; permanent redirect `/pravila/:path*` → `/uslovi-koristenja/:path*`; sitemap + desktop/mobile footers + registration terms link updated.

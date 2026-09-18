@@ -103,7 +103,7 @@ export default function CategoriesClient() {
               fill
               priority
               sizes="100vw"
-              className="object-contain object-center md:object-cover"
+              className="object-cover object-[25%_center]"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-ink-950/85 via-ink-950/60 to-ink-950/30" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/30" />
