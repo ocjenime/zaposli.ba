@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
@@ -156,6 +157,12 @@ const trustFooter = [
 ];
 
 export default function ZaFirmeContent() {
+  const popularRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    popularRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' });
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
@@ -284,11 +291,12 @@ export default function ZaFirmeContent() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-2.5 sm:gap-4 md:gap-5 items-stretch">
+            <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-1 pt-4 pb-2 items-stretch">
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative rounded-xl sm:rounded-2xl p-3 sm:p-5 md:p-6 flex flex-col text-center transition-all duration-300 hover:-translate-y-1 ${
+                  ref={plan.popular ? popularRef : undefined}
+                  className={`relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 flex flex-col text-center snap-center shrink-0 w-[82%] sm:w-[330px] lg:w-[350px] transition-colors duration-300 ${
                     plan.popular
                       ? 'bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-xl shadow-brand-orange/20'
                       : 'bg-white/[0.04] border border-white/10'
@@ -375,9 +383,9 @@ export default function ZaFirmeContent() {
               </p>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+            <div className="flex gap-3 sm:gap-4 md:gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-1 pt-4 pb-2 items-stretch">
               {/* Listing ad */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative snap-center shrink-0 w-[82%] sm:w-[340px] rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-4 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
                   <LayoutGrid className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
@@ -397,13 +405,13 @@ export default function ZaFirmeContent() {
                     </li>
                   ))}
                 </ul>
-                <AdPricingCTA destination="listing" variant="secondary" className="w-full text-xs sm:text-sm">
+                <AdPricingCTA destination="listing" variant="primary" className="w-full text-xs sm:text-sm">
                   Kreiraj oglas
                 </AdPricingCTA>
               </div>
 
               {/* Homepage mini */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative snap-center shrink-0 w-[82%] sm:w-[340px] rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-4 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
                   <Home className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
@@ -429,7 +437,7 @@ export default function ZaFirmeContent() {
               </div>
 
               {/* Homepage banner */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-brand-orange/40 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative snap-center shrink-0 w-[82%] sm:w-[340px] rounded-xl sm:rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-brand-orange/40 p-4 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
                     <Crown className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> Najbolja vidljivost
