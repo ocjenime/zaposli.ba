@@ -96,14 +96,14 @@ export default function CategoriesClient() {
 
         {/* Hero in homepage style */}
         <section className="relative min-h-[420px] sm:min-h-[470px] lg:min-h-[540px] flex flex-col overflow-hidden">
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-ink-950">
             <Image
               src="/images/kategorije-majstori.jpg"
               alt="Majstori na poslu - adaptacija moderne kuće"
               fill
               priority
               sizes="100vw"
-              className="object-cover object-center"
+              className="object-contain object-center md:object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-ink-950/85 via-ink-950/60 to-ink-950/30" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/30" />
