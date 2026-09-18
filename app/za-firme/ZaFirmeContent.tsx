@@ -7,7 +7,8 @@ import Image from 'next/image';
 import PricingCTA from '@/components/PricingCTA';
 import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
-import { planFeatures } from '@/lib/plan-features';
+import { useAuth } from '@/lib/auth-context';
+import { isFirmRole } from '@/lib/roles';
 
 import {
   CheckCircle,
@@ -18,7 +19,7 @@ import {
   MapPin,
   BarChart3,
   Briefcase,
-  Play,
+  ArrowRight,
   Home,
   LayoutGrid,
   Triangle,
@@ -76,39 +77,24 @@ const benefits = [
 const pricingPlans = [
   {
     name: 'Besplatno',
-    slug: 'besplatno',
     price: '0',
-    regularPrice: '0',
     cta: 'Počni besplatno',
     popular: false,
-    launch: false,
+    features: ['Osnovni profil', 'Do 5 ponuda mjesečno', 'Direktan kontakt'],
   },
   {
     name: 'Start',
-    slug: 'start',
     price: '19',
-    regularPrice: '29',
     cta: 'Odaberi Start',
-    popular: false,
-    launch: true,
+    popular: true,
+    features: ['Više ponuda mjesečno', 'Verifikacija profila', 'Prioritet u listi'],
   },
   {
     name: 'Pro',
-    slug: 'pro',
     price: '49',
-    regularPrice: '79',
     cta: 'Odaberi Pro',
-    popular: true,
-    launch: true,
-  },
-  {
-    name: 'Premium',
-    slug: 'premium',
-    price: '99',
-    regularPrice: '149',
-    cta: 'Odaberi Premium',
     popular: false,
-    launch: true,
+    features: ['Za aktivne firme', 'Maksimalna vidljivost', 'Dodatne pogodnosti'],
   },
 ];
 
@@ -153,6 +139,9 @@ const trustFooter = [
 ];
 
 export default function ZaFirmeContent() {
+  const { user, role } = useAuth();
+  const planHref = user && isFirmRole(role) ? '/dashboard/firma/pretplata/' : '/pretplata-auth/';
+
   return (
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
@@ -186,19 +175,10 @@ export default function ZaFirmeContent() {
                   Dobijajte stvarne upite od klijenata koji aktivno traže vaše usluge u Bosni i
                   Hercegovini. Jednostavno, brzo i bez dodatnog marketinga.
                 </p>
-                <div className="flex flex-col gap-2.5 mb-5">
+                <div className="mb-5">
                   <PricingCTA popular className="w-full px-5 py-3 text-sm sm:text-base">
                     Registrujte firmu besplatno
                   </PricingCTA>
-                  <Link
-                    href="/kako-funkcionise/"
-                    className="inline-flex items-center justify-center gap-2.5 w-full bg-white/5 border border-white/15 text-white px-5 py-3 rounded-xl text-sm sm:text-base font-semibold hover:bg-white/10 transition-colors duration-200"
-                  >
-                    <span className="w-6 h-6 rounded-full border border-white/30 flex items-center justify-center shrink-0">
-                      <Play className="w-3 h-3 fill-current" />
-                    </span>
-                    Pogledajte kako funkcioniše
-                  </Link>
                 </div>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] sm:text-sm text-white/70">
                   <span className="inline-flex items-center gap-1.5">
@@ -290,67 +270,66 @@ export default function ZaFirmeContent() {
               <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mb-2">
                 Jednostavni paketi za svaki biznis
               </h2>
-              <p className="text-white/60 text-sm md:text-base mb-4">
+              <p className="text-white/60 text-sm md:text-base">
                 Pronađite paket koji odgovara vašim ciljevima.
-              </p>
-              <p className="inline-flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
-                Godišnje plaćanje: 10% popusta
               </p>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 md:gap-5 items-stretch">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-5 items-stretch">
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative rounded-2xl p-5 md:p-6 flex flex-col text-center transition-all duration-300 hover:-translate-y-1 ${
+                  className={`relative rounded-xl sm:rounded-2xl p-3 sm:p-5 md:p-6 flex flex-col text-center transition-all duration-300 ${
                     plan.popular
-                      ? 'bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-2xl shadow-brand-orange/20'
+                      ? 'bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-xl shadow-brand-orange/20'
                       : 'bg-white/[0.04] border border-white/10'
                   }`}
                 >
                   {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center px-4 py-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
+                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10">
+                      <span className="inline-flex items-center px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
                         Najpopularniji
                       </span>
                     </div>
                   )}
 
-                  <h3 className="text-base md:text-lg font-bold text-white mb-2">{plan.name}</h3>
-                  <div className="flex items-end justify-center gap-1">
-                    <span className="text-5xl font-extrabold text-white leading-none">
+                  <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-1.5">
+                    {plan.name}
+                  </h3>
+                  <div className="flex items-end justify-center gap-0.5">
+                    <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">
                       {plan.price}
                     </span>
-                    <span className="text-white/60 font-semibold mb-1">KM</span>
+                    <span className="text-white/60 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
                   </div>
-                  <p className="text-sm text-white/50 mt-1 mb-1">/mjesečno</p>
-                  {plan.launch && (
-                    <div className="mb-1">
-                      <p className="text-xs text-white/50">
-                        <span className="line-through">{plan.regularPrice} KM/mj</span>
-                        <span className="text-green-300 font-semibold"> · prvih 3 mjeseca</span>
-                      </p>
-                    </div>
-                  )}
+                  <p className="text-[11px] sm:text-sm text-white/50 mt-0.5 mb-3">/mjesečno</p>
 
-                  <ul className="space-y-2.5 my-5 flex-1 text-left">
-                    {planFeatures[plan.slug].map((feature) => (
-                      <li key={feature} className="flex items-start gap-2.5">
+                  <ul className="space-y-1.5 sm:space-y-2.5 mb-4 flex-1 text-left">
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="flex items-start gap-1.5">
                         <span
-                          className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
+                          className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center ${
                             plan.popular ? 'bg-brand-orange text-white' : 'bg-white/10 text-brand-orange'
                           }`}
                         >
-                          <CheckCircle className="w-3.5 h-3.5" />
+                          <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                         </span>
-                        <span className="text-white/80 text-sm">{feature}</span>
+                        <span className="text-white/80 text-[10px] sm:text-sm leading-snug">{feature}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <PricingCTA popular={plan.popular} className="w-full">
+                  <Link
+                    href={planHref}
+                    className={`inline-flex items-center justify-center gap-1 w-full px-2 py-2 sm:py-3 rounded-lg sm:rounded-xl text-[11px] sm:text-sm font-bold transition-all active:scale-95 ${
+                      plan.popular
+                        ? 'bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-md shadow-brand-orange/20'
+                        : 'border border-white/20 bg-white/5 text-white hover:bg-white/10'
+                    }`}
+                  >
                     {plan.cta}
-                  </PricingCTA>
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 shrink-0" />
+                  </Link>
                 </div>
               ))}
             </div>
