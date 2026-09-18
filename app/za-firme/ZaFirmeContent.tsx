@@ -440,7 +440,7 @@ export default function ZaFirmeContent() {
                     <Monitor className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                   </div>
                   <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-0.5">Homepage banner</h3>
-                  <p className="text-white/50 text-[11px] sm:text-sm mb-2">Veliki banner 1200 × 400 px</p>
+                  <p className="text-white/50 text-[11px] sm:text-sm mb-2">Veliki banner na homepage-u</p>
                   <div className="flex items-end justify-center gap-0.5">
                     <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">49</span>
                     <span className="text-white/70 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
@@ -449,7 +449,7 @@ export default function ZaFirmeContent() {
                   <p className="text-[10px] sm:text-xs text-white/40 mt-1 mb-3">Nije uključen u pakete</p>
                 </div>
                 <ul className="space-y-1.5 sm:space-y-2.5 mb-4 flex-1 text-left">
-                  {['Dominantna pozicija na homepage-u', 'Dimenzije 1200 × 400 px', 'Banner, naslov, opis i CTA'].map((f) => (
+                  {['Dominantna pozicija na homepage-u', 'Vidljiv na svim uređajima', 'Banner, naslov, opis i CTA'].map((f) => (
                     <li key={f} className="flex items-start gap-1.5">
                       <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-orange shrink-0 mt-0.5" />
                       <span className="text-white/80 text-[11px] sm:text-sm leading-snug">{f}</span>
