@@ -228,22 +228,14 @@ export default function ZaFirmeContent() {
                           <n.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-[11px] sm:text-sm font-bold text-white leading-tight truncate">
+                          <p className="text-[11px] sm:text-sm font-bold text-white leading-tight">
                             {n.title}
                           </p>
-                          <p className="text-[10px] sm:text-xs text-white/60 leading-tight truncate">
-                            {n.service}
-                          </p>
-                          <p className="text-[10px] sm:text-xs text-white/40 leading-tight truncate">
-                            {n.city}
+                          <p className="text-[10px] sm:text-xs text-white/60 leading-snug">
+                            {n.service} · {n.city} · {n.time}
                           </p>
                         </div>
-                        <div className="flex flex-col items-end gap-1 shrink-0">
-                          <span className="w-1.5 h-1.5 rounded-full bg-brand-orange" />
-                          <span className="text-[9px] sm:text-[11px] text-white/50 whitespace-nowrap">
-                            {n.time}
-                          </span>
-                        </div>
+                        <span className="w-1.5 h-1.5 rounded-full bg-brand-orange shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -256,7 +248,7 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Benefits */}
-        <section className="relative py-10 md:py-16">
+        <section className="relative z-10 -mt-6 md:-mt-10 pb-8 md:pb-12">
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-5">
               {benefits.map((b) => (
@@ -385,87 +377,86 @@ export default function ZaFirmeContent() {
 
             <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
               {/* Homepage mini */}
-              <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
-                <div className="text-center mb-6">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
-                    <Home className="w-6 h-6 text-brand-orange" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-1">Homepage mini oglas</h3>
-                  <p className="text-white/50 text-sm mb-4">Kompaktna kartica u traci</p>
-                  <div className="flex items-end justify-center gap-1">
-                    <span className="text-4xl font-extrabold text-white leading-none">19</span>
-                    <span className="text-white/70 font-semibold mb-1">KM/mj</span>
-                  </div>
-                  <p className="text-xs text-white/40 mt-2">Pro uključuje 1 · Premium 3</p>
+              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
+                  <Home className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
-                <ul className="space-y-2 mb-6 flex-1">
+                <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-0.5">Homepage mini oglas</h3>
+                <p className="text-white/50 text-[11px] sm:text-sm mb-2">Kompaktna kartica u traci</p>
+                <div className="flex items-end justify-center gap-0.5">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">19</span>
+                  <span className="text-white/70 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
+                </div>
+                <p className="text-[11px] sm:text-sm text-white/50 mt-0.5">/mjesečno</p>
+                <p className="text-[10px] sm:text-xs text-white/40 mt-1 mb-3">Pro uključuje 1 · Premium 3</p>
+                <ul className="space-y-1.5 sm:space-y-2.5 mb-4 flex-1 text-left">
                   {['Prikaz u traci istaknutih oglasa', 'Brojčana pozicija 1–5', 'Logo, naziv i kratak opis'].map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
-                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-                      {f}
+                    <li key={f} className="flex items-start gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-[11px] sm:text-sm leading-snug">{f}</span>
                     </li>
                   ))}
                 </ul>
-                <AdPricingCTA destination="homepage" variant="primary" className="w-full">
+                <AdPricingCTA destination="homepage" variant="primary" className="w-full text-xs sm:text-sm">
                   Kreiraj oglas
                 </AdPricingCTA>
               </div>
 
               {/* Homepage banner */}
-              <div className="relative rounded-3xl bg-gradient-to-b from-ink-900 to-ink-950 backdrop-blur-xl border border-brand-orange/40 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
-                    <Crown className="w-3 h-3" /> Najbolja vidljivost
+              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-brand-orange/40 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
+                    <Crown className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> Najbolja vidljivost
                   </span>
                 </div>
-                <div className="text-center mb-6 pt-4">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
-                    <Monitor className="w-6 h-6 text-brand-orange" />
+                <div className="text-center mb-2 sm:mb-3 pt-3 sm:pt-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
+                    <Monitor className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-1">Homepage banner</h3>
-                  <p className="text-white/50 text-sm mb-4">Veliki banner 1200 × 400 px</p>
-                  <div className="flex items-end justify-center gap-1">
-                    <span className="text-4xl font-extrabold text-white leading-none">49</span>
-                    <span className="text-white/70 font-semibold mb-1">KM/mj</span>
+                  <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-0.5">Homepage banner</h3>
+                  <p className="text-white/50 text-[11px] sm:text-sm mb-2">Veliki banner 1200 × 400 px</p>
+                  <div className="flex items-end justify-center gap-0.5">
+                    <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">49</span>
+                    <span className="text-white/70 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
                   </div>
-                  <p className="text-xs text-white/40 mt-2">Nije uključen u pakete</p>
+                  <p className="text-[11px] sm:text-sm text-white/50 mt-0.5">/mjesečno</p>
+                  <p className="text-[10px] sm:text-xs text-white/40 mt-1 mb-3">Nije uključen u pakete</p>
                 </div>
-                <ul className="space-y-2 mb-6 flex-1">
+                <ul className="space-y-1.5 sm:space-y-2.5 mb-4 flex-1 text-left">
                   {['Dominantna pozicija na homepage-u', 'Dimenzije 1200 × 400 px', 'Banner, naslov, opis i CTA'].map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
-                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-                      {f}
+                    <li key={f} className="flex items-start gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-[11px] sm:text-sm leading-snug">{f}</span>
                     </li>
                   ))}
                 </ul>
-                <AdPricingCTA destination="homepage_banner" variant="primary" className="w-full">
+                <AdPricingCTA destination="homepage_banner" variant="primary" className="w-full text-xs sm:text-sm">
                   Kreiraj banner
                 </AdPricingCTA>
               </div>
 
               {/* Listing ad */}
-              <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
-                <div className="text-center mb-6">
-                  <div className="w-12 h-12 mx-auto rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-4">
-                    <LayoutGrid className="w-6 h-6 text-brand-orange" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white mb-1">Stranica svih oglasa</h3>
-                  <p className="text-white/50 text-sm mb-4">/izdvojeni-oglasi/</p>
-                  <div className="flex items-end justify-center gap-1">
-                    <span className="text-4xl font-extrabold text-white leading-none">5</span>
-                    <span className="text-white/70 font-semibold mb-1">KM</span>
-                  </div>
-                  <p className="text-xs text-green-400 mt-2">Besplatno za Start, Pro i Premium</p>
+              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
+                  <LayoutGrid className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
-                <ul className="space-y-2 mb-6 flex-1">
+                <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-0.5">Stranica svih oglasa</h3>
+                <p className="text-white/50 text-[11px] sm:text-sm mb-2">/izdvojeni-oglasi/</p>
+                <div className="flex items-end justify-center gap-0.5">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">5</span>
+                  <span className="text-white/70 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
+                </div>
+                <p className="text-[11px] sm:text-sm text-white/50 mt-0.5">jednokratno</p>
+                <p className="text-[10px] sm:text-xs text-green-400 mt-1 mb-3">Besplatno za Start, Pro i Premium</p>
+                <ul className="space-y-1.5 sm:space-y-2.5 mb-4 flex-1 text-left">
                   {['Prikaz na stranici svih oglasa', 'Dostupno svim korisnicima', 'Jednostavno i brzo'].map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-white/80">
-                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
-                      {f}
+                    <li key={f} className="flex items-start gap-1.5">
+                      <CheckCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-[11px] sm:text-sm leading-snug">{f}</span>
                     </li>
                   ))}
                 </ul>
-                <AdPricingCTA destination="listing" variant="secondary" className="w-full">
+                <AdPricingCTA destination="listing" variant="secondary" className="w-full text-xs sm:text-sm">
                   Kreiraj oglas
                 </AdPricingCTA>
               </div>
