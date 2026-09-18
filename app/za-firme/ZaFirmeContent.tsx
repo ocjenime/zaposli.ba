@@ -375,9 +375,9 @@ export default function ZaFirmeContent() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6">
               {/* Homepage mini */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative order-2 rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
                   <Home className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
@@ -403,7 +403,7 @@ export default function ZaFirmeContent() {
               </div>
 
               {/* Homepage banner */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-brand-orange/40 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative order-3 rounded-xl sm:rounded-2xl bg-white/[0.04] backdrop-blur-xl border border-brand-orange/40 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="absolute -top-2.5 left-1/2 -translate-x-1/2">
                   <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
                     <Crown className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> Najbolja vidljivost
@@ -436,7 +436,7 @@ export default function ZaFirmeContent() {
               </div>
 
               {/* Listing ad */}
-              <div className="relative rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
+              <div className="relative order-1 rounded-xl sm:rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6 shadow-2xl shadow-black/40 flex flex-col text-center">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto rounded-xl sm:rounded-2xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
                   <LayoutGrid className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange" />
                 </div>
