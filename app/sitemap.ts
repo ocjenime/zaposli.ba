@@ -10,9 +10,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
-    '', '/kategorije', '/poslovi', '/kako-funkcionise', '/za-firme', '/savjeti',
+    '', '/kategorije', '/poslovi', '/kako-funkcionise', '/za-firme', '/blog',
     '/faq', '/kontakt', '/o-nama', '/objavi-projekat', '/prijava', '/registracija',
-    '/zaboravljena-lozinka', '/pravila', '/privacy', '/gradovi', '/top-firme', '/izdvojeni-oglasi',
+    '/zaboravljena-lozinka', '/uslovi-koristenja', '/privacy', '/gradovi', '/top-firme', '/izdvojeni-oglasi',
   ].map((path) => ({
     url: `${site.url}${path}/`,
     lastModified: now,
@@ -47,7 +47,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   );
 
   const articlePages = articles.map((a) => ({
-    url: `${site.url}/savjeti/${a.slug}/`,
+    url: `${site.url}/blog/${a.slug}/`,
     lastModified: now,
     changeFrequency: 'monthly' as const,
     priority: 0.7,

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     'Koliko košta fasada po m² u BiH 2026: stiropor vs kamena vuna, cijene po sistemu, šta ulazi u cijenu i greške koje poskupljuju radove.',
   alternates: {
-    canonical: `${site.url}/savjeti/cijena-fasade-po-m2/`,
+    canonical: `${site.url}/blog/cijena-fasade-po-m2/`,
   },
 };
 
@@ -68,7 +68,7 @@ export default function CijenaFasadePoM2Page() {
       <main className="flex-grow">
         <Breadcrumbs
           items={[
-            { name: 'Savjeti', href: '/savjeti/' },
+            { name: 'Blog', href: '/blog/' },
             { name: 'Cijena fasade po m² u BiH: vodič za 2026.' },
           ]}
         />
@@ -264,7 +264,7 @@ export default function CijenaFasadePoM2Page() {
                 {relatedArticles.map((article) => (
                   <Link
                     key={article.slug}
-                    href={`/savjeti/${article.slug}/`}
+                    href={`/blog/${article.slug}/`}
                     className="group flex items-center gap-3 bg-cloud rounded-xl border border-gray-100 p-4 hover:border-brand-orange/30 hover:shadow-card transition-all"
                   >
                     <span className="text-xs font-semibold bg-primary-50 text-brand-orange px-2.5 py-1 rounded-full">

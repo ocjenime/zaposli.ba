@@ -512,6 +512,10 @@
   - `app/oglasi/PromotedAdsPageClient.tsx` now renders a vertical list; deleted the obsolete grid `components/PromotedAdListCard.tsx`.
   - `npm run lint` and `npm run build` pass (2409 pages).
 - Premium photo finish for homepage `RoleCTACards` matching the mobile mockup (layout and card sizes unchanged): photographic backgrounds with dark gradient, glass icon boxes, orange filled arrow on `Tražim majstora` and dark glass arrow on `Za firme`, subtle hover zoom.
+- Renamed `/savjeti/` to `/blog/` and removed the duplicate `/pravila/` page:
+  - `git mv app/savjeti app/blog`; all `/savjeti` URL refs rewritten to `/blog` (article canonicals, breadcrumbs now labelled `Blog`, `ArticleLayout`, `articleSchema` JSON-LD, sitemap, footers); listing hero/breadcrumbs retitled to `Blog` with `Najnoviji članci` heading; permanent redirect `/savjeti/:path*` → `/blog/:path*` in `next.config.js`.
+  - Moved `app/pravila/page.tsx` content to `app/uslovi-koristenja/page.tsx` (retitled metadata/breadcrumb/hero to `Uslovi korištenja`); deleted the old redirect stub; permanent redirect `/pravila/:path*` → `/uslovi-koristenja/:path*`; sitemap + desktop/mobile footers + registration terms link updated.
+  - Mobile footer brand column gained a `Blog` link; social icons row centered.
   - `Za firme` card now uses a small optimized `public/images/za-firme-card.jpg` (from `biz.png`, 1536px → 800px JPG 54KB) cropped to keep the businessman fully visible (`object-[72%_center]`).
   - `Tražim majstora` card now uses a small optimized `public/images/trazim-majstora-card.jpg` (from `trazim.png`, 1536px → 800px JPG 57KB), centered so the renovation scene stays fully visible.
   - Strengthened the bottom dark scrim on role cards (`from-ink-950/95 via-ink-950/50` + extra bottom `black/60` fade) so text stays readable on bright photos, and lowered the text closer to the card bottom edge like the mockup.
@@ -564,7 +568,7 @@
 - `app/globals.css` and `tailwind.config.js`: typography stack.
 - `next.config.js`: Supabase preconnect header.
 - `lib/articles.ts`: article metadata source.
-- `app/savjeti/**/page.tsx`: article pages.
+- `app/blog/**/page.tsx`: article pages (renamed from `/savjeti/`).
 - `app/kako-funkcionise/page.tsx`: light-theme how-it-works page with `HowTo`, `FAQPage`, and `BreadcrumbList` JSON-LD.
 - `app/globals.css`: global CSS including custom `floatOrb` keyframe animations.
 - `app/kontakt/page.tsx`: redesigned contact page.

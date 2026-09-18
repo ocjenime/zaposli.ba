@@ -236,10 +236,10 @@ export function articleSchema({
     datePublished,
     dateModified: dateModified || datePublished,
     image,
-    url: `${site.url}/savjeti/${slug}/`,
+    url: `${site.url}/blog/${slug}/`,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${site.url}/savjeti/${slug}/`,
+      '@id': `${site.url}/blog/${slug}/`,
     },
   };
 }

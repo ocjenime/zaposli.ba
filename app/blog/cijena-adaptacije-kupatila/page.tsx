@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     'Cijena adaptacije kupatila u BiH 2026: demontaža, instalacije, keramika i sanitarije: realni rasponi u KM i savjeti za upoređivanje ponuda.',
   alternates: {
-    canonical: 'https://zaposli.ba/savjeti/cijena-adaptacije-kupatila/',
+    canonical: 'https://zaposli.ba/blog/cijena-adaptacije-kupatila/',
   },
 };
 
@@ -69,7 +69,7 @@ export default function CijenaAdaptacijeKupatilaPage() {
       <main className="flex-grow">
         <Breadcrumbs
           items={[
-            { name: 'Savjeti', href: '/savjeti/' },
+            { name: 'Blog', href: '/blog/' },
             { name: 'Koliko košta adaptacija kupatila u 2026?' },
           ]}
         />
@@ -257,7 +257,7 @@ export default function CijenaAdaptacijeKupatilaPage() {
                 {relatedArticles.map((article) => (
                   <Link
                     key={article.slug}
-                    href={`/savjeti/${article.slug}/`}
+                    href={`/blog/${article.slug}/`}
                     className="group flex items-center gap-3 bg-cloud rounded-xl border border-gray-100 p-4 hover:border-brand-orange/30 hover:shadow-card transition-all"
                   >
                     <span className="text-xs font-semibold bg-primary-50 text-brand-orange px-2.5 py-1 rounded-full">

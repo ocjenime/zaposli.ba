@@ -11,7 +11,7 @@ const footerLinks = {
     { name: 'Objavi posao', href: '/objavi-projekat/' },
     { name: 'Kategorije', href: '/kategorije/' },
     { name: 'Top firme', href: '/top-firme/' },
-    { name: 'Savjeti', href: '/savjeti/' },
+    { name: 'Blog', href: '/blog/' },
   ],
   'Za firme': [
     { name: 'Registracija', href: '/registracija/' },
@@ -22,7 +22,7 @@ const footerLinks = {
   'O nama': [
     { name: 'O platformi', href: '/o-nama/' },
     { name: 'Kontakt', href: '/kontakt/' },
-    { name: 'Pravila', href: '/pravila/' },
+    { name: 'Uslovi korištenja', href: '/uslovi-koristenja/' },
     { name: 'Politika privatnosti', href: '/privacy/' },
   ],
 };
@@ -55,6 +55,7 @@ const companyLinks = [
   { name: 'Uslovi korištenja', href: '/uslovi-koristenja/' },
   { name: 'Privatnost', href: '/privacy/' },
   { name: 'Česta pitanja', href: '/faq/' },
+  { name: 'Blog', href: '/blog/' },
 ];
 
 // TODO: zamijeniti pravim URL-ovima za Instagram, YouTube i LinkedIn kad stignu
@@ -203,7 +204,7 @@ export default function Footer() {
         </div>
 
         {/* Društvene mreže */}
-        <div className="flex gap-2 mt-6">
+        <div className="flex gap-2 mt-6 justify-center">
           {socialLinks.map((social) => (
             <a
               key={social.name}

@@ -20,6 +20,8 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/kako-radi/:path*', destination: '/kako-funkcionise/:path*', permanent: true },
+      { source: '/savjeti/:path*', destination: '/blog/:path*', permanent: true },
+      { source: '/pravila/:path*', destination: '/uslovi-koristenja/:path*', permanent: true },
     ];
   },
   async headers() {

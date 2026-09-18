@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     'Kontrolna lista prije nego date avans majstoru: registracija firme, recenzije, fotografije radova, ugovor i plaćanje po fazama.',
   alternates: {
-    canonical: `${site.url}/savjeti/kako-provjeriti-majstora/`,
+    canonical: `${site.url}/blog/kako-provjeriti-majstora/`,
   },
 };
 
@@ -62,7 +62,7 @@ export default function KakoProvjeritiMajstoraPage() {
       <main className="flex-grow">
         <Breadcrumbs
           items={[
-            { name: 'Savjeti', href: '/savjeti/' },
+            { name: 'Blog', href: '/blog/' },
             { name: 'Kako provjeriti majstora prije nego što mu date avans' },
           ]}
         />
@@ -230,7 +230,7 @@ export default function KakoProvjeritiMajstoraPage() {
                 {relatedArticles.map((article) => (
                   <Link
                     key={article.slug}
-                    href={`/savjeti/${article.slug}/`}
+                    href={`/blog/${article.slug}/`}
                     className="group flex items-center gap-3 bg-cloud rounded-xl border border-gray-100 p-4 hover:border-brand-orange/30 hover:shadow-card transition-all"
                   >
                     <span className="text-xs font-semibold bg-primary-50 text-brand-orange px-2.5 py-1 rounded-full">

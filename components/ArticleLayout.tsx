@@ -45,11 +45,11 @@ export function generateArticleMetadata({
   return {
     title: `${title} | Zaposli.ba`,
     description: excerpt,
-    alternates: { canonical: `${site.url}/savjeti/${slug}/` },
+    alternates: { canonical: `${site.url}/blog/${slug}/` },
     openGraph: {
       title,
       description: excerpt,
-      url: `${site.url}/savjeti/${slug}/`,
+      url: `${site.url}/blog/${slug}/`,
       siteName: site.name,
       locale: 'bs_BA',
       type: 'article',
@@ -78,7 +78,7 @@ export default function ArticleLayout({
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Savjeti', href: '/savjeti/' }, { name: title }]} />
+        <Breadcrumbs items={[{ name: 'Blog', href: '/blog/' }, { name: title }]} />
         <JsonLd
           data={articleSchema({
             title,
@@ -91,7 +91,7 @@ export default function ArticleLayout({
         <JsonLd
           data={breadcrumbSchema([
             { name: 'Početna', url: '/' },
-            { name: 'Savjeti', url: '/savjeti/' },
+            { name: 'Blog', url: '/blog/' },
             { name: title },
           ])}
         />
@@ -189,7 +189,7 @@ export default function ArticleLayout({
                 {relatedArticles.map((article) => (
                   <Link
                     key={article.slug}
-                    href={`/savjeti/${article.slug}/`}
+                    href={`/blog/${article.slug}/`}
                     className="group flex items-center gap-3 bg-cloud rounded-xl border border-gray-100 p-4 hover:border-brand-orange/30 hover:shadow-card transition-all"
                   >
                     <span className="text-xs font-semibold bg-primary-50 text-brand-orange px-2.5 py-1 rounded-full">

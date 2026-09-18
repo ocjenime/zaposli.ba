@@ -397,7 +397,7 @@ export default function RegisterForm() {
                 <input type="checkbox" id="terms" className="w-4 h-4 mt-1 text-primary-600 border-gray-300 rounded focus:ring-primary-500" required />
                 <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
                   Prihvaćam{' '}
-                  <Link href="/pravila/" className="text-primary-600 hover:text-primary-700">Pravila</Link>{' '}
+                  <Link href="/uslovi-koristenja/" className="text-primary-600 hover:text-primary-700">Uslove korištenja</Link>{' '}
                   i{' '}
                   <Link href="/privacy/" className="text-primary-600 hover:text-primary-700">Politiku privatnosti</Link>
                 </label>

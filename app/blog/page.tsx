@@ -9,10 +9,10 @@ import { site } from '@/lib/site';
 import { articles } from '@/lib/articles';
 
 export const metadata: Metadata = {
-  title: 'Savjeti za renoviranje i građevinske radove | Zaposli.ba',
+  title: 'Blog - savjeti za renoviranje i građevinske radove | Zaposli.ba',
   description:
     'Praktični savjeti za renoviranje i građevinske radove u BiH: cijene adaptacija i fasada, provjera majstora i upoređivanje ponuda.',
-  alternates: { canonical: `${site.url}/savjeti/` },
+  alternates: { canonical: `${site.url}/blog/` },
 };
 
 const benefits = [
@@ -43,9 +43,9 @@ export default function SavjetiPage() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Savjeti' }]} />
+        <Breadcrumbs items={[{ name: 'Blog' }]} />
         <PageHero
-          title="Savjeti"
+          title="Blog"
           subtitle="Praktični vodiči i stvarne cijene za vaše građevinske poslove u BiH. Naučite kako odabrati majstora i platiti poštenu cijenu."
           eyebrow="Blog i cjenici"
           gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
@@ -84,14 +84,14 @@ export default function SavjetiPage() {
         <section className="py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Najnoviji savjeti</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Najnoviji članci</h2>
               <span className="text-sm text-steel">{articles.length} vodiča</span>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {articles.map((article) => (
                 <Link
                   key={article.slug}
-                  href={`/savjeti/${article.slug}/`}
+                  href={`/blog/${article.slug}/`}
                   className="group bg-white rounded-2xl border border-gray-100 p-6 shadow-card hover:shadow-xl transition-all duration-300 flex flex-col"
                 >
                   <span className="inline-block self-start text-xs font-semibold text-brand-orange bg-orange-50 px-3 py-1 rounded-full mb-4">
