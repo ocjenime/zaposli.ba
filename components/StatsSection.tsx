@@ -116,95 +116,81 @@ export default function StatsSection() {
   }, []);
 
   const visibleStats = stats.slice(0, 3);
-  const extraStats = stats.slice(3);
   const visibleTrust = trustCards.slice(0, Math.max(0, 6 - visibleStats.length));
 
   return (
-    <section className="relative overflow-hidden bg-ink-950 py-20 md:py-28">
+    <section className="relative overflow-hidden bg-ink-950 py-10 md:py-14">
       {/* ambient glows */}
-      <div className="pointer-events-none absolute -left-32 top-0 h-[28rem] w-[28rem] rounded-full bg-brand-orange/5 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-32 bottom-0 h-[24rem] w-[24rem] rounded-full bg-brand-amber/5 blur-[100px]" />
+      <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-brand-orange/5 blur-[100px]" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-64 w-64 rounded-full bg-brand-amber/5 blur-[90px]" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(249,115,22,0.08),transparent_50%)]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* header */}
-        <div className="mx-auto mb-14 max-w-2xl text-center">
-          <span className="mb-4 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-semibold text-brand-orange backdrop-blur-sm">
+        <div className="mx-auto mb-8 max-w-2xl text-center md:mb-10">
+          <span className="mb-3 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-brand-orange backdrop-blur-sm">
             Zašto baš mi?
           </span>
-          <h2 className="mb-4 text-3xl font-extrabold tracking-tight text-white md:text-4xl lg:text-5xl">
+          <h2 className="mb-2.5 text-2xl font-extrabold tracking-tight text-white md:text-3xl">
             Zašto Zaposli.ba?
           </h2>
-          <p className="text-base text-white/60 md:text-lg">
+          <p className="text-sm text-white/60 md:text-base">
             Platforma koja povezuje klijente sa provjerenim firmama širom Bosne i Hercegovine
           </p>
         </div>
 
-        {/* 3x2 bento grid */}
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {visibleStats.map((stat, index) => (
-            <div
-              key={stat.label}
-              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.06] dark:border-ink-700 dark:bg-ink-800 dark:hover:border-ink-600 dark:hover:bg-ink-700"
-            >
-              <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-              <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-brand-orange/5 blur-[50px] transition-opacity group-hover:opacity-70" />
-
-              <div className="relative flex items-start gap-5">
-                <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20 transition-colors group-hover:from-brand-orange/25 group-hover:to-brand-orange/10">
-                  <stat.icon className="h-7 w-7" />
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-                    {loading && index === 0 ? (
-                      <span className="inline-block h-9 w-24 animate-pulse rounded-lg bg-white/10" />
-                    ) : (
-                      <Counter value={stat.value} />
-                    )}
+        {/* stats strip */}
+        {(loading || stats.length > 0) && (
+          <div className="mb-3 flex flex-col divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm sm:flex-row sm:divide-x sm:divide-y-0 md:mb-4">
+            {loading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="flex flex-1 items-center gap-3 p-3.5 md:p-4">
+                    <div className="h-10 w-10 shrink-0 animate-pulse rounded-xl bg-white/10" />
+                    <div className="flex-1">
+                      <div className="h-5 w-20 animate-pulse rounded bg-white/10" />
+                      <div className="mt-1.5 h-3 w-24 animate-pulse rounded bg-white/10" />
+                    </div>
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-brand-orange">{stat.label}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+                ))
+              : stats.slice(0, 4).map((stat) => (
+                  <div key={stat.label} className="flex flex-1 items-center gap-3 p-3.5 md:p-4">
+                    <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 text-brand-orange ring-1 ring-inset ring-brand-orange/20">
+                      <stat.icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-xl font-extrabold tracking-tight text-white md:text-2xl">
+                        <Counter value={stat.value} />
+                      </div>
+                      <div className="text-[11px] font-semibold leading-tight text-brand-orange md:text-xs">
+                        {stat.label}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+          </div>
+        )}
 
+        {/* trust grid */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
           {visibleTrust.map((card) => (
             <div
               key={card.title}
-              className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-7 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05] dark:border-ink-700 dark:bg-ink-800 dark:hover:border-ink-600 dark:hover:bg-ink-700"
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur-sm transition-all duration-300 hover:border-white/15 hover:bg-white/[0.05] dark:border-ink-700 dark:bg-ink-800 dark:hover:border-ink-600 dark:hover:bg-ink-700 md:p-5"
             >
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-orange/30 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
-              <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20 dark:bg-ink-700 dark:ring-ink-600">
-                <card.icon className="h-6 w-6" />
+              <div className="flex items-start gap-3">
+                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 transition-colors group-hover:bg-brand-orange/10 group-hover:ring-brand-orange/20 dark:bg-ink-700 dark:ring-ink-600">
+                  <card.icon className="h-5 w-5" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="mb-0.5 text-base font-bold text-[#ffffff]">{card.title}</h3>
+                  <p className="text-[13px] leading-snug text-[#ffffff]/70">{card.description}</p>
+                </div>
               </div>
-              <h3 className="mb-1.5 text-lg font-bold text-[#ffffff]">{card.title}</h3>
-              <p className="text-sm leading-relaxed text-[#ffffff]/70">{card.description}</p>
             </div>
           ))}
         </div>
-
-        {/* extra stats row (if more than 3 stats) */}
-        {extraStats.length > 0 && (
-          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            {extraStats.map((stat) => (
-              <div
-                key={stat.label}
-                className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 backdrop-blur-sm dark:border-ink-700 dark:bg-ink-800"
-              >
-                <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 text-brand-orange ring-1 ring-inset ring-white/10 dark:bg-ink-700 dark:ring-ink-600">
-                  <stat.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <div className="text-2xl font-extrabold text-white">
-                    <Counter value={stat.value} />
-                  </div>
-                  <div className="text-sm text-white/55">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </section>
   );
