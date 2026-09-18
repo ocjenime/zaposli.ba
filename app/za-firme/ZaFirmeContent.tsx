@@ -3,6 +3,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import Image from 'next/image';
 import PricingCTA from '@/components/PricingCTA';
 import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
@@ -10,90 +11,67 @@ import { planFeatures } from '@/lib/plan-features';
 
 import {
   CheckCircle,
-  TrendingUp,
   Users,
-  Star,
-  ArrowRight,
   Shield,
+  ShieldCheck,
   BadgeCheck,
-  Clock,
-  Wallet,
-  Building2,
+  MapPin,
+  BarChart3,
+  Briefcase,
+  Play,
+  Home,
+  LayoutGrid,
+  Triangle,
   Target,
-  Headphones,
+  Crown,
+  Monitor,
+  Megaphone,
   ChevronDown,
   HelpCircle,
-  Phone,
-  Paintbrush,
-  Home,
-  Hammer,
-  Zap,
-  Sparkles,
-  Briefcase,
-  Rocket,
-  Award,
-  BarChart3,
-  UserPlus,
-  LayoutGrid,
-  Megaphone,
-  Crown,
-  Eye,
-  MousePointerClick,
-  Monitor,
+  TrendingUp,
 } from 'lucide-react';
+
+const notifications = [
+  {
+    icon: Home,
+    title: 'Novi upit za vašu uslugu',
+    service: 'Adaptacija stana',
+    city: 'Bihać',
+    time: 'prije 5 min',
+  },
+  {
+    icon: LayoutGrid,
+    title: 'Novi projekat',
+    service: 'Postavljanje keramike',
+    city: 'Velika Kladuša',
+    time: 'prije 18 min',
+  },
+  {
+    icon: Triangle,
+    title: 'Upit za ponudu',
+    service: 'Krovopokrivački radovi',
+    city: 'Cazin',
+    time: 'prije 1 h',
+  },
+];
 
 const benefits = [
   {
-    icon: TrendingUp,
-    title: 'Rastite bez marketinga',
-    description:
-      'Dobijajte redovne upite za posao bez dodatnog ulaganja u oglase i društvene mreže.',
-    stat: 'Bez plaćanja po kliku',
-  },
-  {
     icon: Users,
-    title: 'Marketplace u BiH',
-    description:
-      'Pristupite bazi klijenata u Bosni i Hercegovini koji aktivno traže majstore i firme.',
-    stat: '50+ kategorija',
-  },
-  {
-    icon: Star,
-    title: 'Izgradite reputaciju',
-    description: 'Skupljajte ocjene i recenzije koje vas ističu ispred konkurencije.',
-    stat: '4.8 / 5 prosjek',
+    title: 'Novi klijenti',
+    description: 'Redovni upiti od ljudi koji traže vaše usluge.',
   },
   {
     icon: Shield,
-    title: 'Verifikacija profila',
-    description: 'Verifikovani profil dobija značku povjerenja i bolju poziciju u listi.',
-    stat: 'Značka povjerenja',
+    title: 'Više povjerenja',
+    description: 'Profesionalan profil i recenzije grade vašu reputaciju.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Manje praznog hoda',
+    description: 'Stabilniji priliv posla i bolja iskorištenost kapaciteta.',
   },
 ];
-
-
-const processSteps = [
-  {
-    number: '01',
-    icon: UserPlus,
-    title: 'Kreirajte profil',
-    description: 'Besplatna registracija firme ili majstora u par minuta. Dodajte usluge, gradove i portfolio.',
-  },
-  {
-    number: '02',
-    icon: Briefcase,
-    title: 'Pronađite i odradite posao',
-    description: 'Dobijajte upite, šaljite ponude i rješavajte projekte u svom okrugu.',
-  },
-  {
-    number: '03',
-    icon: Wallet,
-    title: 'Naplatite i gradite reputaciju',
-    description: 'Primajte uplatu direktno od klijenta i skupljajte ocjene koje donose nove poslove.',
-  },
-];
-
-
 
 const pricingPlans = [
   {
@@ -101,9 +79,7 @@ const pricingPlans = [
     slug: 'besplatno',
     price: '0',
     regularPrice: '0',
-    period: 'KM/mj',
-    description: 'Idealno za početak i testiranje tržišta.',
-    cta: 'Počnite besplatno',
+    cta: 'Počni besplatno',
     popular: false,
     launch: false,
   },
@@ -112,9 +88,7 @@ const pricingPlans = [
     slug: 'start',
     price: '19',
     regularPrice: '29',
-    period: 'KM/mj',
-    description: 'Za početnike koji žele više poslova.',
-    cta: 'Odaberite Start',
+    cta: 'Odaberi Start',
     popular: false,
     launch: true,
   },
@@ -123,9 +97,7 @@ const pricingPlans = [
     slug: 'pro',
     price: '49',
     regularPrice: '79',
-    period: 'KM/mj',
-    description: 'Za aktivne firme i majstore koji žele rasti.',
-    cta: 'Odaberite Pro',
+    cta: 'Odaberi Pro',
     popular: true,
     launch: true,
   },
@@ -134,9 +106,7 @@ const pricingPlans = [
     slug: 'premium',
     price: '99',
     regularPrice: '149',
-    period: 'KM/mj',
-    description: 'Za najzahtjevnije profesionalce i firme.',
-    cta: 'Odaberite Premium',
+    cta: 'Odaberi Premium',
     popular: false,
     launch: true,
   },
@@ -175,238 +145,138 @@ const faqs = [
   },
 ];
 
+const trustFooter = [
+  { icon: Shield, label: 'Iz Bosne i Hercegovine za bolje majstore.' },
+  { icon: ShieldCheck, label: 'Sigurno' },
+  { icon: BadgeCheck, label: 'Pouzdano' },
+  { icon: MapPin, label: 'Lokalno' },
+];
+
 export default function ZaFirmeContent() {
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-gradient-hero pt-28 pb-20 md:pt-40 md:pb-32">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
-          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
+        <section className="relative overflow-hidden">
+          <Image
+            src="/images/zafirme-hero.jpg"
+            alt="Majstorski alat i gradilište"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/80 to-ink-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-ink-950/60" />
 
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
-                  <Building2 className="h-4 w-4 text-brand-orange" />
-                  Marketplace za majstore i firme u BiH
-                </div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 text-balance">
-                  Novi poslovi,{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                    direktno u vaš inbox
-                  </span>
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-24 md:pt-32 pb-10 md:pb-16">
+            <div className="grid grid-cols-[1.08fr_0.92fr] sm:grid-cols-2 gap-3 sm:gap-6 md:gap-12 items-center">
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-white/80 mb-3 sm:mb-4">
+                  <Briefcase className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-brand-orange" />
+                  ZA FIRME I MAJSTORE
+                </span>
+                <h1 className="text-[27px] leading-[1.08] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-3 sm:mb-4">
+                  Vi radite posao.
+                  <br />
+                  <span className="text-brand-orange">Mi vam dovodimo klijente.</span>
                 </h1>
-                <p className="text-lg md:text-xl text-white/70 leading-relaxed mb-8 max-w-xl">
-                  Pridružite se najvećem tržištu za majstore i građevinske firme u Bosni i
-                  Hercegovini. Dobijajte upite, šaljite ponude i rastite bez velikih početnih
-                  ulaganja.
+                <p className="text-[13px] sm:text-sm md:text-lg text-white/70 leading-relaxed mb-5 sm:mb-6">
+                  Dobijajte stvarne upite od klijenata koji aktivno traže vaše usluge u Bosni i
+                  Hercegovini. Jednostavno, brzo i bez dodatnog marketinga.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <PricingCTA
-                    popular
-                    className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
-                  >
+                <div className="flex flex-col gap-2.5 mb-5">
+                  <PricingCTA popular className="w-full px-5 py-3 text-sm sm:text-base">
                     Registrujte firmu besplatno
                   </PricingCTA>
                   <Link
-                    href="#cijene"
-                    className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
+                    href="/kako-funkcionise/"
+                    className="inline-flex items-center justify-center gap-2.5 w-full bg-white/5 border border-white/15 text-white px-5 py-3 rounded-xl text-sm sm:text-base font-semibold hover:bg-white/10 transition-colors duration-200"
                   >
-                    Pogledajte pakete
+                    <span className="w-6 h-6 rounded-full border border-white/30 flex items-center justify-center shrink-0">
+                      <Play className="w-3 h-3 fill-current" />
+                    </span>
+                    Pogledajte kako funkcioniše
                   </Link>
                 </div>
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/70">
-                  <span className="inline-flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-brand-orange" />
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] sm:text-sm text-white/70">
+                  <span className="inline-flex items-center gap-1.5">
+                    <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-orange shrink-0" />
                     Bez ugovorne obaveze
                   </span>
-                  <span className="inline-flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-brand-orange" />
-                    5 besplatnih ponuda mjesečno
+                  <span className="inline-flex items-center gap-1.5">
+                    <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-orange shrink-0" />
+                    Brza registracija
                   </span>
-                  <span className="inline-flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-brand-orange" />
+                  <span className="inline-flex items-center gap-1.5">
+                    <CheckCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-orange shrink-0" />
                     Podrška na bosanskom
                   </span>
                 </div>
               </div>
 
-              <div className="relative flex justify-center lg:justify-end">
-                <div className="relative w-full max-w-lg xl:max-w-xl rounded-3xl overflow-hidden shadow-2xl shadow-black/30 border border-white/10 bg-gradient-to-br from-ink-800 via-ink-700 to-ink-600 p-8 md:p-10">
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
-                  <div className="relative">
-                    <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6">
-                      <Rocket className="w-8 h-8 text-brand-orange" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-4">Zašto firme rastu na Zaposli.ba?</h3>
-                    <ul className="space-y-4">
-                      {[
-                        'Nema plaćanja po kliku ili po ogledu',
-                        'Direktan kontakt sa klijentom',
-                        'Recenzije koje grade dugoročni ugled',
-                        'Alati za upravljanje ponudama',
-                      ].map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-white/70">
-                          <div className="w-6 h-6 rounded-full bg-brand-orange/20 flex items-center justify-center shrink-0">
-                            <CheckCircle className="w-3.5 h-3.5 text-brand-orange" />
-                          </div>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-8 pt-6 border-t border-white/10 flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-brand-orange to-brand-orange-dark rounded-xl flex items-center justify-center">
-                        <BarChart3 className="w-6 h-6 text-white" />
+              {/* Notification cards */}
+              <div className="relative">
+                <p className="hidden sm:block absolute -top-9 right-1 rotate-6 font-serif italic text-white/50 text-base text-right leading-tight">
+                  VI GRADITE
+                  <br />
+                  BOLJU BIH
+                </p>
+                <div className="space-y-2 sm:space-y-3 mt-2 sm:mt-4">
+                  {notifications.map((n) => (
+                    <div
+                      key={n.title}
+                      className="rounded-2xl bg-white/[0.07] backdrop-blur-xl border border-white/10 p-2.5 sm:p-3.5 shadow-xl"
+                    >
+                      <div className="flex items-center gap-2 sm:gap-2.5">
+                        <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl bg-brand-orange/15 flex items-center justify-center shrink-0">
+                          <n.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[11px] sm:text-sm font-bold text-white leading-tight truncate">
+                            {n.title}
+                          </p>
+                          <p className="text-[10px] sm:text-xs text-white/60 leading-tight truncate">
+                            {n.service}
+                          </p>
+                          <p className="text-[10px] sm:text-xs text-white/40 leading-tight truncate">
+                            {n.city}
+                          </p>
+                        </div>
+                        <div className="flex flex-col items-end gap-1 shrink-0">
+                          <span className="w-1.5 h-1.5 rounded-full bg-brand-orange" />
+                          <span className="text-[9px] sm:text-[11px] text-white/50 whitespace-nowrap">
+                            {n.time}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-white font-bold">4.8 / 5</p>
-                        <p className="text-white/60 text-sm">Prosječna ocjena verifikovanih firmi</p>
-                      </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Floating stat pills */}
-                <div className="absolute -top-4 -right-2 md:top-4 md:-right-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl hidden sm:block">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center">
-                      <Users className="w-5 h-5 text-brand-orange" />
-                    </div>
-                    <div>
-                      <p className="text-white font-bold text-sm">2.400+</p>
-                      <p className="text-white/60 text-xs">Aktivnih firmi</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute -bottom-4 -right-2 md:bottom-8 md:-right-8 bg-white/10 backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl hidden sm:block">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-brand-orange/20 flex items-center justify-center">
-                      <Briefcase className="w-5 h-5 text-brand-orange" />
-                    </div>
-                    <div>
-                      <p className="text-white font-bold text-sm">Svakodnevno</p>
-                      <p className="text-white/60 text-xs">Novi poslovi</p>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-ink-950 to-transparent" />
         </section>
 
-        {/* Benefits - 2x2 dark glass cards */}
-        <section className="relative py-20 md:py-28 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
-
-          <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
-                <Building2 className="h-4 w-4" /> Prednosti platforme
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Zašto se profesionalci pridružuju Zaposli.ba?
-              </h2>
-              <p className="text-white/70 text-lg">
-                Platforma koja vam donosi klijente, pomaže da gradite reputaciju i rastete bez velikih početnih ulaganja.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {benefits.map((benefit) => (
+        {/* Benefits */}
+        <section className="relative py-10 md:py-16">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-4 md:gap-5">
+              {benefits.map((b) => (
                 <div
-                  key={benefit.title}
-                  className="group bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-6 md:p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  key={b.title}
+                  className="rounded-2xl bg-white/[0.04] border border-white/10 p-3 sm:p-5 md:p-6"
                 >
-                  <div className="flex items-start gap-5">
-                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                      <benefit.icon className="w-7 h-7 text-brand-orange" strokeWidth={1.5} />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                        <h3 className="text-xl font-bold text-white">{benefit.title}</h3>
-                        <span className="text-brand-orange font-extrabold text-xs bg-brand-orange/10 px-3 py-1 rounded-full border border-brand-orange/20 whitespace-nowrap">
-                          {benefit.stat}
-                        </span>
-                      </div>
-                      <p className="text-white/70 leading-relaxed">{benefit.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* How it works - vertical timeline */}
-        <section className="relative py-20 md:py-28 bg-cloud overflow-hidden">
-          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <Target className="h-4 w-4" /> Kako funkcioniše
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Tri koraka do novih klijenata
-              </h2>
-              <p className="text-steel text-lg">
-                Registrujte se, pronađite posao i gradite reputaciju bez komplikacija.
-              </p>
-            </div>
-
-            <div className="relative space-y-6">
-              <div className="absolute left-8 lg:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-brand-orange via-brand-orange/40 to-transparent" />
-
-              {processSteps.map((step, index) => (
-                <div
-                  key={step.number}
-                  className={`relative grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 ${
-                    index !== processSteps.length - 1 ? 'mb-16' : ''
-                  }`}
-                >
-                  {index % 2 === 0 ? (
-                    <>
-                      <div className="lg:text-right">
-                        <div className="ml-20 lg:ml-0 bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card hover:shadow-xl transition-all duration-300 text-left">
-                          <div className="flex items-center gap-4 mb-4 lg:flex-row-reverse">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center shrink-0">
-                              <step.icon className="w-7 h-7 text-brand-orange" strokeWidth={1.5} />
-                            </div>
-                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">{step.title}</h3>
-                          </div>
-                          <p className="text-steel leading-relaxed">{step.description}</p>
-                        </div>
-                      </div>
-                      <div className="hidden lg:block" />
-                    </>
-                  ) : (
-                    <>
-                      <div className="hidden lg:block" />
-                      <div>
-                        <div className="ml-20 lg:ml-0 bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-card hover:shadow-xl transition-all duration-300">
-                          <div className="flex items-center gap-4 mb-4">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center shrink-0">
-                              <step.icon className="w-7 h-7 text-brand-orange" strokeWidth={1.5} />
-                            </div>
-                            <h3 className="text-xl md:text-2xl font-bold text-gray-900">{step.title}</h3>
-                          </div>
-                          <p className="text-steel leading-relaxed">{step.description}</p>
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="absolute left-8 lg:left-1/2 top-0 -translate-x-1/2">
-                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center text-white font-extrabold text-lg shadow-lg shadow-brand-orange/30 border-4 border-cloud">
-                      {step.number}
-                    </div>
-                  </div>
+                  <span className="w-9 h-9 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl bg-brand-orange/10 flex items-center justify-center mb-2 sm:mb-3">
+                    <b.icon className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-brand-orange" />
+                  </span>
+                  <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white leading-snug mb-1">
+                    {b.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-sm text-white/60 leading-snug">{b.description}</p>
                 </div>
               ))}
             </div>
@@ -414,82 +284,65 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Pricing */}
-        <section id="cijene" className="relative py-20 md:py-28 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-slate-900 to-slate-800" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px]" />
-
+        <section id="cijene" className="relative py-10 md:py-16 scroll-mt-20">
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-sm font-semibold mb-4 border border-white/10">
-                <Wallet className="h-4 w-4" /> Cijene
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 text-balance">
-                Jednostavne cijene, bez iznenađenja
+            <div className="text-center max-w-2xl mx-auto mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mb-2">
+                Jednostavni paketi za svaki biznis
               </h2>
-              <p className="text-white/70 text-lg mb-6">
-                Počnite besplatno. Nadogradite kada platforma počne da vam donosi poslove.
+              <p className="text-white/60 text-sm md:text-base mb-4">
+                Pronađite paket koji odgovara vašim ciljevima.
               </p>
-              <p className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
+              <p className="inline-flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
                 Godišnje plaćanje: 10% popusta
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4 md:gap-5 items-stretch">
               {pricingPlans.map((plan) => (
                 <div
                   key={plan.name}
-                  className={`relative rounded-2xl p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 ${
+                  className={`relative rounded-2xl p-5 md:p-6 flex flex-col text-center transition-all duration-300 hover:-translate-y-1 ${
                     plan.popular
-                      ? 'bg-white/10 backdrop-blur-md border border-brand-orange/50 shadow-2xl shadow-brand-orange/20 scale-[1.02]'
-                      : 'bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 hover:border-white/20'
+                      ? 'bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-2xl shadow-brand-orange/20'
+                      : 'bg-white/[0.04] border border-white/10'
                   }`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
-                        Preporučeno
+                      <span className="inline-flex items-center px-4 py-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
+                        Najpopularniji
                       </span>
                     </div>
                   )}
 
-                  <div className="text-center mb-6">
-                    <h3 className="text-lg font-bold text-white mb-1">{plan.name}</h3>
-                    <p className="text-sm text-white/60 mb-4">{plan.description}</p>
-                    {plan.launch && (
-                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-bold uppercase tracking-wide mb-3">
-                        Launch ponuda
-                      </span>
-                    )}
-                    <div className="flex items-end justify-center gap-1">
-                      <span className="text-4xl font-extrabold text-white leading-none">
-                        {plan.price}
-                      </span>
-                      <span className="text-white/60 font-semibold mb-1">KM</span>
-                    </div>
-                    {plan.launch ? (
-                      <div className="mt-1 space-y-0.5">
-                        <p className="text-sm text-white/60 line-through">
-                          {plan.regularPrice} KM/mj
-                        </p>
-                        <p className="text-sm text-green-300 font-medium">
-                          Prvih 3 mjeseca · zatim {plan.regularPrice} KM/mj
-                        </p>
-                      </div>
-                    ) : (
-                      <p className="text-sm text-white/60 mt-1">{plan.period}</p>
-                    )}
+                  <h3 className="text-base md:text-lg font-bold text-white mb-2">{plan.name}</h3>
+                  <div className="flex items-end justify-center gap-1">
+                    <span className="text-5xl font-extrabold text-white leading-none">
+                      {plan.price}
+                    </span>
+                    <span className="text-white/60 font-semibold mb-1">KM</span>
                   </div>
+                  <p className="text-sm text-white/50 mt-1 mb-1">/mjesečno</p>
+                  {plan.launch && (
+                    <div className="mb-1">
+                      <p className="text-xs text-white/50">
+                        <span className="line-through">{plan.regularPrice} KM/mj</span>
+                        <span className="text-green-300 font-semibold"> · prvih 3 mjeseca</span>
+                      </p>
+                    </div>
+                  )}
 
-                  <ul className="space-y-3 mb-8 flex-1">
+                  <ul className="space-y-2.5 my-5 flex-1 text-left">
                     {planFeatures[plan.slug].map((feature) => (
-                      <li key={feature} className="flex items-start gap-3">
-                        <div
+                      <li key={feature} className="flex items-start gap-2.5">
+                        <span
                           className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5 ${
                             plan.popular ? 'bg-brand-orange text-white' : 'bg-white/10 text-brand-orange'
                           }`}
                         >
                           <CheckCircle className="w-3.5 h-3.5" />
-                        </div>
+                        </span>
                         <span className="text-white/80 text-sm">{feature}</span>
                       </li>
                     ))}
@@ -501,43 +354,31 @@ export default function ZaFirmeContent() {
                 </div>
               ))}
             </div>
-
-            <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 mt-10 text-sm text-white/70">
-              <span className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-brand-orange" /> Bez ugovorne obaveze
-              </span>
-              <span className="flex items-center gap-2">
-                <Wallet className="w-4 h-4 text-brand-orange" /> Otkažite bilo kada
-              </span>
-              <span className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-brand-orange" /> Podrška na bosanskom
-              </span>
-            </div>
           </div>
         </section>
 
         {/* Promoted ads pricing */}
-        <section id="reklame" className="relative py-20 md:py-28 bg-gradient-to-b from-cloud to-ink-950 overflow-hidden">
+        <section id="reklame" className="relative py-10 md:py-16 overflow-hidden scroll-mt-20">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[30rem] bg-brand-orange/5 rounded-full blur-[140px] pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-bold text-brand-orange uppercase tracking-wider mb-6">
+            <div className="text-center max-w-3xl mx-auto mb-8 md:mb-12">
+              <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-xs font-bold text-brand-orange uppercase tracking-wider mb-4">
                 <Megaphone className="w-4 h-4" />
                 Reklamirajte se
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mb-3 text-balance">
                 Istaknite svoju{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                   firmu na pravom mjestu.
                 </span>
               </h2>
-              <p className="text-white/70 text-lg max-w-2xl mx-auto">
+              <p className="text-white/60 text-sm md:text-base max-w-2xl mx-auto">
                 Tri načina promocije. Izaberite onaj koji vam najviše odgovara — mini oglas, veliki banner ili pregled svih oglasa.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            <div className="grid md:grid-cols-3 gap-4 md:gap-6">
               {/* Homepage mini */}
               <div className="relative rounded-3xl bg-ink-900/90 backdrop-blur-xl border border-ink-800 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
                 <div className="text-center mb-6">
@@ -568,7 +409,7 @@ export default function ZaFirmeContent() {
               {/* Homepage banner */}
               <div className="relative rounded-3xl bg-gradient-to-b from-ink-900 to-ink-950 backdrop-blur-xl border border-brand-orange/40 p-6 md:p-8 shadow-2xl shadow-black/40 flex flex-col">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
+                  <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
                     <Crown className="w-3 h-3" /> Najbolja vidljivost
                   </span>
                 </div>
@@ -628,34 +469,32 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* FAQ */}
-        <section className="relative py-20 md:py-28 bg-cloud overflow-hidden">
-          <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-
+        <section className="relative py-10 md:py-16">
           <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
+            <div className="text-center max-w-2xl mx-auto mb-8 md:mb-10">
+              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-brand-orange text-xs font-semibold mb-3 border border-white/10">
                 <HelpCircle className="h-4 w-4" /> FAQ
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
+              <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mb-2 text-balance">
                 Često postavljana pitanja
               </h2>
-              <p className="text-steel text-lg">Sve što trebate znati prije registracije.</p>
+              <p className="text-white/60 text-sm md:text-base">Sve što trebate znati prije registracije.</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               {faqs.map((faq, index) => (
                 <details
                   key={index}
-                  className="group bg-white rounded-2xl border border-gray-100 overflow-hidden open:border-brand-orange/30 open:shadow-lg transition-all duration-300"
+                  className="group bg-white/[0.04] rounded-2xl border border-white/10 overflow-hidden open:border-brand-orange/30 transition-all duration-300"
                 >
-                  <summary className="flex items-center gap-4 cursor-pointer p-6 list-none">
-                    <span className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-50 text-brand-orange text-sm font-extrabold flex items-center justify-center">
+                  <summary className="flex items-center gap-3 md:gap-4 cursor-pointer p-4 md:p-5 list-none">
+                    <span className="flex-shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-full bg-brand-orange/15 text-brand-orange text-xs md:text-sm font-extrabold flex items-center justify-center">
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <span className="flex-1 font-bold text-gray-900 text-lg">{faq.question}</span>
-                    <ChevronDown className="w-5 h-5 text-steel flex-shrink-0 transition-transform duration-300 group-open:rotate-180" />
+                    <span className="flex-1 font-bold text-white text-[15px] md:text-lg">{faq.question}</span>
+                    <ChevronDown className="w-5 h-5 text-white/40 flex-shrink-0 transition-transform duration-300 group-open:rotate-180" />
                   </summary>
-                  <div className="px-6 pb-6 pl-[4.5rem] text-steel leading-relaxed">{faq.answer}</div>
+                  <div className="px-4 md:px-5 pb-4 md:pb-5 pl-[3.25rem] md:pl-[4.25rem] text-white/60 text-sm leading-relaxed">{faq.answer}</div>
                 </details>
               ))}
             </div>
@@ -663,38 +502,47 @@ export default function ZaFirmeContent() {
         </section>
 
         {/* Final CTA */}
-        <section className="relative py-20 md:py-28 bg-gradient-hero overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-brand-orange/10 via-transparent to-transparent" />
-          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_70%_30%,rgba(249,115,22,0.4),transparent_40%),radial-gradient(circle_at_30%_70%,rgba(255,255,255,0.2),transparent_40%)]" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-sm border border-white/10 mb-6">
-              <Target className="h-4 w-4 text-brand-orange" />
-              Počnite već danas
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 text-balance">
-              Spremni ste da{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                rastete?
+        <section className="relative py-10 md:py-16">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 md:p-8 flex flex-col md:flex-row md:items-center gap-5 md:gap-8">
+              <span className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-brand-orange/10 flex items-center justify-center shrink-0">
+                <Target className="w-6 h-6 md:w-7 md:h-7 text-brand-orange" />
               </span>
-            </h2>
-            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
-              Registrujte firmu besplatno i počnite da primate nove poslove već sutra. Bez rizika, bez ugovorne obaveze.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <PricingCTA
-                popular
-                className="px-8 py-4 text-base shadow-lg shadow-brand-orange/20 hover:shadow-xl hover:shadow-brand-orange/30"
-              >
-                Registrujte firmu besplatno
-              </PricingCTA>
-              <Link
-                href="/faq/"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
-              >
-                Pogledajte FAQ
-              </Link>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl md:text-3xl font-extrabold text-white mb-1.5">
+                  Spremni ste da <span className="text-brand-orange">rastete?</span>
+                </h2>
+                <p className="text-white/60 text-sm md:text-base mb-4">
+                  Registrujte firmu danas i počnite primati nove poslove već sutra.
+                </p>
+                <PricingCTA popular className="w-full sm:w-auto px-6 py-3.5">
+                  Registrujte firmu besplatno
+                </PricingCTA>
+              </div>
+              <div className="hidden sm:flex items-end gap-1.5 h-20 shrink-0" aria-hidden="true">
+                {[35, 50, 42, 62, 55, 80].map((h, i, arr) => (
+                  <div
+                    key={i}
+                    style={{ height: `${h}%` }}
+                    className={`w-4 rounded-t-md ${
+                      i === arr.length - 1
+                        ? 'bg-gradient-to-t from-brand-orange to-amber-400'
+                        : 'bg-white/10'
+                    }`}
+                  />
+                ))}
+                <TrendingUp className="w-6 h-6 text-brand-orange -ml-1 mb-14" />
+              </div>
+            </div>
+
+            {/* Trust footer */}
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-[13px] text-white/60">
+              {trustFooter.map((t) => (
+                <span key={t.label} className="inline-flex items-center gap-1.5">
+                  <t.icon className="w-4 h-4 text-white/40" />
+                  {t.label}
+                </span>
+              ))}
             </div>
           </div>
         </section>
