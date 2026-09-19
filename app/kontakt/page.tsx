@@ -2,72 +2,62 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { JsonLd, organizationSchema } from '@/lib/jsonld';
 import { supabase } from '@/lib/supabase';
 import { site } from '@/lib/site';
 import {
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
   Send,
   Loader2,
   CheckCircle,
   AlertCircle,
-  MessageCircleQuestion,
-  ShieldCheck,
-  Users,
-  Sparkles,
+  MessageCircle,
+  Headphones,
+  Briefcase,
+  AlertTriangle,
   ArrowRight,
+  ChevronDown,
 } from 'lucide-react';
 
+const topics = ['Općenito', 'Pomoć korisnicima', 'Za firme', 'Prijava problema'];
+
+const helpCards = [
+  {
+    icon: Headphones,
+    title: 'Pomoć korisnicima',
+    description: 'Pitanja o oglasima, nalogu i korištenju platforme.',
+    topic: 'Pomoć korisnicima',
+  },
+  {
+    icon: Briefcase,
+    title: 'Za firme',
+    description: 'Podrška za poslodavce, verifikaciju i oglašavanje radnih mjesta.',
+    topic: 'Za firme',
+  },
+  {
+    icon: AlertTriangle,
+    title: 'Prijava problema',
+    description: 'Primijetili ste grešku ili sumnjiv oglas? Javite nam.',
+    topic: 'Prijava problema',
+  },
+];
+
 const inputClass =
-  'w-full px-4 py-3.5 bg-cloud/60 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none text-gray-900 text-sm transition-all placeholder:text-gray-400';
-
-const contactInfo = [
-  {
-    icon: Mail,
-    title: 'Email',
-    value: site.email,
-    href: `mailto:${site.email}`,
-    note: 'Odgovaramo u roku od 24 sata',
-  },
-  {
-    icon: MapPin,
-    title: 'Regija',
-    value: site.city,
-    note: 'Online platforma za cijelu BiH',
-  },
-  {
-    icon: Clock,
-    title: 'Radno vrijeme',
-    value: 'Pon-Pet, 9-17h',
-    note: 'Vikendom odgovaramo na email',
-  },
-];
-
-const trustBadges = [
-  { icon: ShieldCheck, label: 'Sigurnost', value: 'Zaštićeni podaci' },
-  { icon: Users, label: 'Brz odgovor', value: 'U roku 24h' },
-  { icon: Sparkles, label: 'Podrška', value: 'Na bosanskom' },
-];
+  'w-full px-4 py-3.5 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none text-gray-900 text-sm transition-all placeholder:text-gray-400';
 
 export default function KontaktPage() {
-  const [phoneRevealed, setPhoneRevealed] = useState(false);
-
   const [formData, setFormData] = useState({
+    tema: '',
     ime: '',
     email: '',
-    telefon: '',
     poruka: '',
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -82,319 +72,265 @@ export default function KontaktPage() {
     const { error } = await supabase.from('contact_messages').insert({
       name: formData.ime,
       email: formData.email,
-      phone: formData.telefon || null,
-      message: formData.poruka,
+      phone: null,
+      message: `[${formData.tema}] ${formData.poruka}`,
     });
 
     if (error) {
       setStatus('error');
     } else {
       setStatus('success');
-      setFormData({ ime: '', email: '', telefon: '', poruka: '' });
+      setFormData({ tema: '', ime: '', email: '', poruka: '' });
     }
   };
 
+  function pickTopic(topic: string) {
+    setFormData((prev) => ({ ...prev, tema: topic }));
+    document.getElementById('kontakt-forma')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Kontakt' }]} />
 
-        <PageHero
-          title="Kontaktirajte nas"
-          subtitle="Imate pitanje, prijedlog ili trebate pomoć? Naš tim odgovara u roku od 24 sata."
-          eyebrow="Tu smo za vas"
-          icon={Mail}
-          align="center"
-          size="lg"
-          image="/images/kontakt-hero.png"
-          imagePosition="object-center"
-          overlayIntensity="dark"
-        >
-          <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
-            <a
-              href={`mailto:${site.email}`}
-              className="btn-primary text-lg px-8 py-4 inline-flex items-center justify-center gap-2"
-            >
-              <Mail className="w-5 h-5" />
-              {site.email}
-            </a>
-            <a
-              href="#kontakt-forma"
-              className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors duration-200"
-            >
-              <Send className="w-5 h-5" />
-              Pošaljite poruku
-            </a>
+        {/* Hero */}
+        <section className="relative min-h-[380px] sm:min-h-[440px] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/kontakt-hero.png"
+              alt="Zaposli.ba majstori na gradilištu u zalazak sunca"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/85 via-ink-950/55 to-ink-950/25" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/70 via-ink-950/20 to-ink-950/25" />
           </div>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-white/70">
-            <span className="inline-flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-brand-orange" />
-              Odgovor u 24 sata
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <ShieldCheck className="h-4 w-4 text-brand-orange" />
-              Zaštićeni podaci
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <Users className="h-4 w-4 text-brand-orange" />
-              Podrška na bosanskom
-            </span>
-          </div>
-        </PageHero>
 
-        <section className="relative py-20 md:py-28 bg-cloud overflow-hidden">
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-brand-orange/5 rounded-full blur-[100px] -translate-x-1/3 -translate-y-1/3" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white text-brand-orange text-sm font-semibold mb-4 border border-orange-100 shadow-sm">
-                <Sparkles className="h-4 w-4" /> Brzi odgovor
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 tracking-tight mb-4 text-balance">
-                Imate pitanje? Tu smo.
-              </h2>
-              <p className="text-steel text-lg">
-                Najbrži put do majstora je da{' '}
-                <Link href="/objavi-projekat/" className="text-brand-orange font-semibold hover:underline">
-                  objavite posao
-                </Link>{' '}
-                i primite ponude direktno od provjerenih firmi. Ako imate pitanje o platformi, profilu
-                ili suradnji: pišite nam.
-              </p>
-            </div>
-
-            <div className="grid lg:grid-cols-12 gap-8 items-start">
-              {/* Contact panel */}
-              <div className="lg:col-span-5">
-                <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-slate-800 p-8 md:p-10 shadow-2xl shadow-black/20 border border-white/10">
-                  <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl" />
-
-                  <div className="relative">
-                    <h3 className="text-2xl font-bold text-white mb-8">Podaci za kontakt</h3>
-                    <div className="space-y-4">
-                      {contactInfo.map((item) => {
-                        const inner = (
-                          <>
-                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                              <item.icon className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                            </div>
-                            <div>
-                              <p className="text-xs uppercase tracking-wider text-white/50 mb-1">{item.title}</p>
-                              <p className="text-white font-semibold">{item.value}</p>
-                              <p className="text-white/60 text-sm mt-0.5">{item.note}</p>
-                            </div>
-                          </>
-                        );
-                        const cls = "group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300";
-                        return item.href ? (
-                          <a key={item.title} href={item.href} className={cls}>{inner}</a>
-                        ) : (
-                          <div key={item.title} className={cls}>{inner}</div>
-                        );
-                      })}
-
-                      {site.phone && (
-                        <div className="group flex items-start gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-orange/20 to-brand-orange/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
-                            <Phone className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                          </div>
-                          <div className="min-w-0 flex-1">
-                            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">Telefon</p>
-                            {phoneRevealed ? (
-                              <>
-                                <a
-                                  href={`tel:${site.phone.replace(/\s/g, '')}`}
-                                  className="text-white font-semibold hover:text-brand-orange transition-colors"
-                                >
-                                  {site.phone}
-                                </a>
-                                <p className="text-white/60 text-sm mt-0.5">Poziv i poruka (Viber / WhatsApp)</p>
-                              </>
-                            ) : (
-                              <>
-                                <button
-                                  type="button"
-                                  onClick={() => setPhoneRevealed(true)}
-                                  className="inline-flex items-center gap-2 text-white font-semibold hover:text-brand-orange transition-colors"
-                                >
-                                  Prikaži broj
-                                  <span className="inline-flex gap-0.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                                    <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-                                  </span>
-                                </button>
-                                <p className="text-white/60 text-sm mt-0.5">Prvo pošaljite email ili poruku</p>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="mt-8 pt-8 border-t border-white/10 grid grid-cols-3 gap-3">
-                      {trustBadges.map((badge) => (
-                        <div key={badge.label} className="text-center">
-                          <badge.icon className="w-6 h-6 text-brand-orange mx-auto mb-2" strokeWidth={1.5} />
-                          <p className="text-white font-bold text-sm">{badge.value}</p>
-                          <p className="text-white/50 text-xs">{badge.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 bg-white rounded-2xl border border-gray-100 p-6 shadow-card">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-50 to-orange-100 flex items-center justify-center shrink-0">
-                      <MessageCircleQuestion className="w-6 h-6 text-brand-orange" strokeWidth={1.5} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-1">Prije nego što nam pišete</h4>
-                      <p className="text-sm text-steel leading-relaxed">
-                        Možda je odgovor već na stranici{' '}
-                        <Link href="/faq/" className="text-brand-orange font-medium hover:underline">
-                          Česta pitanja
-                        </Link>
-                        . Ako tražite majstora, najbrži put je da{' '}
-                        <Link href="/objavi-projekat/" className="text-brand-orange font-medium hover:underline">
-                          objavite posao
-                        </Link>
-                        .
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          <div className="relative z-20 flex-1 flex items-end">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 sm:pb-20">
+              <div className="max-w-2xl">
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 animate-fade-in">
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  Kontakt
+                </span>
+                <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">
+                  Tu smo da
+                  <br />
+                  <span className="text-brand-orange">pomognemo.</span>
+                </h1>
+                <p className="text-sm sm:text-base text-white/85 leading-relaxed max-w-xl animate-fade-in">
+                  Imate pitanja, prijedlog ili vam treba podrška? Naš tim je tu za vas.
+                </p>
               </div>
+            </div>
+          </div>
 
-              {/* Contact form */}
-              <div id="kontakt-forma" className="lg:col-span-7 scroll-mt-28">
-                <div className="relative bg-white rounded-3xl border border-gray-100 p-8 md:p-10 shadow-float overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/5 rounded-full blur-3xl" />
-                  <div className="relative">
-                    <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Pošaljite nam poruku</h3>
-                    <p className="text-steel mb-8">Popunite formu i odgovaramo u roku od 24 sata.</p>
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
+        </section>
 
-                    {status === 'success' && (
-                      <div className="mb-6 bg-green-50 border border-green-100 rounded-xl p-4 flex items-start gap-3">
-                        <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-sm text-green-800 font-semibold">Hvala! Poruka je poslana.</p>
-                          <p className="text-sm text-green-700">Odgovaramo u roku od 24 sata.</p>
-                        </div>
-                      </div>
-                    )}
+        {/* Form card overlapping hero */}
+        <section className="relative z-20 -mt-10 sm:-mt-12">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <div
+              id="kontakt-forma"
+              className="bg-white rounded-3xl border border-gray-100 p-5 sm:p-8 shadow-xl shadow-black/5 scroll-mt-24"
+            >
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1.5">
+                Pošaljite nam poruku
+              </h2>
+              <p className="text-sm sm:text-base text-gray-500 mb-5">
+                Ispunite formu i naš tim će vam se javiti u najkraćem roku.
+              </p>
 
-                    {status === 'error' && (
-                      <div className="mb-6 bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                        <div>
-                          <p className="text-sm text-red-800 font-semibold">Došlo je do greške.</p>
-                          <p className="text-sm text-red-700">
-                            Molimo pokušajte ponovo ili pošaljite email direktno na{' '}
-                            <a href={`mailto:${site.email}`} className="underline">
-                              {site.email}
-                            </a>
-                            .
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                      <div>
-                        <label htmlFor="ime" className="block text-sm font-semibold text-gray-900 mb-1.5">
-                          Ime i prezime <span className="text-brand-orange">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="ime"
-                          name="ime"
-                          required
-                          value={formData.ime}
-                          onChange={handleChange}
-                          placeholder="npr. Amila Softić"
-                          className={inputClass}
-                        />
-                      </div>
-
-                      <div className="grid sm:grid-cols-2 gap-5">
-                        <div>
-                          <label htmlFor="email" className="block text-sm font-semibold text-gray-900 mb-1.5">
-                            Email <span className="text-brand-orange">*</span>
-                          </label>
-                          <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="vas@email.com"
-                            className={inputClass}
-                          />
-                        </div>
-                        <div>
-                          <label htmlFor="telefon" className="block text-sm font-semibold text-gray-900 mb-1.5">
-                            Telefon <span className="text-steel font-normal">(opcionalno)</span>
-                          </label>
-                          <input
-                            type="tel"
-                            id="telefon"
-                            name="telefon"
-                            value={formData.telefon}
-                            onChange={handleChange}
-                            placeholder="+387 6x xxx xxx"
-                            className={inputClass}
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="poruka" className="block text-sm font-semibold text-gray-900 mb-1.5">
-                          Poruka <span className="text-brand-orange">*</span>
-                        </label>
-                        <textarea
-                          id="poruka"
-                          name="poruka"
-                          required
-                          rows={6}
-                          value={formData.poruka}
-                          onChange={handleChange}
-                          placeholder="Kako vam možemo pomoći?"
-                          className={`${inputClass} resize-none`}
-                        />
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={status === 'loading'}
-                        className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed py-4 text-lg"
-                      >
-                        {status === 'loading' ? (
-                          <>
-                            <Loader2 className="w-5 h-5 animate-spin" />
-                            Šaljem...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-5 h-5" />
-                            Pošalji poruku
-                          </>
-                        )}
-                      </button>
-
-                      <p className="text-xs text-steel text-center">
-                        Slanjem poruke prihvatate našu{' '}
-                        <Link href="/privacy/" className="text-brand-orange hover:underline">
-                          politiku privatnosti
-                        </Link>
-                        .
-                      </p>
-                    </form>
+              {status === 'success' && (
+                <div className="mb-5 bg-green-50 border border-green-100 rounded-xl p-4 flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-green-800 font-semibold">Hvala! Poruka je poslana.</p>
+                    <p className="text-sm text-green-700">Odgovaramo u roku od 24 sata.</p>
                   </div>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="mb-5 bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm text-red-800 font-semibold">Došlo je do greške.</p>
+                    <p className="text-sm text-red-700">
+                      Molimo pokušajte ponovo ili pošaljite email direktno na{' '}
+                      <a href={`mailto:${site.email}`} className="underline">
+                        {site.email}
+                      </a>
+                      .
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                <div className="relative">
+                  <select
+                    id="tema"
+                    name="tema"
+                    required
+                    value={formData.tema}
+                    onChange={handleChange}
+                    aria-label="Tema poruke"
+                    className={`${inputClass} appearance-none pr-10 cursor-pointer ${
+                      formData.tema ? '' : 'text-gray-400'
+                    }`}
+                  >
+                    <option value="" disabled>
+                      Tema poruke
+                    </option>
+                    {topics.map((t) => (
+                      <option key={t} value={t} className="text-gray-900">
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-900 pointer-events-none" />
+                </div>
+
+                <input
+                  type="text"
+                  id="ime"
+                  name="ime"
+                  required
+                  value={formData.ime}
+                  onChange={handleChange}
+                  placeholder="Ime i prezime"
+                  aria-label="Ime i prezime"
+                  className={inputClass}
+                />
+
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email adresa"
+                  aria-label="Email adresa"
+                  className={inputClass}
+                />
+
+                <textarea
+                  id="poruka"
+                  name="poruka"
+                  required
+                  rows={5}
+                  value={formData.poruka}
+                  onChange={handleChange}
+                  placeholder="Vaša poruka"
+                  aria-label="Vaša poruka"
+                  className={`${inputClass} resize-none`}
+                />
+
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-bold text-base rounded-xl px-6 py-4 transition-all active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-brand-orange/25 min-h-[56px]"
+                >
+                  {status === 'loading' ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Šaljem...
+                    </>
+                  ) : (
+                    <>
+                      Pošalji poruku
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
+                </button>
+
+                <p className="text-xs text-gray-400 text-center">
+                  Slanjem poruke prihvatate našu{' '}
+                  <Link href="/privacy/" className="text-brand-orange hover:underline">
+                    politiku privatnosti
+                  </Link>
+                  .
+                </p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        {/* Help cards */}
+        <section className="py-8 md:py-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mb-4">
+              Kako vam možemo pomoći?
+            </h2>
+            <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+              {helpCards.map((card) => (
+                <button
+                  key={card.title}
+                  type="button"
+                  onClick={() => pickTopic(card.topic)}
+                  className="group relative bg-white rounded-2xl border border-gray-100 p-3 sm:p-5 text-left shadow-sm hover:shadow-lg hover:border-brand-orange/30 transition-all duration-300 overflow-hidden"
+                >
+                  <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center mb-2 sm:mb-3">
+                    <card.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                  </span>
+                  <h3 className="text-[13px] sm:text-base font-bold text-gray-900 leading-snug mb-1">
+                    {card.title}
+                  </h3>
+                  <p className="text-[11px] sm:text-sm text-gray-500 leading-snug mb-6 sm:mb-8">
+                    {card.description}
+                  </p>
+                  <span className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-brand-orange text-white flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Feedback banner */}
+        <section className="pb-10 md:pb-14">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="relative overflow-hidden rounded-3xl min-h-[190px] sm:min-h-[220px] flex items-center">
+              <Image
+                src="/images/kontakt-hero.png"
+                alt=""
+                aria-hidden="true"
+                fill
+                className="object-cover object-[70%_center]"
+                sizes="(max-width: 768px) 100vw, 1200px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/70 to-ink-950/30" />
+              <div className="relative z-10 p-5 sm:p-8 max-w-xl">
+                <p className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] text-white/50 uppercase mb-1.5">
+                  Za bolje usluge
+                </p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-tight mb-1.5">
+                  Vaš feedback
+                  <br />
+                  nam je <span className="text-brand-orange">važan.</span>
+                </h2>
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
+                  Zajedno gradimo pouzdaniju platformu za sve u BiH.
+                </p>
+              </div>
+              <div
+                className="absolute z-10 right-4 sm:right-10 top-8 sm:top-1/2 sm:-translate-y-1/2 flex"
+                aria-hidden="true"
+              >
+                <div className="relative bg-white rounded-2xl rounded-br-sm px-5 py-3.5 shadow-xl">
+                  <span className="flex gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-brand-orange" />
+                    <span className="w-2 h-2 rounded-full bg-brand-orange" />
+                    <span className="w-2 h-2 rounded-full bg-brand-orange" />
+                  </span>
                 </div>
               </div>
             </div>
