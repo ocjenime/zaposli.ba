@@ -46,7 +46,7 @@ const helpCards = [
 ];
 
 const inputClass =
-  'w-full px-4 py-3.5 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none text-gray-900 text-sm transition-all placeholder:text-gray-400';
+  'w-full px-4 py-3 bg-white rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange outline-none text-gray-900 text-sm transition-all placeholder:text-gray-400';
 
 export default function KontaktPage() {
   const [formData, setFormData] = useState({
@@ -96,7 +96,7 @@ export default function KontaktPage() {
         <Breadcrumbs items={[{ name: 'Kontakt' }]} />
 
         {/* Hero */}
-        <section className="relative min-h-[380px] sm:min-h-[440px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[300px] sm:min-h-[360px] flex flex-col overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src="/images/kontakt-hero.png"
@@ -111,18 +111,16 @@ export default function KontaktPage() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-16 sm:pb-20">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12 sm:pb-14">
               <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 animate-fade-in">
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
                   <MessageCircle className="w-3.5 h-3.5" />
                   Kontakt
                 </span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">
-                  Tu smo da
-                  <br />
-                  <span className="text-brand-orange">pomognemo.</span>
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-white leading-[1.05] tracking-tight mb-2 animate-fade-in">
+                  Tu smo da <span className="text-brand-orange">pomognemo.</span>
                 </h1>
-                <p className="text-sm sm:text-base text-white/85 leading-relaxed max-w-xl animate-fade-in">
+                <p className="text-sm text-white/85 leading-snug max-w-xl animate-fade-in">
                   Imate pitanja, prijedlog ili vam treba podrška? Naš tim je tu za vas.
                 </p>
               </div>
@@ -133,16 +131,16 @@ export default function KontaktPage() {
         </section>
 
         {/* Form card overlapping hero */}
-        <section className="relative z-20 -mt-10 sm:-mt-12">
+        <section className="relative z-20 -mt-8">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div
               id="kontakt-forma"
-              className="bg-white rounded-3xl border border-gray-100 p-5 sm:p-8 shadow-xl shadow-black/5 scroll-mt-24"
+              className="bg-white rounded-3xl border border-gray-100 p-4 sm:p-6 shadow-xl shadow-black/5 scroll-mt-24"
             >
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1.5">
+              <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 mb-1">
                 Pošaljite nam poruku
               </h2>
-              <p className="text-sm sm:text-base text-gray-500 mb-5">
+              <p className="text-sm text-gray-500 mb-4">
                 Ispunite formu i naš tim će vam se javiti u najkraćem roku.
               </p>
 
@@ -172,7 +170,7 @@ export default function KontaktPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-3.5">
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <div className="relative">
                   <select
                     id="tema"
@@ -225,7 +223,7 @@ export default function KontaktPage() {
                   id="poruka"
                   name="poruka"
                   required
-                  rows={5}
+                  rows={4}
                   value={formData.poruka}
                   onChange={handleChange}
                   placeholder="Vaša poruka"
@@ -236,7 +234,7 @@ export default function KontaktPage() {
                 <button
                   type="submit"
                   disabled={status === 'loading'}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-bold text-base rounded-xl px-6 py-4 transition-all active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-brand-orange/25 min-h-[56px]"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-bold text-base rounded-xl px-6 py-3.5 transition-all active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed shadow-lg shadow-brand-orange/25 min-h-[52px]"
                 >
                   {status === 'loading' ? (
                     <>
@@ -264,12 +262,12 @@ export default function KontaktPage() {
         </section>
 
         {/* Help cards */}
-        <section className="py-8 md:py-10">
+        <section className="py-6 md:py-8">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight mb-4">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight mb-3">
               Kako vam možemo pomoći?
             </h2>
-            <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
               {helpCards.map((card) => (
                 <button
                   key={card.title}
@@ -296,7 +294,7 @@ export default function KontaktPage() {
         </section>
 
         {/* Feedback banner */}
-        <section className="pb-10 md:pb-14">
+        <section className="pb-8 md:pb-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="relative overflow-hidden rounded-3xl min-h-[190px] sm:min-h-[220px] flex items-center">
               <Image
