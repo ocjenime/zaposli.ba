@@ -89,9 +89,13 @@ Deno.serve(async (req: Request) => {
     .eq("category_slug", job.category_slug)
     .eq("email_enabled", true);
 
+  // NOTE: the admin summary email below must be sent for EVERY new job,
+  // even when no firms match (or the firms lookup fails), so we never
+  // return early here - we just record the problem and continue.
+  let firmsFetchError: string | null = null;
   if (firmsError) {
     console.error("Failed to fetch firms:", firmsError);
-    return new Response(JSON.stringify({ error: "Failed to fetch firms" }), { status: 500 });
+    firmsFetchError = firmsError.message || "Failed to fetch firms";
   }
 
   const recipients: FirmRow[] = [];
@@ -104,10 +108,6 @@ Deno.serve(async (req: Request) => {
         owner_id: row.firms.owner_id,
       });
     }
-  }
-
-  if (recipients.length === 0) {
-    return new Response(JSON.stringify({ message: "No recipients" }), { status: 200 });
   }
 
   // Get category display name from lookup table if it exists.
@@ -204,7 +204,7 @@ Deno.serve(async (req: Request) => {
               <strong>Kategorija:</strong> ${categoryName}<br>
               <strong>Grad:</strong> ${job.city || "nepoznato"}<br>
               <strong>Budžet:</strong> ${formatBudget(job.budget_mode, job.budget_min, job.budget_max)}<br>
-              <strong>Firmi obaviješteno:</strong> ${recipients.length}
+              <strong>Firmi obaviješteno:</strong> ${recipients.length}${firmsFetchError ? `<br><strong>Napomena:</strong> greška pri dohvatu firmi (${firmsFetchError})` : ""}
             </p>
           </div>
           <a href="${adminUrl}" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Otvori admin panel</a>
@@ -228,8 +228,11 @@ Deno.serve(async (req: Request) => {
     }
   }
 
-  return new Response(JSON.stringify({ message: "Processed", recipients: results.length }), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+  return new Response(
+    JSON.stringify({ message: "Processed", recipients: results.length, firmsFetchError }),
+    {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 });
