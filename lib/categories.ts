@@ -4,6 +4,7 @@ import {
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
   Waves, Flame, Wrench, LayoutGrid, Construction, Fence, Grid2x2,
   FlameKindling, Wind, Cog, GlassWater, House, SwatchBook, UtensilsCrossed,
+  SprayCan, SquareStack,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -39,11 +40,13 @@ const shortNames: Record<string, string> = {
   'izolacija': 'Fasade i izolacija',
   'hidroizolacija': 'Hidroizolacija',
   'molerski-radovi': 'Moleraj',
+  'masinsko-nabacivanje': 'Mašinsko nabacivanje',
   'gipsarski-radovi': 'Gips-karton',
   'zavrsni-radovi': 'Dekorativni zidovi',
   'tapetarski-radovi': 'Tapetarstvo',
   'keramicarski-radovi': 'Keramika',
   'podovi': 'Podovi',
+  'tlakovi-estrih': 'Tlakovi i estrih',
   'staklar': 'Staklarstvo',
   'kamen-i-poplocavanje': 'Kamen i popločavanje',
   'adaptacije': 'Adaptacije',
@@ -182,6 +185,14 @@ export const categories: Category[] = [
     services: ['Bojanje zidova', 'Bojanje fasada', 'Gletovanje', 'Krečenje', 'Lakovane zidne boje'],
   },
   {
+    name: 'Mašinsko nabacivanje zidova', slug: 'masinsko-nabacivanje', seoSlug: 'masinsko-malterisanje',
+    profession: 'Malterdžija', icon: SprayCan,
+    description: 'Mašinsko malterisanje i nabacivanje zidova i fasada - brzo, ravno i izdržljivo',
+    count: 0, priceRange: '8-16 KM/m²', priceNote: 'mašinsko nanošenje',
+    group: 'Boje, zidovi i podovi',
+    services: ['Mašinsko malterisanje', 'Gipsani malter', 'Cementno-krečni malter', 'Mašinske fasade', 'Ravnanje zidova'],
+  },
+  {
     name: 'Gipsarski radovi', slug: 'gipsarski-radovi', seoSlug: 'gipsar',
     profession: 'Gipsar', icon: LayoutGrid,
     description: 'Spušteni plafoni, pregradni zidovi od gips-kartona, ugradnja LED rasvjete',
@@ -220,6 +231,14 @@ export const categories: Category[] = [
     count: 0, priceRange: '10-30 KM/m²', priceNote: 'po vrsti poda',
     group: 'Boje, zidovi i podovi',
     services: ['Laminat i vinil', 'Parket', 'Tepih', 'Nivelacija i estrihi', 'Industrijski podovi'],
+  },
+  {
+    name: 'Tlakovi i estrih', slug: 'tlakovi-estrih', seoSlug: 'estrih',
+    profession: 'Majstor za estrihe', icon: SquareStack,
+    description: 'Cementni i samonivelirajući estrihi, industrijski tlakovi i priprema podloga',
+    count: 0, priceRange: '10-22 KM/m²', priceNote: 'po vrsti estriha',
+    group: 'Boje, zidovi i podovi',
+    services: ['Cementni estrih', 'Samonivelirajući estrih', 'Industrijski tlakovi', 'Estrih za podno grijanje', 'Hidroizolacija podova'],
   },
   {
     name: 'Staklarski radovi', slug: 'staklar', seoSlug: 'staklar',
