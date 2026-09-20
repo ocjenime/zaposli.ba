@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/date';
 
 interface Bid {
   id: string;
+  job_id: string;
   amount: number;
   status: 'pending' | 'accepted' | 'rejected';
   created_at: string;
@@ -74,7 +75,7 @@ export default function ClientRecentBids({ bids }: ClientRecentBidsProps) {
           {recent.map((bid) => (
             <Link
               key={bid.id}
-              href="/dashboard/poslovi/"
+              href={`/dashboard/poslovi/?id=${bid.job_id}`}
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
             >
               <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-ink-800 flex items-center justify-center shrink-0">

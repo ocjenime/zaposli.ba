@@ -54,6 +54,7 @@ interface EditForm {
 
 interface Bid {
   id: string;
+  job_id: string;
   amount: number;
   status: 'pending' | 'accepted' | 'rejected';
   created_at: string;
@@ -170,7 +171,7 @@ function DashboardPageContent() {
     setLoadingBids(true);
     const { data, error: err } = await supabase
       .from('bids')
-      .select('id,amount,status,created_at,jobs!inner(title),firms(name)')
+      .select('id,job_id,amount,status,created_at,jobs!inner(title),firms(name)')
       .eq('jobs.client_id', user.id)
       .order('created_at', { ascending: false });
     if (!err) setBids(((data as unknown) as Bid[]) || []);

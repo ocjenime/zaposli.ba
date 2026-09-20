@@ -73,7 +73,7 @@ export default function ClientMyJobsList({ jobs, loading }: ClientMyJobsListProp
           {recent.map((job) => (
             <Link
               key={job.id}
-              href="/dashboard/poslovi/"
+              href={`/dashboard/poslovi/?id=${job.id}`}
               className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
             >
               <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-ink-800 flex items-center justify-center shrink-0">
