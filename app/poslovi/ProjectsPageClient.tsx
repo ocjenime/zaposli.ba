@@ -249,8 +249,6 @@ function ProjectsPageContent() {
           <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
         </section>
 
-        <RecommendedFirmsSection />
-
         <section id="listings" className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Filter bar - static at top of listings */}
@@ -510,6 +508,9 @@ function ProjectsPageContent() {
                 </div>
               </div>
             )}
+
+            {/* Provjereni majstori - ispod poslova */}
+            <RecommendedFirmsSection />
 
             {/* CTA za firme */}
             <div className="bg-white rounded-2xl md:rounded-3xl p-8 md:p-10 lg:p-14 text-center border border-gray-100 relative overflow-hidden">
