@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { MapPin, ArrowRight, Shield, Clock, Star, Crown } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PageHero from '@/components/ui/PageHero';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities, categories } from '@/lib/data';
@@ -96,39 +96,67 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const cityFirms = await getCityFirms(city.name);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
 
         {/* Hero */}
-        <PageHero
-          title={`Majstori ${city.name}`}
-          subtitle={`Provjerene građevinske firme i majstore u gradu ${city.loc}. Objavite posao besplatno i primite ponude u roku od 24 sata.`}
-          eyebrow={`${city.name} · BiH`}
-          icon={MapPin}
-          gradient="bg-gradient-to-br from-ink via-blue-950 to-slate-900"
-          size="lg"
-        >
-          <div className="flex flex-wrap gap-5 text-sm text-white/80 mb-8">
-            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
-            <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
-            <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
+        <section className="relative min-h-[340px] sm:min-h-[400px] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/gradovi-hero.jpg"
+              alt={`Grad ${city.name}`}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
           </div>
-          <Link
-            href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-          >
-            Objavi posao besplatno
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </PageHero>
+
+          <div className="relative z-20 flex-1 flex items-end">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-6 sm:pb-8">
+              <div className="max-w-2xl">
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
+                  <MapPin className="w-3.5 h-3.5" />
+                  {city.name} · BiH
+                </span>
+                <h1 className="text-[28px] sm:text-5xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
+                  Majstori{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
+                    {city.loc}.
+                  </span>
+                </h1>
+                <p className="text-[13px] sm:text-base text-white/85 leading-snug mb-4 animate-fade-in">
+                  Provjerene firme i majstori u gradu {city.loc}. Objavite posao besplatno i primite
+                  ponude u roku od 24 sata.
+                </p>
+                <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs sm:text-sm text-white/80 mb-4 animate-fade-in">
+                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-brand-orange" /> Verificirane firme</span>
+                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-brand-orange" /> Prve ponude u 24h</span>
+                  <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-brand-orange" /> Stvarne recenzije</span>
+                </div>
+                <Link
+                  href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
+                  className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-bold transition-all active:scale-95 shadow-lg shadow-brand-orange/25 animate-fade-in"
+                >
+                  Objavi posao besplatno
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
+        </section>
 
         {/* Verifikovane firme iz grada */}
         {cityFirms.length > 0 && (
-          <section className="py-14 bg-white border-b border-gray-100">
+          <section className="py-8 md:py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+              <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest text-brand-orange mb-2">
                     Firme i majstori u gradu
@@ -205,16 +233,16 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         <FeaturedJobsSection city={city.name} />
 
         {/* Sve usluge u gradu */}
-        <section className="py-14 bg-white">
+        <section className="py-8 md:py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Sve usluge · {city.name}</h2>
-            <p className="text-steel mb-8">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
+            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight mb-1.5">Sve usluge · {city.name}</h2>
+            <p className="text-steel text-sm md:text-base mb-5">Odaberite kategoriju i pronađite majstore u gradu {city.loc}</p>
             <CityCategoriesGrid slugs={categories.filter((cat) => !cat.noSeo).map((cat) => cat.slug)} citySlug={city.slug} />
           </div>
         </section>
 
         {/* Empty state for firms */}
-        <section className="py-14 bg-white border-t border-gray-100">
+        <section className="py-8 md:py-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
               <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
@@ -235,7 +263,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         </section>
 
         {/* CTA */}
-        <section className="py-14 bg-ink relative overflow-hidden">
+        <section className="py-10 md:py-14 bg-ink relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">

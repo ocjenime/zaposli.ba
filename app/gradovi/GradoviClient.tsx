@@ -104,7 +104,7 @@ export default function GradoviClient() {
         <Breadcrumbs items={[{ name: 'Gradovi' }]} />
 
         {/* Hero */}
-        <section className="relative min-h-[420px] sm:min-h-[480px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[340px] sm:min-h-[440px] flex flex-col overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src="/images/gradovi-hero.jpg"
@@ -119,20 +119,19 @@ export default function GradoviClient() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-8 sm:pb-10">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-6 sm:pb-10">
               <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 animate-fade-in">
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
                   <MapPin className="w-3.5 h-3.5" />
                   Gradovi
                 </span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">
-                  Pronađi majstora
-                  <br />
+                <h1 className="text-[28px] sm:text-5xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
+                  Pronađi majstora{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                     u svom gradu.
                   </span>
                 </h1>
-                <p className="text-sm sm:text-base text-white/85 leading-relaxed mb-4 sm:mb-5 max-w-xl animate-fade-in">
+                <p className="text-[13px] sm:text-base text-white/85 leading-snug max-w-xl animate-fade-in">
                   Provjerene firme i majstori, dostupni širom BiH.
                 </p>
 
@@ -230,18 +229,18 @@ export default function GradoviClient() {
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-2.5 md:gap-4">
+            <div className="grid grid-cols-2 gap-2 md:gap-4">
               {popular.map((city) => (
                 <Link
                   key={city.slug}
                   href={`/gradovi/${city.slug}/`}
-                  className="group flex items-center gap-3 bg-white border border-gray-100 rounded-2xl px-4 py-3.5 shadow-sm hover:border-brand-orange/40 hover:shadow-md transition-all"
+                  className="group flex items-center gap-1.5 sm:gap-3 bg-white border border-gray-100 rounded-2xl px-2.5 sm:px-4 py-3 shadow-sm hover:border-brand-orange/40 hover:shadow-md transition-all min-w-0"
                 >
-                  <Landmark className="w-6 h-6 text-gray-800 group-hover:text-brand-orange transition-colors shrink-0" />
-                  <span className="flex-1 min-w-0 text-[15px] md:text-base font-semibold text-gray-900 truncate">
+                  <Landmark className="w-[18px] h-[18px] sm:w-6 sm:h-6 text-gray-800 group-hover:text-brand-orange transition-colors shrink-0" />
+                  <span className="flex-1 min-w-0 text-[13px] sm:text-base font-semibold text-gray-900 truncate">
                     {city.name}
                   </span>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
                 </Link>
               ))}
             </div>
