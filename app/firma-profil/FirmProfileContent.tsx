@@ -266,8 +266,14 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     .map((c) => getCategory(c.category_slug)?.name)
     .filter(Boolean) as string[];
 
-  const rating = firm?.average_rating || 0;
-  const reviewCount = firm?.review_count || 0;
+  // Display values are derived from the actually loaded approved reviews first,
+  // so the profile is correct even if the firms.average_rating / review_count
+  // aggregate columns are stale (e.g. rating trigger not applied in production).
+  const loadedCount = reviews.length;
+  const loadedAvg =
+    loadedCount > 0 ? reviews.reduce((s, r) => s + (r.rating || 0), 0) / loadedCount : 0;
+  const rating = loadedAvg > 0 ? loadedAvg : firm?.average_rating || 0;
+  const reviewCount = loadedCount > 0 ? loadedCount : firm?.review_count || 0;
   const isFirmOwner = !!user && firm?.owner_id === user.id;
   const primaryCategory = firmCategories[0]
     ? getCategory(firmCategories[0].category_slug)

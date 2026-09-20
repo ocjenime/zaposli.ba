@@ -553,6 +553,9 @@
 - Fixed broken client dashboard links that opened `/dashboard/poslovi/` without a job ID (`ID posla nije naveden.`): `ClientMyJobsList` now links with `?id=${job.id}`, `ClientRecentBids` with `?id=${bid.job_id}` (`job_id` added to the bids select + both `Bid` interfaces).
 - Accepted jobs disappearing from homepage/`/poslovi/` is by design (only `open` jobs are listed publicly); clients still see all their jobs in `/dashboard/`.
 
+- Fixed firm profiles showing 0 rating / no reviews after a client review: `FirmProfileContent` now derives displayed rating/count from the loaded approved reviews first (fallback to aggregate columns), and added `supabase/migration-fix-firm-ratings.sql` (ensures the rating trigger + backfills all firms; user must apply in SQL Editor).
+- Fixed broken client dashboard links that opened `/dashboard/poslovi/` without a job ID (`ID posla nije naveden.`): `ClientMyJobsList` now links with `?id=${job.id}`, `ClientRecentBids` with `?id=${bid.job_id}` (`job_id` added to the bids select + both `Bid` interfaces).
+
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
