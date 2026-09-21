@@ -1,13 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Star, MapPin, ArrowRight, Loader2 } from 'lucide-react';
+import Image from 'next/image';
+import {
+  Star, MapPin, ArrowRight, Loader2, Heart, SlidersHorizontal,
+  ArrowUpDown, ChevronDown, CalendarCheck, LayoutGrid, Search,
+} from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import { normalizeCityName } from '@/lib/city-utils';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
-import LogoDisplay from '@/components/ui/LogoDisplay';
+import { plural } from '@/lib/plural';
+import { getProfessionPlural } from '@/lib/profession-plural';
 
 interface Firm {
   id: string;
@@ -19,24 +23,34 @@ interface Firm {
   average_rating: number | null;
   review_count: number | null;
   description: string | null;
-  specialty?: string;
-}
-
-interface FirmCategory {
-  firm_id: string;
-  category_slug: string;
+  last_active_at: string | null;
 }
 
 interface ServiceCityFirmsProps {
   categorySlug: string;
   cityName: string;
   profession: string;
+  categoryName: string;
+  citySlug: string;
 }
 
-export default function ServiceCityFirms({ categorySlug, cityName, profession }: ServiceCityFirmsProps) {
+function isCompanyName(name: string): boolean {
+  return /(d\.?\s?o\.?\s?o\.?|doo|s\.?\s?p\.?|obrt|&|m&d|gradnja|bau|mont|invest|group|tim|centar|studio|servis|profi|master|bau|gmbh)/i.test(name);
+}
+
+export default function ServiceCityFirms({
+  categorySlug, cityName, profession, categoryName, citySlug,
+}: ServiceCityFirmsProps) {
   const [firms, setFirms] = useState<Firm[]>([]);
+  const [portfolio, setPortfolio] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [sort, setSort] = useState<'rating' | 'reviews' | 'name'>('rating');
+  const [minRating, setMinRating] = useState(0);
+  const [availability, setAvailability] = useState<'all' | 'verified' | 'active'>('all');
+  const [showSearch, setShowSearch] = useState(false);
+  const [query, setQuery] = useState('');
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     async function loadFirms() {
@@ -50,7 +64,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
 
         if (firmError) throw firmError;
 
-        const firmIds = (firmData || []).map((row: unknown) => (row as FirmCategory).firm_id);
+        const firmIds = ((firmData || []) as { firm_id: string }[]).map((r) => r.firm_id);
         if (firmIds.length === 0) {
           setFirms([]);
           setLoading(false);
@@ -60,7 +74,7 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
         const target = normalizeCityName(cityName);
         const { data: firmsData, error: firmsError } = await supabase
           .from('firms')
-          .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description')
+          .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, last_active_at')
           .in('id', firmIds)
           .not('city', 'is', null)
           .not('slug', 'like', 'test-%')
@@ -69,18 +83,26 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
 
         if (firmsError) throw firmsError;
 
-        const category = getCategory(categorySlug);
-        const typed = (firmsData || []) as unknown as Firm[];
-        setFirms(
-          typed
-            .filter((f) => normalizeCityName(f.city || '') === target)
-            .map((f) => ({
-              ...f,
-              specialty: category?.name || 'Razne usluge',
-            }))
+        const typed = ((firmsData || []) as unknown as Firm[]).filter(
+          (f) => normalizeCityName(f.city || '') === target
         );
-      } catch (err: any) {
-        setError(err?.message || 'Greška pri učitavanju firmi.');
+        setFirms(typed);
+
+        if (typed.length > 0) {
+          const ids = typed.map((f) => f.id);
+          const { data: pf } = await supabase
+            .from('portfolio_images')
+            .select('firm_id, image_url')
+            .in('firm_id', ids);
+          const map: Record<string, string[]> = {};
+          ((pf || []) as { firm_id: string; image_url: string }[]).forEach((row) => {
+            if (!map[row.firm_id]) map[row.firm_id] = [];
+            if (map[row.firm_id].length < 8) map[row.firm_id].push(row.image_url);
+          });
+          setPortfolio(map);
+        }
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Greška pri učitavanju firmi.');
       } finally {
         setLoading(false);
       }
@@ -89,9 +111,39 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
     loadFirms();
   }, [categorySlug, cityName]);
 
+  const filtered = useMemo(() => {
+    let list = [...firms];
+    if (minRating > 0) list = list.filter((f) => (f.average_rating || 0) >= minRating);
+    if (availability === 'verified') list = list.filter((f) => f.verified);
+    if (availability === 'active') {
+      const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
+      list = list.filter((f) => f.last_active_at && new Date(f.last_active_at).getTime() >= cutoff);
+    }
+    if (query.trim()) {
+      const q = query.trim().toLowerCase();
+      list = list.filter((f) => f.name.toLowerCase().includes(q));
+    }
+    if (sort === 'rating') list.sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0));
+    if (sort === 'reviews') list.sort((a, b) => (b.review_count || 0) - (a.review_count || 0));
+    if (sort === 'name') list.sort((a, b) => a.name.localeCompare(b.name, 'bs'));
+    return list;
+  }, [firms, sort, minRating, availability, query]);
+
+  function toggleFavorite(id: string) {
+    setFavorites((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  const pluralProfession = getProfessionPlural(profession);
+  const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(getCategory(categorySlug)?.name || profession)}&city=${encodeURIComponent(cityName)}`;
+
   if (loading) {
     return (
-      <section className="py-14 bg-white">
+      <section className="py-6 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center py-12 text-steel">
             <Loader2 className="w-5 h-5 animate-spin mr-2" />
@@ -104,114 +156,263 @@ export default function ServiceCityFirms({ categorySlug, cityName, profession }:
 
   if (error) {
     return (
-      <section className="py-14 bg-white">
+      <section className="py-6 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-red-50 text-red-600 rounded-xl px-4 py-3 text-sm">
-            {error}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (firms.length === 0) {
-    return (
-      <section className="py-14 bg-white border-t border-gray-100">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
-            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
-              <MapPin className="w-7 h-7 text-brand-orange" />
-            </div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">
-              Još uvijek nema registrovanih {profession.toLowerCase()} u {cityName}
-            </h2>
-            <p className="text-steel max-w-xl mx-auto mb-6">
-              Firme se aktivno registruju. Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
-            </p>
-            <Link
-              href={`/objavi-projekat/?service=${encodeURIComponent(getCategory(categorySlug)?.name || profession)}&city=${encodeURIComponent(cityName)}`}
-              className="btn-primary inline-flex items-center gap-2"
-            >
-              Objavi posao besplatno
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+          <div className="bg-red-50 text-red-600 rounded-xl px-4 py-3 text-sm">{error}</div>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-14 bg-white border-t border-gray-100">
+    <section className="py-6 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-              {profession} u {cityName}
-            </h2>
-            <p className="text-sm text-steel mt-1">
-              Pronađeno {firms.length} {firms.length === 1 ? 'firma' : firms.length < 5 ? 'firme' : 'firmi'}
-            </p>
-          </div>
+        {/* Heading */}
+        <div className="flex items-start justify-between gap-4 mb-1">
+          <h2 className="text-[22px] sm:text-2xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            {pluralProfession} u {cityName}
+          </h2>
           <Link
-            href="/objavi-projekat/"
-            className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors"
+            href={`/kategorije/${categorySlug}/`}
+            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-brand-orange transition-colors shrink-0 pt-1"
           >
-            Objavi posao
+            Pogledajte sve
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
+        <p className="text-sm text-steel mb-4">
+          {firms.length === 0
+            ? `Trenutno nema registrovanih firmi`
+            : `${firms.length} ${plural(firms.length, ['dostupna firma', 'dostupne firme', 'dostupnih firmi'])} i majstora`}
+        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {firms.map((firm) => (
-            <Link
-              key={firm.id}
-              href={`/firma-profil/${firm.slug}/`}
-              className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 cursor-pointer block"
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <LogoDisplay
-                  name={firm.name}
-                  src={firm.logo_url}
-                  alt={firm.name}
-                  size="lg"
-                  rounded="2xl"
+        {firms.length > 0 && (
+          <>
+            {/* Filter pills */}
+            <div className="flex gap-2 overflow-x-auto pb-3 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
+              <button
+                onClick={() => setShowSearch((v) => !v)}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-colors ${showSearch ? 'border-brand-orange text-brand-orange bg-orange-50' : 'border-gray-200 text-gray-700 bg-white'}`}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filteri
+              </button>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-700 bg-white whitespace-nowrap cursor-pointer">
+                <ArrowUpDown className="w-4 h-4 text-gray-500" />
+                <select
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value as 'rating' | 'reviews' | 'name')}
+                  className="bg-transparent outline-none cursor-pointer appearance-none pr-1"
+                  aria-label="Sortiraj firme"
+                >
+                  <option value="rating">Sortiraj</option>
+                  <option value="rating">Najbolje ocijenjeni</option>
+                  <option value="reviews">Najviše recenzija</option>
+                  <option value="name">Naziv A-Z</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </label>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-700 bg-white whitespace-nowrap cursor-pointer">
+                <Star className="w-4 h-4 text-gray-500" />
+                <select
+                  value={String(minRating)}
+                  onChange={(e) => setMinRating(Number(e.target.value))}
+                  className="bg-transparent outline-none cursor-pointer appearance-none pr-1"
+                  aria-label="Minimalna ocjena"
+                >
+                  <option value="0">Ocjena</option>
+                  <option value="4">4.0+</option>
+                  <option value="4.5">4.5+</option>
+                  <option value="4.8">4.8+</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </label>
+              <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200 text-sm font-medium text-gray-700 bg-white whitespace-nowrap cursor-pointer">
+                <CalendarCheck className="w-4 h-4 text-gray-500" />
+                <select
+                  value={availability}
+                  onChange={(e) => setAvailability(e.target.value as 'all' | 'verified' | 'active')}
+                  className="bg-transparent outline-none cursor-pointer appearance-none pr-1"
+                  aria-label="Dostupnost"
+                >
+                  <option value="all">Dostupnost</option>
+                  <option value="verified">Samo verificirani</option>
+                  <option value="active">Aktivni 30 dana</option>
+                </select>
+                <ChevronDown className="w-4 h-4 text-gray-500" />
+              </label>
+            </div>
+
+            {showSearch && (
+              <div className="relative mb-4">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Pretraži firme po imenu..."
+                  className="w-full bg-cloud border border-gray-100 rounded-full pl-10 pr-4 py-2.5 text-sm text-gray-900 placeholder:text-steel focus:ring-2 focus:ring-brand-orange focus:border-transparent outline-none"
                 />
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-gray-900 text-base leading-tight truncate">{firm.name}</h3>
-                  <div className="flex items-center gap-1 text-xs text-steel mt-1">
-                    <MapPin className="w-3 h-3" />
-                    <span className="truncate">{firm.city || 'BiH'}</span>
-                  </div>
-                </div>
               </div>
+            )}
 
-              <p className="text-sm text-steel line-clamp-2 mb-4 min-h-[2.5rem]">
-                {firm.description || firm.specialty}
-              </p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                  <span className="text-sm font-bold text-gray-900">
-                    {(firm.average_rating || 0).toFixed(1)}
-                  </span>
-                  <span className="text-xs text-steel">({firm.review_count || 0})</span>
-                </div>
-                {firm.verified && <VerifiedBadge size="sm" />}
+            {filtered.length === 0 ? (
+              <div className="bg-cloud rounded-2xl p-8 text-center mb-4">
+                <p className="font-bold text-gray-900 mb-1">Nema rezultata za odabrane filtere.</p>
+                <p className="text-sm text-steel mb-4">Pokušajte sa blažim kriterijima ili objavite posao.</p>
+                <button
+                  onClick={() => { setMinRating(0); setAvailability('all'); setQuery(''); }}
+                  className="text-sm font-semibold text-brand-orange"
+                >
+                  Poništi filtere
+                </button>
               </div>
-            </Link>
-          ))}
-        </div>
+            ) : (
+              <div className="space-y-3 mb-2">
+                {filtered.map((firm) => {
+                  const imgs = portfolio[firm.id] || [];
+                  const cover = imgs[0] || firm.logo_url || null;
+                  const count = imgs.length > 0 ? imgs.length : cover ? 1 : 0;
+                  const company = isCompanyName(firm.name);
+                  const rating = firm.average_rating || 0;
+                  const reviews = firm.review_count || 0;
+                  const fav = favorites.has(firm.id);
+                  return (
+                    <article
+                      key={firm.id}
+                      className="bg-white rounded-2xl border border-gray-100 shadow-[0_1px_8px_rgba(0,0,0,0.04)] p-3 flex gap-3"
+                    >
+                      <Link
+                        href={`/firma-profil/${firm.slug}/`}
+                        className="relative w-[104px] h-[104px] sm:w-[128px] sm:h-[128px] rounded-xl overflow-hidden bg-cloud shrink-0 block"
+                      >
+                        {cover ? (
+                          <Image src={cover} alt={firm.name} fill sizes="150px" className="object-cover" />
+                        ) : (
+                          <span className="absolute inset-0 flex items-center justify-center text-2xl font-extrabold text-brand-orange/40">
+                            {firm.name.charAt(0)}
+                          </span>
+                        )}
+                        {count > 0 && (
+                          <span className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 bg-black/70 text-white text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                            <LayoutGrid className="w-3 h-3" />
+                            1/{count}
+                          </span>
+                        )}
+                      </Link>
 
-        <div className="mt-8 sm:hidden">
+                      <div className="flex-1 min-w-0 flex justify-between gap-2">
+                        <div className="min-w-0">
+                          <Link href={`/firma-profil/${firm.slug}/`}>
+                            <h3 className="font-extrabold text-gray-900 text-[15px] sm:text-base leading-tight truncate hover:text-brand-orange transition-colors">
+                              {firm.name}
+                            </h3>
+                          </Link>
+                          <p className="text-[13px] text-steel truncate">{categoryName}</p>
+                          <p className="flex items-center gap-1 mt-0.5 text-[13px]">
+                            <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
+                            {reviews > 0 ? (
+                              <>
+                                <span className="font-extrabold text-gray-900">{rating.toFixed(1)}</span>
+                                <span className="text-steel">({reviews} {plural(reviews, ['recenzija', 'recenzije', 'recenzija'])})</span>
+                              </>
+                            ) : (
+                              <span className="text-steel">Bez recenzija</span>
+                            )}
+                          </p>
+                          <p className="flex items-center gap-1 text-[13px] text-steel mt-0.5">
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span className="truncate">{firm.city || cityName}</span>
+                          </p>
+                          {firm.verified && (
+                            <span
+                              className={`inline-flex items-center gap-1 mt-1.5 text-[12px] font-semibold px-2.5 py-1 rounded-full ${company ? 'bg-green-50 text-green-700' : 'bg-sky-50 text-sky-700'}`}
+                            >
+                              <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${company ? 'bg-green-500 text-white' : 'bg-sky-500 text-white'}`}>
+                                ✓
+                              </span>
+                              {company ? 'Provjerena firma' : 'Provjereni majstor'}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex flex-col items-end justify-between shrink-0 py-0.5">
+                          <button
+                            onClick={() => toggleFavorite(firm.id)}
+                            aria-label="Sačuvaj firmu"
+                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors"
+                          >
+                            <Heart className={`w-5 h-5 ${fav ? 'text-red-500 fill-red-500' : 'text-gray-900'}`} />
+                          </button>
+                          <Link
+                            href={`/firma-profil/${firm.slug}/`}
+                            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[13px] sm:text-sm font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap"
+                          >
+                            Pogledaj profil
+                            <ArrowRight className="w-4 h-4" />
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Mobile "Pogledajte sve" */}
+        {firms.length > 0 && (
           <Link
-            href="/objavi-projekat/"
-            className="block w-full text-center bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-4 py-3 rounded-xl font-semibold text-sm"
+            href={`/kategorije/${categorySlug}/`}
+            className="sm:hidden flex items-center justify-center gap-1.5 text-sm font-medium text-gray-900 py-2 mb-1"
           >
-            Objavi posao besplatno
+            Pogledajte sve
+            <ArrowRight className="w-4 h-4" />
           </Link>
-        </div>
+        )}
+
+        {/* Empty state / always-on CTA box */}
+        {firms.length === 0 ? (
+          <div className="bg-[#f0f7ff] rounded-2xl p-6 sm:p-8 text-center">
+            <h3 className="font-extrabold text-gray-900 text-lg mb-1">
+              Još uvijek nema registrovanih {profession.toLowerCase()} u {cityName}
+            </h3>
+            <p className="text-steel text-sm max-w-xl mx-auto mb-5">
+              Firme se aktivno registruju. Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
+            </p>
+            <Link
+              href={objaviHref}
+              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold text-sm hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+            >
+              Objavi posao besplatno
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        ) : (
+          <div className="bg-[#f0f7ff] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center gap-3 mt-4">
+            <div className="flex items-start gap-3 flex-1">
+              <span className="w-11 h-11 rounded-full bg-orange-100 flex items-center justify-center shrink-0 text-brand-orange text-xl">
+                👥
+              </span>
+              <div>
+                <p className="font-extrabold text-gray-900 text-[15px]">Niste pronašli odgovarajućeg majstora?</p>
+                <p className="text-steel text-[13px]">Objavite svoj projekat i primite ponude od provjerenih majstora.</p>
+              </div>
+            </div>
+            <Link
+              href={objaviHref}
+              className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-bold text-sm px-5 py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap w-full sm:w-auto"
+            >
+              Objavi posao
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
+
+        {/* Hidden SEO link context */}
+        <span className="sr-only">
+          {categoryName} {citySlug}
+        </span>
       </div>
     </section>
   );

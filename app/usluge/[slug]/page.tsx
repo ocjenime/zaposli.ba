@@ -1,12 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { MapPin, ArrowRight, Shield, Clock, Star } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight, Shield, Zap, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PageHero from '@/components/ui/PageHero';
-import { JsonLd, serviceSchema, faqSchema } from '@/lib/jsonld';
+import { JsonLd, serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/jsonld';
 import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
@@ -49,105 +48,195 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+function getServiceImage(catSlug: string): string {
+  const map: Record<string, string> = {
+    'keramicarski-radovi': '/images/kuhinja-renovacija.webp',
+    'molerski-radovi': '/images/farbanje-zid.webp',
+    'masinsko-nabacivanje': '/images/farbanje-zid.webp',
+    'gipsarski-radovi': '/images/farbanje-zid.webp',
+    'zavrsni-radovi': '/images/farbanje-zid.webp',
+    'tapetarski-radovi': '/images/farbanje-zid.webp',
+    vodoinstalacije: '/images/vodoinstalater.webp',
+    elektroinstalacije: '/images/elektricar.webp',
+    'hitne-intervencije': '/images/elektricar.webp',
+    ciscenje: '/images/ciscenje.webp',
+    'pranje-fasada-i-krovova': '/images/ciscenje.webp',
+    'kuhinje-po-mjeri': '/images/kuhinja-renovacija.webp',
+    adaptacije: '/images/kuhinja-renovacija.webp',
+    'kupatila-kljuc-u-ruke': '/images/kuhinja-renovacija.webp',
+    stolarija: '/images/renovacija-enterijer.webp',
+    podovi: '/images/renovacija-enterijer.webp',
+    'tlakovi-estrih': '/images/renovacija-enterijer.webp',
+  };
+  return map[catSlug] || '/images/herozaposli.png';
+}
+
 export default async function ServiceCityPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const parsed = parseSlug(slug);
   if (!parsed) notFound();
   const { cat, city } = parsed;
   const Icon = cat.icon;
+  const groupStyle = getGroupHeroStyle(cat.group);
+  const heroImage = getServiceImage(cat.slug);
+  const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`;
+
+  const servicesShort = cat.services.slice(0, 4).map((s) => s.toLowerCase()).join(', ');
+  const subtitle = `Pronađite provjerene firme i majstore za ${servicesShort} u ${city.loc}.`;
 
   const faqItems = [
     {
-      question: `Koliko košta ${cat.profession.toLowerCase()} u gradu ${city.loc}?`,
-      answer: `Cijena zavisi od obima posla i materijala. Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
+      question: `Koliko košta ${cat.profession.toLowerCase()} u ${city.loc}?`,
+      answer: `Cijene se kreću oko ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
     },
     {
-      question: `Koliko brzo mogu dobiti majstora u gradu ${city.loc}?`,
-      answer: `Većina poslova u gradu ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.`,
+      question: 'Koliko brzo mogu dobiti majstora?',
+      answer: `Većina poslova u ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.`,
     },
     {
-      question: `Kako znam da je firma iz vašeg grada pouzdana?`,
-      answer: `Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih klijenata iz vašeg grada i okoline.`,
+      question: 'Kako znam da je firma iz mog grada pouzdana?',
+      answer: 'Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih klijenata iz vašeg grada i okoline.',
     },
   ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      <main className="flex-grow">
-        <Breadcrumbs items={[
-          { name: 'Kategorije', href: '/kategorije/' },
-          { name: cat.name, href: `/kategorije/${cat.slug}/` },
-          { name: city.name },
-        ]} />
+      <main className="flex-grow pt-12 md:pt-16">
         <JsonLd data={serviceSchema({ name: `${cat.profession} ${city.name}`, description: cat.description, area: city.name, url: `/usluge/${slug}/` })} />
         <JsonLd data={faqSchema(faqItems)} />
+        <JsonLd
+          data={breadcrumbSchema([
+            { name: 'Početna', url: '/' },
+            { name: 'Gradovi', url: '/gradovi/' },
+            { name: city.name, url: `/gradovi/${city.slug}/` },
+            { name: groupStyle.eyebrow, url: `/kategorije/${cat.slug}/` },
+            { name: cat.profession },
+          ])}
+        />
 
-        {/* Hero */}
-        <PageHero
-          title={`${cat.profession} ${city.name}`}
-          subtitle={`${cat.description} u gradu ${city.name}. Objavite posao besplatno i primite ponude od provjerenih firmi iz vašeg grada.`}
-          eyebrow={`${city.name} · ${getGroupHeroStyle(cat.group).eyebrow}`}
-          icon={Icon}
-          gradient={getGroupHeroStyle(cat.group).gradient}
-          size="lg"
-        >
-          <div className="flex flex-wrap gap-5 text-sm text-white/80 mb-8">
-            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
-            <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
-            <span className="flex items-center gap-2"><Star className="w-4 h-4 text-brand-orange" /> Stvarne recenzije</span>
+        {/* Breadcrumb - kao na mockupu */}
+        <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+          <ol className="flex items-center gap-1.5 text-[12px] text-steel overflow-x-auto whitespace-nowrap">
+            <li><Link href="/" className="hover:text-brand-orange transition-colors">Početna</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li><Link href="/gradovi/" className="hover:text-brand-orange transition-colors">Gradovi</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li><Link href={`/gradovi/${city.slug}/`} className="hover:text-brand-orange transition-colors">{city.name}</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li><Link href={`/kategorije/${cat.slug}/`} className="hover:text-brand-orange transition-colors">{groupStyle.eyebrow}</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li aria-current="page" className="text-gray-900 font-medium">{cat.profession}</li>
+          </ol>
+        </nav>
+
+        {/* Hero - 1:1 sa mockupom */}
+        <section className="relative bg-[#faf8f5] overflow-hidden">
+          <div className="absolute inset-y-0 right-0 w-[58%] sm:w-[52%] md:w-[46%]">
+            <Image
+              src={heroImage}
+              alt={`${cat.profession} ${city.name}`}
+              fill
+              priority
+              sizes="(max-width: 768px) 60vw, 46vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f5] via-[#faf8f5]/60 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
           </div>
-          <Link
-            href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`}
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-          >
-            Objavi posao besplatno
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </PageHero>
+
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
+            <div className="max-w-[68%] sm:max-w-xl md:max-w-2xl">
+              <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
+                <Icon className="w-4 h-4" />
+                {cat.name}
+              </p>
+              <h1 className="text-[30px] sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-2">
+                {cat.profession} u<br />{city.loc}
+              </h1>
+              <p className="text-[13px] sm:text-[15px] text-steel leading-snug mb-4 max-w-md">
+                {subtitle}
+              </p>
+              <Link
+                href={objaviHref}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 sm:px-6 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+              >
+                Objavi posao besplatno
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Rukom pisana napomena */}
+          <div className="absolute z-10 right-3 sm:right-8 md:right-16 bottom-8 sm:bottom-10 rotate-[-4deg]">
+            <div className="bg-black/25 backdrop-blur-[2px] rounded-lg px-3 py-2 max-w-[150px] sm:max-w-[180px]">
+              <p className="text-white text-[14px] sm:text-base italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Kvalitetni majstori za vaš dom.
+              </p>
+              <div className="h-[3px] bg-brand-orange rounded-full mt-1 w-3/4" />
+            </div>
+          </div>
+        </section>
+
+        {/* Trust traka */}
+        <section className="bg-white border-b border-gray-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-6">
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Provjerene firme</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Provjereni profili i poslovni podaci</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Brze ponude</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Primite ponude od dostupnih majstora</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Stvarne recenzije</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Iskustva korisnika nakon završenog posla</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Firme iz kategorije i grada */}
         <ServiceCityFirms
           categorySlug={cat.slug}
           cityName={city.name}
+          citySlug={city.slug}
           profession={cat.profession}
+          categoryName={cat.name}
         />
 
-        {/* FAQ */}
-        <section className="py-14 bg-white">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Česta pitanja</h2>
-            <div className="space-y-4">
+        {/* Česta pitanja */}
+        <section className="py-6 sm:py-10 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-[22px] sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-4">Česta pitanja</h2>
+            <div className="space-y-2.5 max-w-3xl">
               {faqItems.map((f) => (
-                <details key={f.question} className="group bg-cloud rounded-2xl px-6 py-5 open:bg-white open:border open:border-gray-100 open:shadow-md transition-all">
-                  <summary className="font-semibold text-gray-900 cursor-pointer list-none flex justify-between items-center gap-4">
+                <details key={f.question} className="group bg-[#f0f7ff] rounded-2xl px-5 py-4 open:bg-[#f0f7ff] transition-all">
+                  <summary className="font-medium text-gray-900 text-[14px] sm:text-[15px] cursor-pointer list-none flex justify-between items-center gap-4 [&::-webkit-details-marker]:hidden">
                     {f.question}
-                    <span className="text-brand-orange text-xl font-bold shrink-0 group-open:rotate-45 transition-transform">+</span>
+                    <span className="text-brand-orange text-xl font-light shrink-0 group-open:rotate-45 transition-transform leading-none">+</span>
                   </summary>
-                  <p className="text-steel text-sm mt-3 leading-relaxed">{f.answer}</p>
+                  <p className="text-steel text-[13px] sm:text-sm mt-2 leading-relaxed">{f.answer}</p>
                 </details>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="py-14 bg-ink relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">
-              Tražite {cat.profession.toLowerCase()} u gradu {city.name}?
-            </h2>
-            <p className="text-[#ffffff]/60 mb-8 max-w-xl mx-auto">
-              Objavite posao besplatno danas: prve ponude stižu u prosjeku u roku od 24 sata.
-            </p>
-            <Link
-              href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-            >
-              Objavi posao besplatno
-              <ArrowRight className="w-5 h-5" />
-            </Link>
           </div>
         </section>
       </main>
