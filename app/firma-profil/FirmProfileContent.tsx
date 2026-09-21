@@ -8,7 +8,6 @@ import { plural } from '@/lib/plural';
 import Footer from '@/components/Footer';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import PageHero from '@/components/ui/PageHero';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { getCategory } from '@/lib/data';
@@ -22,11 +21,10 @@ import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   MapPin,
   Star,
-  MessageSquare,
   ArrowRight,
+  ChevronRight,
   Quote,
   AlertCircle,
-  ImageIcon,
   X,
   Hash,
   Calendar,
@@ -34,6 +32,10 @@ import {
   Phone,
   Mail,
   ShieldCheck,
+  Receipt,
+  List,
+  Info,
+  MessageCircle,
 } from 'lucide-react';
 
 interface ReviewerProfile {
@@ -81,6 +83,13 @@ interface FirmCategoryRow {
   category_slug: string;
 }
 
+const TABS = [
+  { id: 'pregled', label: 'Pregled' },
+  { id: 'usluge', label: 'Usluge' },
+  { id: 'o-firmi', label: 'O firmi' },
+  { id: 'recenzije', label: 'Recenzije' },
+];
+
 export default function FirmProfileContent({ slug: propSlug }: { slug?: string }) {
   const searchParams = useSearchParams();
   const slug = propSlug || searchParams.get('slug') || '';
@@ -95,10 +104,15 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [activeTab, setActiveTab] = useState('pregled');
+  const [showAllServices, setShowAllServices] = useState(false);
 
   const loadFirm = useCallback(async () => {
-    setLoading(true);
-    setError('');
+    if (!slug) {
+      setLoading(false);
+      setError('Nedostaje naziv firme.');
+      return;
+    }
 
     try {
       const { data, error: firmError } = await supabase
@@ -295,33 +309,25 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     );
   }
 
+  function scrollToSection(id: string, tab: string) {
+    setActiveTab(tab);
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-grow">
-          <div className="relative overflow-hidden bg-gradient-to-br from-ink via-slate-900 to-slate-800 py-20 md:py-28">
-            <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
-            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="h-10 md:h-14 w-2/3 bg-white/10 rounded-2xl animate-pulse mb-4" />
-              <div className="h-5 md:h-6 w-1/2 bg-white/10 rounded-xl animate-pulse mb-8" />
-              <div className="h-12 w-56 bg-white/10 rounded-xl animate-pulse" />
+          <div className="relative overflow-hidden bg-ink-950 min-h-[280px] animate-pulse" />
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-3xl border border-gray-100 p-5 -mt-10 relative z-20 animate-pulse">
+              <div className="w-24 h-24 rounded-2xl bg-gray-100 -mt-14 mb-3" />
+              <div className="h-7 w-2/3 bg-gray-100 rounded-xl mb-2" />
+              <div className="h-4 w-1/3 bg-gray-100 rounded-lg mb-4" />
+              <div className="h-12 w-full bg-gray-100 rounded-xl" />
             </div>
           </div>
-          <section className="py-12 md:py-20 bg-cloud">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="grid lg:grid-cols-3 gap-8 items-start">
-                <div className="lg:col-span-2 space-y-6">
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-48 animate-pulse" />
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-64 animate-pulse" />
-                  <div className="bg-white rounded-2xl p-6 shadow-card border border-gray-100 h-40 animate-pulse" />
-                </div>
-                <div className="bg-ink rounded-3xl h-[540px] animate-pulse shadow-card" />
-              </div>
-            </div>
-          </section>
         </main>
         <Footer />
       </div>
@@ -330,34 +336,34 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
 
   if (error || !firm) {
     return (
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
         <main className="flex-grow">
           <Breadcrumbs items={[{ name: 'Profil firme' }]} />
-          <PageHero
-            title="Profil nije pronađen"
-            subtitle={error || 'Tražena firma ne postoji u našem sustavu.'}
-            icon={AlertCircle}
-            align="center"
-            size="md"
-            gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
-          >
-            <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-8 h-8 text-brand-orange" />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">
+              Profil nije pronađen
+            </h1>
+            <p className="text-steel mb-8">{error || 'Tražena firma ne postoji u našem sustavu.'}</p>
+            <div className="flex flex-col sm:flex-row justify-center gap-3">
               <Link
                 href="/top-firme/"
-                className="btn-primary text-lg px-8 py-4 inline-flex items-center justify-center gap-2"
+                className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold transition-colors"
               >
                 Pogledaj top firme
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/objavi-projekat/"
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-8 py-4 rounded-xl font-semibold hover:bg-white/15 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-gray-700 border border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 Objavi posao
               </Link>
             </div>
-          </PageHero>
+          </div>
         </main>
         <Footer />
       </div>
@@ -369,8 +375,10 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     ? 'Online sada'
     : `Zadnji put online: ${formatLastActive(firm.last_active_at)}`;
 
+  const visibleServices = showAllServices ? categoryNames : categoryNames.slice(0, 6);
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
         <JsonLd
@@ -394,426 +402,438 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
           ]}
         />
 
-        <PageHero
-          title={firm.name}
-          subtitle={categoryNames.length > 0 ? categoryNames.join(', ') : 'Razne usluge'}
-          eyebrow={firm.city ? `${firm.city} - Profil firme` : 'Profil firme'}
-          align="left"
-          size="md"
-          gradient="bg-gradient-to-br from-ink via-slate-900 to-slate-800"
-        >
-          <div className="mt-6 flex flex-col lg:flex-row gap-6 items-start">
-            <div className="shrink-0">
-              <LogoDisplay
-                name={firm.name}
-                src={firm.logo_url}
-                alt={firm.name}
-                size="xl"
-                rounded="2xl"
-                className="shadow-2xl border-2 border-white/10"
-              />
+        {/* Hero */}
+        <section className="relative min-h-[280px] sm:min-h-[360px] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/zafirme-hero.jpg"
+              alt="Majstorski alat na gradilištu"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-ink-950/40 to-ink-950/15" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-ink-950/15 to-ink-950/20" />
+          </div>
+
+          <div className="relative z-20 flex-1 flex items-end">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-14 sm:pb-16">
+              <div className="max-w-2xl">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-1.5 animate-fade-in">
+                  Pouzdani majstori
+                  <br />
+                  za svaki projekat.
+                </h2>
+                <p className="text-sm sm:text-base text-white/80 animate-fade-in">
+                  Kvalitetni radovi. Zadovoljni klijenti.
+                </p>
+                <span className="block w-10 h-1 bg-brand-orange rounded-full mt-3 animate-fade-in" />
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-2 mb-3">
-                {firm.verified && <VerifiedBadge size="md" />}
-                {isPremium && <PremiumBadge />}
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1 text-xs font-semibold text-white/90">
-                  <span
-                    className={`w-2 h-2 rounded-full ${
-                      onlineNow ? 'bg-green-400 animate-pulse' : 'bg-white/40'
-                    }`}
-                  />
-                  {onlineText}
-                </span>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent z-10" />
+        </section>
+
+        {/* Profile card */}
+        <section className="relative z-20 -mt-10 px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="bg-white rounded-3xl border border-gray-100 shadow-xl shadow-black/5 px-5 pb-5 pt-0 sm:p-6 sm:pt-0">
+              <div className="w-fit -mt-10 mb-3">
+                <LogoDisplay
+                  name={firm.name}
+                  src={firm.logo_url}
+                  alt={firm.name}
+                  size="lg"
+                  rounded="2xl"
+                  className="border-4 border-white shadow-lg"
+                />
               </div>
 
-              <div className="flex flex-wrap items-center gap-3 text-sm text-white/80 mb-6">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1">
-                  <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                  <span className="font-bold text-white">{rating.toFixed(1)}</span>
-                  <span>({reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])})</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+                  {firm.name}
+                </h1>
+                {firm.verified && <VerifiedBadge size="md" showLabel={false} className="shrink-0" />}
+              </div>
+
+              {firm.city && (
+                <p className="flex items-center gap-1.5 text-gray-500 text-sm sm:text-base mt-1">
+                  <MapPin className="w-4 h-4" />
+                  {firm.city}
+                </p>
+              )}
+
+              {categoryNames.length > 0 && (
+                <p className="text-sm sm:text-[15px] text-gray-500 leading-relaxed mt-1.5">
+                  {categoryNames.join(', ')}
+                </p>
+              )}
+
+              <div className="flex flex-wrap items-center gap-2 mt-3">
+                {firm.verified && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 border border-orange-100 text-brand-orange text-xs sm:text-sm font-bold px-3 py-1.5">
+                    <ShieldCheck className="w-4 h-4" />
+                    Provjerena firma
+                  </span>
+                )}
+                {isPremium && <PremiumBadge />}
+              </div>
+              <p className="flex items-center gap-1.5 text-xs text-steel mt-2">
+                <span
+                  className={`w-2 h-2 rounded-full ${onlineNow ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`}
+                />
+                {onlineText}
+              </p>
+
+              <div className="flex items-center gap-3 mt-4">
+                <span className="inline-flex items-center gap-1.5">
+                  <Star className="w-5 h-5 text-brand-orange fill-brand-orange" />
+                  <strong className="text-xl sm:text-2xl font-extrabold text-gray-900">
+                    {rating.toFixed(1)}
+                  </strong>
+                  <span className="text-sm text-gray-400">
+                    ({reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])})
+                  </span>
                 </span>
                 {firm.city && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/10 px-3 py-1">
-                    <MapPin className="w-4 h-4 text-brand-orange" />
-                    {firm.city}
-                  </span>
+                  <>
+                    <span className="w-px h-6 bg-gray-200" aria-hidden="true" />
+                    <span className="inline-flex items-center gap-1.5 text-sm sm:text-base text-gray-500">
+                      <MapPin className="w-4 h-4 text-brand-orange" />
+                      {firm.city}
+                    </span>
+                  </>
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="space-y-2.5 mt-4">
                 <Link
                   href={`/zatrazi-ponudu/?firm_id=${firm.id}`}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-bold text-base rounded-xl px-6 py-3.5 transition-all active:scale-[0.99] shadow-lg shadow-brand-orange/25 min-h-[52px]"
                 >
-                  Zatraži ponudu od {firm.name}
+                  <Receipt className="w-5 h-5" />
+                  Zatraži ponudu
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href={`/zatrazi-ponudu/?firm_id=${firm.id}&ask=1`}
-                  className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-sm text-white border border-white/20 px-6 py-3 rounded-xl font-bold hover:bg-white/15 transition-all active:scale-95"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-white text-gray-900 border border-gray-200 font-bold text-base rounded-xl px-6 py-3.5 transition-colors hover:bg-gray-50 min-h-[52px]"
                 >
-                  <MessageSquare className="w-4 h-4" />
-                  Pitaj prije ponude
+                  <MessageCircle className="w-5 h-5" />
+                  Pošalji poruku
                 </Link>
               </div>
-              <p className="mt-3 text-sm text-white/60">
-                Želiš ponude i od drugih firmi?{' '}
-                <Link
-                  href="/objavi-projekat/"
-                  className="text-brand-orange hover:underline font-medium"
-                >
-                  Objavi javni projekat
-                </Link>
-              </p>
             </div>
           </div>
-        </PageHero>
+        </section>
 
-        <section className="py-12 md:py-20 bg-cloud">
+        {/* Tabs */}
+        <div className="sticky top-12 md:top-16 z-30 bg-white/95 backdrop-blur border-b border-gray-100 mt-4">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex gap-5 md:gap-7 overflow-x-auto no-scrollbar">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => scrollToSection(t.id, t.id)}
+                className={`py-3 text-sm md:text-[15px] whitespace-nowrap transition-colors border-b-2 -mb-px ${
+                  activeTab === t.id
+                    ? 'font-bold text-brand-orange border-brand-orange'
+                    : 'font-medium text-gray-400 border-transparent hover:text-gray-700'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div id="pregled" className="scroll-mt-32" />
+
+        {/* Usluge */}
+        <section id="usluge" className="py-5 md:py-7 scroll-mt-32">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-3 gap-8 items-start">
-              <div className="lg:col-span-2 space-y-8">
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">O firmi</h2>
-                  <p className="text-steel leading-relaxed mb-6">
-                    {firm.description || 'Firma još nije dodala opis.'}
-                  </p>
-                  {categoryNames.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {categoryNames.map((name) => (
-                        <span
-                          key={name}
-                          className="px-4 py-2 bg-cloud rounded-xl text-sm font-medium text-gray-900 border border-gray-100"
-                        >
-                          {name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+            <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-gray-900">
+                  <List className="w-5 h-5" />
+                  Usluge
+                </h2>
+                {categoryNames.length > 6 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllServices((v) => !v)}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange"
+                  >
+                    {showAllServices ? 'Prikaži manje' : 'Pogledaj sve'}
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              {visibleServices.length > 0 ? (
+                <div className="grid grid-cols-2 gap-2">
+                  {visibleServices.map((name) => (
+                    <span
+                      key={name}
+                      className="bg-gray-100 text-gray-800 rounded-xl px-3 py-2.5 text-[13px] sm:text-sm font-medium leading-snug"
+                    >
+                      {name}
+                    </span>
+                  ))}
                 </div>
+              ) : (
+                <p className="text-sm text-steel">Firma još nije dodala usluge.</p>
+              )}
+            </div>
+          </div>
+        </section>
 
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-xl font-bold text-gray-900 mb-5">Poslovni podaci</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                    {[
-                      {
-                        icon: Calendar,
-                        label: 'Godina osnivanja',
-                        value: firm.founded_at ? formatYear(firm.founded_at) : 'Nije navedeno',
-                      },
-                      {
-                        icon: Hash,
-                        label: 'Registracijski broj',
-                        value: firm.registration_number || 'Nije navedeno',
-                      },
-                      {
-                        icon: Clock,
-                        label: 'Član Zaposli.ba',
-                        value: formatMonthYear(firm.created_at) || '-',
-                      },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-start gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-cloud border border-gray-100 flex items-center justify-center shrink-0">
-                          <item.icon className="w-5 h-5 text-brand-orange" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-steel">{item.label}</p>
-                          <p className="font-bold text-gray-900">{item.value}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {portfolioImages.length > 0 && (
-                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                    <h2 className="text-xl font-bold text-gray-900 mb-5">Portfolio</h2>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                      {portfolioImages.map((url, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setSelectedPortfolioImage(url)}
-                          className="relative aspect-square rounded-2xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
-                        >
-                          <Image
-                            src={url}
-                            alt={`Portfolio firme ${firm.name} - fotografija ${index + 1}`}
-                            fill
-                            unoptimized
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className="object-cover group-hover:scale-105 transition-transform"
-                          />
-                        </button>
-                      ))}
+        {/* O firmi */}
+        <section id="o-firmi" className="pb-5 md:pb-7 scroll-mt-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm">
+              <h2 className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-gray-900 mb-2">
+                <Info className="w-5 h-5" />O firmi
+              </h2>
+              <p className="text-sm sm:text-[15px] text-steel leading-relaxed mb-4">
+                {firm.description || 'Firma još nije dodala opis.'}
+              </p>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-4 border-t border-gray-100 text-sm">
+                {firm.city && (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <MapPin className="w-4 h-4 text-brand-orange shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-steel">Grad</p>
+                      <p className="font-bold text-gray-900 truncate">{firm.city}</p>
                     </div>
                   </div>
                 )}
-
-                <div className="bg-white rounded-2xl p-6 md:p-8 shadow-card border border-gray-100">
-                  <h2 className="text-xl font-bold text-gray-900 mb-5">Recenzije klijenata</h2>
-                  {reviews.length === 0 ? (
-                    <div className="bg-cloud rounded-2xl p-6 text-center border border-gray-100">
-                      <p className="text-steel">Još nema recenzija za ovu firmu.</p>
+                <div className="flex items-center gap-2 min-w-0">
+                  <Clock className="w-4 h-4 text-brand-orange shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-[11px] text-steel">Član od</p>
+                    <p className="font-bold text-gray-900 truncate">
+                      {formatMonthYear(firm.created_at) || '-'}
+                    </p>
+                  </div>
+                </div>
+                {firm.founded_at && (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Calendar className="w-4 h-4 text-brand-orange shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-steel">Osnovano</p>
+                      <p className="font-bold text-gray-900 truncate">{formatYear(firm.founded_at)}</p>
                     </div>
-                  ) : (
-                    <>
-                      <div className="bg-cloud rounded-2xl p-5 border border-gray-100 mb-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-                          <div className="text-center sm:text-left">
-                            <div className="text-4xl font-extrabold text-gray-900">
-                              {rating.toFixed(1)}
+                  </div>
+                )}
+                {firm.registration_number && (
+                  <div className="flex items-center gap-2 min-w-0">
+                    <Hash className="w-4 h-4 text-brand-orange shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-steel">Reg. broj</p>
+                      <p className="font-bold text-gray-900 truncate">{firm.registration_number}</p>
+                    </div>
+                  </div>
+                )}
+                {firm.phone && (
+                  <a href={`tel:${firm.phone.replace(/\s/g, '')}`} className="flex items-center gap-2 min-w-0">
+                    <Phone className="w-4 h-4 text-brand-orange shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-steel">Telefon</p>
+                      <p className="font-bold text-gray-900 truncate">{firm.phone}</p>
+                    </div>
+                  </a>
+                )}
+                {firm.email && (
+                  <a href={`mailto:${firm.email}`} className="flex items-center gap-2 min-w-0">
+                    <Mail className="w-4 h-4 text-brand-orange shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-[11px] text-steel">Email</p>
+                      <p className="font-bold text-gray-900 truncate">{firm.email}</p>
+                    </div>
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio */}
+        {portfolioImages.length > 0 && (
+          <section className="pb-5 md:pb-7">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm">
+                <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 mb-3">Portfolio</h2>
+                <div className="grid grid-cols-3 gap-2">
+                  {portfolioImages.map((url, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setSelectedPortfolioImage(url)}
+                      className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
+                      aria-label={`Fotografija radova ${index + 1}`}
+                    >
+                      <Image
+                        src={url}
+                        alt={`Portfolio firme ${firm.name} - fotografija ${index + 1}`}
+                        fill
+                        unoptimized
+                        sizes="(max-width: 640px) 33vw, 20vw"
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Recenzije */}
+        <section id="recenzije" className="pb-10 md:pb-14 scroll-mt-32">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg sm:text-xl font-extrabold text-gray-900">
+                  Recenzije klijenata
+                </h2>
+                <span className="text-sm text-steel">
+                  {reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])}
+                </span>
+              </div>
+
+              {reviews.length === 0 ? (
+                <div className="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100">
+                  <p className="text-steel text-sm">Još nema recenzija za ovu firmu.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="text-4xl font-extrabold text-gray-900">{rating.toFixed(1)}</div>
+                    <div className="flex-1">
+                      <div className="flex gap-0.5 mb-1.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-4 h-4 ${
+                              i < Math.round(rating)
+                                ? 'text-brand-orange fill-brand-orange'
+                                : 'text-gray-200'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <div className="space-y-1">
+                        {histogram.map(({ star, count }) => (
+                          <div key={star} className="flex items-center gap-2 text-xs">
+                            <span className="w-3 font-semibold text-gray-900">{star}</span>
+                            <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-brand-orange rounded-full"
+                                style={{ width: `${(count / maxHistogramCount) * 100}%` }}
+                              />
                             </div>
-                            <div className="flex gap-0.5 justify-center sm:justify-start my-1">
+                            <span className="w-6 text-right text-steel">{count}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {reviews.map((review) => {
+                      const displayName =
+                        review.reviewer_name || formatReviewerName(review.profiles?.full_name);
+                      return (
+                        <div
+                          key={review.id}
+                          className="bg-gray-50 rounded-2xl p-4 border border-gray-100"
+                        >
+                          <div className="flex items-center gap-3 mb-2.5">
+                            <div className="w-9 h-9 rounded-full bg-ink text-brand-orange font-bold text-xs flex items-center justify-center shrink-0">
+                              {displayName.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-gray-900 text-sm truncate">
+                                {displayName}
+                              </p>
+                              <p className="text-xs text-steel">{formatDate(review.created_at)}</p>
+                            </div>
+                            <div className="flex gap-0.5 shrink-0">
                               {[...Array(5)].map((_, i) => (
                                 <Star
                                   key={i}
-                                  className={`w-4 h-4 ${
-                                    i < Math.round(rating)
+                                  className={`w-3.5 h-3.5 ${
+                                    i < review.rating
                                       ? 'text-brand-orange fill-brand-orange'
-                                      : 'text-mist'
+                                      : 'text-gray-200'
                                   }`}
                                 />
                               ))}
                             </div>
-                            <div className="text-xs text-steel">{reviewCount} {plural(reviewCount, ['recenzija', 'recenzije', 'recenzija'])}</div>
                           </div>
-                          <div className="flex-1 space-y-2">
-                            {histogram.map(({ star, count }) => (
-                              <div key={star} className="flex items-center gap-3 text-sm">
-                                <span className="w-4 font-semibold text-gray-900">{star}</span>
-                                <Star className="w-3 h-3 text-brand-orange fill-brand-orange" />
-                                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                                  <div
-                                    className="h-full bg-brand-orange rounded-full"
-                                    style={{ width: `${(count / maxHistogramCount) * 100}%` }}
-                                  />
-                                </div>
-                                <span className="w-8 text-right text-steel text-xs">{count}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        {reviews.map((review) => (
-                          <div
-                            key={review.id}
-                            className="bg-cloud rounded-2xl p-5 border border-gray-100"
-                          >
-                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
-                              <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs">
-                                  {(review.reviewer_name || formatReviewerName(review.profiles?.full_name)).charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                  <div className="font-semibold text-gray-900 text-sm">
-                                    {review.reviewer_name || formatReviewerName(review.profiles?.full_name)}
-                                  </div>
-                                  <div className="text-xs text-steel">
-                                    {formatDate(review.created_at)}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex gap-0.5 shrink-0">
-                                {[...Array(5)].map((_, i) => (
-                                  <Star
-                                    key={i}
-                                    className={`w-4 h-4 ${
-                                      i < review.rating
-                                        ? 'text-brand-orange fill-brand-orange'
-                                        : 'text-mist'
-                                    }`}
-                                  />
+                          {review.comment && (
+                            <div className="flex gap-2 mb-2.5">
+                              <Quote className="w-3.5 h-3.5 text-brand-orange/50 shrink-0 mt-0.5" />
+                              <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
+                            </div>
+                          )}
+                          {(review.images?.length
+                            ? review.images
+                            : review.image_url
+                              ? [{ url: review.image_url }]
+                              : []
+                          ).length > 0 && (
+                            <div className="mt-2.5">
+                              <div className="grid grid-cols-4 gap-2">
+                                {(review.images?.length
+                                  ? review.images
+                                  : review.image_url
+                                    ? [{ url: review.image_url }]
+                                    : []
+                                ).map((img, idx) => (
+                                  <button
+                                    key={idx}
+                                    type="button"
+                                    onClick={() => setSelectedReviewImage(img.url)}
+                                    className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
+                                    aria-label={`Fotografija recenzije ${idx + 1}`}
+                                  >
+                                    <Image
+                                      src={img.url}
+                                      alt={`Fotografija recenzije ${idx + 1}`}
+                                      fill
+                                      unoptimized
+                                      sizes="25vw"
+                                      className="object-cover group-hover:scale-105 transition-transform"
+                                    />
+                                  </button>
                                 ))}
                               </div>
                             </div>
-                            {review.comment && (
-                              <div className="flex gap-2 mb-3">
-                                <Quote className="w-4 h-4 text-primary-200 shrink-0 mt-0.5" />
-                                <p className="text-steel text-sm leading-relaxed">{review.comment}</p>
-                              </div>
-                            )}
-                            {(review.images?.length ? review.images : review.image_url ? [{ url: review.image_url }] : []).length > 0 && (
-                              <div className="mt-3">
-                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                                  {(review.images?.length ? review.images : review.image_url ? [{ url: review.image_url }] : []).map((img, idx) => (
-                                    <button
-                                      key={idx}
-                                      type="button"
-                                      onClick={() => setSelectedReviewImage(img.url)}
-                                      className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 hover:ring-2 hover:ring-brand-orange transition group"
-                                      aria-label={`Fotografija recenzije ${idx + 1}`}
-                                    >
-                                      <Image
-                                        src={img.url}
-                                        alt={`Fotografija recenzije ${idx + 1}`}
-                                        fill
-                                        unoptimized
-                                        sizes="(max-width: 640px) 33vw, 20vw"
-                                        className="object-cover group-hover:scale-105 transition-transform"
-                                      />
-                                    </button>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                            {review.reply && (
-                              <div className="mt-4 bg-white rounded-xl p-4 border border-gray-100">
-                                <div className="text-xs font-semibold text-gray-900 mb-1">
-                                  Odgovor firme
-                                  {review.replied_at && (
-                                    <span className="font-normal text-steel ml-2">
-                                      {formatDate(review.replied_at)}
-                                    </span>
-                                  )}
-                                </div>
-                                <p className="text-steel text-sm leading-relaxed">{review.reply}</p>
-                              </div>
-                            )}
-                            {isFirmOwner && !review.reply && (
-                              <ReviewReplyForm reviewId={review.id} onReply={handleReviewReply} />
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <aside>
-                <div className="sticky top-28 relative overflow-hidden rounded-3xl bg-gradient-to-br from-ink via-slate-900 to-slate-800 backdrop-blur-sm p-6 md:p-8 text-white shadow-2xl border border-white/10">
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-brand-orange/10 rounded-full blur-3xl translate-x-1/3 -translate-y-1/3" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
-                  <div className="relative">
-                    <h3 className="text-lg font-bold mb-5">Ukratko</h3>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <Star className="w-5 h-5 text-brand-orange" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-white/50">Ocjena</p>
-                          <p className="font-bold">{rating.toFixed(1)} / 5</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <MessageSquare className="w-5 h-5 text-brand-orange" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-white/50">Recenzija</p>
-                          <p className="font-bold">{reviewCount}</p>
-                        </div>
-                      </div>
-                      {firm.city && (
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                            <MapPin className="w-5 h-5 text-brand-orange" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-white/50">Lokacija</p>
-                            <p className="font-bold">{firm.city}</p>
-                          </div>
-                        </div>
-                      )}
-                      {firm.phone && (
-                        <a
-                          href={`tel:${firm.phone.replace(/\s/g, '')}`}
-                          className="group flex items-center gap-3"
-                        >
-                          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white/10 transition-colors">
-                            <Phone className="w-5 h-5 text-brand-orange" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-white/50">Telefon</p>
-                            <p className="font-bold text-sm">{firm.phone}</p>
-                          </div>
-                        </a>
-                      )}
-                      {firm.email && (
-                        <a
-                          href={`mailto:${firm.email}`}
-                          className="group flex items-center gap-3"
-                        >
-                          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white/10 transition-colors">
-                            <Mail className="w-5 h-5 text-brand-orange" />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-xs text-white/50">Email</p>
-                            <p className="font-bold text-sm break-all">{firm.email}</p>
-                          </div>
-                        </a>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <ShieldCheck className="w-5 h-5 text-brand-orange" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-white/50">Status</p>
-                          {firm.verification_status === 'verified' ? (
-                            <VerifiedBadge size="sm" />
-                          ) : firm.verification_status === 'pending' ? (
-                            <span className="text-sm text-accent-400">Na čekanju</span>
-                          ) : firm.verification_status === 'rejected' ? (
-                            <span className="text-sm text-red-400">Odbijeno</span>
-                          ) : (
-                            <span className="text-sm text-white/70">U provjeri</span>
+                          )}
+                          {review.reply && (
+                            <div className="mt-3 bg-white rounded-xl p-3.5 border border-gray-100">
+                              <p className="text-xs font-semibold text-gray-900 mb-1">
+                                Odgovor firme
+                                {review.replied_at && (
+                                  <span className="font-normal text-steel ml-2">
+                                    {formatDate(review.replied_at)}
+                                  </span>
+                                )}
+                              </p>
+                              <p className="text-steel text-sm leading-relaxed">{review.reply}</p>
+                            </div>
+                          )}
+                          {isFirmOwner && !review.reply && (
+                            <ReviewReplyForm reviewId={review.id} onReply={handleReviewReply} />
                           )}
                         </div>
-                      </div>
-                      {firm.founded_at && (
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                            <Calendar className="w-5 h-5 text-brand-orange" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-white/50">Godina osnivanja</p>
-                            <p className="font-bold text-sm">{formatYear(firm.founded_at)}</p>
-                          </div>
-                        </div>
-                      )}
-                      {firm.registration_number && (
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                            <Hash className="w-5 h-5 text-brand-orange" />
-                          </div>
-                          <div>
-                            <p className="text-xs text-white/50">Reg. broj</p>
-                            <p className="font-bold text-sm">{firm.registration_number}</p>
-                          </div>
-                        </div>
-                      )}
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                          <Clock className="w-5 h-5 text-brand-orange" />
-                        </div>
-                        <div>
-                          <p className="text-xs text-white/50">Član od</p>
-                          <p className="font-bold text-sm">{formatMonthYear(firm.created_at)}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <Link
-                      href={`/zatrazi-ponudu/?firm_id=${firm.id}`}
-                      className="block w-full text-center mt-6 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-6 py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
-                    >
-                      Zatraži ponudu od {firm.name}
-                    </Link>
-                    <Link
-                      href={`/zatrazi-ponudu/?firm_id=${firm.id}&ask=1`}
-                      className="block w-full text-center mt-3 bg-white/10 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-xl font-bold hover:bg-white/20 transition-all active:scale-95"
-                    >
-                      Pitaj prije ponude
-                    </Link>
-                    <p className="text-white/40 text-xs text-center mt-3">
-                      Privatni zahtjev - vidi ga samo {firm.name}
-                    </p>
+                      );
+                    })}
                   </div>
-                </div>
-              </aside>
+                </>
+              )}
             </div>
           </div>
         </section>
@@ -838,6 +858,36 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                 <Image
                   src={selectedPortfolioImage}
                   alt={`Uvećana fotografija portfolioa firme ${firm.name}`}
+                  fill
+                  unoptimized
+                  sizes="100vw"
+                  className="object-contain rounded-lg shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedReviewImage && (
+          <div
+            className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 sm:p-8"
+            onClick={() => setSelectedReviewImage(null)}
+          >
+            <button
+              onClick={() => setSelectedReviewImage(null)}
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-colors"
+              aria-label="Zatvori"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <div className="relative max-w-5xl w-full h-full flex items-center justify-center">
+              <div
+                className="relative max-w-full max-h-[85vh] w-full"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={selectedReviewImage}
+                  alt="Uvećana fotografija recenzije"
                   fill
                   unoptimized
                   sizes="100vw"

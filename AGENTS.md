@@ -560,6 +560,9 @@
 
 - Rebuilt `/poslovi/` exactly per the pp.png mobile mockup: light header with title + live active-jobs badge, search bar, location bar, 4 dropdown filter pills (Kategorija/Lokacija/Budžet/Rok sa panelima), Najnoviji/Najbliži sort toggle, and restyled `ProjectListCard` rows (rounded photo, orange category pill, bold title, location/time, budget, green Otvoreno badge + heart, big bid count, orange Pogledaj posao button). Expand/bid flows, category warnings and firms section below the list kept.
 
+- Rebuilt `/poslovi/` exactly per the pp.png mobile mockup: light header with title + live active-jobs badge, search bar, location bar, 4 dropdown filter pills (Kategorija/Lokacija/Budzet/Rok panels), Najnoviji/Najblizi sort toggle, restyled `ProjectListCard` rows (rounded photo, orange category pill, bold title, location/time, budget, green Otvoreno badge + heart, big bid count, orange Pogledaj posao button). Expand/bid flows and firms section below kept.
+- Rebuilt `/firma-profil/[slug]/` exactly per the firme.png mobile mockup: photo hero (`zafirme-hero.jpg`), overlapping white profile card (overlapping logo, name + verified badge, city, category list, Provjerena/Premium pills, rating row, orange Zatrazi ponudu + outline Posalji poruku buttons), sticky Pregled/Usluge/O firmi/Recenzije tabs with scroll, Usluge chips card with show-all toggle, O firmi card with compact facts + contact, portfolio + working review-photo lightboxes, reviews with histogram/replies/owner reply form. All data fetching, JSON-LD and RLS logic unchanged.
+
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).
