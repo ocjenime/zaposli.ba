@@ -467,7 +467,17 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
 
               {categoryNames.length > 0 && (
                 <p className="text-sm sm:text-[15px] text-gray-500 leading-relaxed mt-1.5">
-                  {categoryNames.join(', ')}
+                  {categoryNames.slice(0, 6).join(', ')}
+                  {categoryNames.length > 6 && (
+                    <button
+                      type="button"
+                      onClick={() => scrollToSection('usluge', 'usluge')}
+                      className="text-brand-orange font-semibold whitespace-nowrap"
+                    >
+                      {' '}
+                      +{categoryNames.length - 6} još
+                    </button>
+                  )}
                 </p>
               )}
 

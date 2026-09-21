@@ -53,7 +53,7 @@ export default function ONamaPage() {
         <Breadcrumbs items={[{ name: 'O nama' }]} />
 
         {/* Hero */}
-        <section className="relative min-h-[480px] sm:min-h-[540px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[340px] sm:min-h-[400px] flex flex-col overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src="/images/herozaposli.png"
@@ -63,12 +63,12 @@ export default function ONamaPage() {
               sizes="100vw"
               className="object-cover object-[70%_center]"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 via-ink-950/40 to-ink-950/15" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/60 via-ink-950/15 to-ink-950/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
           </div>
 
           <div className="relative z-20 flex-1 flex flex-col justify-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 pb-8 sm:pb-10">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 pb-6 sm:pb-8">
               <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-xs text-white/70 mb-4">
                 <Link href="/" className="hover:text-white transition-colors">
                   Početna
@@ -83,17 +83,17 @@ export default function ONamaPage() {
                 <p className="text-brand-orange text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-2 animate-fade-in">
                   O nama
                 </p>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">
+                <h1 className="text-[28px] sm:text-4xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
                   Svaki projekat počinje{' '}
                   <span className="text-brand-orange">pravim ljudima.</span>
                 </h1>
-                <p className="text-sm sm:text-lg text-white/85 leading-relaxed mb-5 max-w-xl animate-fade-in">
+                <p className="text-[13px] sm:text-base text-white/85 leading-snug mb-4 max-w-xl animate-fade-in">
                   Zaposli.ba povezuje ljude kojima treba posao sa provjerenim majstorima i firmama
                   širom Bosne i Hercegovine.
                 </p>
                 <Link
                   href="/objavi-projekat/"
-                  className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 sm:py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all active:scale-95 shadow-lg shadow-brand-orange/30 animate-fade-in"
+                  className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 py-2.5 sm:py-3 rounded-xl font-bold text-sm sm:text-base transition-all active:scale-95 shadow-lg shadow-brand-orange/30 animate-fade-in"
                 >
                   Objavi posao besplatno
                   <ArrowRight className="w-4 h-4" />
