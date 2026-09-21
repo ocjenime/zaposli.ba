@@ -418,7 +418,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-14 sm:pb-16">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-24 sm:pb-28">
               <div className="max-w-2xl">
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight mb-1.5 animate-fade-in">
                   Pouzdani majstori
