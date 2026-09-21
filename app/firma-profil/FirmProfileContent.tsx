@@ -15,6 +15,7 @@ import { getCategory } from '@/lib/data';
 import { site } from '@/lib/site';
 import Image from 'next/image';
 import { formatDate, formatMonthYear } from '@/lib/date';
+import { formatReviewerName } from '@/lib/reviewer-name';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
 import { isOnline, formatLastActive } from '@/lib/hooks/useFirmActivityHeartbeat';
 import LogoDisplay from '@/components/ui/LogoDisplay';
@@ -46,6 +47,7 @@ interface ReviewRow {
   rating: number;
   comment: string | null;
   image_url: string | null;
+  reviewer_name?: string | null;
   images?: { url: string }[];
   status: 'pending' | 'approved' | 'rejected';
   reply: string | null;
@@ -102,7 +104,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
       const { data, error: firmError } = await supabase
         .from('firms')
         .select(
-          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, registration_number, founded_at, last_active_at, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, status, reply, replied_at, created_at, profiles(full_name))'
+          'id, owner_id, name, slug, description, email, phone, city, logo_url, verified, verification_status, verification_notes, average_rating, review_count, registration_number, founded_at, last_active_at, created_at, reviews(id, firm_id, client_id, rating, comment, image_url, reviewer_name, status, reply, replied_at, created_at, profiles(full_name))'
         )
         .eq('slug', slug)
         .single();
@@ -603,11 +605,11 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-3">
                               <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-full bg-gradient-to-br from-ink-800 to-ink flex items-center justify-center text-brand-orange font-bold text-xs">
-                                  {(review.profiles?.full_name || 'K').charAt(0).toUpperCase()}
+                                  {(review.reviewer_name || formatReviewerName(review.profiles?.full_name)).charAt(0).toUpperCase()}
                                 </div>
                                 <div>
                                   <div className="font-semibold text-gray-900 text-sm">
-                                    {review.profiles?.full_name || 'Klijent'}
+                                    {review.reviewer_name || formatReviewerName(review.profiles?.full_name)}
                                   </div>
                                   <div className="text-xs text-steel">
                                     {formatDate(review.created_at)}

@@ -556,6 +556,8 @@
 - Fixed firm profiles showing 0 rating / no reviews after a client review: `FirmProfileContent` now derives displayed rating/count from the loaded approved reviews first (fallback to aggregate columns), and added `supabase/migration-fix-firm-ratings.sql` (ensures the rating trigger + backfills all firms; user must apply in SQL Editor).
 - Fixed broken client dashboard links that opened `/dashboard/poslovi/` without a job ID (`ID posla nije naveden.`): `ClientMyJobsList` now links with `?id=${job.id}`, `ClientRecentBids` with `?id=${bid.job_id}` (`job_id` added to the bids select + both `Bid` interfaces).
 
+- Fixed reviewer names showing generic `Klijent` on firm profiles/testimonials: RLS only allows reading your own `profiles` row, so public pages got null names. Added `reviews.reviewer_name` snapshot column (`supabase/migration-review-reviewer-name.sql` with backfill, user must apply), `lib/reviewer-name.ts` (`Firstname L.` formatter), recenzija form stores the snapshot at insert, profile + homepage testimonials prefer it with formatted fallback.
+
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).

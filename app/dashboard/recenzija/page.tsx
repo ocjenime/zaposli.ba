@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useAuth } from '@/lib/auth-context';
 import { supabase } from '@/lib/supabase';
+import { formatReviewerName } from '@/lib/reviewer-name';
 import { Star, ArrowLeft, Upload, AlertCircle, X, ImageIcon } from 'lucide-react';
 
 interface JobRow {
@@ -218,6 +219,22 @@ function ReviewPage() {
         uploadedUrls.push(publicUrl.publicUrl);
       }
 
+      // Snapshot the public display name ("Firstname L.") because RLS only
+      // allows reading your own profiles row - public pages cannot resolve it.
+      let reviewerName = 'Klijent';
+      try {
+        const { data: profileData } = await supabase
+          .from('profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single();
+        reviewerName = formatReviewerName(
+          (profileData as { full_name?: string | null } | null)?.full_name
+        );
+      } catch {
+        // keep fallback
+      }
+
       const { data: reviewData, error: insertError } = await supabase
         .from('reviews')
         .insert({
@@ -228,6 +245,7 @@ function ReviewPage() {
           comment: comment.trim(),
           image_url: uploadedUrls[0] || null,
           status: 'approved',
+          reviewer_name: reviewerName,
         })
         .select('id')
         .single();
