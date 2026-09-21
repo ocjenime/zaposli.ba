@@ -558,6 +558,8 @@
 
 - Fixed reviewer names showing generic `Klijent` on firm profiles/testimonials: RLS only allows reading your own `profiles` row, so public pages got null names. Added `reviews.reviewer_name` snapshot column (`supabase/migration-review-reviewer-name.sql` with backfill, user must apply), `lib/reviewer-name.ts` (`Firstname L.` formatter), recenzija form stores the snapshot at insert, profile + homepage testimonials prefer it with formatted fallback.
 
+- Rebuilt `/poslovi/` exactly per the pp.png mobile mockup: light header with title + live active-jobs badge, search bar, location bar, 4 dropdown filter pills (Kategorija/Lokacija/Budžet/Rok sa panelima), Najnoviji/Najbliži sort toggle, and restyled `ProjectListCard` rows (rounded photo, orange category pill, bold title, location/time, budget, green Otvoreno badge + heart, big bid count, orange Pogledaj posao button). Expand/bid flows, category warnings and firms section below the list kept.
+
 ### Blocked
 - Google Analytics 4 requires the user to add `NEXT_PUBLIC_GA_ID` env var in Vercel.
 - Google Search Console domain ownership is verified; the user still needs to submit the sitemap (`https://zaposli.ba/sitemap.xml`).

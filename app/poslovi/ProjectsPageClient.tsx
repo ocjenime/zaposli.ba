@@ -3,12 +3,11 @@
 import { useEffect, useState, Suspense, useCallback } from 'react';
 import Link from 'next/link';
 import { plural } from '@/lib/plural';
-import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   ArrowRight, Loader2, X, Search, SlidersHorizontal,
-  ArrowUpDown, ShieldCheck, Wallet, AlertTriangle, Briefcase, Sparkles,
-  LayoutGrid, Clock,
+  MapPin, ChevronDown, Wallet, Calendar, AlertTriangle, Briefcase,
+  LayoutGrid, Users,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -50,8 +49,9 @@ function ProjectsPageContent() {
   const [cityFilter, setCityFilter] = useState('');
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
-  const [sortBy, setSortBy] = useState<'featured' | 'newest' | 'budget-asc' | 'budget-desc' | 'bids'>('featured');
-  const [showFilters, setShowFilters] = useState(false);
+  const [rokFilter, setRokFilter] = useState<'' | '7' | '30'>('');
+  const [sortBy, setSortBy] = useState<'newest' | 'nearest'>('newest');
+  const [openPanel, setOpenPanel] = useState<null | 'kategorija' | 'lokacija' | 'budzet' | 'rok'>(null);
   const [firmCategories, setFirmCategories] = useState<string[]>([]);
   const [categoryWarningJob, setCategoryWarningJob] = useState<Job | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -167,17 +167,25 @@ function ProjectsPageContent() {
       const matchesBudget =
         (!min || (job.budget_max != null && job.budget_max >= min) || (job.budget_min != null && job.budget_min >= min)) &&
         (!max || (job.budget_min != null && job.budget_min <= max) || (job.budget_max != null && job.budget_max <= max));
-      return matchesSearch && matchesCategory && matchesCity && matchesBudget;
+      let matchesRok = true;
+      if (rokFilter) {
+        if (job.deadline) {
+          const diffDays = (new Date(job.deadline).getTime() - Date.now()) / 86400000;
+          matchesRok = diffDays >= 0 && diffDays <= parseInt(rokFilter, 10);
+        }
+      }
+      return matchesSearch && matchesCategory && matchesCity && matchesBudget && matchesRok;
     })
     .sort((a, b) => {
       const aFeatured = isActiveFeatured(a) ? 1 : 0;
       const bFeatured = isActiveFeatured(b) ? 1 : 0;
       if (aFeatured !== bFeatured) return bFeatured - aFeatured;
-      if (sortBy === 'newest' || sortBy === 'featured') return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      if (sortBy === 'budget-asc') return (a.budget_min || a.budget_max || 0) - (b.budget_min || b.budget_max || 0);
-      if (sortBy === 'budget-desc') return (b.budget_min || b.budget_max || 0) - (a.budget_min || a.budget_max || 0);
-      if (sortBy === 'bids') return b.bids_count - a.bids_count;
-      return 0;
+      if (sortBy === 'nearest' && cityFilter) {
+        const aNear = a.city === cityFilter ? 1 : 0;
+        const bNear = b.city === cityFilter ? 1 : 0;
+        if (aNear !== bNear) return bNear - aNear;
+      }
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     });
 
   const activeFiltersCount = [
@@ -186,6 +194,7 @@ function ProjectsPageContent() {
     cityFilter,
     minBudget,
     maxBudget,
+    rokFilter,
   ].filter(Boolean).length;
 
   function clearFilters() {
@@ -194,7 +203,9 @@ function ProjectsPageContent() {
     setCityFilter('');
     setMinBudget('');
     setMaxBudget('');
-    setSortBy('featured');
+    setRokFilter('');
+    setSortBy('newest');
+    setOpenPanel(null);
   }
 
   const cities = Array.from(new Set(jobs.map((j) => j.city))).sort();
@@ -206,203 +217,231 @@ function ProjectsPageContent() {
       <main className="flex-grow">
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 
-        {/* Hero - premium dark Higgsfield style with full-bleed image */}
-        <section className="relative overflow-hidden border-b border-white/5">
-          <Image
-            src="/images/poslovi-hero.jpg"
-            alt="Majstor na poslu - varilački radovi"
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/30 to-ink-950/40" />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-36 pb-10 md:pb-14">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
-                <Sparkles className="w-4 h-4 text-brand-orange" />
-                Uživo objavljeni poslovi
+        {/* Header */}
+        <section className="pt-20 md:pt-24 pb-4 md:pb-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Poslovi</h1>
+                <p className="text-steel mt-1 text-sm md:text-base">Pronađi pravi posao za svoj projekat.</p>
               </div>
-
-              {/* Trust badges */}
-              <div className="max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-                  {[
-                    { icon: Clock, label: 'Prve ponude u 24h' },
-                    { icon: Wallet, label: 'Bez provizije' },
-                    { icon: LayoutGrid, label: 'Sve kategorije' },
-                    { icon: ShieldCheck, label: 'Verificirane firme' },
-                  ].map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <div key={item.label} className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-white/5 border border-white/10 text-white/90">
-                        <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-orange shrink-0" />
-                        <p className="text-xs md:text-sm font-medium text-left leading-tight">{item.label}</p>
-                      </div>
-                    );
-                  })}
-                </div>
+              <div className="flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-2xl px-3 py-2 shrink-0">
+                <Users className="w-5 h-5 text-brand-orange shrink-0" />
+                <p className="text-xs font-bold text-gray-900 leading-tight">
+                  {jobs.length} {plural(jobs.length, ['aktivan posao', 'aktivna posla', 'aktivnih poslova'])}
+                </p>
+              </div>
             </div>
-          </div>
 
-          {/* Bottom fade for smooth transition to listings */}
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
+            {/* Search */}
+            <div className="relative mt-4">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-900" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Šta treba uraditi?"
+                aria-label="Pretraži poslove"
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-gray-200 bg-white text-[15px] text-gray-900 placeholder-gray-400 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all shadow-sm"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  aria-label="Očisti pretragu"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
+                >
+                  <X className="w-3.5 h-3.5" aria-hidden="true" />
+                </button>
+              )}
+            </div>
+
+            {/* Location */}
+            <div className="relative mt-2.5">
+              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-900 pointer-events-none" />
+              <select
+                value={cityFilter}
+                onChange={(e) => setCityFilter(e.target.value)}
+                aria-label="Lokacija"
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-gray-200 bg-white text-[15px] font-medium text-gray-900 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none appearance-none cursor-pointer shadow-sm"
+              >
+                <option value="">Cijela BiH</option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            </div>
+
+            {/* Filter pills */}
+            <div className="flex gap-2 mt-2.5 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-1">
+              {[
+                { key: 'kategorija' as const, icon: LayoutGrid, label: categoryFilter ? getCategory(categoryFilter)?.name || 'Kategorija' : 'Kategorija', active: !!categoryFilter },
+                { key: 'lokacija' as const, icon: MapPin, label: cityFilter || 'Lokacija', active: !!cityFilter },
+                { key: 'budzet' as const, icon: Wallet, label: minBudget || maxBudget ? `${minBudget || '0'}–${maxBudget || '∞'} KM` : 'Budžet', active: !!(minBudget || maxBudget) },
+                { key: 'rok' as const, icon: Calendar, label: rokFilter ? `Rok: ${rokFilter} dana` : 'Rok', active: !!rokFilter },
+              ].map((pill) => (
+                <button
+                  key={pill.key}
+                  type="button"
+                  onClick={() => setOpenPanel(openPanel === pill.key ? null : pill.key)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all min-h-[44px] max-w-[200px] ${
+                    openPanel === pill.key || pill.active
+                      ? 'bg-ink-950 text-white border-ink-950'
+                      : 'bg-white text-gray-800 border-gray-200'
+                  }`}
+                >
+                  <pill.icon className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{pill.label}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform ${openPanel === pill.key ? 'rotate-180' : ''}`} />
+                </button>
+              ))}
+            </div>
+
+            {/* Filter panels */}
+            {openPanel === 'kategorija' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-2 max-h-64 overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => { setCategoryFilter(''); setOpenPanel(null); }}
+                  className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${!categoryFilter ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  Sve kategorije
+                </button>
+                {categories.map((c) => (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => { setCategoryFilter(c.slug); setOpenPanel(null); }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${categoryFilter === c.slug ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {openPanel === 'lokacija' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-2 max-h-64 overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => { setCityFilter(''); setOpenPanel(null); }}
+                  className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${!cityFilter ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  Cijela BiH
+                </button>
+                {cities.map((city) => (
+                  <button
+                    key={city}
+                    type="button"
+                    onClick={() => { setCityFilter(city); setOpenPanel(null); }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${cityFilter === city ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {openPanel === 'budzet' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Min. (KM)</label>
+                    <input
+                      type="number"
+                      value={minBudget}
+                      onChange={(e) => setMinBudget(e.target.value)}
+                      placeholder="0"
+                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-500 mb-1.5">Max. (KM)</label>
+                    <input
+                      type="number"
+                      value={maxBudget}
+                      onChange={(e) => setMaxBudget(e.target.value)}
+                      placeholder="∞"
+                      className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
+                    />
+                  </div>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    type="button"
+                    onClick={() => { setMinBudget(''); setMaxBudget(''); }}
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-semibold text-gray-600 min-h-[44px]"
+                  >
+                    Poništi
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpenPanel(null)}
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-ink-950 text-white text-sm font-semibold min-h-[44px]"
+                  >
+                    Primijeni
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {openPanel === 'rok' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-2">
+                {[
+                  { value: '' as const, label: 'Svi rokovi' },
+                  { value: '7' as const, label: 'Do 7 dana' },
+                  { value: '30' as const, label: 'Do 30 dana' },
+                ].map((opt) => (
+                  <button
+                    key={opt.label}
+                    type="button"
+                    onClick={() => { setRokFilter(opt.value); setOpenPanel(null); }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${rokFilter === opt.value ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Sort toggle */}
+            <div className="flex bg-gray-100 rounded-full p-1 mt-2.5">
+              <button
+                type="button"
+                onClick={() => setSortBy('newest')}
+                className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all min-h-[44px] ${
+                  sortBy === 'newest' ? 'bg-ink-950 text-white shadow' : 'text-gray-500'
+                }`}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Najnoviji
+              </button>
+              <button
+                type="button"
+                onClick={() => setSortBy('nearest')}
+                className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all min-h-[44px] ${
+                  sortBy === 'nearest' ? 'bg-ink-950 text-white shadow' : 'text-gray-500'
+                }`}
+              >
+                <MapPin className="w-4 h-4" />
+                Najbliži
+              </button>
+            </div>
+
+            {activeFiltersCount > 0 && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-2.5 text-sm text-brand-orange font-semibold inline-flex items-center gap-1 min-h-[36px]"
+              >
+                <X className="w-4 h-4" /> Poništi filtere ({activeFiltersCount})
+              </button>
+            )}
+          </div>
         </section>
 
-        <section id="listings" className="py-12 md:py-16">
+        <section id="listings" className="pb-12 md:pb-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Filter bar - static at top of listings */}
-            <div className="bg-[#f8f7f4] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60 rounded-xl">
-              <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1">
-                    <div className="relative flex-1 md:max-w-sm">
-                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <input
-                        type="text"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder="Pretraži poslove..."
-                        className="w-full pl-9 pr-9 py-2.5 rounded-full border border-gray-200 bg-white text-sm text-gray-900 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all"
-                      />
-                      {search && (
-                        <button
-                          onClick={() => setSearch('')}
-                          aria-label="Očisti pretragu"
-                          className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
-                        >
-                          <X className="w-3.5 h-3.5" aria-hidden="true" />
-                        </button>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 no-scrollbar -mx-1 px-1">
-                      <button
-                        onClick={() => setShowFilters((s) => !s)}
-                        className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all min-h-[44px] ${
-                          showFilters || activeFiltersCount > 0
-                            ? 'bg-brand-orange text-white border-brand-orange'
-                            : 'bg-white text-gray-700 border-gray-200 hover:border-brand-orange hover:text-brand-orange'
-                        }`}
-                      >
-                        <SlidersHorizontal className="w-4 h-4" />
-                        Filteri
-                        {activeFiltersCount > 0 && (
-                          <span className="ml-1 w-5 h-5 rounded-full bg-white/20 text-xs flex items-center justify-center">
-                            {activeFiltersCount}
-                          </span>
-                        )}
-                      </button>
-                      <div className="relative">
-                        <ArrowUpDown className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
-                        <select
-                          value={sortBy}
-                          onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                          className="pl-9 pr-7 py-2.5 rounded-full border border-gray-200 bg-white text-sm text-gray-700 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none appearance-none cursor-pointer min-h-[44px]"
-                        >
-                          <option value="featured">Istaknuti prvo</option>
-                          <option value="newest">Najnovije</option>
-                          <option value="budget-asc">Budžet: rastući</option>
-                          <option value="budget-desc">Budžet: opadajući</option>
-                          <option value="bids">Najviše ponuda</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-sm text-steel md:text-right">
-                    {filteredJobs.length} {plural(filteredJobs.length, ['posao', 'posla', 'poslova'])}
-                    {activeFiltersCount > 0 && <span className="text-gray-400"> / {jobs.length} ukupno</span>}
-                  </p>
-                </div>
-
-                {showFilters && (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 mt-3 border-t border-gray-200/60 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Kategorija</label>
-                      <select
-                        value={categoryFilter}
-                        onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
-                      >
-                        <option value="">Sve kategorije</option>
-                        {categories.map((c) => (
-                          <option key={c.slug} value={c.slug}>{c.name}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Grad</label>
-                      <select
-                        value={cityFilter}
-                        onChange={(e) => setCityFilter(e.target.value)}
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
-                      >
-                        <option value="">Svi gradovi</option>
-                        {cities.map((city) => (
-                          <option key={city} value={city}>{city}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Min. budžet (KM)</label>
-                      <input
-                        type="number"
-                        value={minBudget}
-                        onChange={(e) => setMinBudget(e.target.value)}
-                        placeholder="npr. 500"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-medium text-gray-500 mb-1.5">Max. budžet (KM)</label>
-                      <input
-                        type="number"
-                        value={maxBudget}
-                        onChange={(e) => setMaxBudget(e.target.value)}
-                        placeholder="npr. 5000"
-                        className="w-full px-3 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none min-h-[44px]"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {activeFiltersCount > 0 && (
-                  <div className="flex items-start md:items-center justify-between gap-3 pt-3 mt-3 border-t border-gray-200/60">
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1">
-                        {search && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                            {search}
-                            <button onClick={() => setSearch('')} aria-label="Ukloni pretragu" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                          </span>
-                        )}
-                        {categoryFilter && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                            {getCategory(categoryFilter)?.name || categoryFilter}
-                            <button onClick={() => setCategoryFilter('')} aria-label="Ukloni filter kategorije" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                          </span>
-                        )}
-                        {cityFilter && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                            {cityFilter}
-                            <button onClick={() => setCityFilter('')} aria-label="Ukloni filter grada" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                          </span>
-                        )}
-                        {(minBudget || maxBudget) && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-gray-200 text-xs text-gray-700 whitespace-nowrap">
-                            {minBudget || '0'} - {maxBudget || '∞'} KM
-                            <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} aria-label="Ukloni filter budžeta" className="hover:text-brand-orange w-5 h-5 flex items-center justify-center -mr-1"><X className="w-3 h-3" /></button>
-                          </span>
-                        )}
-                    </div>
-                    <button
-                      onClick={clearFilters}
-                      className="shrink-0 text-sm text-brand-orange font-semibold hover:text-brand-orange-dark flex items-center gap-1 min-h-[44px]"
-                    >
-                      <X className="w-4 h-4" /> Poništi
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
 
             {loading ? (
               <div className="space-y-3 mb-12">

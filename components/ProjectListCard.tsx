@@ -141,10 +141,10 @@ export default function ProjectListCard({
         onClick={toggleExpand}
         onKeyDown={handleRowKeyDown}
         tabIndex={0}
-        className="flex flex-row cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/50"
+        className="flex flex-row cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-brand-orange/50 p-2.5 sm:p-3 gap-2.5 sm:gap-3"
       >
-        {/* Image - fixed square, compact */}
-        <div className="relative w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:aspect-square shrink-0 bg-gray-100 dark:bg-ink-950 overflow-hidden">
+        {/* Image - fixed square with rounded corners */}
+        <div className="relative w-24 h-24 sm:w-36 sm:h-36 md:w-44 md:h-44 shrink-0 bg-gray-100 dark:bg-ink-950 overflow-hidden rounded-xl">
           {imageUrl ? (
             <NextImage
               src={imageUrl}
@@ -167,39 +167,44 @@ export default function ProjectListCard({
         </div>
 
         {/* Center content */}
-        <div className="flex-1 min-w-0 p-2.5 sm:p-4 flex flex-col justify-between">
-          <div>
-            <h3 className="text-sm sm:text-base md:text-[17px] font-bold text-gray-900 dark:text-[#ffffff] leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 sm:line-clamp-3 md:line-clamp-none mb-1">
-              {job.title}
-            </h3>
+        <div className="flex-1 min-w-0 py-0.5 sm:py-1 flex flex-col">
+          <span className="inline-flex self-start items-center gap-1 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold bg-orange-50 dark:bg-orange-500/10 text-brand-orange border border-orange-100 dark:border-orange-500/20 mb-1">
+            {category?.icon && <category.icon className="w-3 h-3" />}
+            {category?.name || job.category_slug}
+          </span>
+          <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-gray-900 dark:text-[#ffffff] leading-snug group-hover:text-brand-orange transition-colors line-clamp-2 mb-1">
+            {job.title}
+          </h3>
 
-            {job.description && (
-              <p className="hidden sm:block text-xs md:text-sm text-gray-600 dark:text-[#ffffff]/70 leading-relaxed mb-1.5 line-clamp-1 md:line-clamp-2">
-                {job.description}
-              </p>
-            )}
+          {job.description && (
+            <p className="hidden sm:block text-xs md:text-sm text-gray-600 dark:text-[#ffffff]/70 leading-relaxed mb-1 line-clamp-1">
+              {job.description}
+            </p>
+          )}
 
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] sm:text-xs font-semibold bg-orange-50 dark:bg-orange-500/10 text-brand-orange border border-orange-100 dark:border-orange-500/20">
-              {category?.icon && <category.icon className="w-3 h-3" />}
-              {category?.name || job.category_slug}
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1.5 text-[10px] sm:text-xs text-gray-600 dark:text-[#ffffff]/60">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] sm:text-xs text-gray-500 dark:text-[#ffffff]/60">
             <span className="inline-flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
+              <MapPin className="w-3.5 h-3.5" />
               {job.city}
             </span>
+            <span aria-hidden="true">•</span>
             <span className="inline-flex items-center gap-1">
-              <Clock className="w-3 h-3" />
+              <Clock className="w-3.5 h-3.5" />
               {relativeTime(job.created_at)}
             </span>
           </div>
+          <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-[#ffffff] mt-1">
+            {formatBudget(job)}
+          </p>
         </div>
 
         {/* Right meta column */}
-        <div className="w-[6.5rem] sm:w-36 md:w-44 shrink-0 flex flex-col justify-between items-stretch p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
-          <div className="flex items-center justify-end gap-1.5">
+        <div className="w-[7rem] sm:w-36 md:w-44 shrink-0 flex flex-col border-l border-gray-100 dark:border-ink-800 pl-2.5 sm:pl-4">
+          <div className="flex items-center justify-between gap-1">
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+              Otvoreno
+            </span>
             <button
               type="button"
               onClick={(e) => {
@@ -216,45 +221,23 @@ export default function ProjectListCard({
             >
               <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${liked ? 'fill-current' : ''}`} />
             </button>
-            <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-green-50 dark:bg-green-500/15 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-500/20">
-              Otvoreno
-            </span>
           </div>
 
-          <div className="text-right mt-1 sm:mt-2">
-            <div className="text-[11px] sm:text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-tight">
-              {formatBudget(job)}
+          <div className="text-center mt-1 sm:mt-2">
+            <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ffffff] leading-none">
+              {job.bids_count || 0}
             </div>
-            <div className="text-[9px] sm:text-[11px] text-gray-600 dark:text-[#ffffff]/60">
-              {job.bids_count} {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
+            <div className="text-[10px] sm:text-xs text-gray-500 dark:text-[#ffffff]/60">
+              {plural(job.bids_count || 0, ['ponuda', 'ponude', 'ponuda'])}
             </div>
           </div>
 
           <button
             type="button"
-            onClick={handleBid}
-            disabled={ctaDisabled}
-            className={`w-full mt-1.5 inline-flex items-center justify-center gap-1 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg font-semibold text-[10px] sm:text-xs transition-colors active:scale-95 ${
-              ctaDisabled
-                ? 'bg-gray-100 dark:bg-ink-800 text-gray-400 dark:text-[#ffffff]/40 cursor-not-allowed'
-                : 'bg-gray-900 hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-100 text-white dark:text-gray-900'
-            }`}
+            className="w-full mt-auto pt-1 inline-flex items-center justify-center gap-1 px-2 py-2 sm:py-2.5 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white font-bold text-[11px] sm:text-xs transition-all active:scale-95"
           >
-            {authLoading ? (
-              <Loader2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-spin" />
-            ) : !user ? (
-              <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            ) : !isFirm ? (
-              <Lock className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            ) : (
-              <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-            )}
-            <span className="hidden sm:inline">
-              {ctaDisabled && !authLoading && user && !isFirm
-                ? 'Samo firme/majstori'
-                : ctaLabel}
-            </span>
-            <span className="sm:hidden">{ctaLabel}</span>
+            Pogledaj posao
+            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
           </button>
         </div>
       </div>
