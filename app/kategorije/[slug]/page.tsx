@@ -12,6 +12,7 @@ import { categories, getCategory, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
 import { getServiceImage } from '@/lib/service-image';
+import { getCategoryHeadline } from '@/lib/profession-plural';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
 import CategoryFirms from '@/components/CategoryFirms';
 
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!cat) return {};
   return {
     title: `${cat.name} u BiH - pronađite majstora ili objavite posao | Zaposli.ba`,
-    description: `${cat.description}. Pronađite provjerenog ${cat.profession.toLowerCase()} širom BiH ili objavite posao besplatno i primite ponude od firmi i majstora.`,
+    description: `${cat.description}. Pronađite provjerene majstore širom BiH ili objavite posao besplatno i primite ponude od firmi.`,
     keywords: [
       `${cat.name.toLowerCase()} BiH`,
       `${cat.profession.toLowerCase()}`,
@@ -48,12 +49,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const heroImage = getServiceImage(cat.slug);
   const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(cat.name)}`;
 
+  const headline = getCategoryHeadline(cat.slug, cat.profession);
   const servicesShort = cat.services.slice(0, 4).map((s) => s.toLowerCase()).join(', ');
   const subtitle = `Pronađite provjerene firme i majstore za ${servicesShort} širom Bosne i Hercegovine.`;
 
   const faqItems = [
     {
-      question: `Koliko košta ${cat.profession.toLowerCase()} u BiH?`,
+      question: `Koliko košta ${headline.toLowerCase()} u BiH?`,
       answer: `Cijene se kreću oko ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme širom BiH će vam poslati svoje cijene.`,
     },
     {
@@ -113,7 +115,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                 {groupStyle.eyebrow}
               </p>
               <h1 className="text-[30px] sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-2">
-                {cat.profession} u<br />BiH
+                {headline} u<br />BiH
               </h1>
               <p className="text-[13px] sm:text-[15px] text-steel leading-snug mb-4 max-w-md">
                 {subtitle}
@@ -222,7 +224,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               <div className="bg-cloud rounded-2xl p-6 md:p-8">
                 <div className="flex items-center gap-3 mb-4">
                   <MapPin className="w-6 h-6 text-brand-orange" />
-                  <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{headline} po gradovima</h2>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
                   {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
@@ -263,7 +265,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* CTA */}
         <section className="py-8 md:py-10 bg-cloud">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-3">Trebate {cat.profession.toLowerCase()}?</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Tražite majstora za {cat.name.toLowerCase()}?</h2>
             <p className="text-steel mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
             <Link href="/objavi-projekat/" className="btn-primary">Objavi posao besplatno</Link>
           </div>

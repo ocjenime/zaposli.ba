@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { getCategory } from '@/lib/data';
+import { getCategoryHeadline } from '@/lib/profession-plural';
 import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
 
 interface CityCategoriesGridProps {
@@ -26,7 +27,7 @@ export default function CityCategoriesGrid({ slugs, citySlug }: CityCategoriesGr
               <Icon className="w-[22px] h-[22px] text-brand-orange" />
             </div>
             <h3 className="font-semibold text-gray-900 text-sm group-hover:text-brand-orange transition-colors mb-0.5">
-              {cat.profession}
+              {getCategoryHeadline(cat.slug, cat.profession)}
             </h3>
             <p className="text-xs text-steel">
               <LiveCategoryCount slug={cat.slug} />

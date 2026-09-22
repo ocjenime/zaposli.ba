@@ -51,7 +51,7 @@ function pluralizePhrase(phrase: string): string {
   // Modifiers stay singular, pluralize the last word:
   // "Auto majstor", "Solar instalater", "IT tehničar",
   // "Pejzažni arhitekta", "Energetski certifikator", "Stručni nadzornik"
-  if (/^(Auto|Solar|IT|Pejzažni|Energetski|Stručni|Tehničar)$/i.test(first)) {
+  if (/^(Auto|Solar|Solarni|IT|Pejzažni|Energetski|Stručni|Tehničar)$/i.test(first)) {
     const last = tokens[tokens.length - 1];
     tokens[tokens.length - 1] = pluralizeWord(last);
     return tokens.join(' ');
@@ -76,6 +76,48 @@ const KEEP_AS_IS = new Set([
   'Agencija za čišćenje',
   'Montaža pergole / tende',
 ]);
+
+/**
+ * Naslov usluge za "X u Velikoj Kladuši" / "X u BiH".
+ * Profession polje je ponekad nezgrapno (Soboslikar, Betonirac / Armirač).
+ */
+const headlines: Record<string, string> = {
+  'molerski-radovi': 'Moler',
+  'betoniranje-i-armatura': 'Betoniranje i armiranje',
+  rusenje: 'Rušenje',
+  izolacija: 'Fasade i izolacija',
+  hidroizolacija: 'Hidroizolacija',
+  'kamen-i-poplocavanje': 'Kamen i popločavanje',
+  'solarne-instalacije': 'Solarni instalater',
+  ograde: 'Ograde',
+  'pranje-fasada-i-krovova': 'Pranje fasada',
+  staklar: 'Staklar',
+  'rusenje-stabala-drvoreda': 'Rušenje stabala',
+  'kuhinje-po-mjeri': 'Kuhinje po mjeri',
+  podovi: 'Postavljanje podova',
+  'tlakovi-estrih': 'Tlakovi i estrih',
+  ciscenje: 'Čišćenje',
+  'odrzavanje-zgrada': 'Održavanje zgrada',
+  selidbe: 'Selidbe',
+  'pergole-nadstresnice-tende': 'Pergole i tende',
+  'hitne-intervencije': 'Hitne intervencije',
+  'statika-i-nadzor': 'Statika i nadzor',
+  'energetska-obnova': 'Energetska obnova',
+  'dizajn-eksterijera': 'Dizajn eksterijera',
+  'grijanje-i-hladjenje': 'Grijanje i klima',
+  'servis-aparata': 'Servis aparata',
+  'kamin-i-peci': 'Kamini i peći',
+  adaptacije: 'Adaptacije',
+  'kupatila-kljuc-u-ruke': 'Kupatila',
+  'zavrsni-radovi': 'Dekorativni zidovi',
+  'masinsko-nabacivanje': 'Mašinsko malterisanje',
+  'bazeni-i-fontane': 'Bazeni',
+  'poplocavanje-dvorista-i-terasa': 'Popločavanje dvorišta',
+};
+
+export function getCategoryHeadline(slug: string, profession: string): string {
+  return headlines[slug] || profession;
+}
 
 export function getProfessionPlural(profession: string): string {
   if (KEEP_AS_IS.has(profession)) {

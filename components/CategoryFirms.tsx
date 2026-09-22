@@ -10,7 +10,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { getCategory } from '@/lib/data';
 import { plural } from '@/lib/plural';
-import { getProfessionPlural } from '@/lib/profession-plural';
+import { getCategoryHeadline, getProfessionPlural } from '@/lib/profession-plural';
 import { isCompanyName } from '@/lib/firm-utils';
 
 interface Firm {
@@ -41,6 +41,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
   const category = getCategory(categorySlug);
   const profession = category?.profession || 'majstori';
   const categoryName = category?.name || profession;
+  const headline = category ? getCategoryHeadline(category.slug, profession) : profession;
   const [firms, setFirms] = useState<Firm[]>([]);
   const [portfolio, setPortfolio] = useState<Record<string, string[]>>({});
   const [total, setTotal] = useState(0);
@@ -137,7 +138,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
   }, [firms, sort, minRating, cityFilter, query]);
 
   const visible = filtered.slice(0, DISPLAY_LIMIT);
-  const pluralProfession = getProfessionPlural(profession);
+  const pluralProfession = getProfessionPlural(headline);
   const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(categoryName)}`;
 
   function toggleFavorite(id: string) {
@@ -178,7 +179,7 @@ export default function CategoryFirms({ categorySlug }: { categorySlug: string }
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="bg-[#f0f7ff] rounded-2xl p-6 sm:p-8 text-center">
             <h2 className="font-extrabold text-gray-900 text-lg mb-1">
-              Firme u kategoriji {profession} se registruju
+              Majstori za {categoryName.toLowerCase()} se još registruju
             </h2>
             <p className="text-steel text-sm max-w-xl mx-auto mb-5">
               Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.

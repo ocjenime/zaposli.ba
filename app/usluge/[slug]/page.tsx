@@ -10,6 +10,7 @@ import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
 import { getServiceImage } from '@/lib/service-image';
+import { getCategoryHeadline } from '@/lib/profession-plural';
 import ServiceCityFirms from '@/components/ServiceCityFirms';
 
 function parseSlug(slug: string): { cat: Category; city: City } | null {
@@ -35,8 +36,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!parsed) return {};
   const { cat, city } = parsed;
   return {
-    title: `${cat.profession} ${city.name} - majstori i firme | Zaposli.ba`,
-    description: `Tražite ${cat.profession.toLowerCase()} u ${city.loc}? Pronađite provjerene firme i majstore u ${city.loc}. Objavite posao besplatno i uporedite ponude za vaš projekt.`,
+    title: `${getCategoryHeadline(cat.slug, cat.profession)} u ${city.loc} - majstori i firme | Zaposli.ba`,
+    description: `Tražite majstora za ${cat.name.toLowerCase()} u ${city.loc}? Pronađite provjerene firme i majstore. Objavite posao besplatno i uporedite ponude za vaš projekat.`,
     keywords: [
       `${cat.profession.toLowerCase()} ${city.name.toLowerCase()}`,
       `${cat.name.toLowerCase()} ${city.name.toLowerCase()}`,
@@ -59,12 +60,13 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
   const heroImage = getServiceImage(cat.slug);
   const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(cat.name)}&city=${encodeURIComponent(city.name)}`;
 
+  const headline = getCategoryHeadline(cat.slug, cat.profession);
   const servicesShort = cat.services.slice(0, 4).map((s) => s.toLowerCase()).join(', ');
   const subtitle = `Pronađite provjerene firme i majstore za ${servicesShort} u ${city.loc}.`;
 
   const faqItems = [
     {
-      question: `Koliko košta ${cat.profession.toLowerCase()} u ${city.loc}?`,
+      question: `Koliko košta ${headline.toLowerCase()} u ${city.loc}?`,
       answer: `Cijene se kreću oko ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme iz vašeg grada će vam poslati svoje cijene.`,
     },
     {
@@ -89,7 +91,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
             { name: 'Gradovi', url: '/gradovi/' },
             { name: city.name, url: `/gradovi/${city.slug}/` },
             { name: groupStyle.eyebrow, url: `/kategorije/${cat.slug}/` },
-            { name: cat.profession },
+            { name: headline },
           ])}
         />
 
@@ -104,7 +106,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
             <li aria-hidden="true" className="text-gray-300">›</li>
             <li><Link href={`/kategorije/${cat.slug}/`} className="hover:text-brand-orange transition-colors">{groupStyle.eyebrow}</Link></li>
             <li aria-hidden="true" className="text-gray-300">›</li>
-            <li aria-current="page" className="text-gray-900 font-medium">{cat.profession}</li>
+            <li aria-current="page" className="text-gray-900 font-medium">{headline}</li>
           </ol>
         </nav>
 
@@ -130,7 +132,7 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
                 {cat.name}
               </p>
               <h1 className="text-[30px] sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-2">
-                {cat.profession} u<br />{city.loc}
+                {headline} u<br />{city.loc}
               </h1>
               <p className="text-[13px] sm:text-[15px] text-steel leading-snug mb-4 max-w-md">
                 {subtitle}
@@ -195,8 +197,9 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
         <ServiceCityFirms
           categorySlug={cat.slug}
           cityName={city.name}
+          cityLoc={city.loc}
           citySlug={city.slug}
-          profession={cat.profession}
+          profession={headline}
           categoryName={cat.name}
         />
 

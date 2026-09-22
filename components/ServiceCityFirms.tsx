@@ -30,13 +30,14 @@ interface Firm {
 interface ServiceCityFirmsProps {
   categorySlug: string;
   cityName: string;
+  cityLoc?: string;
   profession: string;
   categoryName: string;
   citySlug: string;
 }
 
 export default function ServiceCityFirms({
-  categorySlug, cityName, profession, categoryName, citySlug,
+  categorySlug, cityName, cityLoc, profession, categoryName, citySlug,
 }: ServiceCityFirmsProps) {
   const [firms, setFirms] = useState<Firm[]>([]);
   const [portfolio, setPortfolio] = useState<Record<string, string[]>>({});
@@ -136,6 +137,7 @@ export default function ServiceCityFirms({
   }
 
   const pluralProfession = getProfessionPlural(profession);
+  const cityIn = cityLoc || cityName;
   const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(getCategory(categorySlug)?.name || profession)}&city=${encodeURIComponent(cityName)}`;
 
   if (loading) {
@@ -167,7 +169,7 @@ export default function ServiceCityFirms({
         {/* Heading */}
         <div className="flex items-start justify-between gap-4 mb-1">
           <h2 className="text-[22px] sm:text-2xl font-extrabold text-gray-900 tracking-tight leading-tight">
-            {pluralProfession} u {cityName}
+            {pluralProfession} u {cityIn}
           </h2>
           <Link
             href={`/kategorije/${categorySlug}/`}
@@ -372,7 +374,7 @@ export default function ServiceCityFirms({
         {firms.length === 0 ? (
           <div className="bg-[#f0f7ff] rounded-2xl p-6 sm:p-8 text-center">
             <h3 className="font-extrabold text-gray-900 text-lg mb-1">
-              Još uvijek nema registrovanih {profession.toLowerCase()} u {cityName}
+              Još uvijek nema registrovanih majstora za {categoryName.toLowerCase()} u {cityIn}
             </h3>
             <p className="text-steel text-sm max-w-xl mx-auto mb-5">
               Firme se aktivno registruju. Objavite posao besplatno i prve provjerene ponude stižu u roku od 24 sata.
