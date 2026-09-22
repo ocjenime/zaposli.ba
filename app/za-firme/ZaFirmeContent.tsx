@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Link from 'next/link';
 import Image from 'next/image';
 import PricingCTA from '@/components/PricingCTA';
@@ -167,6 +168,7 @@ export default function ZaFirmeContent() {
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow">
+        <Breadcrumbs dark items={[{ name: 'Za firme' }]} />
         {/* Hero */}
         <section className="relative overflow-hidden">
           <Image
@@ -180,7 +182,7 @@ export default function ZaFirmeContent() {
           <div className="absolute inset-0 bg-gradient-to-r from-ink-950/95 via-ink-950/80 to-ink-950/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/40 to-ink-950/60" />
 
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 md:pt-28 pb-8 md:pb-12">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-8 md:pb-12">
             <div className="grid grid-cols-[1.08fr_0.92fr] sm:grid-cols-2 gap-3 sm:gap-6 md:gap-12 items-center">
               <div>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-white/80 mb-3 sm:mb-4">

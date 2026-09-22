@@ -21,6 +21,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { JsonLd, breadcrumbSchema, faqSchema, howToSchema } from '@/lib/jsonld';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { faqs } from '@/lib/data';
 
 const clientSteps = [
@@ -123,6 +124,7 @@ export default function HowItWorksContent() {
   return (
     <>
       <main className="flex-grow">
+        <Breadcrumbs items={[{ name: 'Kako funkcioniše' }]} />
         {/* Shared Higgsfield background wrapper: one continuous canvas for hero + steps */}
         <div className="relative w-full overflow-x-hidden">
           {/* Continuous gradient background */}
@@ -150,7 +152,7 @@ export default function HowItWorksContent() {
 
             {/* Hero content */}
             <div className="relative z-20 flex-1 flex items-center">
-              <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-28 sm:pt-32 lg:pt-36 pb-12">
+              <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 lg:pt-14 pb-12">
                 <div className="max-w-3xl mx-auto text-center">
                   {/* Eyebrow */}
                   <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-4 py-1.5 text-sm font-medium text-white/90 mb-6 animate-fade-in">

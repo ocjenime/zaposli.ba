@@ -227,7 +227,7 @@ export default function TopFirmeContent() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-8 sm:pb-10">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-8 sm:pb-10">
               <div className="max-w-2xl">
                 <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 animate-fade-in">
                   <Trophy className="w-3.5 h-3.5" />
@@ -294,39 +294,60 @@ export default function TopFirmeContent() {
           <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10" />
         </section>
 
-        {/* Category pills */}
-        <section className="bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-              {FILTER_CATS.map((c) => {
-                const active =
-                  (c.slugs.length === 0 && filterSlugs.length === 0) ||
-                  (c.slugs.length > 0 &&
-                    filterSlugs.length === c.slugs.length &&
-                    c.slugs.every((s) => filterSlugs.includes(s)));
-                return (
-                  <button
-                    key={c.label}
-                    type="button"
-                    onClick={() => setFilterSlugs(c.slugs)}
-                    className={`inline-flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl border text-xs sm:text-sm font-semibold whitespace-nowrap transition-all min-w-[76px] sm:min-w-0 ${
-                      active
-                        ? 'bg-brand-orange border-brand-orange text-white shadow-md shadow-brand-orange/25'
-                        : 'bg-white border-gray-200 text-gray-800 hover:border-brand-orange/40'
-                    }`}
-                  >
-                    <c.icon className="w-5 h-5" />
-                    {c.label}
-                  </button>
-                );
-              })}
-              <Link
-                href="/kategorije/"
-                className="inline-flex flex-col sm:flex-row items-center gap-1 sm:gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-gray-200 bg-white text-gray-800 text-xs sm:text-sm font-semibold whitespace-nowrap hover:border-brand-orange/40 transition-all min-w-[76px] sm:min-w-0"
-              >
-                <Menu className="w-5 h-5" />
-                Više
-              </Link>
+        {/* Category bar - isti stil kao homepage CategoryIconRow */}
+        <section className="relative z-30 px-4 sm:px-6 lg:px-8 -mt-6 md:-mt-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 p-2 sm:p-4">
+              <div className="flex items-start justify-start gap-3 overflow-x-auto no-scrollbar pb-0.5">
+                {FILTER_CATS.map((c) => {
+                  const active =
+                    (c.slugs.length === 0 && filterSlugs.length === 0) ||
+                    (c.slugs.length > 0 &&
+                      filterSlugs.length === c.slugs.length &&
+                      c.slugs.every((s) => filterSlugs.includes(s)));
+                  return (
+                    <button
+                      key={c.label}
+                      type="button"
+                      onClick={() => {
+                        setFilterSlugs(c.slugs);
+                        scrollToList();
+                      }}
+                      className="group flex flex-col items-center gap-1.5 min-w-[84px] sm:min-w-[92px] text-center"
+                    >
+                      <span
+                        className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl border flex items-center justify-center transition-all duration-300 ${
+                          active
+                            ? 'bg-brand-orange/10 border-brand-orange/30 text-brand-orange'
+                            : 'bg-gray-50 dark:bg-ink-800 border-gray-100 dark:border-ink-700 text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange'
+                        }`}
+                      >
+                        <c.icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </span>
+                      <span
+                        className={`text-[11px] sm:text-xs font-medium leading-tight px-1 h-7 line-clamp-2 flex items-center justify-center transition-colors ${
+                          active
+                            ? 'text-brand-orange'
+                            : 'text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange'
+                        }`}
+                      >
+                        {c.label}
+                      </span>
+                    </button>
+                  );
+                })}
+                <Link
+                  href="/kategorije/"
+                  className="group flex flex-col items-center gap-1.5 min-w-[84px] sm:min-w-[92px] text-center"
+                >
+                  <span className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
+                    <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </span>
+                  <span className="text-[11px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight px-1 h-7 line-clamp-2 flex items-center justify-center">
+                    Više
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
         </section>

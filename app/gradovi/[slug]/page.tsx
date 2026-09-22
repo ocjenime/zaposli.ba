@@ -2,68 +2,18 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { MapPin, ArrowRight, Shield, Clock, Star, Crown } from 'lucide-react';
+import { MapPin, ArrowRight, Shield, Zap, Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import LogoDisplay from '@/components/ui/LogoDisplay';
-import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import { cities, categories } from '@/lib/data';
 import { site } from '@/lib/site';
-import { plural } from '@/lib/plural';
-import { normalizeCityName } from '@/lib/city-utils';
 import CityCategoriesGrid from '@/components/CityCategoriesGrid';
+import CityFirms from '@/components/CityFirms';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
-import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-
-function createServerSupabase() {
-  return createClient(supabaseUrl, supabaseAnonKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-}
+import { JsonLd, breadcrumbSchema, faqSchema, serviceSchema } from '@/lib/jsonld';
 
 export const revalidate = 60;
-
-interface CityFirm {
-  id: string;
-  name: string;
-  slug: string;
-  city: string | null;
-  logo_url: string | null;
-  verified: boolean;
-  average_rating: number | null;
-  review_count: number | null;
-  description: string | null;
-  plan_priority: number;
-}
-
-function score(f: CityFirm): number {
-  return (f.average_rating || 0) + (f.verified ? 0.5 : 0) + (f.plan_priority || 0);
-}
-
-async function getCityFirms(cityName: string): Promise<CityFirm[]> {
-  try {
-    const target = normalizeCityName(cityName);
-    const supabase = createServerSupabase();
-    const { data: firmsData, error: firmsError } = await supabase
-      .from('firms')
-      .select('id, name, slug, city, logo_url, verified, average_rating, review_count, description, plan_priority')
-      .not('city', 'is', null)
-      .not('slug', 'like', 'test-%');
-    if (firmsError) throw firmsError;
-
-    const typed = (firmsData || []) as CityFirm[];
-    return typed
-      .filter((f) => normalizeCityName(f.city || '') === target)
-      .sort((a, b) => score(b) - score(a));
-  } catch {
-    return [];
-  }
-}
 
 export function generateStaticParams() {
   return cities.map((c) => ({ slug: c.slug }));
@@ -93,147 +43,129 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const city = cities.find((c) => c.slug === slug);
   if (!city) notFound();
 
-  const cityFirms = await getCityFirms(city.name);
+  const objaviHref = `/objavi-projekat/?city=${encodeURIComponent(city.name)}`;
+
+  const faqItems = [
+    {
+      question: `Koliko brzo mogu dobiti majstora u ${city.loc}?`,
+      answer: `Većina poslova u ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.`,
+    },
+    {
+      question: 'Da li je objava posla besplatna?',
+      answer: 'Da, za klijente je sve besplatno: objava posla, primanje ponuda i kontakt sa firmama se ne plaćaju.',
+    },
+    {
+      question: 'Kako znam da je firma iz mog grada pouzdana?',
+      answer: 'Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih klijenata iz vašeg grada i okoline.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
+        <JsonLd data={serviceSchema({ name: `Majstori ${city.name}`, description: `Provjerene firme i majstori u ${city.loc}.`, area: city.name, url: `/gradovi/${city.slug}/` })} />
+        <JsonLd data={faqSchema(faqItems)} />
+        <JsonLd
+          data={breadcrumbSchema([
+            { name: 'Početna', url: '/' },
+            { name: 'Gradovi', url: '/gradovi/' },
+            { name: city.name },
+          ])}
+        />
         <Breadcrumbs items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
 
-        {/* Hero */}
-        <section className="relative min-h-[340px] sm:min-h-[400px] flex flex-col overflow-hidden">
-          <div className="absolute inset-0">
+        {/* Hero - isti stil kao kategorije/usluge */}
+        <section className="relative bg-[#faf8f5] overflow-hidden">
+          <div className="absolute inset-y-0 right-0 w-[44%] sm:w-[52%] md:w-[46%]">
             <Image
               src="/images/gradovi-hero.jpg"
               alt={`Grad ${city.name}`}
               fill
               priority
-              sizes="100vw"
+              sizes="(max-width: 768px) 50vw, 46vw"
               className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f5] via-[#faf8f5]/85 to-transparent sm:via-[#faf8f5]/60" />
+            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
           </div>
 
-          <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-6 sm:pb-8">
-              <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
-                  <MapPin className="w-3.5 h-3.5" />
-                  {city.name} · BiH
-                </span>
-                <h1 className="text-[28px] sm:text-5xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
-                  Majstori u{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                    {city.loc}.
-                  </span>
-                </h1>
-                <p className="text-[13px] sm:text-base text-white/85 leading-snug mb-4 animate-fade-in">
-                  Provjerene firme i majstori u vašem gradu. Objavite posao besplatno i primite
-                  ponude u roku od 24 sata.
-                </p>
-                <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs sm:text-sm text-white/80 mb-4 animate-fade-in">
-                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-brand-orange" /> Verificirane firme</span>
-                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-brand-orange" /> Prve ponude u 24h</span>
-                  <span className="flex items-center gap-1.5"><Star className="w-3.5 h-3.5 text-brand-orange" /> Stvarne recenzije</span>
-                </div>
-                <Link
-                  href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
-                  className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-bold transition-all active:scale-95 shadow-lg shadow-brand-orange/25 animate-fade-in"
-                >
-                  Objavi posao besplatno
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
+            <div className="max-w-[64%] sm:max-w-xl md:max-w-2xl">
+              <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
+                <MapPin className="w-4 h-4" />
+                {city.name} · BiH
+              </p>
+              <h1 className="text-[30px] sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-2">
+                Majstori u<br />{city.loc}
+              </h1>
+              <p className="text-[13px] sm:text-[15px] text-steel leading-snug mb-4 max-w-md">
+                Provjerene firme i majstori u vašem gradu. Objavite posao besplatno i primite ponude u roku od 24 sata.
+              </p>
+              <Link
+                href={objaviHref}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-5 sm:px-6 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
+              >
+                Objavi posao besplatno
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
+          {/* Rukom pisana napomena */}
+          <div className="absolute z-10 right-3 sm:right-8 md:right-16 top-5 sm:top-auto sm:bottom-10 rotate-[-4deg]">
+            <div className="bg-black/25 backdrop-blur-[2px] rounded-lg px-3 py-2 max-w-[150px] sm:max-w-[180px]">
+              <p className="text-white text-[14px] sm:text-base italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Kvalitetni majstori za vaš dom.
+              </p>
+              <div className="h-[3px] bg-brand-orange rounded-full mt-1 w-3/4" />
+            </div>
+          </div>
         </section>
 
-        {/* Verifikovane firme iz grada */}
-        {cityFirms.length > 0 && (
-          <section className="py-8 md:py-10">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-wrap items-end justify-between gap-4 mb-5">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest text-brand-orange mb-2">
-                    Firme i majstori u gradu
-                  </p>
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-                    Majstori i firme u {city.loc}
-                  </h2>
-                  <p className="text-sm text-steel mt-1">
-                    Pronađeno {cityFirms.length} {plural(cityFirms.length, ['firma', 'firme', 'firmi'])} · sortirano po ocjeni
-                  </p>
+        {/* Trust traka */}
+        <section className="bg-white border-b border-gray-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-6">
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Provjerene firme</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Provjereni profili i poslovni podaci</p>
                 </div>
-                <Link
-                  href="/objavi-projekat/"
-                  className="hidden sm:inline-flex items-center gap-2 text-sm font-semibold text-brand-orange hover:text-brand-orange-dark transition-colors"
-                >
-                  Objavi posao
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {cityFirms.map((firm) => (
-                  <Link
-                    key={firm.id}
-                    href={`/firma-profil/${firm.slug}/`}
-                    className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-transparent hover:shadow-xl transition-all duration-300 block"
-                  >
-                    <div className="flex items-start gap-4 mb-4">
-                      <LogoDisplay name={firm.name} src={firm.logo_url} alt={firm.name} size="lg" rounded="2xl" />
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 text-base leading-tight truncate">
-                          {firm.name}
-                        </h3>
-                        <div className="flex items-center gap-1 text-xs text-steel mt-1">
-                          <MapPin className="w-3 h-3" />
-                          <span className="truncate">{firm.city || 'BiH'}</span>
-                        </div>
-                      </div>
-                      {firm.plan_priority >= 0.4 && (
-                        <span
-                          className="shrink-0 inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-white text-[10px] font-extrabold tracking-wide px-2 py-1 rounded-full shadow-sm"
-                          title="Premium član"
-                        >
-                          <Crown className="w-3 h-3" />
-                          PREMIUM
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="text-sm text-steel line-clamp-2 mb-4 min-h-[2.5rem]">
-                      {firm.description || 'Provjerena firma na Zaposli.ba.'}
-                    </p>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5">
-                        <Star className="w-4 h-4 text-brand-orange fill-brand-orange" />
-                        <span className="text-sm font-bold text-gray-900">
-                          {(firm.average_rating || 0).toFixed(1)}
-                        </span>
-                        <span className="text-xs text-steel">
-                          ({firm.review_count || 0} {plural(firm.review_count || 0, ['recenzija', 'recenzije', 'recenzija'])})
-                        </span>
-                      </div>
-                      {firm.verified && <VerifiedBadge size="sm" />}
-                    </div>
-                  </Link>
-                ))}
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Brze ponude</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Primite ponude od dostupnih majstora</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Stvarne recenzije</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Iskustva korisnika nakon završenog posla</p>
+                </div>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
+
+        {/* Firme i majstori iz grada */}
+        <CityFirms cityName={city.name} />
 
         {/* Istaknuti poslovi u gradu */}
         <FeaturedJobsSection city={city.name} />
 
         {/* Sve usluge u gradu */}
-        <section className="py-8 md:py-10">
+        <section className="py-8 md:py-10 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight mb-1.5">Sve usluge · {city.name}</h2>
             <p className="text-steel text-sm md:text-base mb-5">Odaberite kategoriju i pronađite majstore u {city.loc}</p>
@@ -241,44 +173,30 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           </div>
         </section>
 
-        {/* Empty state for firms */}
-        <section className="py-8 md:py-10">
+        {/* Česta pitanja */}
+        <section className="py-6 sm:py-10 bg-white">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="bg-cloud rounded-2xl p-8 md:p-10 text-center">
-              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-7 h-7 text-brand-orange" />
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Tražite majstora u {city.loc}?</h2>
-              <p className="text-steel max-w-xl mx-auto mb-6">
-                Provjerene firme se aktivno registruju u vašem gradu. Objavite posao besplatno i prve ponude stižu u roku od 24 sata.
-              </p>
-              <Link
-                href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-6 py-3.5 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-              >
-                Objavi posao besplatno
-              </Link>
+            <h2 className="text-[22px] sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-4">Česta pitanja</h2>
+            <div className="space-y-2.5 max-w-3xl">
+              {faqItems.map((f) => (
+                <details key={f.question} className="group bg-[#f0f7ff] rounded-2xl px-5 py-4 transition-all">
+                  <summary className="font-medium text-gray-900 text-[14px] sm:text-[15px] cursor-pointer list-none flex justify-between items-center gap-4 [&::-webkit-details-marker]:hidden">
+                    {f.question}
+                    <span className="text-brand-orange text-xl font-light shrink-0 group-open:rotate-45 transition-transform leading-none">+</span>
+                  </summary>
+                  <p className="text-steel text-[13px] sm:text-sm mt-2 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>
 
         {/* CTA */}
-        <section className="py-10 md:py-14 bg-ink relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-orange/10 rounded-full blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#ffffff] mb-4">
-              Trebate majstora u {city.loc}?
-            </h2>
-            <p className="text-[#ffffff]/60 mb-8 max-w-xl mx-auto">
-              Objavite posao besplatno danas: prve ponude stižu u prosjeku u roku od 24 sata.
-            </p>
-            <Link
-              href={`/objavi-projekat/?city=${encodeURIComponent(city.name)}`}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-[#ffffff] px-8 py-4 rounded-xl font-bold hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-95"
-            >
-              Objavi posao besplatno
-              <ArrowRight className="w-5 h-5" />
-            </Link>
+        <section className="py-8 md:py-10 bg-cloud">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">Trebate majstora u {city.loc}?</h2>
+            <p className="text-steel mb-6 max-w-xl mx-auto">Objavite posao besplatno i primite ponude od provjerenih firmi u roku od 24 sata.</p>
+            <Link href={objaviHref} className="btn-primary">Objavi posao besplatno</Link>
           </div>
         </section>
       </main>

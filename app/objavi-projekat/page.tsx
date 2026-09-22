@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon, ClipboardList, Clock, ShieldCheck, Users } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
@@ -421,7 +422,8 @@ function PostProjectContent() {
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow pb-16">
-        <section className="relative overflow-hidden pt-28 md:pt-36 pb-20 md:pb-28">
+        <Breadcrumbs items={[{ name: 'Objavi posao' }]} />
+        <section className="relative overflow-hidden pt-6 md:pt-10 pb-20 md:pb-28">
           <div className="absolute inset-0 bg-gradient-to-br from-ink via-orange-950 to-slate-900" />
           <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />

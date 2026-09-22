@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { getCategory } from '@/lib/data';
+import { ArrowRight } from 'lucide-react';
+import { getCategory, getCategoryShortName } from '@/lib/data';
 import { getCategoryHeadline } from '@/lib/profession-plural';
 import LiveCategoryCount from '@/components/ui/LiveCategoryCount';
 
@@ -12,7 +13,7 @@ interface CityCategoriesGridProps {
 
 export default function CityCategoriesGrid({ slugs, citySlug }: CityCategoriesGridProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
       {slugs.map((slug) => {
         const cat = getCategory(slug);
         if (!cat) return null;
@@ -21,17 +22,20 @@ export default function CityCategoriesGrid({ slugs, citySlug }: CityCategoriesGr
           <Link
             key={cat.slug}
             href={`/usluge/${cat.seoSlug}-${citySlug}/`}
-            className="group bg-white rounded-2xl p-5 border border-gray-100 hover:border-brand-orange/40 hover:shadow-lg transition-all"
+            className="group flex items-center gap-2.5 bg-cloud rounded-xl px-3 py-2.5 border border-transparent hover:border-brand-orange/30 hover:bg-white hover:shadow-md transition-all"
           >
-            <div className="w-11 h-11 rounded-xl bg-primary-50 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-              <Icon className="w-[22px] h-[22px] text-brand-orange" />
-            </div>
-            <h3 className="font-semibold text-gray-900 text-sm group-hover:text-brand-orange transition-colors mb-0.5">
-              {getCategoryHeadline(cat.slug, cat.profession)}
-            </h3>
-            <p className="text-xs text-steel">
-              <LiveCategoryCount slug={cat.slug} />
-            </p>
+            <span className="w-9 h-9 rounded-lg bg-white group-hover:bg-orange-50 border border-gray-100 flex items-center justify-center shrink-0 transition-colors">
+              <Icon className="w-[18px] h-[18px] text-brand-orange" />
+            </span>
+            <span className="min-w-0">
+              <span className="block font-semibold text-gray-900 text-[13px] leading-tight truncate group-hover:text-brand-orange transition-colors">
+                {getCategoryHeadline(cat.slug, cat.profession)}
+              </span>
+              <span className="block text-[11px] text-steel leading-tight truncate">
+                {getCategoryShortName(cat)} · <LiveCategoryCount slug={cat.slug} />
+              </span>
+            </span>
+            <ArrowRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-brand-orange ml-auto shrink-0 transition-colors" />
           </Link>
         );
       })}
