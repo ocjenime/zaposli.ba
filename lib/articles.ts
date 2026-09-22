@@ -89,6 +89,16 @@ export const articles: ArticleMeta[] = [
     date: '28. juli 2026.',
     image: '/images/majstor-hero.webp',
   },
+  {
+    slug: 'posao-u-bih-kako-naci-majstora',
+    category: 'Vodiči',
+    title: 'Posao u BiH: kako brzo naći majstora ili objaviti posao',
+    excerpt:
+      'Trebate posao u Sarajevu, Banjoj Luci, Mostaru ili drugom gradu u BiH? Vodič kroz objavu posla, poređenje ponuda i izbor provjerenog majstora.',
+    readTime: '5 min čitanja',
+    date: '22. septembar 2026.',
+    image: '/images/herozaposli.png',
+  },
 ];
 
 export function getArticleMeta(slug: string): ArticleMeta | undefined {

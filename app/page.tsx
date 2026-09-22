@@ -19,10 +19,16 @@ import type { Metadata } from 'next';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Zaposli.ba - Pronađite majstore i građevinske firme u BiH | Besplatne ponude',
+  title: 'Posao u BiH - pronađite majstora ili objavite posao besplatno | Zaposli.ba',
   description:
-    'Tražite majstora ili posao u Bosni i Hercegovini? Objavite posao besplatno i uporedite ponude provjerenih građevinskih firmi, vodoinstalatera, električara, keramičara i drugih majstora u Sarajevu, Banjoj Luci, Mostaru i ostalim gradovima.',
+    'Trebate posao ili majstora u Bosni i Hercegovini? Objavite posao besplatno i uporedite ponude provjerenih firmi: vodoinstalateri, električari, keramičari i drugi majstori u Sarajevu, Banjoj Luci, Mostaru, Tuzli i ostalim gradovima.',
   keywords: [
+    'posao BiH',
+    'posao Sarajevo',
+    'posao Banja Luka',
+    'posao Mostar',
+    'posao Tuzla',
+    'poslovi BiH',
     'majstor BiH',
     'građevinske firme BiH',
     'posao majstor',
@@ -34,15 +40,12 @@ export const metadata: Metadata = {
     'renoviranje',
     'ponude majstora',
     'objavi posao',
-    'Sarajevo',
-    'Banja Luka',
-    'Mostar',
   ],
   alternates: { canonical: site.url },
   openGraph: {
-    title: 'Zaposli.ba - Pronađite majstore i građevinske firme u BiH',
+    title: 'Posao u BiH - pronađite majstora ili objavite posao besplatno',
     description:
-      'Besplatno objavite posao i primite ponude od provjerenih građevinskih firmi i majstora širom Bosne i Hercegovine.',
+      'Besplatno objavite posao i primite ponude od provjerenih građevinskih firmi i majstora u Sarajevu, Banjoj Luci, Mostaru, Tuzli i širom Bosne i Hercegovine.',
     url: site.url,
     images: [{ url: `${site.url}/images/og-cover.webp`, width: 1200, height: 630, alt: 'Zaposli.ba - Pronađite majstora za vaš posao' }],
   },

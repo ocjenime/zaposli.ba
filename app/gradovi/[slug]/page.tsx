@@ -24,9 +24,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const city = cities.find((c) => c.slug === slug);
   if (!city) return {};
   return {
-    title: `Majstori i firme u ${city.loc} - sve kategorije usluga | Zaposli.ba`,
-    description: `Pronađite provjerene majstore i građevinske firme u ${city.loc}. Sve kategorije usluga: vodoinstalateri, električari, keramičari i više. Besplatna objava posla, ponude u roku od 24 sata.`,
+    title: `Posao u ${city.loc} - majstori i firme, besplatna objava | Zaposli.ba`,
+    description: `Posao u ${city.name}: pronađite provjerene majstore i građevinske firme u ${city.loc}. Sve kategorije usluga: vodoinstalateri, električari, keramičari i više. Objavite posao besplatno, ponude stižu u roku od 24 sata.`,
     keywords: [
+      `posao ${city.name.toLowerCase()}`,
+      `poslovi ${city.name.toLowerCase()}`,
       `majstori ${city.name.toLowerCase()}`,
       `firme ${city.name.toLowerCase()}`,
       `građevinske firme ${city.name.toLowerCase()}`,
@@ -46,6 +48,10 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const objaviHref = `/objavi-projekat/?city=${encodeURIComponent(city.name)}`;
 
   const faqItems = [
+    {
+      question: `Kako da objavim posao u ${city.loc}?`,
+      answer: `Kliknite na dugme "Objavi posao besplatno", opišite šta vam treba i označite ${city.name} kao lokaciju. Vaš posao vide provjerene firme i majstori iz vašeg grada, a prve ponude obično stižu u roku od 24 sata. Objava je potpuno besplatna i neobavezujuća.`,
+    },
     {
       question: `Koliko brzo mogu dobiti majstora u ${city.loc}?`,
       answer: `Većina poslova u ${city.loc} dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.`,

@@ -7,10 +7,16 @@ import ProjectsPageClient from './ProjectsPageClient';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Poslovi i projekti u BiH - ponude majstora i firmi | Zaposli.ba',
+  title: 'Posao u BiH - aktuelni poslovi i projekti, ponude majstora | Zaposli.ba',
   description:
-    'Aktuelni građevinski poslovi, majstorski poslovi i projekti u Bosni i Hercegovini. Filtrirajte po gradu, kategoriji i budžetu. Pošaljite ponudu kao provjerena firma ili majstor - besplatna registracija.',
+    'Posao u Sarajevu, Banjoj Luci, Mostaru, Tuzli i cijeloj BiH: aktuelni građevinski i majstorski poslovi i projekti. Filtrirajte po gradu, kategoriji i budžetu. Firme i majstori šalju ponude besplatno nakon registracije.',
   keywords: [
+    'posao BiH',
+    'posao Sarajevo',
+    'posao Banja Luka',
+    'posao Mostar',
+    'posao Tuzla',
+    'posao Zenica',
     'poslovi BiH',
     'građevinski poslovi',
     'majstorski poslovi',
@@ -18,17 +24,14 @@ export const metadata: Metadata = {
     'ponude majstora',
     'posao majstor',
     'građevinske firme',
-    'Sarajevo',
-    'Banja Luka',
-    'Mostar',
   ],
   alternates: {
     canonical: `${site.url}/poslovi/`,
   },
   openGraph: {
-    title: 'Poslovi i projekti u BiH - ponude majstora i firmi',
+    title: 'Posao u BiH - aktuelni poslovi i projekti',
     description:
-      'Aktuelni građevinski poslovi i majstorski projekti širom Bosne i Hercegovine. Filtrirajte po gradu, kategoriji i budžetu.',
+      'Posao u Sarajevu, Banjoj Luci, Mostaru i cijeloj BiH: aktuelni građevinski i majstorski poslovi. Filtrirajte po gradu, kategoriji i budžetu.',
     url: `${site.url}/poslovi/`,
     siteName: site.name,
     locale: 'bs_BA',
