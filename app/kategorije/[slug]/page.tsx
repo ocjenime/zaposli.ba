@@ -2,17 +2,16 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { MapPin, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { MapPin, ArrowRight, Shield, Zap, Star } from 'lucide-react';
 import { EmergencyProcessAnimation } from '@/components/EmergencyProcessAnimation';
 import EmergencyBottomBar from '@/components/EmergencyBottomBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { JsonLd, serviceSchema } from '@/lib/jsonld';
+import { JsonLd, serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/jsonld';
 import { categories, getCategory, cities } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
-import CategoryHeroStats from '@/components/CategoryHeroStats';
+import { getServiceImage } from '@/lib/service-image';
 import FeaturedJobsSection from '@/components/FeaturedJobsSection';
 import CategoryFirms from '@/components/CategoryFirms';
 
@@ -45,77 +44,138 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   if (!cat) notFound();
 
   const Icon = cat.icon;
+  const groupStyle = getGroupHeroStyle(cat.group);
+  const heroImage = getServiceImage(cat.slug);
+  const objaviHref = `/objavi-projekat/?service=${encodeURIComponent(cat.name)}`;
+
+  const servicesShort = cat.services.slice(0, 4).map((s) => s.toLowerCase()).join(', ');
+  const subtitle = `Pronađite provjerene firme i majstore za ${servicesShort} širom Bosne i Hercegovine.`;
+
+  const faqItems = [
+    {
+      question: `Koliko košta ${cat.profession.toLowerCase()} u BiH?`,
+      answer: `Cijene se kreću oko ${cat.priceRange} (${cat.priceNote}). Tačnu cijenu dobijate kroz ponude: objavite posao besplatno i firme širom BiH će vam poslati svoje cijene.`,
+    },
+    {
+      question: 'Koliko brzo mogu dobiti majstora?',
+      answer: 'Većina poslova dobije prve ponude u roku od 24 sata. Za hitne poslove firme često odgovore u roku od nekoliko sati.',
+    },
+    {
+      question: 'Kako znam da je firma pouzdana?',
+      answer: 'Svaka firma na platformi prolazi verifikaciju identiteta i poslovanja. Dodatno, za svaku firmu vidite ocjene i recenzije stvarnih klijenata.',
+    },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Kategorije', href: '/kategorije/' }, { name: cat.name }]} />
+      <main className="flex-grow pt-12 md:pt-16">
         <JsonLd data={serviceSchema({ name: cat.name, description: cat.description, area: 'Bosna i Hercegovina', url: `/kategorije/${cat.slug}/` })} />
+        <JsonLd data={faqSchema(faqItems)} />
+        <JsonLd
+          data={breadcrumbSchema([
+            { name: 'Početna', url: '/' },
+            { name: 'Kategorije', url: '/kategorije/' },
+            { name: cat.name },
+          ])}
+        />
 
-        {/* Hero */}
-        <section className="relative min-h-[380px] sm:min-h-[440px] flex flex-col overflow-hidden">
-          <div className="absolute inset-0">
+        {/* Breadcrumb - kao na mockupu */}
+        <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 pb-1">
+          <ol className="flex items-center gap-1.5 text-[12px] text-steel overflow-x-auto whitespace-nowrap">
+            <li><Link href="/" className="hover:text-brand-orange transition-colors">Početna</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li><Link href="/kategorije/" className="hover:text-brand-orange transition-colors">Kategorije</Link></li>
+            <li aria-hidden="true" className="text-gray-300">›</li>
+            <li aria-current="page" className="text-gray-900 font-medium">{cat.name}</li>
+          </ol>
+        </nav>
+
+        {/* Hero - isti stil kao /usluge/ */}
+        <section className="relative bg-[#faf8f5] overflow-hidden">
+          <div className="absolute inset-y-0 right-0 w-[58%] sm:w-[52%] md:w-[46%]">
             <Image
-              src="/images/herozaposli.png"
+              src={heroImage}
               alt={`${cat.name} - majstor na gradilištu`}
               fill
               priority
-              sizes="100vw"
-              className="object-cover object-[60%_center]"
+              sizes="(max-width: 768px) 60vw, 46vw"
+              className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f5] via-[#faf8f5]/60 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
           </div>
 
-          <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-6 sm:pb-8">
-              <div className="max-w-2xl">
-                <span
-                  className={`inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2 animate-fade-in ${
-                    cat.featured ? 'text-red-400' : 'text-brand-orange'
-                  }`}
-                >
-                  <Icon className="w-3.5 h-3.5" />
-                  {cat.featured ? '24/7 · dostupno odmah' : getGroupHeroStyle(cat.group).eyebrow}
-                </span>
-                <h1 className="text-[28px] sm:text-5xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
-                  {cat.name}
-                </h1>
-                <p className="text-[13px] sm:text-base text-white/85 leading-snug mb-4 animate-fade-in">
-                  {cat.description}. Pronađite provjerenog {cat.profession.toLowerCase()} širom BiH
-                  ili objavite posao besplatno.
-                </p>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs sm:text-sm text-white/80 mb-4 animate-fade-in">
-                  <CategoryHeroStats slug={cat.slug} />
-                </div>
-                <div className="flex flex-wrap gap-2 mb-4 max-w-3xl animate-fade-in">
-                  {cat.services.slice(0, 6).map((s) => (
-                    <span
-                      key={s}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-white/10 backdrop-blur-md border border-white/10 text-white/90"
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-brand-orange" />
-                      {s}
-                    </span>
-                  ))}
-                </div>
-                <Link
-                  href={`/objavi-projekat/?service=${encodeURIComponent(cat.name)}`}
-                  className={`inline-flex items-center gap-2 text-[#ffffff] px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-sm sm:text-base font-bold hover:shadow-xl transition-all active:scale-95 animate-fade-in ${
-                    cat.featured
-                      ? 'bg-gradient-to-r from-red-600 to-red-700 hover:shadow-red-600/25'
-                      : 'bg-gradient-to-r from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
-                  }`}
-                >
-                  {cat.featured ? 'Objavi hitan posao besplatno' : 'Objavi posao besplatno'}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
+            <div className="max-w-[68%] sm:max-w-xl md:max-w-2xl">
+              <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
+                <Icon className="w-4 h-4" />
+                {groupStyle.eyebrow}
+              </p>
+              <h1 className="text-[30px] sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-[1.05] tracking-tight mb-2">
+                {cat.profession} u<br />BiH
+              </h1>
+              <p className="text-[13px] sm:text-[15px] text-steel leading-snug mb-4 max-w-md">
+                {subtitle}
+              </p>
+              <Link
+                href={objaviHref}
+                className={`inline-flex items-center gap-2 text-white px-5 sm:px-6 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold hover:shadow-xl transition-all active:scale-95 ${
+                  cat.featured
+                    ? 'bg-gradient-to-r from-red-600 to-red-700 hover:shadow-red-600/25'
+                    : 'bg-gradient-to-r from-brand-orange to-brand-orange-dark hover:shadow-brand-orange/25'
+                }`}
+              >
+                {cat.featured ? 'Objavi hitan posao besplatno' : 'Objavi posao besplatno'}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10" />
+          {/* Rukom pisana napomena */}
+          <div className="absolute z-10 right-3 sm:right-8 md:right-16 bottom-8 sm:bottom-10 rotate-[-4deg]">
+            <div className="bg-black/25 backdrop-blur-[2px] rounded-lg px-3 py-2 max-w-[150px] sm:max-w-[180px]">
+              <p className="text-white text-[14px] sm:text-base italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
+                Kvalitetni majstori za vaš dom.
+              </p>
+              <div className="h-[3px] bg-brand-orange rounded-full mt-1 w-3/4" />
+            </div>
+          </div>
+        </section>
+
+        {/* Trust traka */}
+        <section className="bg-white border-b border-gray-50">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-6">
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Provjerene firme</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Provjereni profili i poslovni podaci</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Brze ponude</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Primite ponude od dostupnih majstora</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Stvarne recenzije</p>
+                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Iskustva korisnika nakon završenog posla</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Firme u kategoriji - ranking: ocjena ključna + verifikacija + premium */}
@@ -154,32 +214,49 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </section>
         )}
 
-            {/* Gradovi */}
-            <section className="py-8 md:py-10 bg-white">
-              <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {!cat.noSeo && (
-                <div className="mb-14">
-                  <div className="bg-cloud rounded-2xl p-6 md:p-8">
-                    <div className="flex items-center gap-3 mb-4">
-                      <MapPin className="w-6 h-6 text-brand-orange" />
-                      <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
-                      {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
-                        <Link
-                          key={city.slug}
-                          href={`/usluge/${cat.seoSlug}-${city.slug}/`}
-                          className="flex items-center justify-between px-3 py-2 bg-white rounded-lg text-sm text-steel hover:text-brand-orange hover:border-brand-orange/30 hover:shadow-sm transition-all border border-gray-100"
-                        >
-                          <span>{city.name}</span>
-                          <ArrowRight className="w-3 h-3 text-gray-300" />
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+        {/* Gradovi */}
+        <section className="py-8 md:py-10 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {!cat.noSeo && (
+            <div className="mb-14">
+              <div className="bg-cloud rounded-2xl p-6 md:p-8">
+                <div className="flex items-center gap-3 mb-4">
+                  <MapPin className="w-6 h-6 text-brand-orange" />
+                  <h2 className="text-xl font-bold text-gray-900">{cat.profession} po gradovima</h2>
                 </div>
-                )}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+                  {[...cities].sort((a, b) => a.name.localeCompare(b.name, 'bs')).map((city) => (
+                    <Link
+                      key={city.slug}
+                      href={`/usluge/${cat.seoSlug}-${city.slug}/`}
+                      className="flex items-center justify-between px-3 py-2 bg-white rounded-lg text-sm text-steel hover:text-brand-orange hover:border-brand-orange/30 hover:shadow-sm transition-all border border-gray-100"
+                    >
+                      <span>{city.name}</span>
+                      <ArrowRight className="w-3 h-3 text-gray-300" />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+            )}
+          </div>
+        </section>
 
+        {/* Česta pitanja */}
+        <section className="py-6 sm:py-10 bg-white">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-[22px] sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-4">Česta pitanja</h2>
+            <div className="space-y-2.5 max-w-3xl">
+              {faqItems.map((f) => (
+                <details key={f.question} className="group bg-[#f0f7ff] rounded-2xl px-5 py-4 transition-all">
+                  <summary className="font-medium text-gray-900 text-[14px] sm:text-[15px] cursor-pointer list-none flex justify-between items-center gap-4 [&::-webkit-details-marker]:hidden">
+                    {f.question}
+                    <span className="text-brand-orange text-xl font-light shrink-0 group-open:rotate-45 transition-transform leading-none">+</span>
+                  </summary>
+                  <p className="text-steel text-[13px] sm:text-sm mt-2 leading-relaxed">{f.answer}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </section>
 

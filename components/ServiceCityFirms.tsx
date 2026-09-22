@@ -12,6 +12,7 @@ import { getCategory } from '@/lib/data';
 import { normalizeCityName } from '@/lib/city-utils';
 import { plural } from '@/lib/plural';
 import { getProfessionPlural } from '@/lib/profession-plural';
+import { isCompanyName } from '@/lib/firm-utils';
 
 interface Firm {
   id: string;
@@ -32,10 +33,6 @@ interface ServiceCityFirmsProps {
   profession: string;
   categoryName: string;
   citySlug: string;
-}
-
-function isCompanyName(name: string): boolean {
-  return /(d\.?\s?o\.?\s?o\.?|doo|s\.?\s?p\.?|obrt|&|m&d|gradnja|bau|mont|invest|group|tim|centar|studio|servis|profi|master|bau|gmbh)/i.test(name);
 }
 
 export default function ServiceCityFirms({

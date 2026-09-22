@@ -9,6 +9,7 @@ import { JsonLd, serviceSchema, faqSchema, breadcrumbSchema } from '@/lib/jsonld
 import { categories, cities, type Category, type City } from '@/lib/data';
 import { site } from '@/lib/site';
 import { getGroupHeroStyle } from '@/lib/hero';
+import { getServiceImage } from '@/lib/service-image';
 import ServiceCityFirms from '@/components/ServiceCityFirms';
 
 function parseSlug(slug: string): { cat: Category; city: City } | null {
@@ -46,29 +47,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ],
     alternates: { canonical: `${site.url}/usluge/${slug}/` },
   };
-}
-
-function getServiceImage(catSlug: string): string {
-  const map: Record<string, string> = {
-    'keramicarski-radovi': '/images/kuhinja-renovacija.webp',
-    'molerski-radovi': '/images/farbanje-zid.webp',
-    'masinsko-nabacivanje': '/images/farbanje-zid.webp',
-    'gipsarski-radovi': '/images/farbanje-zid.webp',
-    'zavrsni-radovi': '/images/farbanje-zid.webp',
-    'tapetarski-radovi': '/images/farbanje-zid.webp',
-    vodoinstalacije: '/images/vodoinstalater.webp',
-    elektroinstalacije: '/images/elektricar.webp',
-    'hitne-intervencije': '/images/elektricar.webp',
-    ciscenje: '/images/ciscenje.webp',
-    'pranje-fasada-i-krovova': '/images/ciscenje.webp',
-    'kuhinje-po-mjeri': '/images/kuhinja-renovacija.webp',
-    adaptacije: '/images/kuhinja-renovacija.webp',
-    'kupatila-kljuc-u-ruke': '/images/kuhinja-renovacija.webp',
-    stolarija: '/images/renovacija-enterijer.webp',
-    podovi: '/images/renovacija-enterijer.webp',
-    'tlakovi-estrih': '/images/renovacija-enterijer.webp',
-  };
-  return map[catSlug] || '/images/herozaposli.png';
 }
 
 export default async function ServiceCityPage({ params }: { params: Promise<{ slug: string }> }) {
