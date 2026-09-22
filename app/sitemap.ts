@@ -54,6 +54,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   let firmPages: MetadataRoute.Sitemap = [];
+  let jobPages: MetadataRoute.Sitemap = [];
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -68,9 +69,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     }));
+
+    const { data: jobsData } = await supabase
+      .from('jobs')
+      .select('id, created_at')
+      .in('status', ['open', 'bidding'])
+      .order('created_at', { ascending: false })
+      .limit(200);
+    const jobRows = (jobsData as { id: string; created_at: string }[]) || [];
+    jobPages = jobRows.map((j) => ({
+      url: `${site.url}/posao/${j.id}/`,
+      lastModified: new Date(j.created_at),
+      changeFrequency: 'daily' as const,
+      priority: 0.8,
+    }));
   } catch {
-    // If Supabase is unreachable during build, skip firm pages.
+    // If Supabase is unreachable during build, skip firm/job pages.
   }
 
-  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...articlePages, ...firmPages];
+  return [...staticPages, ...categoryPages, ...servicePages, ...cityPages, ...articlePages, ...firmPages, ...jobPages];
 }

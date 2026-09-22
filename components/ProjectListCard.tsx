@@ -1,6 +1,7 @@
 'use client';
 
 import NextImage from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
   MapPin,
@@ -345,8 +346,15 @@ export default function ProjectListCard({
                     Zatvori detalje
                   </button>
 
-                  <div onClick={(e) => e.stopPropagation()} className="flex justify-center pt-1">
-                    <ShareButtons compact title={job.title} path={`/poslovi/?expandId=${job.id}`} />
+                  <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-1 pt-1">
+                    <Link
+                      href={`/posao/${job.id}/`}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-brand-orange hover:underline"
+                    >
+                      Otvori stranicu posla
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                    <ShareButtons compact title={job.title} path={`/posao/${job.id}`} />
                   </div>
                 </div>
               </div>
