@@ -400,7 +400,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
         />
 
         {/* Cover */}
-        <section className="relative h-[220px] sm:h-[300px] overflow-hidden">
+        <section className="relative h-[220px] sm:h-[300px] overflow-hidden bg-ink-950">
           <Image
             src={coverImage}
             alt={`${firm.name} - radovi`}
@@ -409,7 +409,8 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/25 to-transparent" />
+          <div className="absolute -left-20 bottom-0 w-[420px] h-[200px] bg-brand-orange/20 rounded-full blur-3xl" />
           <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white to-transparent" />
           <div className="absolute inset-0">
             <div className="mx-auto max-w-7xl h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 pb-10">
@@ -521,19 +522,19 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                 </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-2.5 mt-4">
+              <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-4">
                 <Link
                   href={`/zatrazi-ponudu/?firm_id=${firm.id}`}
-                  className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark hover:shadow-xl hover:shadow-brand-orange/25 text-white font-bold text-[15px] sm:text-base rounded-xl px-6 py-3.5 transition-all active:scale-[0.99] min-h-[52px]"
+                  className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark hover:shadow-xl hover:shadow-brand-orange/30 text-white font-bold text-[13px] sm:text-base rounded-xl px-2 sm:px-6 py-3 sm:py-3.5 transition-all active:scale-[0.99] min-h-[48px] sm:min-h-[52px] shadow-lg shadow-brand-orange/25"
                 >
-                  <Receipt className="w-5 h-5" />
+                  <Receipt className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                   Zatraži ponudu
                 </Link>
                 <Link
                   href={`/zatrazi-ponudu/?firm_id=${firm.id}&ask=1`}
-                  className="inline-flex items-center justify-center gap-2 bg-white text-gray-900 border border-gray-200 font-bold text-[15px] sm:text-base rounded-xl px-6 py-3.5 transition-colors hover:bg-gray-50 min-h-[52px]"
+                  className="inline-flex items-center justify-center gap-1.5 bg-white text-gray-900 border border-gray-200 font-bold text-[13px] sm:text-base rounded-xl px-2 sm:px-6 py-3 sm:py-3.5 transition-colors hover:bg-gray-50 min-h-[48px] sm:min-h-[52px]"
                 >
-                  <MessageCircle className="w-5 h-5" />
+                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                   Pošalji poruku
                 </Link>
               </div>
@@ -544,30 +545,30 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
         {/* Statistika */}
         <section className="px-4 sm:px-6 lg:px-8 mt-3">
           <div className="mx-auto max-w-7xl">
-            <div className="bg-[#f7f6f4] rounded-2xl px-1.5 py-3.5 grid grid-cols-4 gap-1">
-              <div className="flex items-start justify-center gap-1 min-w-0">
-                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+            <div className="bg-[#f7f6f4] rounded-2xl px-1 py-3.5 grid grid-cols-4 divide-x divide-gray-200/80 shadow-sm">
+              <div className="flex items-start justify-center gap-1 min-w-0 px-0.5">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" strokeWidth={1.75} />
                 <div className="min-w-0">
                   <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">{completedCount}+</p>
                   <p className="text-steel text-[10px] sm:text-[13px] leading-tight">Završenih projekata</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
-                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+              <div className="flex items-start justify-center gap-1 min-w-0 px-0.5">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" strokeWidth={1.75} />
                 <div className="min-w-0">
                   <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">Zadovoljni</p>
                   <p className="text-steel text-[10px] sm:text-[13px] leading-tight">klijenti</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+              <div className="flex items-start justify-center gap-1 min-w-0 px-0.5">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" strokeWidth={1.75} />
                 <div className="min-w-0">
                   <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">Brz odgovor</p>
                   <p className="text-steel text-[10px] sm:text-[13px] leading-tight">Obično unutar 1 h</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+              <div className="flex items-start justify-center gap-1 min-w-0 px-0.5">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" strokeWidth={1.75} />
                 <div className="min-w-0">
                   <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight truncate">{firm.city || 'BiH'}</p>
                   <p className="text-steel text-[10px] sm:text-[13px] leading-tight">i šira okolica</p>
@@ -692,17 +693,17 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
               )}
             </div>
             {visibleTiles.length > 0 ? (
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+              <div className={`grid gap-1.5 sm:gap-2 ${showAllServices ? 'grid-cols-3 sm:grid-cols-6' : 'grid-cols-6'}`}>
                 {visibleTiles.map((cat) => {
                   const TileIcon = cat.icon;
                   return (
                     <Link
                       key={cat.slug}
                       href={`/kategorije/${cat.slug}/`}
-                      className="bg-white rounded-xl border border-gray-100 px-1.5 py-3 flex flex-col items-center justify-center gap-1.5 text-center hover:border-brand-orange/40 hover:shadow-md transition-all min-h-[86px]"
+                      className="bg-white rounded-xl border border-gray-100 px-1 py-2.5 sm:py-3 flex flex-col items-center justify-center gap-1 sm:gap-1.5 text-center hover:border-brand-orange/40 hover:shadow-md transition-all min-h-[76px] sm:min-h-[86px]"
                     >
-                      <TileIcon className="w-6 h-6 text-gray-800" />
-                      <span className="text-[11px] sm:text-xs font-medium text-gray-800 leading-tight">
+                      <TileIcon className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800 shrink-0" />
+                      <span className="text-[9px] sm:text-xs font-medium text-gray-800 leading-tight break-words">
                         {getCategoryShortName(cat)}
                       </span>
                     </Link>
