@@ -313,7 +313,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow pt-12 md:pt-16">
           <div className="relative overflow-hidden bg-gray-100 h-[220px] sm:h-[300px] animate-pulse" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="bg-white rounded-3xl shadow-xl p-4 -mt-14 relative z-20 animate-pulse">
@@ -333,7 +333,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     return (
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow pt-12 md:pt-16">
           <Breadcrumbs items={[{ name: 'Profil firme' }]} />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 text-center">
             <div className="w-16 h-16 rounded-2xl bg-orange-50 flex items-center justify-center mx-auto mb-4">
@@ -369,7 +369,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   const onlineText = onlineNow ? 'Online sada' : formatLastActive(firm.last_active_at);
   const company = isCompanyName(firm.name);
   const coverImage = portfolioImages[0] || '/images/zafirme-hero.jpg';
-  const completedCount = acceptedBids ?? reviewCount;
+  const completedCount = acceptedBids && acceptedBids > 0 ? acceptedBids : reviewCount;
   const visibleTiles = showAllServices ? serviceTiles : serviceTiles.slice(0, 6);
   const visiblePhotos = showAllPhotos ? portfolioImages : portfolioImages.slice(0, 4);
   const remainingPhotos = portfolioImages.length - visiblePhotos.length;
@@ -377,7 +377,7 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow pt-12 md:pt-16">
         <JsonLd
           data={localBusinessSchema({
             name: firm.name,
@@ -448,9 +448,9 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   />
                 </div>
                 <div className="flex-1 min-w-0 pt-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h1 className="flex items-center gap-1.5 text-[22px] sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight min-w-0">
-                      <span className="truncate">{firm.name}</span>
+                  <div className="flex items-start justify-between gap-1.5">
+                    <h1 className="flex items-center gap-1.5 text-[20px] sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight min-w-0 break-words">
+                      <span>{firm.name}</span>
                       {firm.verified && (
                         <span className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-orange-100 flex items-center justify-center shrink-0" title="Verificiran profil">
                           <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-orange" />
@@ -494,29 +494,29 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                 </p>
               )}
 
-              <div className="flex items-center justify-between gap-2 mt-3 flex-wrap">
-                <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-start justify-between gap-2 mt-3">
+                <div className="flex items-center gap-1.5 flex-wrap min-w-0">
                   {firm.verified && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 text-brand-orange text-[12px] sm:text-[13px] font-bold px-3 py-1.5">
-                      <ShieldCheck className="w-4 h-4" />
+                    <span className="inline-flex items-center gap-1 rounded-full bg-orange-50 text-brand-orange text-[11px] sm:text-[13px] font-bold px-2.5 py-1 whitespace-nowrap">
+                      <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       {company ? 'Provjerena firma' : 'Provjereni majstor'}
                     </span>
                   )}
                   {isPremium && (
                     <span
-                      className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 text-purple-700 text-[12px] sm:text-[13px] font-bold px-3 py-1.5"
+                      className="inline-flex items-center gap-1 rounded-full bg-purple-50 text-purple-700 text-[11px] sm:text-[13px] font-bold px-2.5 py-1 whitespace-nowrap"
                       title="Aktivna premium pretplata sa istaknutim profilom."
                     >
-                      <Crown className="w-4 h-4" />
+                      <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       Premium partner
                     </span>
                   )}
                 </div>
-                <p className="flex items-center gap-1.5 text-[12px] sm:text-[13px] text-right">
-                  <span className={`w-2 h-2 rounded-full shrink-0 ${onlineNow ? 'bg-green-500 animate-pulse' : 'bg-green-500'}`} />
+                <p className="flex items-start justify-end gap-1 text-[11px] sm:text-[13px] text-right shrink-0">
+                  <span className={`w-2 h-2 rounded-full shrink-0 mt-1 ${onlineNow ? 'bg-green-500 animate-pulse' : 'bg-green-500'}`} />
                   <span className="text-steel">
-                    Zadnji put online:<br className="sm:hidden" />
-                    <span className="text-gray-900 font-medium"> {onlineText}</span>
+                    Zadnji put online:
+                    <span className="block text-gray-900 font-medium"> {onlineText}</span>
                   </span>
                 </p>
               </div>
@@ -544,33 +544,33 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
         {/* Statistika */}
         <section className="px-4 sm:px-6 lg:px-8 mt-3">
           <div className="mx-auto max-w-7xl">
-            <div className="bg-[#f7f6f4] rounded-2xl px-2 py-4 grid grid-cols-4 gap-1">
-              <div className="flex items-start justify-center gap-1.5 px-1">
-                <FileText className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-extrabold text-gray-900 text-[13px] sm:text-base leading-tight">{completedCount}+</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight">Završenih projekata</p>
+            <div className="bg-[#f7f6f4] rounded-2xl px-1.5 py-3.5 grid grid-cols-4 gap-1">
+              <div className="flex items-start justify-center gap-1 min-w-0">
+                <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">{completedCount}+</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight">Završenih projekata</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1.5 px-1 sm:border-l sm:border-gray-200">
-                <Users className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-extrabold text-gray-900 text-[13px] sm:text-base leading-tight">Zadovoljni</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight">klijenti</p>
+              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
+                <Users className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">Zadovoljni</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight">klijenti</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1.5 px-1 sm:border-l sm:border-gray-200">
-                <Clock className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-extrabold text-gray-900 text-[13px] sm:text-base leading-tight">Brz odgovor</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight">Obično unutar 1 h</p>
+              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
+                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight">Brz odgovor</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight">Obično unutar 1 h</p>
                 </div>
               </div>
-              <div className="flex items-start justify-center gap-1.5 px-1 sm:border-l sm:border-gray-200">
-                <MapPin className="w-5 h-5 text-gray-900 shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-extrabold text-gray-900 text-[13px] sm:text-base leading-tight truncate">{firm.city || 'BiH'}</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight">i šira okolica</p>
+              <div className="flex items-start justify-center gap-1 min-w-0 sm:border-l sm:border-gray-200">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-base leading-tight truncate">{firm.city || 'BiH'}</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight">i šira okolica</p>
                 </div>
               </div>
             </div>
