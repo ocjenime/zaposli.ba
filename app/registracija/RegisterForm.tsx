@@ -1,16 +1,17 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2, MapPin, Tag, Check } from 'lucide-react';
+import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2, MapPin, Tag, Check, Gift } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 import { slugify } from '@/lib/slugify';
 import { site } from '@/lib/site';
 import { categories, cities } from '@/lib/data';
+import { saveRefFromUrl, resolveReferrerId, applyAttribution } from '@/lib/referral';
 
 function formatError(err: unknown): string {
   if (typeof err === 'string') {
@@ -56,7 +57,17 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [emailConfirmation, setEmailConfirmation] = useState(false);
+  const [referrerName, setReferrerName] = useState<string | null>(null);
   const router = useRouter();
+
+  // Referral: ?ref=<firm_slug> -> banner + atribucija nakon registracije
+  useEffect(() => {
+    const slug = saveRefFromUrl();
+    if (!slug) return;
+    resolveReferrerId(supabase, slug).then((ref) => {
+      if (ref) setReferrerName(ref.firmName);
+    });
+  }, []);
 
   const validate = () => {
     if (!formData.name.trim()) return 'Unesite ime i prezime ili naziv firme.';
@@ -135,6 +146,9 @@ export default function RegisterForm() {
       return;
     }
 
+    // Referral + UTM atribucija (ne smije srušiti registraciju)
+    await applyAttribution(supabase, authData.user.id);
+
     if (isFirmRole(userType)) {
       let slug = slugify(formData.name);
       const { data: existing } = await supabase.from('firms').select('slug').eq('slug', slug).maybeSingle();
@@ -195,6 +209,15 @@ export default function RegisterForm() {
               </div>
             ) : (
               <>
+                {referrerName && (
+                  <div className="mb-6 bg-orange-50 border border-orange-100 rounded-xl px-4 py-3 text-sm flex items-start gap-3">
+                    <Gift className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+                    <p className="text-gray-800">
+                      Pozvao vas je <strong>{referrerName}</strong>. Registrujte se preko ovog
+                      linka i vaš pozivalac dobija nagradu.
+                    </p>
+                  </div>
+                )}
                 <div className="grid grid-cols-3 gap-3 mb-6">
                   {([
                     { value: 'client', label: 'Klijent' },

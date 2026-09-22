@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 import { isFirmRole } from '@/lib/roles';
 import { generateUniqueFirmSlug } from '@/lib/slugify';
+import { applyAttribution } from '@/lib/referral';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -99,6 +100,9 @@ export default function AuthCallback() {
         router.push('/prijava/?error=blocked');
         return;
       }
+
+      // Referral (?ref=) + UTM atribucija za nove naloge
+      await applyAttribution(callbackSupabase, user.id);
 
       const isAdmin = profile?.is_admin ?? false;
 

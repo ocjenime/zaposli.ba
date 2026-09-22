@@ -7,6 +7,7 @@ import ThemeProvider from '@/components/ThemeProvider';
 import { ToastProvider } from '@/components/ToastProvider';
 import CookieConsent from '@/components/CookieConsent';
 import ScrollToTop from '@/components/ScrollToTop';
+import UtmTracker from '@/components/UtmTracker';
 import { JsonLd, websiteSchema, organizationSchema } from '@/lib/jsonld';
 
 const sans = Plus_Jakarta_Sans({
@@ -72,6 +73,7 @@ export default function RootLayout({
     <html lang="bs" suppressHydrationWarning className={sans.variable}>
       <body className={`min-h-screen ${sans.className}`}>
         <ScrollToTop />
+        <UtmTracker />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange={false}>
           <ToastProvider>

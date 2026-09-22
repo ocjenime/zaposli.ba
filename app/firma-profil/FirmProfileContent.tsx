@@ -18,6 +18,7 @@ import { formatReviewerName } from '@/lib/reviewer-name';
 import { JsonLd, localBusinessSchema } from '@/lib/jsonld';
 import { isOnline, formatLastActive } from '@/lib/hooks/useFirmActivityHeartbeat';
 import LogoDisplay from '@/components/ui/LogoDisplay';
+import ShareButtons from '@/components/ShareButtons';
 import {
   MapPin,
   Star,
@@ -534,6 +535,10 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   <MessageCircle className="w-5 h-5" />
                   Pošalji poruku
                 </Link>
+              </div>
+
+              <div className="flex justify-center mt-3">
+                <ShareButtons title={firm.name} path={`/firma-profil/${firm.slug}/`} />
               </div>
             </div>
           </div>

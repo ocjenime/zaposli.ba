@@ -16,6 +16,7 @@ import { categories } from '@/lib/data';
 import { plural } from '@/lib/plural';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
+import ShareButtons from '@/components/ShareButtons';
 import { useMemo, useState } from 'react';
 
 interface JobImage {
@@ -343,6 +344,10 @@ export default function ProjectListCard({
                   >
                     Zatvori detalje
                   </button>
+
+                  <div onClick={(e) => e.stopPropagation()} className="flex justify-center pt-1">
+                    <ShareButtons compact title={job.title} path={`/poslovi/?expandId=${job.id}`} />
+                  </div>
                 </div>
               </div>
             </div>

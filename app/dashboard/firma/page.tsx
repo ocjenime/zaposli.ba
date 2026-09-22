@@ -21,6 +21,7 @@ import FirmIconMenu from '@/components/dashboard/FirmIconMenu';
 import FirmMyAdsList from '@/components/dashboard/FirmMyAdsList';
 import FirmRecentBids from '@/components/dashboard/FirmRecentBids';
 import FirmMiniChart from '@/components/dashboard/FirmMiniChart';
+import FirmReferralCard from '@/components/dashboard/FirmReferralCard';
 import FeaturedBadge from '@/components/FeaturedBadge';
 import JobChat from '@/components/JobChat';
 import { useAuth } from '@/lib/auth-context';
@@ -748,6 +749,7 @@ function FirmDashboardContent() {
                     onTabChange={setActiveTab}
                   />
                   <FirmQuickActions />
+                  <FirmReferralCard />
                   <FirmIconMenu
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
@@ -772,6 +774,7 @@ function FirmDashboardContent() {
                   <div className="lg:col-span-1 space-y-6">
                     <FirmActivityFeed />
                     <FirmJobPipeline myBids={myBids} directJobs={directJobs} />
+                    <FirmReferralCard />
                   </div>
                   <div className="lg:col-span-2">
                     <FirmRecommendedJobs
