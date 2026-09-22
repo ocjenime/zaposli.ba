@@ -95,21 +95,21 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
         {/* Hero - isti stil kao /usluge/ */}
         <section className="relative bg-[#faf8f5] overflow-hidden">
-          <div className="absolute inset-y-0 right-0 w-[58%] sm:w-[52%] md:w-[46%]">
+          <div className="absolute inset-y-0 right-0 w-[44%] sm:w-[52%] md:w-[46%]">
             <Image
               src={heroImage}
               alt={`${cat.name} - majstor na gradilištu`}
               fill
               priority
-              sizes="(max-width: 768px) 60vw, 46vw"
+              sizes="(max-width: 768px) 50vw, 46vw"
               className="object-cover object-center"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f5] via-[#faf8f5]/60 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#faf8f5] via-[#faf8f5]/85 to-transparent sm:via-[#faf8f5]/60" />
             <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-white to-transparent" />
           </div>
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
-            <div className="max-w-[68%] sm:max-w-xl md:max-w-2xl">
+            <div className="max-w-[64%] sm:max-w-xl md:max-w-2xl">
               <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
                 <Icon className="w-4 h-4" />
                 {groupStyle.eyebrow}
@@ -135,7 +135,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           </div>
 
           {/* Rukom pisana napomena */}
-          <div className="absolute z-10 right-3 sm:right-8 md:right-16 bottom-8 sm:bottom-10 rotate-[-4deg]">
+          <div className="absolute z-10 right-3 sm:right-8 md:right-16 top-5 sm:top-auto sm:bottom-10 rotate-[-4deg]">
             <div className="bg-black/25 backdrop-blur-[2px] rounded-lg px-3 py-2 max-w-[150px] sm:max-w-[180px]">
               <p className="text-white text-[14px] sm:text-base italic leading-tight" style={{ fontFamily: 'Georgia, serif' }}>
                 Kvalitetni majstori za vaš dom.
@@ -148,32 +148,32 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         {/* Trust traka */}
         <section className="bg-white border-b border-gray-50">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-            <div className="grid grid-cols-3 gap-2 sm:gap-6">
-              <div className="flex items-start gap-2">
-                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-6">
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
                   <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
                 </span>
                 <div className="min-w-0">
-                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Provjerene firme</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Provjereni profili i poslovni podaci</p>
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Provjerene firme</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Provjereni profili i poslovni podaci</p>
                 </div>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
                   <Zap className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
                 </span>
                 <div className="min-w-0">
-                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Brze ponude</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Primite ponude od dostupnih majstora</p>
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Brze ponude</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Primite ponude od dostupnih majstora</p>
                 </div>
               </div>
-              <div className="flex items-start gap-2">
-                <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+              <div className="flex items-start gap-1.5 sm:gap-2">
+                <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
                   <Star className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange" />
                 </span>
                 <div className="min-w-0">
-                  <p className="font-extrabold text-gray-900 text-[12px] sm:text-sm leading-tight">Stvarne recenzije</p>
-                  <p className="text-steel text-[11px] sm:text-[13px] leading-tight mt-0.5">Iskustva korisnika nakon završenog posla</p>
+                  <p className="font-extrabold text-gray-900 text-[11px] sm:text-sm leading-tight">Stvarne recenzije</p>
+                  <p className="text-steel text-[10px] sm:text-[13px] leading-tight mt-0.5">Iskustva korisnika nakon završenog posla</p>
                 </div>
               </div>
             </div>

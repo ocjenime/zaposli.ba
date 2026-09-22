@@ -282,7 +282,7 @@ export default function ServiceCityFirms({
                     >
                       <Link
                         href={`/firma-profil/${firm.slug}/`}
-                        className="relative w-[104px] h-[104px] sm:w-[128px] sm:h-[128px] rounded-xl overflow-hidden bg-cloud shrink-0 block"
+                        className="relative w-[96px] h-[96px] sm:w-[128px] sm:h-[128px] rounded-xl overflow-hidden bg-cloud shrink-0 block"
                       >
                         {cover ? (
                           <Image src={cover} alt={firm.name} fill sizes="150px" className="object-cover" />
@@ -307,7 +307,7 @@ export default function ServiceCityFirms({
                             </h3>
                           </Link>
                           <p className="text-[13px] text-steel truncate">{categoryName}</p>
-                          <p className="flex items-center gap-1 mt-0.5 text-[13px]">
+                          <p className="flex items-center gap-1 mt-0.5 text-[13px] whitespace-nowrap">
                             <Star className="w-3.5 h-3.5 text-brand-orange fill-brand-orange" />
                             {reviews > 0 ? (
                               <>
@@ -324,7 +324,7 @@ export default function ServiceCityFirms({
                           </p>
                           {firm.verified && (
                             <span
-                              className={`inline-flex items-center gap-1 mt-1.5 text-[12px] font-semibold px-2.5 py-1 rounded-full ${company ? 'bg-green-50 text-green-700' : 'bg-sky-50 text-sky-700'}`}
+                              className={`inline-flex items-center gap-1 mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${company ? 'bg-green-50 text-green-700' : 'bg-sky-50 text-sky-700'}`}
                             >
                               <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${company ? 'bg-green-500 text-white' : 'bg-sky-500 text-white'}`}>
                                 ✓
@@ -344,10 +344,10 @@ export default function ServiceCityFirms({
                           </button>
                           <Link
                             href={`/firma-profil/${firm.slug}/`}
-                            className="inline-flex items-center gap-1.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[13px] sm:text-sm font-bold px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap"
+                            className="inline-flex items-center gap-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[12px] sm:text-sm font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap"
                           >
                             Pogledaj profil
-                            <ArrowRight className="w-4 h-4" />
+                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           </Link>
                         </div>
                       </div>
