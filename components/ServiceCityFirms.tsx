@@ -302,9 +302,9 @@ export default function ServiceCityFirms({
                       <div className="flex-1 min-w-0 flex justify-between gap-2">
                         <div className="min-w-0">
                           <Link href={`/firma-profil/${firm.slug}/`}>
-                            <h3 className="font-extrabold text-gray-900 text-[15px] sm:text-base leading-tight truncate hover:text-brand-orange transition-colors">
-                              {firm.name}
-                            </h3>
+                          <h3 className="font-extrabold text-gray-900 text-[15px] sm:text-base leading-tight line-clamp-2 hover:text-brand-orange transition-colors">
+                            {firm.name}
+                          </h3>
                           </Link>
                           <p className="text-[13px] text-steel truncate">{categoryName}</p>
                           <p className="flex items-center gap-1 mt-0.5 text-[13px] whitespace-nowrap">
@@ -318,38 +318,40 @@ export default function ServiceCityFirms({
                               <span className="text-steel">Bez recenzija</span>
                             )}
                           </p>
-                          <p className="flex items-center gap-1 text-[13px] text-steel mt-0.5">
-                            <MapPin className="w-3.5 h-3.5" />
-                            <span className="truncate">{firm.city || cityName}</span>
-                          </p>
-                          {firm.verified && (
-                            <span
-                              className={`inline-flex items-center gap-1 mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${company ? 'bg-green-50 text-green-700' : 'bg-sky-50 text-sky-700'}`}
-                            >
-                              <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${company ? 'bg-green-500 text-white' : 'bg-sky-500 text-white'}`}>
-                                ✓
-                              </span>
-                              {company ? 'Provjerena firma' : 'Provjereni majstor'}
-                            </span>
-                          )}
-                        </div>
+                      <p className="flex items-center gap-1 text-[13px] text-steel mt-0.5">
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span className="truncate">{firm.city || cityName}</span>
+                      </p>
+                    </div>
 
-                        <div className="flex flex-col items-end justify-between shrink-0 py-0.5">
-                          <button
-                            onClick={() => toggleFavorite(firm.id)}
-                            aria-label="Sačuvaj firmu"
-                            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors"
+                    <div className="flex flex-col items-end justify-between shrink-0 py-0.5">
+                      <button
+                        onClick={() => toggleFavorite(firm.id)}
+                        aria-label="Sačuvaj firmu"
+                        className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-50 transition-colors"
+                      >
+                        <Heart className={`w-5 h-5 ${fav ? 'text-red-500 fill-red-500' : 'text-gray-900'}`} />
+                      </button>
+                      <div className="flex flex-col items-end gap-1.5">
+                        {firm.verified && (
+                          <span
+                            className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap ${company ? 'bg-green-50 text-green-700' : 'bg-sky-50 text-sky-700'}`}
                           >
-                            <Heart className={`w-5 h-5 ${fav ? 'text-red-500 fill-red-500' : 'text-gray-900'}`} />
-                          </button>
-                          <Link
-                            href={`/firma-profil/${firm.slug}/`}
-                            className="inline-flex items-center gap-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[12px] sm:text-sm font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap"
-                          >
-                            Pogledaj profil
-                            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                          </Link>
-                        </div>
+                            <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] ${company ? 'bg-green-500 text-white' : 'bg-sky-500 text-white'}`}>
+                              ✓
+                            </span>
+                            {company ? 'Provjerena firma' : 'Provjereni majstor'}
+                          </span>
+                        )}
+                        <Link
+                          href={`/firma-profil/${firm.slug}/`}
+                          className="inline-flex items-center gap-1 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[12px] sm:text-sm font-bold px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95 whitespace-nowrap"
+                        >
+                          Pogledaj profil
+                          <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        </Link>
+                      </div>
+                    </div>
                       </div>
                     </article>
                   );
