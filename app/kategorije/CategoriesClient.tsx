@@ -87,7 +87,7 @@ export default function CategoriesClient() {
         <Breadcrumbs items={[{ name: 'Kategorije' }]} />
 
         {/* Hero */}
-        <section className="relative min-h-[380px] sm:min-h-[440px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] flex flex-col overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src="/images/herozaposli.png"
@@ -102,19 +102,19 @@ export default function CategoriesClient() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-6 sm:pb-8">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-7">
               <div className="max-w-2xl">
                 <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
                   <LayoutGrid className="w-3.5 h-3.5" />
                   Kategorije
                 </span>
-                <h1 className="text-[28px] sm:text-5xl font-extrabold text-white leading-[1.08] tracking-tight mb-2 animate-fade-in">
+                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
                   Pronađi majstora{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                     za svaki posao.
                   </span>
                 </h1>
-                <p className="text-[13px] sm:text-base text-white/85 leading-snug mb-4 animate-fade-in">
+                <p className="text-sm sm:text-base text-white/85 leading-snug sm:leading-relaxed mb-3 sm:mb-4 animate-fade-in">
                   Sve usluge na jednom mjestu. Provjereni majstori i firme širom BiH.
                 </p>
 
