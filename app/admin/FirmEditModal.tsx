@@ -7,7 +7,7 @@ import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
   X, Loader2, AlertCircle, Check, Building2, Globe, FileText,
-  MapPin, Phone, Mail, Upload, Hash, Calendar,
+  MapPin, Phone, Mail, Upload, Hash, Calendar, Trash2,
 } from 'lucide-react';
 
 export interface AdminFirm {
@@ -146,6 +146,39 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
     setSelectedCategories((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
     );
+  }
+
+  async function handleDeleteFirm() {
+    if (!firm) return;
+    if (!confirm(`Jeste li sigurni da želite obrisati firmu "${firm.name}"? Ova akcija je nepovratna.`)) return;
+    setSaving(true);
+    setError('');
+    setSuccess('');
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) throw new Error('Niste prijavljeni.');
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/admin-user-action`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ action: 'delete_firm', firmId: firm.id }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Brisanje nije uspjelo.');
+      setSuccess('Firma je obrisana.');
+      onSaved();
+      setTimeout(onClose, 800);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Greška prilikom brisanja.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -509,6 +542,19 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
               </button>
             </div>
           </form>
+
+          <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
+            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Opasna zona</h3>
+            <button
+              type="button"
+              onClick={handleDeleteFirm}
+              disabled={saving}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-100 text-red-700 text-sm font-medium hover:bg-red-200 transition-colors disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+              Obriši firmu
+            </button>
+          </div>
         </div>
       </div>
     </div>
