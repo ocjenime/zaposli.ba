@@ -4,7 +4,7 @@ import {
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
   Waves, Flame, Wrench, LayoutGrid, Construction, Fence, Grid2x2,
   FlameKindling, Wind, Cog, GlassWater, House, SwatchBook, UtensilsCrossed,
-  SprayCan, SquareStack,
+  SprayCan, SquareStack, Tractor,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -34,6 +34,7 @@ const shortNames: Record<string, string> = {
   'zidarski-radovi': 'Zidarstvo',
   'tesarski-radovi': 'Tesarstvo',
   'betoniranje-i-armatura': 'Betoniranje',
+  'zemljani-radovi': 'Iskopi i bager',
   'rusenje': 'Rušenje',
   'krovopokrivanje': 'Krovopokrivanje',
   'limarski-radovi': 'Limarija',
@@ -131,6 +132,14 @@ export const categories: Category[] = [
     count: 0, priceRange: '30-70 KM/m²', priceNote: 'zavisno od konstrukcije',
     group: 'Građevina i zidarski radovi',
     services: ['Betoniranje temelja', 'Betoniranje ploča', 'Armatura', 'Oplate', 'Betonska stepeništa'],
+  },
+  {
+    name: 'Zemljani radovi i iskopi', slug: 'zemljani-radovi', seoSlug: 'iskopi-bager',
+    profession: 'Bagerista', icon: Tractor,
+    description: 'Iskopi bagerom, zemljani radovi, drenaža, septičke jame, nasipanje i ravnanje terena',
+    count: 0, priceRange: '80-150 KM/h', priceNote: 'sa bagerom i rukovaocem',
+    group: 'Građevina i zidarski radovi',
+    services: ['Iskop bagerom', 'Iskop temelja', 'Drenaža', 'Septičke jame', 'Nasipanje i ravnanje terena'],
   },
   {
     name: 'Rušenje i odvoz šuta', slug: 'rusenje', seoSlug: 'rusenje',

@@ -14,6 +14,8 @@ function pluralizeWord(word: string): string {
   }
   // ...ač -> ...ači (Krovopokrivač, Staklorezač)
   if (/ač$/i.test(word)) return word + 'i';
+  // Muška zanimanja na -ista (Bagerista -> Bageristi)
+  if (/ista$/i.test(word)) return word.slice(0, -1) + 'i';
   // ...ar, ...er, ...or, ...ir, ...ur -> +i (Zidar -> Zidari)
   if (/(ar|er|or|ir|ur|al|am|an|ik|ič|aš)$/i.test(word)) return word + 'i';
   // ...telj, ...ter, ...tar, ...tor, ...cer, ...đer -> +i
