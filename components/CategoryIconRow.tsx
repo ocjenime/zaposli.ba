@@ -22,14 +22,14 @@ export default function CategoryIconRow() {
     <section className="relative -mt-3 md:-mt-8 z-30 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 p-2 sm:p-4">
-          <div className="grid grid-cols-5 sm:grid-cols-9 gap-2 sm:gap-3 pb-0.5">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar snap-x pb-0.5">
             {featured.map((category) => {
               const Icon = category!.icon;
               return (
                 <Link
                   key={category!.slug}
                   href={`/kategorije/${category!.slug}/`}
-                  className="group flex flex-col items-center gap-1.5 text-center min-w-0"
+                  className="group flex flex-col items-center gap-1.5 text-center min-w-0 shrink-0 snap-start basis-[calc(20%-0.4rem)] sm:basis-auto sm:min-w-[92px]"
                 >
                   <span className="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                     <Icon className="w-4 h-4 sm:w-6 sm:h-6" />
@@ -42,7 +42,7 @@ export default function CategoryIconRow() {
             })}
             <Link
               href="/kategorije/"
-              className="group flex flex-col items-center gap-1.5 text-center min-w-0"
+              className="group flex flex-col items-center gap-1.5 text-center min-w-0 shrink-0 snap-start basis-[calc(20%-0.4rem)] sm:min-w-[92px]"
             >
               <span className="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                 <LayoutGrid className="w-4 h-4 sm:w-6 sm:h-6" />
