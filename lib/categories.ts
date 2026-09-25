@@ -2,9 +2,9 @@ import {
   BrickWall, Droplets, Zap, Paintbrush, Home, Hammer, TreePine,
   Shovel, Thermometer, Shield, Sparkles, Siren, Layers, KeySquare,
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
-  Waves, Flame, Wrench, LayoutGrid, Construction, Fence, Grid2x2,
+  Waves, Flame, Wrench, Construction, Fence, Grid2x2,
   FlameKindling, Wind, Cog, GlassWater, House, SwatchBook, UtensilsCrossed,
-  SprayCan, SquareStack, Tractor,
+  SprayCan, SquareStack, Tractor, Bath, PanelTop,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -203,7 +203,7 @@ export const categories: Category[] = [
   },
   {
     name: 'Gipsarski radovi', slug: 'gipsarski-radovi', seoSlug: 'gipsar',
-    profession: 'Gipsar', icon: LayoutGrid,
+    profession: 'Gipsar', icon: PanelTop,
     description: 'Spušteni plafoni, pregradni zidovi od gips-kartona, ugradnja LED rasvjete',
     count: 0, priceRange: '12-28 KM/m²', priceNote: 'po površini',
     group: 'Boje, zidovi i podovi',
@@ -227,7 +227,7 @@ export const categories: Category[] = [
   },
   {
     name: 'Keramičarski radovi', slug: 'keramicarski-radovi', seoSlug: 'keramicar',
-    profession: 'Keramičar', icon: Grid2x2,
+    profession: 'Keramičar', icon: Bath,
     description: 'Postavljanje keramike, pločica, mozaika i granita u kupatilima, kuhinjama i poslovnim prostorima',
     count: 0, priceRange: '15-35 KM/m²', priceNote: 'postavljanje',
     group: 'Boje, zidovi i podovi',
