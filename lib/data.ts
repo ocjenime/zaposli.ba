@@ -197,7 +197,7 @@ export const faqs: FaqItem[] = [
   },
   {
     question: 'Kako ažurirati portfolijo?',
-    answer: 'U dashboardu firme idite na "Profil firme" i dodajte fotografije završenih radova, opise projekata i reference. Profili s portfoliom dobijaju značajno više upita.',
+    answer: 'U dashboardu firme idite na "Profesionalni profil" i dodajte fotografije završenih radova, opise projekata i reference. Profili s portfoliom dobijaju značajno više upita.',
     category: 'firm',
   },
 

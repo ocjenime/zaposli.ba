@@ -288,7 +288,7 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
 
       setLogoUrl(newLogoUrl);
       setLogoFile(null);
-      setSuccess('Profil firme je uspješno ažuriran.');
+      setSuccess('Profesionalni profil je uspješno ažuriran.');
       onSaved();
     } catch (err: any) {
       setError(err?.message || 'Došlo je do neočekivane greške.');

@@ -112,7 +112,7 @@ export default function HowItWorksContent() {
   };
 
   const steps = role === 'client' ? clientSteps : firmSteps;
-  const roleLabel = role === 'client' ? 'Za klijente' : 'Za firme i majstore';
+  const roleLabel = role === 'client' ? 'Za klijente' : 'Za profesionalce';
   const ctaHref = role === 'client' ? '/objavi-projekat/' : '/registracija/';
   const ctaLabel = role === 'client' ? 'Objavi posao besplatno' : 'Registruj firmu besplatno';
 
@@ -442,7 +442,7 @@ export default function HowItWorksContent() {
               {[
                 { id: 'all', label: 'Sva pitanja', icon: HelpCircle },
                 { id: 'client', label: 'Za klijente', icon: Users },
-                { id: 'firm', label: 'Za firme', icon: Briefcase },
+                { id: 'firm', label: 'Za profesionalce', icon: Briefcase },
               ].map((tab) => (
                 <button
                   key={tab.id}

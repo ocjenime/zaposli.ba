@@ -47,7 +47,7 @@ export default function FirmMoreMenu({ open, onClose }: FirmMoreMenuProps) {
             onClick={onClose}
             className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 dark:text-white/90 font-medium hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
           >
-            <User className="w-5 h-5 text-brand-orange" /> Profil firme
+            <User className="w-5 h-5 text-brand-orange" /> Profesionalni profil
           </Link>
           <Link
             href="/dashboard/razgovor/"

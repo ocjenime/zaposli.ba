@@ -13,7 +13,7 @@ const footerLinks = {
     { name: 'Top firme', href: '/top-firme/' },
     { name: 'Blog', href: '/blog/' },
   ],
-  'Za firme': [
+  'Za profesionalce': [
     { name: 'Registracija', href: '/registracija/' },
     { name: 'Paketi', href: '/za-firme/#cijene' },
     { name: 'Aktivni poslovi', href: '/poslovi/' },

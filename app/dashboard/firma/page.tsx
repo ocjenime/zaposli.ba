@@ -506,7 +506,7 @@ function FirmDashboardContent() {
     if (!isCategoryAllowed(job)) {
       const category = getCategory(job.category_slug);
       setError(
-        `Ne možete slati ponudu za kategoriju "${category?.name || job.category_slug}". Idite na Profil firme i dodajte tu uslugu.`
+        `Ne možete slati ponudu za kategoriju "${category?.name || job.category_slug}". Idite na profesionalni profil i dodajte tu uslugu.`
       );
       return;
     }
@@ -655,7 +655,7 @@ function FirmDashboardContent() {
 
           {!loadingFirm && !firmId && (
             <EmptyState
-              title="Profil firme nije pronađen"
+              title="Profesionalni profil nije pronađen"
               description="Nemate povezan profil firme. Registrujte firmu kako biste mogli slati ponude."
               ctaLabel="Registruj firmu"
               ctaHref="/registracija/"
@@ -684,7 +684,7 @@ function FirmDashboardContent() {
                     href="/dashboard/firma/profil/"
                     className="inline-flex items-center gap-2 font-semibold text-amber-700 hover:underline"
                   >
-                    Idi na Profil firme <ArrowRight className="w-4 h-4" />
+                    Idi na profesionalni profil <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
               </div>
@@ -726,7 +726,7 @@ function FirmDashboardContent() {
                             href="/dashboard/firma/profil/"
                             className="inline-flex items-center gap-1 font-semibold text-amber-700 hover:underline"
                           >
-                            Idi na Profil firme <ArrowRight className="w-3.5 h-3.5" />
+                            Idi na profesionalni profil <ArrowRight className="w-3.5 h-3.5" />
                           </Link>
                         </div>
                       </div>
@@ -1022,7 +1022,7 @@ function FirmDashboardContent() {
                                           href="/dashboard/firma/profil/"
                                           className="inline-flex items-center gap-1.5 font-semibold text-amber-700 hover:underline"
                                         >
-                                          Idi na Profil firme <ArrowRight className="w-4 h-4" />
+                                          Idi na profesionalni profil <ArrowRight className="w-4 h-4" />
                                         </Link>
                                       </div>
                                     </div>
@@ -1411,7 +1411,7 @@ function FirmDashboardContent() {
                   <p className="text-sm text-steel py-4">
                     Nemate odabranih kategorija. Idite na{' '}
                     <Link href="/dashboard/firma/profil/" className="text-brand-orange hover:underline">
-                      Profil firme
+                      Profesionalni profil
                     </Link>{' '}
                     da biste odabrali kategorije.
                   </p>

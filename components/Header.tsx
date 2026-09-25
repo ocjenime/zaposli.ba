@@ -44,7 +44,7 @@ const navLinks = [
   { href: '/poslovi/', label: 'Poslovi', icon: FolderOpen },
   { href: '/oglasi/', label: 'Oglasi', icon: Megaphone },
   { href: '/kako-funkcionise/', label: 'Kako funkcioniše', icon: HelpCircle },
-  { href: '/za-firme/', label: 'Za firme', icon: Building2 },
+  { href: '/za-firme/', label: 'Za profesionalce', icon: Building2 },
   { href: '/kontakt/', label: 'Kontakt', icon: Mail },
 ];
 
@@ -65,7 +65,7 @@ const mobilePrimaryLinks = [
 
 const mobileSecondaryLinks = [
   { href: '/kako-funkcionise/', label: 'Kako funkcioniše', icon: HelpCircle },
-  { href: '/za-firme/', label: 'Za firme', icon: Building2 },
+  { href: '/za-firme/', label: 'Za profesionalce', icon: Building2 },
   { href: '/kontakt/', label: 'Kontakt', icon: Mail },
 ];
 

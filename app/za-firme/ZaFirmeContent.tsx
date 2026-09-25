@@ -168,7 +168,7 @@ export default function ZaFirmeContent() {
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs dark items={[{ name: 'Za firme' }]} />
+        <Breadcrumbs dark items={[{ name: 'Za profesionalce' }]} />
         {/* Hero */}
         <section className="relative overflow-hidden">
           <Image
@@ -187,7 +187,7 @@ export default function ZaFirmeContent() {
               <div>
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-white/80 mb-3 sm:mb-4">
                   <Briefcase className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-brand-orange" />
-                  ZA FIRME I MAJSTORE
+                  ZA PROFESIONALCE
                 </span>
                 <h1 className="text-[27px] leading-[1.08] sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-3 sm:mb-4">
                   Vi radite posao.
@@ -560,7 +560,7 @@ export default function ZaFirmeContent() {
         data={[
           breadcrumbSchema([
             { name: 'Početna', url: '/' },
-            { name: 'Za firme', url: '/za-firme/' },
+            { name: 'Za profesionalce', url: '/za-firme/' },
           ]),
           faqSchema(faqs),
         ]}

@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profil firme | Zaposli.ba',
+  title: 'Profesionalni profil | Zaposli.ba',
   robots: { index: false, follow: true },
 };
 

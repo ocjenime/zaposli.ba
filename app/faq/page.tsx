@@ -51,7 +51,7 @@ const groups: FaqGroup[] = [
   },
   {
     id: 'firme',
-    label: 'Za firme i majstore',
+    label: 'Za profesionalce',
     icon: Briefcase,
     items: faqs.filter((f) => f.category === 'firm'),
   },

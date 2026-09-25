@@ -59,7 +59,7 @@ export async function generateMetadata({
 
   if (!firm) {
     return {
-      title: 'Profil firme nije pronađen | Zaposli.ba',
+      title: 'Profesionalni profil nije pronađen | Zaposli.ba',
       alternates: { canonical: `${site.url}/firma-profil/${slug}/` },
       robots: { index: false, follow: true },
     };

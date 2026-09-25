@@ -2000,7 +2000,7 @@ function AdminPage() {
               onSaved={() => {
                 loadFirms();
                 loadFirmPlans();
-                setSuccess('Profil firme ažuriran.');
+                setSuccess('Profesionalni profil ažuriran.');
               }}
             />
           )}

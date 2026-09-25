@@ -17,7 +17,7 @@ const menuItems = [
   { key: 'bids' as TabKey, label: 'Moje ponude', icon: Send, badgeKey: 'bidsCount' as const },
   { key: 'stats' as TabKey, label: 'Statistika', icon: BarChart3, badge: 0 },
   { key: 'messages' as TabKey, label: 'Poruke', icon: MessageSquare, badgeKey: 'unreadMessages' as const },
-  { key: 'profile' as TabKey, label: 'Profil firme', icon: User, badge: 0 },
+  { key: 'profile' as TabKey, label: 'Profesionalni profil', icon: User, badge: 0 },
 ];
 
 export default function FirmIconMenu({

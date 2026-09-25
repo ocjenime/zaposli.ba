@@ -3,7 +3,7 @@
 
 export const planFeatures: Record<string, string[]> = {
   besplatno: [
-    'Profil firme / majstora',
+    'Profesionalni profil',
     '5 ponuda mjesečno',
     'Direktan kontakt sa klijentima',
     'Osnovni portfolio',

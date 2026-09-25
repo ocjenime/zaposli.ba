@@ -22,7 +22,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 
-const topics = ['Općenito', 'Pomoć korisnicima', 'Za firme', 'Prijava problema'];
+const topics = ['Općenito', 'Pomoć korisnicima', 'Za profesionalce', 'Prijava problema'];
 
 const helpCards = [
   {
@@ -33,9 +33,9 @@ const helpCards = [
   },
   {
     icon: Briefcase,
-    title: 'Za firme',
-    description: 'Podrška za poslodavce, verifikaciju i oglašavanje radnih mjesta.',
-    topic: 'Za firme',
+    title: 'Za profesionalce',
+    description: 'Podrška za firme i majstore, verifikaciju i pretplate.',
+    topic: 'Za profesionalce',
   },
   {
     icon: AlertTriangle,

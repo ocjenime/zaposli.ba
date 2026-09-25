@@ -534,7 +534,7 @@ function ProjectsPageContent() {
                       onClick={() => setCategoryWarningJob(null)}
                       className="inline-flex items-center justify-center gap-2 bg-brand-orange text-white px-4 py-2.5 rounded-xl font-semibold hover:bg-brand-orange-dark transition-colors"
                     >
-                      Idi na Profil firme
+                      Idi na profesionalni profil
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                     <button

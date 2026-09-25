@@ -59,7 +59,7 @@ export default function CTASection() {
                 <Wrench className="w-5 h-5 text-[#ffffff]" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">Za firme i majstore</h3>
+                <h3 className="text-lg font-bold text-gray-900">Za profesionalce</h3>
                 <p className="text-xs text-gray-500">Pridružite se našoj platformi</p>
               </div>
             </div>

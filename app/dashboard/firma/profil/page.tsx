@@ -452,7 +452,7 @@ export default function FirmProfileEditorPage() {
       <main className="flex-grow pt-24 pb-10 px-4">
         <div className="max-w-3xl mx-auto">
           <DashboardHeader
-            label="Profil firme"
+            label="Profesionalni profil"
             title="Upravljanje profilom"
             email={user?.email || ''}
             actions={
