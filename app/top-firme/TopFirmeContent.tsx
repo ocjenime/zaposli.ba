@@ -14,12 +14,6 @@ import {
   Search,
   X,
   LayoutGrid,
-  Home,
-  Grid2x2,
-  Zap,
-  Droplet,
-  PaintRoller,
-  Menu,
   Briefcase,
   Building2,
 } from 'lucide-react';
@@ -30,7 +24,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
-import { getCategory, getCategoryShortName } from '@/lib/data';
+import { getCategory, getCategoryShortName, categories } from '@/lib/data';
 import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
@@ -65,11 +59,19 @@ const TABS: { id: TabId; label: string }[] = [
 
 const FILTER_CATS: { label: string; icon: typeof LayoutGrid; slugs: string[] }[] = [
   { label: 'Sve kategorije', icon: LayoutGrid, slugs: [] },
-  { label: 'Adaptacije', icon: Home, slugs: ['adaptacije'] },
-  { label: 'Keramika', icon: Grid2x2, slugs: ['keramicarski-radovi'] },
-  { label: 'Elektro', icon: Zap, slugs: ['elektroinstalacije'] },
-  { label: 'Voda i grijanje', icon: Droplet, slugs: ['vodoinstalacije', 'grijanje-i-hladjenje'] },
-  { label: 'Moleraj', icon: PaintRoller, slugs: ['molerski-radovi'] },
+  ...[
+    'adaptacije',
+    'keramicarski-radovi',
+    'elektroinstalacije',
+    'vodoinstalacije',
+    'stolarija',
+    'krovopokrivanje',
+    'molerski-radovi',
+    'gipsarski-radovi',
+  ].map((slug) => {
+    const cat = categories.find((c) => c.slug === slug)!;
+    return { label: cat.name, icon: cat.icon, slugs: [slug] };
+  }),
 ];
 
 const TRUST_ITEMS = [
@@ -336,17 +338,6 @@ export default function TopFirmeContent() {
                     </button>
                   );
                 })}
-                <Link
-                  href="/kategorije/"
-                  className="group flex flex-col items-center gap-1.5 min-w-[84px] sm:min-w-[92px] text-center"
-                >
-                  <span className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
-                    <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
-                  </span>
-                  <span className="text-[11px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight px-1 h-7 line-clamp-2 flex items-center justify-center">
-                    Više
-                  </span>
-                </Link>
               </div>
             </div>
           </div>
