@@ -59,7 +59,7 @@ const mobilePrimaryLinks = [
   { href: '/gradovi/', label: 'Gradovi', icon: MapPin },
   { href: '/poslovi/', label: 'Poslovi', icon: ClipboardList },
   { href: '/objavi-projekat/', label: 'Objavi posao', icon: Briefcase, badge: 'Besplatno' },
-  { href: '/top-firme/', label: 'Pronađi majstora', icon: HardHat },
+  { href: '/top-firme/', label: 'Pronađi profesionalca', icon: HardHat },
   { href: '/oglasi/', label: 'Oglasi', icon: Megaphone },
 ];
 

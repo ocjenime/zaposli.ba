@@ -218,26 +218,51 @@ export default function RegisterForm() {
                     </p>
                   </div>
                 )}
-                <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="grid grid-cols-2 gap-3 mb-3">
                   {([
-                    { value: 'client', label: 'Klijent' },
-                    { value: 'firm', label: 'Firma' },
-                    { value: 'majstor', label: 'Majstor' },
-                  ] as const).map((type) => (
-                    <button
-                      key={type.value}
-                      type="button"
-                      onClick={() => setUserType(type.value)}
-                      className={`py-3 px-2 rounded-lg font-medium text-sm transition-colors ${
-                        userType === type.value
-                          ? 'bg-primary-600 text-[#ffffff]'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {type.label}
-                    </button>
-                  ))}
+                    { value: 'client', label: 'Korisnik' },
+                    { value: 'pro', label: 'Profesionalac' },
+                  ] as const).map((type) => {
+                    const active =
+                      type.value === 'client' ? !isFirmRole(userType) : isFirmRole(userType);
+                    return (
+                      <button
+                        key={type.value}
+                        type="button"
+                        onClick={() => setUserType(type.value === 'client' ? 'client' : 'firm')}
+                        className={`py-3 px-2 rounded-lg font-medium text-sm transition-colors ${
+                          active
+                            ? 'bg-primary-600 text-[#ffffff]'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {type.label}
+                      </button>
+                    );
+                  })}
                 </div>
+                {isFirmRole(userType) && (
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {([
+                      { value: 'firm', label: 'Firma' },
+                      { value: 'majstor', label: 'Samostalni majstor' },
+                    ] as const).map((type) => (
+                      <button
+                        key={type.value}
+                        type="button"
+                        onClick={() => setUserType(type.value)}
+                        className={`py-2.5 px-2 rounded-lg font-medium text-sm transition-colors border ${
+                          userType === type.value
+                            ? 'bg-primary-600 text-[#ffffff] border-primary-600'
+                            : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        {type.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {!isFirmRole(userType) && <div className="mb-6" />}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
               <div>

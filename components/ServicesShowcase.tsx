@@ -54,7 +54,7 @@ export default function ServicesShowcase() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 bg-primary-50 text-brand-orange rounded-full text-sm font-semibold mb-4">
-            Pronađite majstora
+            Pronađite profesionalca
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
             Stvarni majstori za svaki posao
@@ -90,7 +90,7 @@ export default function ServicesShowcase() {
                 <div className="p-5 flex flex-col flex-1">
                   <p className="text-sm text-steel leading-relaxed mb-4 flex-1">{service.description}</p>
                   <span className={`inline-flex items-center gap-1.5 text-sm font-semibold ${service.cta ? 'text-brand-orange' : 'text-steel'}`}>
-                    {service.cta ? 'Pogledajte sve kategorije' : 'Pronađite majstora'}
+                    {service.cta ? 'Pogledajte sve kategorije' : 'Pronađite profesionalca'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </div>

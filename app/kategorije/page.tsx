@@ -6,7 +6,7 @@ import { site } from '@/lib/site';
 const seoCategories = categories.filter((c) => !c.noSeo);
 
 export const metadata: Metadata = {
-  title: `Kategorije usluga u BiH - ${seoCategories.length} struka | Pronađite majstora | Zaposli.ba`,
+  title: `Kategorije usluga u BiH - ${seoCategories.length} struka | Pronađite profesionalca | Zaposli.ba`,
   description: `Pronađite majstore za sve vrste usluga u Bosni i Hercegovini. ${seoCategories.length} kategorija - od građevine, vodoinstalacije i električara do čišćenja, selidbi i hitnih intervencija 24/7.`,
   keywords: [
     'kategorije usluga BiH',

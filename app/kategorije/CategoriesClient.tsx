@@ -109,7 +109,7 @@ export default function CategoriesClient() {
                   Kategorije
                 </span>
                 <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
-                  Pronađi majstora{' '}
+                  Pronađi profesionalca{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                     za svaki posao.
                   </span>

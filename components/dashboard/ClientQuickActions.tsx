@@ -18,7 +18,7 @@ export default function ClientQuickActions() {
         className="flex items-center justify-center gap-2 px-4 py-4 rounded-2xl bg-ink-900 hover:bg-ink-800 text-white font-semibold text-sm transition-all active:scale-95"
       >
         <Search className="w-5 h-5" />
-        Pronađi majstora
+        Pronađi profesionalca
       </Link>
     </div>
   );
