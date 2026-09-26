@@ -4,7 +4,7 @@ import {
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
   Waves, Flame, Wrench, Construction, Fence, Grid2x2,
   FlameKindling, Wind, Cog, GlassWater, SwatchBook, UtensilsCrossed,
-  SprayCan, SquareStack, Tractor, Bath, PanelTop, Warehouse,
+  SprayCan, SquareStack, Tractor, Bath, PanelTop, Triangle,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -172,7 +172,7 @@ export const categories: Category[] = [
   // Krov, fasada i izolacija
   {
     name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
-    profession: 'Krovopokrivač', icon: Warehouse,
+    profession: 'Krovopokrivač', icon: Triangle,
     description: 'Izrada i popravke krovova, oluci, hidroizolacija i ravni krovovi',
     count: 0, priceRange: '25-55 KM/m²', priceNote: 'zavisno od pokrivača',
     group: 'Krov, fasada i izolacija',
