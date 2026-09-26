@@ -3,8 +3,8 @@ import {
   Shovel, Thermometer, Shield, Sparkles, Siren, Layers, KeySquare,
   Wifi, Armchair, Truck, Car, HelpCircle, Sun, Ruler, Palette,
   Waves, Flame, Wrench, Construction, Fence, Grid2x2,
-  FlameKindling, Wind, Cog, GlassWater, House, SwatchBook, UtensilsCrossed,
-  SprayCan, SquareStack, Tractor, Bath, PanelTop,
+  FlameKindling, Wind, Cog, GlassWater, SwatchBook, UtensilsCrossed,
+  SprayCan, SquareStack, Tractor, Bath, PanelTop, Warehouse,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -89,6 +89,25 @@ export function getCategoryShortName(cat: Category): string {
   return shortNames[cat.slug] || cat.name;
 }
 
+/**
+ * Jednoredna labela za icon barove (homepage, top-firme).
+ * Kratki nazivi zanimanja koji stanu u usku kolonu bez lomljenja riječi.
+ */
+const barLabels: Record<string, string> = {
+  'adaptacije': 'Adaptacije',
+  'keramicarski-radovi': 'Keramičar',
+  'elektroinstalacije': 'Električar',
+  'vodoinstalacije': 'Vodoinstalater',
+  'stolarija': 'Stolar',
+  'krovopokrivanje': 'Krovopokrivač',
+  'molerski-radovi': 'Moler',
+  'gipsarski-radovi': 'Gipsar',
+};
+
+export function getCategoryBarLabel(cat: Category): string {
+  return barLabels[cat.slug] || getCategoryShortName(cat);
+}
+
 export const categories: Category[] = [
   // HITNO 24/7
   {
@@ -153,7 +172,7 @@ export const categories: Category[] = [
   // Krov, fasada i izolacija
   {
     name: 'Krovopokrivanje', slug: 'krovopokrivanje', seoSlug: 'krovopokrivac',
-    profession: 'Krovopokrivač', icon: House,
+    profession: 'Krovopokrivač', icon: Warehouse,
     description: 'Izrada i popravke krovova, oluci, hidroizolacija i ravni krovovi',
     count: 0, priceRange: '25-55 KM/m²', priceNote: 'zavisno od pokrivača',
     group: 'Krov, fasada i izolacija',

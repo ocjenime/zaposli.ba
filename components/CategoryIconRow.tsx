@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { LayoutGrid } from 'lucide-react';
-import { categories } from '@/lib/categories';
+import { categories, getCategoryBarLabel } from '@/lib/categories';
 
 const FEATURED_SLUGS = [
   'adaptacije',
@@ -34,8 +34,8 @@ export default function CategoryIconRow() {
                   <span className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </span>
-                  <span className="text-[11px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight w-full h-7 line-clamp-2 break-words text-center overflow-hidden">
-                    {category!.name}
+                  <span className="block text-center text-[10px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight w-full whitespace-nowrap overflow-hidden text-ellipsis">
+                    {getCategoryBarLabel(category!)}
                   </span>
                 </Link>
               );
@@ -47,7 +47,7 @@ export default function CategoryIconRow() {
               <span className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-xl bg-gray-50 dark:bg-ink-800 border border-gray-100 dark:border-ink-700 flex items-center justify-center text-gray-700 dark:text-[#ffffff]/90 group-hover:bg-brand-orange/10 group-hover:border-brand-orange/30 group-hover:text-brand-orange transition-all duration-300">
                 <LayoutGrid className="w-5 h-5 sm:w-6 sm:h-6" />
               </span>
-              <span className="text-[11px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight w-full h-7 line-clamp-2 break-words text-center overflow-hidden">
+              <span className="block text-center text-[10px] sm:text-xs font-medium text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange transition-colors leading-tight w-full whitespace-nowrap overflow-hidden text-ellipsis">
                 Sve kategorije
               </span>
             </Link>

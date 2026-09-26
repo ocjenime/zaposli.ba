@@ -24,7 +24,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
-import { getCategory, getCategoryShortName, categories } from '@/lib/data';
+import { getCategory, getCategoryShortName, getCategoryBarLabel, categories } from '@/lib/data';
 import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
@@ -70,7 +70,7 @@ const FILTER_CATS: { label: string; icon: typeof LayoutGrid; slugs: string[] }[]
     'gipsarski-radovi',
   ].map((slug) => {
     const cat = categories.find((c) => c.slug === slug)!;
-    return { label: cat.name, icon: cat.icon, slugs: [slug] };
+    return { label: getCategoryBarLabel(cat), icon: cat.icon, slugs: [slug] };
   }),
 ];
 
@@ -327,7 +327,7 @@ export default function TopFirmeContent() {
                         <c.icon className="w-5 h-5 sm:w-6 sm:h-6" />
                       </span>
                       <span
-                        className={`text-[11px] sm:text-xs font-medium leading-tight px-1 h-7 line-clamp-2 flex items-center justify-center transition-colors ${
+                        className={`block text-center text-[10px] sm:text-xs font-medium leading-tight w-full whitespace-nowrap overflow-hidden text-ellipsis transition-colors ${
                           active
                             ? 'text-brand-orange'
                             : 'text-gray-700 dark:text-[#ffffff]/85 group-hover:text-brand-orange'

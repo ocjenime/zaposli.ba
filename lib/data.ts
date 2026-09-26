@@ -1,4 +1,4 @@
-export { categories, getCategory, getCategoryShortName } from './categories';
+export { categories, getCategory, getCategoryShortName, getCategoryBarLabel } from './categories';
 export type { Category } from './categories';
 
 /* ---------------------------------- GRADOVI ---------------------------------- */
