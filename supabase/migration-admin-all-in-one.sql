@@ -268,3 +268,42 @@ BEGIN
       FOREIGN KEY (mediation_admin_id) REFERENCES public.profiles(id) ON DELETE SET NULL;
   END IF;
 END $$;
+
+-- ---------------------------------------------------------------------------
+-- 17. toggle_job_featured RPC (isticanje poslova bez RLS konflikta)
+-- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.toggle_job_featured(job_id UUID)
+RETURNS TABLE (is_featured BOOLEAN, featured_until TIMESTAMPTZ)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET row_security = off
+AS $$
+DECLARE
+  current_featured BOOLEAN;
+  new_featured BOOLEAN;
+BEGIN
+  IF NOT is_admin_user(auth.uid()) THEN
+    RAISE EXCEPTION 'Samo administrator može isticati poslove.';
+  END IF;
+
+  SELECT j.is_featured INTO current_featured
+  FROM public.jobs j
+  WHERE j.id = job_id;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Posao nije pronađen.';
+  END IF;
+
+  new_featured := NOT COALESCE(current_featured, false);
+
+  UPDATE public.jobs
+  SET
+    is_featured = new_featured,
+    featured_until = CASE WHEN new_featured THEN now() + INTERVAL '30 days' ELSE NULL END
+  WHERE id = job_id;
+
+  RETURN QUERY SELECT new_featured, (CASE WHEN new_featured THEN now() + INTERVAL '30 days' ELSE NULL END)::TIMESTAMPTZ;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.toggle_job_featured(UUID) TO authenticated;

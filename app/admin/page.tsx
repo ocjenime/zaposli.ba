@@ -603,21 +603,32 @@ function AdminPage() {
     setSavingJob(job.id);
     setError('');
     setSuccess('');
-    const newFeatured = !job.is_featured;
-    const { error: err } = await supabase
-      .from('jobs')
-      .update({
-        is_featured: newFeatured,
-        featured_until: newFeatured ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null,
-      })
-      .eq('id', job.id);
+    const { data, error: err } = await supabase.rpc('toggle_job_featured', {
+      job_id: job.id,
+    });
     setSavingJob(null);
     if (err) {
-      setError(err.message);
+      setError(`Isticanje nije uspjelo: ${err.message}`);
       return;
     }
+    const row = (Array.isArray(data) ? data[0] : data) as {
+      is_featured: boolean;
+      featured_until: string | null;
+    } | undefined;
+    if (!row) {
+      setError('Isticanje nije uspjelo: prazan odgovor servera.');
+      return;
+    }
+    // Optimistički prikaz odmah, pa potvrda sa servera.
+    setJobs((prev) =>
+      prev.map((j) =>
+        j.id === job.id ? { ...j, is_featured: row.is_featured, featured_until: row.featured_until } : j
+      )
+    );
     await loadJobs();
-    setSuccess(`Posao ${newFeatured ? 'istaknut' : 'uklonjen sa istaknutog'}.`);
+    setSuccess(
+      row.is_featured ? 'Posao je istaknut na 30 dana.' : 'Posao je uklonjen sa istaknutog.'
+    );
   }
 
   async function markReportRead(id: string) {
