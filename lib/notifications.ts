@@ -63,8 +63,13 @@ export function getNotificationHref(notification: Notification, role: string | n
     return '/admin/?tab=mediations';
   }
 
+  // Admin-only tipovi: redove dobijaju isključivo admini, pa ruta ne zavisi od role.
   if (type === 'subscription_request') {
-    return role === 'admin' ? '/admin/?tab=requests' : undefined;
+    return '/admin/?tab=requests';
+  }
+
+  if (type === 'new_user') {
+    return '/admin/?tab=users';
   }
 
   if (type === 'payment') {
