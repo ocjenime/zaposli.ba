@@ -131,7 +131,7 @@ export default function KontaktPage() {
         </section>
 
         {/* Form card overlapping hero */}
-        <section className="relative z-20 -mt-8">
+        <section className="relative z-20 -mt-8 md:mt-2">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div
               id="kontakt-forma"

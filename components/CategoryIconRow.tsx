@@ -22,7 +22,7 @@ export default function CategoryIconRow() {
     <section className="relative -mt-3 md:mt-2 z-30 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 p-2 sm:p-4">
-          <div className="flex gap-3 overflow-x-auto no-scrollbar snap-x pb-0.5">
+          <div className="flex gap-3 overflow-x-auto no-scrollbar snap-x pb-0.5 lg:justify-center">
             {featured.map((category) => {
               const Icon = category!.icon;
               return (
