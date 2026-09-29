@@ -307,3 +307,30 @@ END;
 $$;
 
 GRANT EXECUTE ON FUNCTION public.toggle_job_featured(UUID) TO authenticated;
+
+-- ---------------------------------------------------------------------------
+-- 18. delete_job_admin RPC (brisanje poslova bez RLS konflikta; ponude,
+--     slike i promocije se brišu kaskadno, poruke/notifikacije ostaju)
+-- ---------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION public.delete_job_admin(p_job_id UUID)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET row_security = off
+AS $$
+BEGIN
+  IF NOT is_admin_user(auth.uid()) THEN
+    RAISE EXCEPTION 'Samo administrator može brisati poslove.';
+  END IF;
+
+  DELETE FROM public.jobs WHERE id = p_job_id;
+
+  IF NOT FOUND THEN
+    RAISE EXCEPTION 'Posao nije pronađen.';
+  END IF;
+
+  RETURN true;
+END;
+$$;
+
+GRANT EXECUTE ON FUNCTION public.delete_job_admin(UUID) TO authenticated;

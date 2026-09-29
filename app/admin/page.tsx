@@ -632,6 +632,24 @@ function AdminPage() {
     if (err) throw err;
   }
 
+  async function deleteJob(job: AdminJob) {
+    if (!confirm(`Jeste li sigurni da želite obrisati posao "${job.title}"? Ova akcija je nepovratna.`)) return;
+    setSavingJob(job.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase.rpc('delete_job_admin', {
+      p_job_id: job.id,
+    });
+    setSavingJob(null);
+    if (err) {
+      setError(`Brisanje nije uspjelo: ${err.message}`);
+      return;
+    }
+    setJobs((prev) => prev.filter((j) => j.id !== job.id));
+    await loadJobs();
+    setSuccess('Posao je obrisan.');
+  }
+
   async function toggleJobFeatured(job: AdminJob) {
     setSavingJob(job.id);
     setError('');
@@ -1515,6 +1533,20 @@ function AdminPage() {
                               <>
                                 <Star className="w-3.5 h-3.5" />
                                 Istakni
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={() => deleteJob(job)}
+                            disabled={savingJob === job.id}
+                            className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition-colors disabled:opacity-50"
+                          >
+                            {savingJob === job.id ? (
+                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <>
+                                <XCircle className="w-3.5 h-3.5" />
+                                Obriši
                               </>
                             )}
                           </button>
