@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import {
   X, LayoutDashboard, Users, Building2, ShieldCheck, Star, MessageSquare,
-  Briefcase, CreditCard, DollarSign, FileText, Flag, Megaphone, Bell,
+  Briefcase, TrendingUp, CreditCard, DollarSign, FileText, Flag, Megaphone, Bell,
   Scale, ArrowLeft, LogOut,
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
@@ -25,6 +25,7 @@ const menuItems = [
   { href: '/admin/?tab=reviews', label: 'Recenzije', icon: Star, badgeKey: 'pendingReviews' },
   { href: '/admin/?tab=conversations', label: 'Razgovori', icon: MessageSquare, badgeKey: null },
   { href: '/admin/?tab=jobs', label: 'Poslovi', icon: Briefcase, badgeKey: null },
+  { href: '/admin/?tab=bids', label: 'Ponude', icon: TrendingUp, badgeKey: null },
   { href: '/admin/?tab=subscriptions', label: 'Pretplate', icon: CreditCard, badgeKey: null },
   { href: '/admin/?tab=payments', label: 'Plaćanja', icon: DollarSign, badgeKey: null },
   { href: '/admin/?tab=plans', label: 'Paketi', icon: FileText, badgeKey: null },

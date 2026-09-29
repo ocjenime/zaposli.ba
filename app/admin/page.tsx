@@ -84,6 +84,15 @@ interface AdminJob {
   client_id: string;
 }
 
+interface AdminBid {
+  id: string;
+  amount: number;
+  status: string;
+  created_at: string;
+  jobs: { title: string; city: string } | null;
+  firms: { name: string } | null;
+}
+
 interface AdminReport {
   id: string;
   type: string;
@@ -184,6 +193,7 @@ const tabs = [
   { id: 'reviews', label: 'Recenzije', icon: Star },
   { id: 'conversations', label: 'Razgovori', icon: MessageSquare },
   { id: 'jobs', label: 'Poslovi', icon: Briefcase },
+  { id: 'bids', label: 'Ponude', icon: TrendingUp },
   { id: 'subscriptions', label: 'Pretplate', icon: CreditCard },
   { id: 'payments', label: 'Plaćanja', icon: DollarSign },
   { id: 'plans', label: 'Paketi', icon: FileText },
@@ -195,7 +205,7 @@ const tabs = [
 
 const validTabs = [
   'overview', 'users', 'firms', 'verifications', 'reviews', 'conversations',
-  'jobs', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'promotions', 'requests',
+  'jobs', 'bids', 'subscriptions', 'payments', 'plans', 'reports', 'mediations', 'promotions', 'requests',
 ];
 
 function AdminPage() {
@@ -213,6 +223,7 @@ function AdminPage() {
   const [payments, setPayments] = useState<PaymentRow[]>([]);
   const [conversations, setConversations] = useState<AdminConversation[]>([]);
   const [jobs, setJobs] = useState<AdminJob[]>([]);
+  const [bidsList, setBidsList] = useState<AdminBid[]>([]);
   const [reports, setReports] = useState<AdminReport[]>([]);
   const [verifications, setVerifications] = useState<AdminVerification[]>([]);
   const [reviews, setReviews] = useState<AdminReview[]>([]);
@@ -229,6 +240,7 @@ function AdminPage() {
   const [savingAdmin, setSavingAdmin] = useState<string | null>(null);
   const [loadingSubscriptions, setLoadingSubscriptions] = useState(false);
   const [loadingJobs, setLoadingJobs] = useState(false);
+  const [loadingBids, setLoadingBids] = useState(false);
   const [loadingReports, setLoadingReports] = useState(false);
   const [loadingVerifications, setLoadingVerifications] = useState(false);
   const [loadingReviews, setLoadingReviews] = useState(false);
@@ -426,6 +438,23 @@ function AdminPage() {
     }
   }, []);
 
+  const loadBids = useCallback(async () => {
+    setLoadingBids(true);
+    try {
+      const { data, error } = await supabase
+        .from('bids')
+        .select('id, amount, status, created_at, jobs(title, city), firms(name)')
+        .order('created_at', { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      setBidsList((data as unknown as AdminBid[]) || []);
+    } catch (err) {
+      setError('Greška prilikom učitavanja ponuda.');
+    } finally {
+      setLoadingBids(false);
+    }
+  }, []);
+
   const loadReports = useCallback(async () => {
     setLoadingReports(true);
     try {
@@ -532,6 +561,9 @@ function AdminPage() {
     if (activeTab === 'jobs') {
       loadJobs();
     }
+    if (activeTab === 'bids') {
+      loadBids();
+    }
     if (activeTab === 'reports') {
       loadReports();
     }
@@ -547,7 +579,7 @@ function AdminPage() {
     if (activeTab === 'promotions') {
       loadPromotions();
     }
-  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadReports, loadVerifications, loadReviews, loadMediations, loadPromotions]);
+  }, [activeTab, firms, loadFirmPlans, loadPromoCount, loadConversations, loadPayments, loadJobs, loadBids, loadReports, loadVerifications, loadReviews, loadMediations, loadPromotions]);
 
   async function toggleVerified(firm: AdminFirm) {
     setSavingVerified(firm.id);
@@ -1484,6 +1516,68 @@ function AdminPage() {
                               </>
                             )}
                           </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {activeTab === 'bids' && (
+                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                  <div className="p-4 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <p className="text-sm text-steel">Sve ponude firmi (najnovije prvo)</p>
+                    <button
+                      onClick={loadBids}
+                      disabled={loadingBids}
+                      className="text-sm text-brand-orange hover:text-brand-orange-dark font-medium disabled:opacity-50"
+                    >
+                      {loadingBids ? 'Učitavanje...' : 'Osvježi'}
+                    </button>
+                  </div>
+                  {loadingBids ? (
+                    <div className="flex items-center justify-center py-12 text-steel">
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje ponuda...
+                    </div>
+                  ) : bidsList.length === 0 ? (
+                    <p className="p-6 text-sm text-steel text-center">Nema ponuda.</p>
+                  ) : (
+                    <div className="divide-y divide-gray-100">
+                      {bidsList.map((bid) => (
+                        <div
+                          key={bid.id}
+                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                        >
+                          <div>
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-medium text-gray-900">
+                                {bid.firms?.name || 'Nepoznata firma'}
+                              </p>
+                              <span className="text-sm font-bold text-brand-orange">
+                                {Number(bid.amount).toLocaleString('bs-BA')} KM
+                              </span>
+                              {bid.status === 'pending' && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
+                                  NA ČEKANJU
+                                </span>
+                              )}
+                              {bid.status === 'accepted' && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                                  PRIHVAĆENA
+                                </span>
+                              )}
+                              {bid.status === 'rejected' && (
+                                <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                  ODBIJENA
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-sm text-steel">
+                              Posao: {bid.jobs?.title || '-'}
+                              {bid.jobs?.city ? ` · ${bid.jobs.city}` : ''} ·{' '}
+                              {formatDate(bid.created_at)}
+                            </p>
+                          </div>
                         </div>
                       ))}
                     </div>
