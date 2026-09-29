@@ -9,7 +9,6 @@ import FeaturedAdsSection from '@/components/FeaturedAdsSection';
 import LatestAdsSection from '@/components/LatestAdsSection';
 import RecommendedFirmsSection from '@/components/RecommendedFirmsSection';
 import HowItWorks from '@/components/HowItWorks';
-import StatsSection from '@/components/StatsSection';
 import Testimonials from '@/components/Testimonials';
 import CTASection from '@/components/CTASection';
 import LazySection from '@/components/LazySection';
@@ -69,9 +68,6 @@ export default function Home() {
         <RecommendedFirmsSection />
         <LazySection minHeight="18rem">
           <HowItWorks />
-        </LazySection>
-        <LazySection minHeight="16rem">
-          <StatsSection />
         </LazySection>
         <LazySection minHeight="20rem">
           <Testimonials />
