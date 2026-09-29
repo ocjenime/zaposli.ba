@@ -218,7 +218,7 @@ function ProjectsPageContent() {
         <Breadcrumbs items={[{ name: 'Poslovi' }]} />
 
         {/* Header */}
-        <section className="pt-20 md:pt-24 pb-4 md:pb-6">
+        <section className="pt-1 md:pt-24 pb-4 md:pb-6">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
