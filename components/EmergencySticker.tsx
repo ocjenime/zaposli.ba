@@ -39,7 +39,7 @@ export default function EmergencySticker() {
         type="button"
         onClick={dismiss}
         aria-label="Zatvori"
-        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-white dark:bg-ink-900 border border-gray-100 dark:border-ink-700 shadow-md flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors"
+        className="absolute -top-2 -right-2 z-10 w-6 h-6 rounded-full bg-white dark:bg-ink-900 border border-gray-100 dark:border-ink-700 shadow-md flex items-center justify-center text-gray-400 hover:text-gray-700 dark:hover:text-[#ffffff] transition-colors"
       >
         <X className="w-3 h-3" />
       </button>
@@ -55,10 +55,10 @@ export default function EmergencySticker() {
           </span>
         </span>
         <span className="min-w-0">
-          <span className="block text-[13px] font-extrabold text-gray-900 dark:text-white leading-tight">
+          <span className="block text-[13px] font-extrabold text-gray-900 dark:text-[#ffffff] leading-tight">
             Hitne intervencije
           </span>
-          <span className="block text-[11px] text-steel dark:text-white/60 leading-tight">
+          <span className="block text-[11px] text-steel dark:text-[#ffffff]/60 leading-tight">
             Majstor dostupan odmah · 24/7
           </span>
         </span>
