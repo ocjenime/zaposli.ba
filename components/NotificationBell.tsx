@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
-import { Bell, Check, X } from 'lucide-react';
+import { Bell, Check, X, Trash2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { showToast } from '@/components/ToastProvider';
@@ -18,6 +18,7 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -112,26 +113,72 @@ export default function NotificationBell() {
     const unreadIds = notifications.filter((n) => !n.read).map((n) => n.id);
     if (unreadIds.length === 0) return;
     try {
-      await supabase
+      const { data, error } = await supabase
         .from('notifications')
         .update({ read: true })
         .eq('user_id', user.id)
-        .in('id', unreadIds);
+        .in('id', unreadIds)
+        .select('id');
+      if (error) throw error;
+      if ((data?.length ?? 0) !== unreadIds.length) {
+        // Server nije potvrdio sve - osvježi pravo stanje iz baze.
+        await loadNotifications();
+        return;
+      }
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
       setUnreadCount(0);
     } catch (err) {
       console.error('markAllRead error:', err);
+      await loadNotifications();
     }
   }
 
   async function markRead(id: string) {
     if (!user) return;
     try {
-      await supabase.from('notifications').update({ read: true }).eq('id', id).eq('user_id', user.id);
+      const { data, error } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select('id');
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        await loadNotifications();
+        return;
+      }
       setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
       setUnreadCount((c) => Math.max(0, c - 1));
     } catch (err) {
       console.error('markRead error:', err);
+      await loadNotifications();
+    }
+  }
+
+  async function deleteNotification(id: string) {
+    if (!user) return;
+    setBusyId(id);
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select('id');
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        await loadNotifications();
+        return;
+      }
+      const wasUnread = notifications.some((n) => n.id === id && !n.read);
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+      if (wasUnread) setUnreadCount((c) => Math.max(0, c - 1));
+      setTotalCount((c) => Math.max(0, c - 1));
+    } catch (err) {
+      console.error('deleteNotification error:', err);
+      await loadNotifications();
+    } finally {
+      setBusyId(null);
     }
   }
 
@@ -170,7 +217,7 @@ export default function NotificationBell() {
                   onClick={markAllRead}
                   className="text-xs text-brand-orange hover:text-brand-orange-dark font-medium flex items-center gap-1"
                 >
-                  <Check className="w-3.5 h-3.5" /> Označi sve
+                  <Check className="w-3.5 h-3.5" /> Označi sve kao pročitano
                 </button>
               )}
               <button
@@ -191,36 +238,58 @@ export default function NotificationBell() {
               notifications.map((n) => {
                 const href = getNotificationHref(n, role);
 
-                const content = (
-                  <div className="px-4 py-3 border-b border-gray-50 last:border-b-0 transition-colors hover:bg-gray-50">
-                    <p className="text-sm font-medium text-gray-900">{n.title}</p>
+                const textBlock = (
+                  <>
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">{n.title}</p>
                     <p className="text-xs text-steel mt-0.5">{n.message}</p>
                     <p className="text-[10px] text-gray-400 mt-1">{formatTime(n.created_at)}</p>
-                  </div>
+                  </>
                 );
 
-                return href ? (
-                  <Link
+                return (
+                  <div
                     key={n.id}
-                    href={href}
-                    onClick={() => {
-                      if (!n.read) markRead(n.id);
-                      setOpen(false);
-                    }}
-                    className={`block ${n.read ? 'bg-white' : 'bg-orange-50/50'}`}
+                    className={`border-b border-gray-50 dark:border-ink-700 last:border-b-0 transition-colors hover:bg-gray-50 dark:hover:bg-ink-900 ${
+                      n.read ? 'bg-white dark:bg-ink-800' : 'bg-orange-50/50 dark:bg-orange-500/5'
+                    }`}
                   >
-                    {content}
-                  </Link>
-                ) : (
-                  <button
-                    key={n.id}
-                    onClick={() => {
-                      if (!n.read) markRead(n.id);
-                    }}
-                    className={`w-full text-left ${n.read ? 'bg-white' : 'bg-orange-50/50'}`}
-                  >
-                    {content}
-                  </button>
+                    {href ? (
+                      <Link
+                        href={href}
+                        onClick={() => {
+                          if (!n.read) markRead(n.id);
+                          setOpen(false);
+                        }}
+                        className="block px-4 pt-3"
+                      >
+                        {textBlock}
+                      </Link>
+                    ) : (
+                      <div className="px-4 pt-3">{textBlock}</div>
+                    )}
+                    <div className="flex items-center gap-1 px-4 pb-2.5 pt-1">
+                      {!n.read && (
+                        <button
+                          type="button"
+                          onClick={() => markRead(n.id)}
+                          disabled={busyId === n.id}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-brand-orange hover:text-brand-orange-dark disabled:opacity-50"
+                        >
+                          <Check className="w-3.5 h-3.5" />
+                          Označi kao pročitano
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => deleteNotification(n.id)}
+                        disabled={busyId === n.id}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-gray-400 hover:text-red-600 disabled:opacity-50"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Izbriši
+                      </button>
+                    </div>
+                  </div>
                 );
               })
             )}

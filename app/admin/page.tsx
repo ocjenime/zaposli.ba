@@ -16,7 +16,7 @@ import {
 } from '@/lib/subscriptions';
 import {
   LayoutDashboard, Users, Building2, CreditCard, FileText, Bell,
-  Loader2, Check, Crown, AlertCircle, Search,
+  Loader2, Check, Crown, AlertCircle, Search, ArrowRight, ChevronDown,
   Star, CheckCircle, XCircle, Pencil,
   MessageSquare, Briefcase, TrendingUp, DollarSign,
   ShieldCheck, Flag, Gavel, ListFilter, Scale, Megaphone,
@@ -88,8 +88,9 @@ interface AdminBid {
   id: string;
   amount: number;
   status: string;
+  message: string | null;
   created_at: string;
-  jobs: { title: string; city: string } | null;
+  jobs: { id: string; title: string; city: string; status: string } | null;
   firms: { name: string } | null;
 }
 
@@ -443,7 +444,7 @@ function AdminPage() {
     try {
       const { data, error } = await supabase
         .from('bids')
-        .select('id, amount, status, created_at, jobs(title, city), firms(name)')
+        .select('id, amount, status, message, created_at, jobs(id, title, city, status), firms(name)')
         .order('created_at', { ascending: false })
         .limit(100);
       if (error) throw error;
@@ -756,6 +757,7 @@ function AdminPage() {
   }
 
   const [savingPromotion, setSavingPromotion] = useState<string | null>(null);
+  const [expandedBidId, setExpandedBidId] = useState<string | null>(null);
 
   async function approvePromotion(promotion: AdminPromotion) {
     setSavingPromotion(promotion.id);
@@ -1543,43 +1545,97 @@ function AdminPage() {
                     <p className="p-6 text-sm text-steel text-center">Nema ponuda.</p>
                   ) : (
                     <div className="divide-y divide-gray-100">
-                      {bidsList.map((bid) => (
-                        <div
-                          key={bid.id}
-                          className="p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
-                        >
-                          <div>
-                            <div className="flex flex-wrap items-center gap-2">
-                              <p className="font-medium text-gray-900">
-                                {bid.firms?.name || 'Nepoznata firma'}
-                              </p>
-                              <span className="text-sm font-bold text-brand-orange">
-                                {Number(bid.amount).toLocaleString('bs-BA')} KM
+                      {bidsList.map((bid) => {
+                        const jobCompleted = bid.jobs?.status === 'completed';
+                        const jobInProgress = bid.jobs?.status === 'in_progress';
+                        const expanded = expandedBidId === bid.id;
+                        return (
+                          <div key={bid.id}>
+                            <button
+                              type="button"
+                              onClick={() => setExpandedBidId(expanded ? null : bid.id)}
+                              className="w-full p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-left hover:bg-gray-50 transition-colors"
+                            >
+                              <div>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <p className="font-medium text-gray-900">
+                                    {bid.firms?.name || 'Nepoznata firma'}
+                                  </p>
+                                  <span className="text-sm font-bold text-brand-orange">
+                                    {Number(bid.amount).toLocaleString('bs-BA')} KM
+                                  </span>
+                                  {bid.status === 'pending' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
+                                      NA ČEKANJU
+                                    </span>
+                                  )}
+                                  {bid.status === 'accepted' && jobCompleted && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                                      ZAVRŠENA
+                                    </span>
+                                  )}
+                                  {bid.status === 'accepted' && !jobCompleted && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
+                                      PRIHVAĆENA{jobInProgress ? ' · U TOKU' : ''}
+                                    </span>
+                                  )}
+                                  {bid.status === 'rejected' && (
+                                    <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
+                                      ODBIJENA
+                                    </span>
+                                  )}
+                                </div>
+                                <p className="text-sm text-steel">
+                                  Posao: {bid.jobs?.title || '-'}
+                                  {bid.jobs?.city ? ` · ${bid.jobs.city}` : ''} ·{' '}
+                                  {formatDate(bid.created_at)}
+                                </p>
+                              </div>
+                              <span className="text-xs font-medium text-steel inline-flex items-center gap-1 shrink-0">
+                                {expanded ? 'Sakrij detalje' : 'Prikaži detalje'}
+                                <ChevronDown
+                                  className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`}
+                                />
                               </span>
-                              {bid.status === 'pending' && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded-full">
-                                  NA ČEKANJU
-                                </span>
-                              )}
-                              {bid.status === 'accepted' && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-700 rounded-full">
-                                  PRIHVAĆENA
-                                </span>
-                              )}
-                              {bid.status === 'rejected' && (
-                                <span className="text-[10px] font-bold px-2 py-0.5 bg-red-100 text-red-600 rounded-full">
-                                  ODBIJENA
-                                </span>
-                              )}
-                            </div>
-                            <p className="text-sm text-steel">
-                              Posao: {bid.jobs?.title || '-'}
-                              {bid.jobs?.city ? ` · ${bid.jobs.city}` : ''} ·{' '}
-                              {formatDate(bid.created_at)}
-                            </p>
+                            </button>
+                            {expanded && (
+                              <div className="px-4 pb-4 -mt-1">
+                                <div className="bg-cloud rounded-xl p-4 space-y-2 text-sm">
+                                  {bid.message ? (
+                                    <p className="text-gray-700">
+                                      <span className="font-semibold text-gray-900">Poruka firme: </span>
+                                      {bid.message}
+                                    </p>
+                                  ) : (
+                                    <p className="text-steel">Firma nije ostavila poruku uz ponudu.</p>
+                                  )}
+                                  <p className="text-steel">
+                                    Status posla:{' '}
+                                    <span className="font-semibold text-gray-900">
+                                      {bid.jobs?.status === 'completed'
+                                        ? 'Završen'
+                                        : bid.jobs?.status === 'in_progress'
+                                        ? 'U toku'
+                                        : bid.jobs?.status === 'open'
+                                        ? 'Otvoren'
+                                        : bid.jobs?.status || '-'}
+                                    </span>
+                                  </p>
+                                  {bid.jobs?.id && (
+                                    <Link
+                                      href={`/dashboard/razgovor/?job_id=${bid.jobs.id}`}
+                                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-orange hover:underline"
+                                    >
+                                      Uđi u razgovor
+                                      <ArrowRight className="w-3.5 h-3.5" />
+                                    </Link>
+                                  )}
+                                </div>
+                              </div>
+                            )}
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>

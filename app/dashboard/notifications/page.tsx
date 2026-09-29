@@ -66,10 +66,20 @@ export default function NotificationsPage() {
 
   async function markRead(id: string) {
     try {
-      await supabase.from('notifications').update({ read: true }).eq('id', id);
+      const { data, error: err } = await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('id', id)
+        .select('id');
+      if (err) throw err;
+      if (!data || data.length === 0) {
+        await loadNotifications(true);
+        return;
+      }
       setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     } catch (err) {
       console.error('markRead error:', err);
+      await loadNotifications(true);
     }
   }
 
@@ -77,14 +87,22 @@ export default function NotificationsPage() {
     if (!user) return;
     setActionId('all');
     try {
-      await supabase
+      const { data, error: err } = await supabase
         .from('notifications')
         .update({ read: true })
         .eq('user_id', user.id)
-        .eq('read', false);
+        .eq('read', false)
+        .select('id');
+      if (err) throw err;
+      if (!data || data.length === 0) {
+        const stillUnread = notifications.some((n) => !n.read);
+        if (stillUnread) await loadNotifications(true);
+        return;
+      }
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     } catch (err) {
       console.error('markAllRead error:', err);
+      await loadNotifications(true);
     } finally {
       setActionId(null);
     }
@@ -94,11 +112,22 @@ export default function NotificationsPage() {
     if (!user) return;
     setActionId(id);
     try {
-      await supabase.from('notifications').delete().eq('id', id).eq('user_id', user.id);
+      const { data, error: err } = await supabase
+        .from('notifications')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id)
+        .select('id');
+      if (err) throw err;
+      if (!data || data.length === 0) {
+        await loadNotifications(true);
+        return;
+      }
       setNotifications((prev) => prev.filter((n) => n.id !== id));
     } catch (err) {
       console.error('deleteNotification error:', err);
       setError('Nije uspjelo brisanje obavještenja.');
+      await loadNotifications(true);
     } finally {
       setActionId(null);
     }
