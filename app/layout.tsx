@@ -8,6 +8,7 @@ import { ToastProvider } from '@/components/ToastProvider';
 import CookieConsent from '@/components/CookieConsent';
 import ScrollToTop from '@/components/ScrollToTop';
 import UtmTracker from '@/components/UtmTracker';
+import { Analytics } from '@vercel/analytics/react';
 import { JsonLd, websiteSchema, organizationSchema } from '@/lib/jsonld';
 
 const sans = Plus_Jakarta_Sans({
@@ -81,6 +82,7 @@ export default function RootLayout({
           </ToastProvider>
         </ThemeProvider>
         <CookieConsent />
+        <Analytics />
       </body>
     </html>
   );
