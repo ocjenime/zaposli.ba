@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Crown, ArrowRight, Siren, X, CheckCircle2, Zap, MapPin, Users, Star } from 'lucide-react';
+import { Crown, ArrowRight, CheckCircle2, Zap, MapPin, Users, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import EmergencySticker from '@/components/EmergencySticker';
 
 const TRUST_BADGES = [
   { icon: CheckCircle2, label: 'Provjerene firme' },
@@ -12,29 +12,9 @@ const TRUST_BADGES = [
 ];
 
 export default function HeroSection() {
-  const [emergencyBannerVisible, setEmergencyBannerVisible] = useState(false);
-
-  useEffect(() => {
-    try {
-      if (typeof window !== 'undefined' && localStorage.getItem('emergencyBannerDismissed') === 'true') {
-        setEmergencyBannerVisible(false);
-      } else {
-        setEmergencyBannerVisible(true);
-      }
-    } catch {}
-  }, []);
-
-  const dismissEmergencyBanner = () => {
-    setEmergencyBannerVisible(false);
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('emergencyBannerDismissed', 'true');
-      }
-    } catch {}
-  };
-
   return (
     <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] flex flex-col overflow-hidden">
+      <EmergencySticker />
       {/* Background image */}
       <div className="absolute inset-0">
         <Image
@@ -49,35 +29,6 @@ export default function HeroSection() {
         {/* Cinematic overlay for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
-      </div>
-
-      {/* Emergency banner - desktop only (moved to categories on mobile) */}
-      <div
-        className={`hidden md:block relative z-30 mt-12 md:mt-16 bg-gradient-to-r from-red-600/95 to-red-700/95 backdrop-blur-md text-white border-b border-white/10 shadow-lg shadow-red-900/20 transition-all duration-300 ${
-          emergencyBannerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
-        }`}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-1 flex items-center justify-between gap-3">
-          <Link
-            href="/kategorije/hitne-intervencije/"
-            className="flex items-center gap-2 text-[11px] sm:text-xs font-medium hover:opacity-90 transition-opacity min-w-0"
-          >
-            <span className="inline-flex items-center gap-1 bg-white text-red-600 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-              <Siren className="w-2 h-2" />
-              24/7
-            </span>
-            <span className="truncate">Hitne intervencije - majstori dostupni odmah</span>
-            <ArrowRight className="w-3.5 h-3.5 shrink-0 hidden sm:block" />
-          </Link>
-          <button
-            type="button"
-            onClick={dismissEmergencyBanner}
-            className="p-1.5 hover:bg-white/20 rounded-full transition-colors shrink-0"
-            aria-label="Zatvori"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
       </div>
 
       {/* Hero content */}
