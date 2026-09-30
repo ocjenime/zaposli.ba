@@ -17,6 +17,7 @@ import type { PublicPromotedAd } from '@/lib/promoted-ads';
 import { getAdTypeLabel } from '@/lib/promoted-ads';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
+import AdBannerImage from '@/components/AdBannerImage';
 import { formatDate } from '@/lib/date';
 import { plural } from '@/lib/plural';
 
@@ -191,13 +192,11 @@ export default function PromotedAdRowCard({
           <div className="border-t border-gray-100 dark:border-ink-800 bg-gray-50/70 dark:bg-ink-950/60">
             <div className="p-3 sm:p-5">
               {bannerUrl && (
-                <div className="relative aspect-[21/9] rounded-xl overflow-hidden border border-gray-200 dark:border-ink-800 bg-gray-100 dark:bg-ink-900 mb-4">
-                  <NextImage
+                <div className="mb-4 border border-gray-200 dark:border-ink-800 rounded-xl overflow-hidden">
+                  <AdBannerImage
                     src={bannerUrl}
                     alt={ad.title}
-                    fill
-                    unoptimized
-                    className="object-cover"
+                    aspectClass="aspect-[21/9]"
                     sizes="(max-width: 768px) 100vw, 800px"
                   />
                 </div>

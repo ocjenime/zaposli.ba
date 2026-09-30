@@ -559,9 +559,9 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                   </span>
                 </button>
               ) : (
-                <div className={`relative rounded-2xl overflow-hidden border border-gray-200 dark:border-ink-700 ${meta.aspectClass}`}>
+                <div className={`relative rounded-2xl overflow-hidden border border-gray-200 dark:border-ink-700 bg-ink-950 ${meta.aspectClass}`}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-cover" />
+                  <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-contain" />
                   <button
                     type="button"
                     onClick={removeBanner}
@@ -600,9 +600,9 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                   <p className="text-sm text-steel line-clamp-3">{description}</p>
                 </div>
                 {bannerPreview && (
-                  <div className={`relative rounded-xl overflow-hidden ${meta.aspectClass}`}>
+                  <div className={`relative rounded-xl overflow-hidden bg-ink-950 ${meta.aspectClass}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-cover" />
+                    <img src={bannerPreview} alt="Banner preview" className="w-full h-full object-contain" />
                   </div>
                 )}
                 <div className="flex items-center justify-between border-t border-gray-200 dark:border-ink-800 pt-4">

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Megaphone, Sparkles, Users, MapPin, ArrowRight, Calendar } from 'lucide-react';
-import NextImage from 'next/image';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import AdBannerImage from '@/components/AdBannerImage';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
@@ -64,20 +64,18 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
         ]}
       />
       <main className="flex-grow">
-        {/* Banner hero */}
-        <section className="relative h-48 md:h-72 overflow-hidden">
+        {/* Banner hero - uvijek cijela slika */}
+        <section className="relative overflow-hidden">
           {bannerUrl ? (
-            <NextImage
+            <AdBannerImage
               src={bannerUrl}
               alt={ad.title}
-              fill
-              unoptimized
-              className="object-cover"
+              aspectClass="h-56 md:h-80"
               sizes="100vw"
               priority
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-ink-900 to-ink-950 flex items-center justify-center">
+            <div className="h-56 md:h-80 bg-gradient-to-br from-ink-900 to-ink-950 flex items-center justify-center">
               <div className="w-20 h-20 rounded-2xl bg-brand-orange/10 flex items-center justify-center">
                 {isWorkerSearch ? (
                   <Users className="w-10 h-10 text-brand-orange" />

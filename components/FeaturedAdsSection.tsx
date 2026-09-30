@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import NextImage from 'next/image';
 import {
   Crown, ArrowRight, Sparkles, Users, Star, Loader2,
   Building2, Wrench, Hammer, Zap,
@@ -12,6 +11,7 @@ import type { PublicPromotedAd } from '@/lib/promoted-ads';
 import { getAdTypeLabel } from '@/lib/promoted-ads';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
+import AdBannerImage from '@/components/AdBannerImage';
 
 function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
   const isWorkerSearch = ad.ad_type === 'worker_search';
@@ -33,18 +33,16 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
         <Crown className="w-3 h-3" /> Sponzorirano
       </div>
 
-      {/* Banner */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-ink-950">
-        {bannerUrl ? (
-          <NextImage
-            src={bannerUrl}
-            alt={ad.title}
-            fill
-            unoptimized
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 20vw"
-          />
-        ) : (
+      {/* Banner - uvijek cijela slika */}
+      {bannerUrl ? (
+        <AdBannerImage
+          src={bannerUrl}
+          alt={ad.title}
+          aspectClass="aspect-[16/10]"
+          sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 20vw"
+        />
+      ) : (
+        <div className="relative aspect-[16/10] overflow-hidden bg-gray-100 dark:bg-ink-950">
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-ink-950 dark:to-ink-900">
             <div className="w-12 h-12 rounded-xl bg-white dark:bg-ink-800 shadow-sm flex items-center justify-center">
               {isWorkerSearch ? (
@@ -54,9 +52,9 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
               )}
             </div>
           </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-      </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-4">
