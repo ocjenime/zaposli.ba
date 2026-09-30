@@ -5,9 +5,11 @@ import { JsonLd, breadcrumbSchema } from '@/lib/jsonld';
 interface BreadcrumbsProps {
   items: { name: string; href?: string }[];
   dark?: boolean;
+  /** Bez vanjskog offseta - za ubacivanje direktno u hero sekciju. */
+  bare?: boolean;
 }
 
-export default function Breadcrumbs({ items, dark }: BreadcrumbsProps) {
+export default function Breadcrumbs({ items, dark, bare }: BreadcrumbsProps) {
   const schemaItems = [
     { name: 'Početna', url: '/' },
     ...items.map((i) => ({ name: i.name, url: i.href })),
@@ -16,7 +18,11 @@ export default function Breadcrumbs({ items, dark }: BreadcrumbsProps) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 md:mt-16 pt-2.5 pb-2.5"
+      className={
+        bare
+          ? `${dark ? '[text-shadow:0_1px_8px_rgba(0,0,0,0.55)]' : ''}`
+          : 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-12 md:mt-16 pt-2.5 pb-2.5'
+      }
     >
       <JsonLd data={breadcrumbSchema(schemaItems)} />
       <ol
