@@ -24,7 +24,7 @@ export default function AdBannerImage({
 }: AdBannerImageProps) {
   return (
     <div className={`relative ${aspectClass} overflow-hidden bg-ink-950 ${roundedClass}`}>
-      {/* Zamućena pozadina popunjava kadar */}
+      {/* Zatamnjena zasićena pozadina popunjava kadar */}
       <NextImage
         src={src}
         alt=""
@@ -32,7 +32,7 @@ export default function AdBannerImage({
         fill
         unoptimized
         sizes={sizes}
-        className="object-cover blur-2xl scale-110 opacity-60"
+        className="object-cover blur-2xl scale-125 opacity-70 brightness-[0.45] saturate-150"
       />
       {/* Cijela slika, bez rezanja */}
       <NextImage
