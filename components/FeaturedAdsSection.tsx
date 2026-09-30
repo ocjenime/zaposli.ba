@@ -316,6 +316,10 @@ export default function FeaturedAdsSection() {
   }, []);
 
   const hasRealAds = !loading && ads.length > 0;
+  // Pravi oglasi prvi (rank 1, 2, ...), ostatak do 5 mjesta popune demo kartice.
+  const demoFill = hasRealAds
+    ? demoAds.slice(0, Math.max(0, 5 - ads.length))
+    : demoAds;
 
   return (
     <section className="relative py-6 md:py-8 bg-cloud px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -350,7 +354,12 @@ export default function FeaturedAdsSection() {
           {loading
             ? Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
             : hasRealAds
-            ? ads.map((ad, i) => <FeaturedAdCard key={ad.id} ad={ad} rank={i + 1} />)
+            ? <>
+                {ads.map((ad, i) => <FeaturedAdCard key={ad.id} ad={ad} rank={i + 1} />)}
+                {demoFill.map((demo, j) => (
+                  <DemoFeaturedAdCard key={`demo-${demo.rank}`} demo={{ ...demo, rank: ads.length + j + 1 }} />
+                ))}
+              </>
             : demoAds.map((demo) => <DemoFeaturedAdCard key={demo.rank} demo={demo} />)}
         </div>
       </div>
