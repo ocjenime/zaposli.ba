@@ -145,6 +145,7 @@ function JobDetail() {
 
   // Review form
   const [showReviewForm, setShowReviewForm] = useState(false);
+  const [editingReview, setEditingReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -502,6 +503,29 @@ function JobDetail() {
       // keep fallback
     }
 
+    // Edit postojeće recenzije (samo ocjena + komentar, slike ostaju)
+    if (editingReview && review) {
+      const { error: updateErr } = await supabase
+        .from('reviews')
+        .update({
+          rating,
+          comment: comment.trim() || null,
+          reviewer_name: reviewerName,
+        })
+        .eq('id', review.id);
+      setSubmittingReview(false);
+      if (updateErr) {
+        setError(updateErr.message || 'Greška prilikom spremanja izmjena.');
+        return;
+      }
+      setEditingReview(false);
+      setShowReviewForm(false);
+      setRating(0);
+      setComment('');
+      await fetchData();
+      return;
+    }
+
     const { data: reviewData, error: reviewErr } = await supabase
       .from('reviews')
       .insert({
@@ -676,7 +700,17 @@ function JobDetail() {
             </button>
           )}
           {(review || reviewSuccess) && (
-            <p className="text-sm text-steel">Hvala na recenziji. Objavljena je na profilu firme.</p>
+            <>
+              <p className="text-sm text-steel">Hvala na recenziji. Objavljena je na profilu firme.</p>
+              {canEditReview && !showReviewForm && (
+                <button
+                  onClick={startEditReview}
+                  className="text-sm font-semibold text-brand-orange hover:underline mt-1"
+                >
+                  Uredi recenziju ({editDaysLabel})
+                </button>
+              )}
+            </>
           )}
           {renderMediationSection()}
         </div>
@@ -738,7 +772,17 @@ function JobDetail() {
             </button>
           )}
           {(review || reviewSuccess) && (
-            <p className="text-sm text-steel mt-2">Hvala na recenziji. Objavljena je na profilu firme.</p>
+            <>
+              <p className="text-sm text-steel mt-2">Hvala na recenziji. Objavljena je na profilu firme.</p>
+              {canEditReview && !showReviewForm && (
+                <button
+                  onClick={startEditReview}
+                  className="text-sm font-semibold text-brand-orange hover:underline mt-1"
+                >
+                  Uredi recenziju ({editDaysLabel})
+                </button>
+              )}
+            </>
           )}
           {renderMediationSection()}
         </div>
@@ -746,6 +790,37 @@ function JobDetail() {
     }
 
     return null;
+  }
+
+  // Recenzija se može uređivati 30 dana od objave (npr. majstor ispravi nedostatke)
+  const REVIEW_EDIT_DAYS = 30;
+  const canEditReview =
+    !!review &&
+    Date.now() - new Date(review.created_at).getTime() <
+      REVIEW_EDIT_DAYS * 24 * 60 * 60 * 1000;
+  const editDaysLeft = review
+    ? Math.max(
+        0,
+        Math.ceil(
+          (new Date(review.created_at).getTime() +
+            REVIEW_EDIT_DAYS * 24 * 60 * 60 * 1000 -
+            Date.now()) /
+            (24 * 60 * 60 * 1000)
+        )
+      )
+    : 0;
+  const editDaysLabel =
+    editDaysLeft === 1 ? 'još 1 dan' : `još ${editDaysLeft} dana`;
+
+  function startEditReview() {
+    if (!review) return;
+    setRating(review.rating);
+    setComment(review.comment || '');
+    setReviewImages([]);
+    setReviewPreviews([]);
+    setEditingReview(true);
+    setReviewSuccess(false);
+    setShowReviewForm(true);
   }
 
   function renderReviewForm() {
@@ -766,8 +841,15 @@ function JobDetail() {
 
     return (
       <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm mt-4">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Ostavite recenziju</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-4">
+          {editingReview ? 'Uredi recenziju' : 'Ostavite recenziju'}
+        </h3>
         <p className="text-sm text-steel mb-4">Kako ste zadovoljni uslugom firme {targetFirm.name}?</p>
+        {editingReview && (
+          <p className="text-xs text-steel bg-cloud rounded-lg px-3 py-2 mb-4">
+            Ocjenu i komentar možete mijenjati u roku od 30 dana od objave. Fotografije ostaju iste.
+          </p>
+        )}
 
         <div className="flex items-center gap-2 mb-5">
           {[1, 2, 3, 4, 5].map((star) => (
@@ -799,6 +881,7 @@ function JobDetail() {
           className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange resize-none mb-4"
         />
 
+        {!editingReview && (
         <div className="mb-4">
           <input
             ref={fileInputRef}
@@ -836,6 +919,7 @@ function JobDetail() {
             </div>
           )}
         </div>
+        )}
 
         <div className="flex flex-wrap gap-2">
           <button
@@ -844,10 +928,13 @@ function JobDetail() {
             className="btn-primary text-sm py-2 px-4 disabled:opacity-50 inline-flex items-center gap-2"
           >
             {submittingReview ? <Loader2 className="w-4 h-4 animate-spin" /> : <Star className="w-4 h-4" />}
-            Objavi recenziju
+            {editingReview ? 'Sačuvaj izmjene' : 'Objavi recenziju'}
           </button>
           <button
-            onClick={() => setShowReviewForm(false)}
+            onClick={() => {
+              setShowReviewForm(false);
+              setEditingReview(false);
+            }}
             className="btn-secondary text-sm py-2 px-4"
           >
             Preskoči
