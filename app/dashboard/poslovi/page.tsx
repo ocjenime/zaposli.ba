@@ -10,6 +10,7 @@ import { supabase } from '@/lib/supabase';
 import JobChat from '@/components/JobChat';
 import NextImage from 'next/image';
 import { formatDate } from '@/lib/date';
+import { formatReviewerName } from '@/lib/reviewer-name';
 import {
   ArrowLeft,
   MapPin,
@@ -206,7 +207,22 @@ function JobDetail() {
 
     setBids((bidsData as Bid[]) || []);
     setImages((imagesData as JobImage[]) || []);
-    setTargetFirm((firmData as Firm) || null);
+    // Za javne poslove firma se uzima iz prihvaćene ponude -
+    // bez ovoga se review forma nikad ne prikaže (targetFirm je null).
+    const bidsList = (bidsData as Bid[]) || [];
+    let resolvedFirm = (firmData as Firm) || null;
+    if (!resolvedFirm && !typedJob.is_private) {
+      const accepted = bidsList.find((b) => b.status === 'accepted');
+      if (accepted?.firms) {
+        resolvedFirm = {
+          id: accepted.firms.id,
+          name: accepted.firms.name,
+          city: accepted.firms.city,
+          logo_url: accepted.firms.logo_url,
+        };
+      }
+    }
+    setTargetFirm(resolvedFirm);
     setReview((reviewData as Review) || null);
 
     setLoadingData(false);
@@ -470,6 +486,22 @@ function JobDetail() {
     setSubmittingReview(true);
     setError('');
 
+    // Snapshot javnog imena ("Ime P.") jer RLS dozvoljava čitanje samo
+    // vlastitog profiles reda - javne stranice ga inače ne mogu prikazati.
+    let reviewerName = 'Klijent';
+    try {
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user!.id)
+        .single();
+      reviewerName = formatReviewerName(
+        (profileData as { full_name?: string | null } | null)?.full_name
+      );
+    } catch {
+      // keep fallback
+    }
+
     const { data: reviewData, error: reviewErr } = await supabase
       .from('reviews')
       .insert({
@@ -478,6 +510,7 @@ function JobDetail() {
         firm_id: targetFirm.id,
         rating,
         comment: comment.trim() || null,
+        reviewer_name: reviewerName,
       })
       .select('id')
       .single();
@@ -696,6 +729,17 @@ function JobDetail() {
           <p className="text-green-700 text-sm font-medium flex items-center gap-2">
             <CheckCircle className="w-4 h-4" /> Posao je uspješno završen.
           </p>
+          {!review && !reviewSuccess && targetFirm && (
+            <button
+              onClick={() => setShowReviewForm(true)}
+              className="btn-primary text-sm py-2 px-4 inline-flex items-center gap-2 mt-3"
+            >
+              <Star className="w-4 h-4" /> Ostavi recenziju
+            </button>
+          )}
+          {(review || reviewSuccess) && (
+            <p className="text-sm text-steel mt-2">Hvala na recenziji. Objavljena je na profilu firme.</p>
+          )}
           {renderMediationSection()}
         </div>
       );
