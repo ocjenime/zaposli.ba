@@ -27,6 +27,7 @@ import {
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/date';
+import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 
 const HOMEPAGE_MINI_PRICE = 19;
 const HOMEPAGE_BANNER_PRICE = 49;
@@ -164,16 +165,30 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
     loadData();
   }, [loadData]);
 
-  function handleBannerChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleBannerChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > 5 * 1024 * 1024) {
       setError('Banner može biti najviše 5MB.');
       return;
     }
-    setBanner(file);
-    setBannerPreview(URL.createObjectURL(file));
     setError('');
+    try {
+      // Normalizuj u standardni JPEG (max 1600px): čisti čudne enkodiranje
+      // (npr. HEIC preimenovan u .jpg) i garantuje da banner svima radi.
+      const normalizedBlob = await resizeAndCompressImage(file, {
+        maxWidth: 1600,
+        maxHeight: 1600,
+        quality: 0.85,
+        type: 'image/jpeg',
+      });
+      const normalizedFile = blobToFile(normalizedBlob, 'banner.jpg', 'image/jpeg');
+      setBanner(normalizedFile);
+      setBannerPreview(URL.createObjectURL(normalizedFile));
+    } catch {
+      setError('Slika se ne može pročitati. Molimo koristite JPG ili PNG fotografiju.');
+      if (bannerInputRef.current) bannerInputRef.current.value = '';
+    }
   }
 
   function removeBanner() {

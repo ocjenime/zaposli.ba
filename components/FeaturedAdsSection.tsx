@@ -40,6 +40,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
             src={bannerUrl}
             alt={ad.title}
             fill
+            unoptimized
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 20vw"
           />

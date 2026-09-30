@@ -71,6 +71,7 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
               src={bannerUrl}
               alt={ad.title}
               fill
+              unoptimized
               className="object-cover"
               sizes="100vw"
               priority
