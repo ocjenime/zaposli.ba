@@ -101,7 +101,7 @@ export default function CategoriesClient() {
             <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
           </div>
 
-          <div className="relative z-20 flex-1 flex items-end">
+          <div className="relative z-20 flex-1 flex items-end md:items-center">
             <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-7">
               <div className="max-w-2xl">
                 <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
