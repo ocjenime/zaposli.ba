@@ -95,21 +95,6 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
           ])}
         />
 
-        {/* Breadcrumb - kao na mockupu */}
-        <nav aria-label="Breadcrumb" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-3 pb-1">
-          <ol className="flex items-center gap-1.5 text-[12px] text-steel overflow-x-auto whitespace-nowrap">
-            <li><Link href="/" className="hover:text-brand-orange transition-colors">Početna</Link></li>
-            <li aria-hidden="true" className="text-gray-300">›</li>
-            <li><Link href="/gradovi/" className="hover:text-brand-orange transition-colors">Gradovi</Link></li>
-            <li aria-hidden="true" className="text-gray-300">›</li>
-            <li><Link href={`/gradovi/${city.slug}/`} className="hover:text-brand-orange transition-colors">{city.name}</Link></li>
-            <li aria-hidden="true" className="text-gray-300">›</li>
-            <li><Link href={`/kategorije/${cat.slug}/`} className="hover:text-brand-orange transition-colors">{groupStyle.eyebrow}</Link></li>
-            <li aria-hidden="true" className="text-gray-300">›</li>
-            <li aria-current="page" className="text-gray-900 font-medium">{headline}</li>
-          </ol>
-        </nav>
-
         {/* Hero - 1:1 sa mockupom */}
         <section className="relative bg-[#faf8f5] overflow-hidden">
           <div className="absolute inset-y-0 right-0 w-[44%] sm:w-[52%] md:w-[46%]">
@@ -127,6 +112,19 @@ export default async function ServiceCityPage({ params }: { params: Promise<{ sl
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
             <div className="max-w-[64%] sm:max-w-xl md:max-w-2xl">
+              <nav aria-label="Breadcrumb" className="mb-2">
+                <ol className="flex items-center gap-1.5 text-[12px] text-steel overflow-x-auto whitespace-nowrap">
+                  <li><Link href="/" className="hover:text-brand-orange transition-colors">Početna</Link></li>
+                  <li aria-hidden="true" className="text-gray-300">›</li>
+                  <li><Link href="/gradovi/" className="hover:text-brand-orange transition-colors">Gradovi</Link></li>
+                  <li aria-hidden="true" className="text-gray-300">›</li>
+                  <li><Link href={`/gradovi/${city.slug}/`} className="hover:text-brand-orange transition-colors">{city.name}</Link></li>
+                  <li aria-hidden="true" className="text-gray-300">›</li>
+                  <li><Link href={`/kategorije/${cat.slug}/`} className="hover:text-brand-orange transition-colors">{groupStyle.eyebrow}</Link></li>
+                  <li aria-hidden="true" className="text-gray-300">›</li>
+                  <li aria-current="page" className="text-gray-900 font-medium">{headline}</li>
+                </ol>
+              </nav>
               <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
                 <Icon className="w-4 h-4" />
                 {cat.name}

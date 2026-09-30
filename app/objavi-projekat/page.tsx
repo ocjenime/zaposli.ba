@@ -422,14 +422,14 @@ function PostProjectContent() {
     <div className="min-h-screen flex flex-col bg-cloud">
       <Header />
       <main className="flex-grow pb-16">
-        <Breadcrumbs items={[{ name: 'Objavi posao' }]} />
-        <section className="relative overflow-hidden pt-6 md:pt-10 pb-20 md:pb-28">
+        <section className="relative overflow-hidden pt-12 md:pt-16 pb-20 md:pb-28">
           <div className="absolute inset-0 bg-gradient-to-br from-ink via-orange-950 to-slate-900" />
           <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
+            <Breadcrumbs dark bare items={[{ name: 'Objavi posao' }]} />
+            <div className="max-w-3xl mt-3">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
                 Besplatno i neobavezujuće
               </div>

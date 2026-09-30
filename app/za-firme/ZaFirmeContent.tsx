@@ -168,9 +168,8 @@ export default function ZaFirmeContent() {
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs dark items={[{ name: 'Za profesionalce' }]} />
         {/* Hero */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden pt-12 md:pt-16">
           <Image
             src="/images/zafirme-hero.jpg"
             alt="Majstorski alat i gradilište"
@@ -185,7 +184,8 @@ export default function ZaFirmeContent() {
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6 md:pt-10 pb-8 md:pb-12">
             <div className="grid grid-cols-[1.08fr_0.92fr] sm:grid-cols-2 gap-3 sm:gap-6 md:gap-12 items-center">
               <div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-white/80 mb-3 sm:mb-4">
+                <Breadcrumbs dark bare items={[{ name: 'Za profesionalce' }]} />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-white/5 border border-white/10 px-3 py-1 text-[10px] sm:text-xs font-bold tracking-wider text-white/80 mb-3 sm:mb-4 mt-3">
                   <Briefcase className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-brand-orange" />
                   ZA PROFESIONALCE
                 </span>

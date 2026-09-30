@@ -79,10 +79,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             { name: city.name },
           ])}
         />
-        <Breadcrumbs items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
-
         {/* Hero - isti stil kao kategorije/usluge */}
-        <section className="relative bg-[#faf8f5] overflow-hidden">
+        <section className="relative bg-[#faf8f5] overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-y-0 right-0 w-[44%] sm:w-[52%] md:w-[46%]">
             <Image
               src="/images/gradovi-hero.jpg"
@@ -98,7 +96,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-10 md:py-14">
             <div className="max-w-[64%] sm:max-w-xl md:max-w-2xl">
-              <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5">
+              <Breadcrumbs bare items={[{ name: 'Gradovi', href: '/gradovi/' }, { name: city.name }]} />
+              <p className="inline-flex items-center gap-1.5 text-brand-orange text-[12px] sm:text-[13px] font-extrabold uppercase tracking-wide mb-1.5 mt-2">
                 <MapPin className="w-4 h-4" />
                 {city.name} · BiH
               </p>

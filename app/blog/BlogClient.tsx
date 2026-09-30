@@ -92,10 +92,8 @@ export default function BlogClient() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Blog' }]} />
-
         {/* Hero */}
-        <section className="relative min-h-[440px] sm:min-h-[500px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[440px] sm:min-h-[500px] flex flex-col overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-0">
             <Image
               src="/images/kategorije-majstori.jpg"
@@ -110,9 +108,10 @@ export default function BlogClient() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-8 sm:pb-10">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16 pb-8 sm:pb-10">
               <div className="max-w-2xl">
-                <p className="text-brand-orange text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-2 animate-fade-in">
+                <Breadcrumbs dark bare items={[{ name: 'Blog' }]} />
+                <p className="text-brand-orange text-xs sm:text-sm font-bold tracking-[0.2em] uppercase mb-2 mt-3 animate-fade-in">
                   Blog
                 </p>
                 <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">

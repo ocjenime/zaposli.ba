@@ -93,10 +93,8 @@ export default function KontaktPage() {
     <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Kontakt' }]} />
-
         {/* Hero */}
-        <section className="relative min-h-[300px] sm:min-h-[360px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[300px] sm:min-h-[360px] flex flex-col overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-0">
             <Image
               src="/images/kontakt-hero.png"
@@ -111,9 +109,10 @@ export default function KontaktPage() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end md:items-center">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-12 sm:pb-14">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-12 sm:pb-14">
               <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
+                <Breadcrumbs dark bare items={[{ name: 'Kontakt' }]} />
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 mt-3 animate-fade-in">
                   <MessageCircle className="w-3.5 h-3.5" />
                   Kontakt
                 </span>

@@ -196,7 +196,6 @@ export default function TopFirmeContent() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Top firme' }]} />
         {!loading && firms.length > 0 && (
           <JsonLd
             data={localBusinessListSchema(
@@ -214,7 +213,7 @@ export default function TopFirmeContent() {
         )}
 
         {/* Hero */}
-        <section className="relative min-h-[440px] sm:min-h-[500px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[440px] sm:min-h-[500px] flex flex-col overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-0">
             <Image
               src="/images/herozaposli.png"
@@ -231,7 +230,8 @@ export default function TopFirmeContent() {
           <div className="relative z-20 flex-1 flex items-end">
             <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-8 sm:pb-10">
               <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 animate-fade-in">
+                <Breadcrumbs dark bare items={[{ name: 'Top firme' }]} />
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 mt-3 animate-fade-in">
                   <Trophy className="w-3.5 h-3.5" />
                   Povjerenje stvara rezultate.
                 </span>

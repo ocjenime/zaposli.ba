@@ -124,9 +124,11 @@ export default function HowItWorksContent() {
   return (
     <>
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Kako funkcioniše' }]} />
         {/* Shared Higgsfield background wrapper: one continuous canvas for hero + steps */}
-        <div className="relative w-full overflow-x-hidden">
+        <div className="relative w-full overflow-x-hidden pt-12 md:pt-16">
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <Breadcrumbs dark bare items={[{ name: 'Kako funkcioniše' }]} />
+          </div>
           {/* Continuous gradient background */}
           <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink-900 via-ink-800 via-ink-950 to-cloud" />
 

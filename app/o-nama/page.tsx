@@ -1,6 +1,5 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -50,10 +49,8 @@ export default function ONamaPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'O nama' }]} />
-
         {/* Hero */}
-        <section className="relative min-h-[340px] sm:min-h-[400px] flex flex-col overflow-hidden">
+        <section className="relative min-h-[340px] sm:min-h-[400px] flex flex-col overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-0">
             <Image
               src="/images/herozaposli.png"

@@ -101,8 +101,6 @@ export default function GradoviClient() {
     <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: 'Gradovi' }]} />
-
         {/* Hero */}
         <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] flex flex-col overflow-hidden">
           <div className="absolute inset-0">
@@ -121,7 +119,8 @@ export default function GradoviClient() {
           <div className="relative z-20 flex-1 flex items-end md:items-center">
             <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-7">
               <div className="max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 animate-fade-in">
+                <Breadcrumbs dark bare items={[{ name: 'Gradovi' }]} />
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 mt-3 animate-fade-in">
                   <MapPin className="w-3.5 h-3.5" />
                   Gradovi
                 </span>
