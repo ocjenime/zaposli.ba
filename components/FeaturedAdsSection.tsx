@@ -35,7 +35,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
         <ShareIconButton title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
       </div>
 
-      {/* Banner - kvadrat, slika preko cijelog kadra */}
+      {/* Banner - kvadrat, cijela slika uvijek vidljiva bez rezanja */}
       {bannerUrl ? (
         <div className="relative aspect-square overflow-hidden bg-ink-950">
           <NextImage
@@ -43,7 +43,7 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
             alt={ad.title}
             fill
             unoptimized
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="object-contain transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 20vw"
           />
         </div>
