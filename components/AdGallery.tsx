@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NextImage from 'next/image';
 import { Crown } from 'lucide-react';
 
@@ -18,13 +18,18 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
   const total = images.length;
   const current = images[Math.min(active, total - 1)];
 
+  // Reset omjera kad se promijeni slika - nova slika javlja svoje dimenzije kroz onLoad.
+  useEffect(() => {
+    setRatio(null);
+  }, [current]);
+
   return (
     <div>
-      <div
-        className="relative overflow-hidden bg-ink-950 rounded-2xl"
-        style={ratio ? { aspectRatio: ratio } : undefined}
-      >
-        <div className={`relative w-full ${ratio ? '' : 'aspect-[4/3]'}`}>
+      <div className="relative overflow-hidden bg-ink-950 rounded-2xl">
+        <div
+          className="relative w-full aspect-[4/3]"
+          style={ratio ? { aspectRatio: ratio } : undefined}
+        >
           {current ? (
             <NextImage
               key={current}
