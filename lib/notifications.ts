@@ -4,6 +4,24 @@ import { formatDate, formatDateTime } from '@/lib/date';
 export function getNotificationHref(notification: Notification, role: string | null): string | undefined {
   const { type, job_id } = notification;
 
+  // Admin-only tipovi: redove dobijaju iskljucivo admini, pa ruta ne zavisi od role.
+  // Moraju biti PRIJE job_id provjere jer admin notifikacije nemaju job_id.
+  if (type === 'new_bid_admin') {
+    return '/admin/?tab=bids';
+  }
+
+  if (type === 'subscription_request') {
+    return '/admin/?tab=requests';
+  }
+
+  if (type === 'new_user') {
+    return '/admin/?tab=users';
+  }
+
+  if (type === 'mediation_requested') {
+    return '/admin/?tab=mediations';
+  }
+
   // Messages always go to the conversation if we have a job id
   if (type === 'message' && job_id) {
     return `/dashboard/razgovor/?job_id=${job_id}`;
@@ -57,19 +75,6 @@ export function getNotificationHref(notification: Notification, role: string | n
     return role === 'firm' || role === 'majstor'
       ? `/dashboard/firma/?directJobId=${job_id}`
       : `/dashboard/poslovi/?id=${job_id}`;
-  }
-
-  if (type === 'mediation_requested') {
-    return '/admin/?tab=mediations';
-  }
-
-  // Admin-only tipovi: redove dobijaju isključivo admini, pa ruta ne zavisi od role.
-  if (type === 'subscription_request') {
-    return '/admin/?tab=requests';
-  }
-
-  if (type === 'new_user') {
-    return '/admin/?tab=users';
   }
 
   if (type === 'payment') {

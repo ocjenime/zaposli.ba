@@ -10,16 +10,21 @@ interface AdGalleryProps {
   adType: 'promotion' | 'worker_search';
 }
 
-/** Galerija oglasa: glavna slika + brojač + thumbs, sve funkcionalno. */
+/** Galerija oglasa: kadar se sam prilagođava dimenzijama slike pa je
+ *  uvijek 100% vidljiva (kvadrat, landscape ili portrait) - bez rezanja. */
 export default function AdGallery({ images, title, adType }: AdGalleryProps) {
   const [active, setActive] = useState(0);
+  const [ratio, setRatio] = useState<string | null>(null);
   const total = images.length;
   const current = images[Math.min(active, total - 1)];
 
   return (
     <div>
-      <div className="relative rounded-2xl overflow-hidden bg-ink-950">
-        <div className="relative aspect-[16/10]">
+      <div
+        className="relative overflow-hidden bg-ink-950 rounded-2xl"
+        style={ratio ? { aspectRatio: ratio } : undefined}
+      >
+        <div className={`relative w-full ${ratio ? '' : 'aspect-[4/3]'}`}>
           {current ? (
             <NextImage
               key={current}
@@ -28,6 +33,12 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
               fill
               unoptimized
               priority
+              onLoad={(e) => {
+                const img = e.currentTarget;
+                if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                  setRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
+                }
+              }}
               className="object-cover"
               sizes="100vw"
             />

@@ -11,7 +11,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import AdGallery from '@/components/AdGallery';
 import AdSaveShare from '@/components/AdSaveShare';
 import { fetchActivePromotedAds } from '@/lib/promoted-ads';
-import { getCategory, getCategoryShortName } from '@/lib/data';
+import { getCategory, getCategoryBarLabel } from '@/lib/data';
 import { site } from '@/lib/site';
 import { formatDate } from '@/lib/date';
 import { plural } from '@/lib/plural';
@@ -86,7 +86,7 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
       serviceTiles = (((catRows || []) as { category_slug: string }[])
         .map((r) => getCategory(r.category_slug))
         .filter((c): c is NonNullable<typeof c> => !!c)
-        .map((c) => ({ name: getCategoryShortName(c), Icon: c.icon })));
+        .map((c) => ({ name: getCategoryBarLabel(c), Icon: c.icon })));
     }
   } catch {
     serviceTiles = [];
@@ -200,10 +200,10 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
                 {serviceTiles.map((s) => (
                   <div
                     key={s.name}
-                    className="bg-cloud rounded-xl px-1 py-3 flex flex-col items-center justify-center gap-1.5 text-center min-h-[86px]"
+                    className="bg-cloud rounded-xl px-1 py-3 flex flex-col items-center justify-center gap-1.5 text-center min-h-[86px] min-w-0 overflow-hidden"
                   >
                     <s.Icon className="w-6 h-6 text-brand-orange shrink-0" />
-                    <span className="text-[10px] sm:text-[11px] font-medium text-gray-800 leading-tight break-words">
+                    <span className="text-[10px] sm:text-[11px] font-medium text-gray-800 leading-tight break-words line-clamp-2 overflow-hidden">
                       {s.name}
                     </span>
                   </div>

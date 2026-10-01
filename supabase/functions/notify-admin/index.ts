@@ -49,6 +49,15 @@ interface AdminRequestRecord {
   created_at: string;
 }
 
+interface BidRecord {
+  id: string;
+  job_id: string;
+  firm_id: string;
+  amount: number | null;
+  status: string;
+  created_at: string;
+}
+
 // Deterministic formatter avoids Node.js ICU/locale issues like "M08".
 function formatDate(iso: string) {
   try {
@@ -241,6 +250,30 @@ Deno.serve(async (req: Request) => {
           <p style="margin: 0; font-size: 14px; color: #555;"><strong>Datum:</strong> ${formatDate(request.created_at)}</p>
         </div>
         <a href="${SITE_URL}/admin/?tab=requests" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Pogledaj zahtjev</a>
+      </div>
+      `
+    );
+  } else if (payload.table === "bids") {
+    const bid = payload.record as unknown as BidRecord;
+    const [{ data: jobData }, { data: bidFirmData }] = await Promise.all([
+      supabase.from("jobs").select("title, city").eq("id", bid.job_id).single(),
+      supabase.from("firms").select("name").eq("id", bid.firm_id).single(),
+    ]);
+    const job = jobData as { title?: string | null; city?: string | null } | null;
+    const bidFirm = bidFirmData as { name?: string | null } | null;
+    await sendAdminEmail(
+      `Nova ponuda: ${bidFirm?.name || "Firma"} - ${job?.title || "posao"}`,
+      `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">
+        <div style="margin-bottom: 24px;"><strong style="font-size: 20px; color: #f97316;">Zaposli.ba</strong></div>
+        <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">Nova ponuda na posao</h1>
+        <div style="background: #f8f8fb; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
+          <p style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">${bidFirm?.name || "Nepoznata firma"}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Posao:</strong> ${job?.title || bid.job_id}${job?.city ? ` (${job.city})` : ""}</p>
+          <p style="margin: 0 0 8px; font-size: 16px;"><strong>Iznos:</strong> ${bid.amount ?? "?"} KM</p>
+          <p style="margin: 0; font-size: 14px; color: #555;"><strong>Datum:</strong> ${formatDate(bid.created_at)}</p>
+        </div>
+        <a href="${SITE_URL}/admin/?tab=bids" style="display: inline-block; background: #f97316; color: #fff; text-decoration: none; padding: 14px 28px; border-radius: 10px; font-weight: 600; font-size: 16px;">Pogledaj ponude</a>
       </div>
       `
     );
