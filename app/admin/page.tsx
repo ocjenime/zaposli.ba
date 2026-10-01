@@ -19,7 +19,7 @@ import {
   Loader2, Check, Crown, AlertCircle, Search, ArrowRight, ChevronDown,
   Star, CheckCircle, XCircle, Pencil,
   MessageSquare, Briefcase, TrendingUp, DollarSign,
-  ShieldCheck, Flag, Gavel, ListFilter, Scale, Megaphone,
+  ShieldCheck, Flag, Gavel, ListFilter, Scale, Megaphone, Trash2,
 } from 'lucide-react';
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
@@ -31,6 +31,7 @@ import AdminIconMenu from '@/components/dashboard/AdminIconMenu';
 import AdminBottomNav from '@/components/dashboard/AdminBottomNav';
 import AdminMoreMenu from '@/components/dashboard/AdminMoreMenu';
 import { roleLabel, isFirmRole } from '@/lib/roles';
+import { nextAdEndsAt, removeAdBannerFile } from '@/lib/ad-storage';
 import { formatDateTime, getResetCountdownText } from '@/lib/subscriptions';
 import { formatDate } from '@/lib/date';
 import { site } from '@/lib/site';
@@ -823,6 +824,43 @@ function AdminPage() {
     }
     await loadPromotions();
     setSuccess('Oglas je odbijen.');
+  }
+
+  async function extendPromotion(promotion: AdminPromotion) {
+    setSavingPromotion(promotion.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('promoted_ads')
+      .update({
+        ends_at: nextAdEndsAt(promotion.ends_at),
+        status: 'active',
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', promotion.id);
+    setSavingPromotion(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadPromotions();
+    setSuccess('Oglas je produžen za 30 dana.');
+  }
+
+  async function deletePromotion(promotion: AdminPromotion) {
+    if (!confirm(`Jeste li sigurni da želite obrisati oglas "${promotion.title}"? Ova akcija je nepovratna.`)) return;
+    setSavingPromotion(promotion.id);
+    setError('');
+    setSuccess('');
+    await removeAdBannerFile(supabase, promotion.banner_url);
+    const { error: err } = await supabase.from('promoted_ads').delete().eq('id', promotion.id);
+    setSavingPromotion(null);
+    if (err) {
+      setError(err.message);
+      return;
+    }
+    await loadPromotions();
+    setSuccess('Oglas je obrisan.');
   }
 
   function filteredFirms() {
@@ -2117,6 +2155,21 @@ function AdminPage() {
                                 >
                                   <Pencil className="w-3.5 h-3.5" /> Uredi
                                 </button>
+                                <button
+                                  onClick={() => extendPromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  {savingPromotion === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
+                                  Produži +30d
+                                </button>
+                                <button
+                                  onClick={() => deletePromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" /> Obriši
+                                </button>
                               </div>
                             )}
                             {p.status !== 'pending' && (
@@ -2126,6 +2179,21 @@ function AdminPage() {
                                   className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors inline-flex items-center gap-1.5"
                                 >
                                   <Pencil className="w-3.5 h-3.5" /> Uredi
+                                </button>
+                                <button
+                                  onClick={() => extendPromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  {savingPromotion === p.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle className="w-3.5 h-3.5" />}
+                                  Produži +30d
+                                </button>
+                                <button
+                                  onClick={() => deletePromotion(p)}
+                                  disabled={savingPromotion === p.id}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors disabled:opacity-50 inline-flex items-center gap-1.5"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" /> Obriši
                                 </button>
                               </div>
                             )}

@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import { removeAdBannerFile } from '@/lib/ad-storage';
 
 export interface EditableAd {
   id: string;
@@ -33,16 +34,9 @@ function destinationLabel(d: EditableAd['destination']): string {
   return 'Homepage mini';
 }
 
-/** Izvuci storage putanju iz public URL-a (samo za naše ad bannere). */
-function storagePathFromUrl(url: string | null): string | null {
-  if (!url) return null;
-  const marker = '/job-images/';
-  const idx = url.indexOf(marker);
-  if (idx === -1) return null;
-  const path = url.slice(idx + marker.length);
-  if (!path.startsWith('promoted-ads-banners/')) return null;
-  return path;
-}
+  async function removeOldBanner(oldUrl: string | null) {
+    await removeAdBannerFile(supabase, oldUrl);
+  }
 
 export default function AdEditModal({ ad, onClose, onSaved }: AdEditModalProps) {
   const [title, setTitle] = useState(ad.title);
@@ -88,16 +82,6 @@ export default function AdEditModal({ ad, onClose, onSaved }: AdEditModalProps) 
     if (uploadErr) throw uploadErr;
     const { data } = supabase.storage.from('job-images').getPublicUrl(path);
     return data.publicUrl;
-  }
-
-  async function removeOldBanner(oldUrl: string | null) {
-    try {
-      const oldPath = storagePathFromUrl(oldUrl);
-      if (!oldPath) return;
-      await supabase.storage.from('job-images').remove([oldPath]);
-    } catch {
-      // best-effort čišćenje
-    }
   }
 
   function validate(): boolean {

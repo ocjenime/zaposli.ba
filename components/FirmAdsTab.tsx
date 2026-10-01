@@ -24,11 +24,13 @@ import {
   Wallet,
   ImageIcon,
   Pencil,
+  RotateCw,
 } from 'lucide-react';
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/date';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import { nextAdEndsAt } from '@/lib/ad-storage';
 import AdEditModal from '@/components/AdEditModal';
 
 const HOMEPAGE_MINI_PRICE = 19;
@@ -122,6 +124,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const [editingAd, setEditingAd] = useState<PromotedAd | null>(null);
+  const [renewingId, setRenewingId] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const [destination, setDestination] = useState<Destination>(() => {
@@ -241,6 +244,31 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
 
   function prevStep() {
     setStep((s) => Math.max(s - 1, 1));
+  }
+
+  async function renewAd(ad: PromotedAd) {
+    const label = ad.status === 'expired' ? 'reaktivirati' : 'produžiti';
+    if (!confirm(`Želite li ${label} oglas "${ad.title}" za još 30 dana? Oglas ide na odobrenje admina.`)) return;
+    setRenewingId(ad.id);
+    setError('');
+    setSuccess('');
+    try {
+      const { error: renewErr } = await supabase
+        .from('promoted_ads')
+        .update({
+          ends_at: nextAdEndsAt(ad.ends_at),
+          status: 'pending',
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', ad.id);
+      if (renewErr) throw renewErr;
+      setSuccess('Obnova poslana na odobrenje. Nakon odobrenja oglas vrijedi još 30 dana.');
+      await loadData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Greška prilikom obnove oglasa.');
+    } finally {
+      setRenewingId(null);
+    }
   }
 
   async function submitAd() {
@@ -736,6 +764,17 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                       <Pencil className="w-3.5 h-3.5" />
                       Uredi oglas
                     </button>
+                    {ad.status !== 'pending' && (
+                      <button
+                        type="button"
+                        onClick={() => renewAd(ad)}
+                        disabled={renewingId === ad.id}
+                        className="mt-2 ml-3 inline-flex items-center gap-1.5 text-xs font-semibold text-green-700 hover:underline disabled:opacity-50"
+                      >
+                        <RotateCw className={`w-3.5 h-3.5 ${renewingId === ad.id ? 'animate-spin' : ''}`} />
+                        {ad.status === 'expired' ? 'Reaktiviraj (+30 dana)' : 'Produži (+30 dana)'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
