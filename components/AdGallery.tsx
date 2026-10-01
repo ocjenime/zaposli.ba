@@ -27,7 +27,7 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
     <div>
       <div className="relative overflow-hidden bg-ink-950 rounded-2xl">
         <div
-          className="relative w-full aspect-[4/3]"
+          className="relative w-full aspect-[4/3] lg:max-h-[68vh]"
           style={ratio ? { aspectRatio: ratio } : undefined}
         >
           {current ? (
@@ -44,8 +44,8 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
                   setRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
                 }
               }}
-              className="object-cover"
-              sizes="100vw"
+              className="object-contain"
+              sizes="(min-width: 1024px) 768px, 100vw"
             />
           ) : null}
         </div>

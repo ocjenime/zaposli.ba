@@ -167,6 +167,7 @@ interface AdminPromotion {
   source: 'included' | 'paid';
   created_at: string;
   ends_at: string | null;
+  show_phone: boolean | null;
   firms: { name: string | null; email: string | null } | null;
 }
 

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import {
-  X, Loader2, AlertCircle, Check, Upload, Trash2, Sparkles, Users, ImageIcon,
+  X, Loader2, AlertCircle, Check, Upload, Trash2, Sparkles, Users, ImageIcon, Phone,
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
@@ -20,6 +20,7 @@ export interface EditableAd {
   amount: number;
   status: 'pending' | 'active' | 'expired' | 'rejected';
   source: 'included' | 'paid';
+  show_phone?: boolean | null;
 }
 
 interface AdEditModalProps {
@@ -42,6 +43,7 @@ export default function AdEditModal({ ad, onClose, onSaved }: AdEditModalProps) 
   const [title, setTitle] = useState(ad.title);
   const [description, setDescription] = useState(ad.description);
   const [adType, setAdType] = useState<'promotion' | 'worker_search'>(ad.ad_type);
+  const [showPhone, setShowPhone] = useState(ad.show_phone !== false);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(ad.banner_url);
   const [saving, setSaving] = useState(false);
@@ -118,6 +120,7 @@ export default function AdEditModal({ ad, onClose, onSaved }: AdEditModalProps) 
           description: description.trim(),
           banner_url: bannerUrl,
           ad_type: adType,
+          show_phone: showPhone,
           status: 'pending',
           starts_at: null,
           ends_at: null,
@@ -273,6 +276,35 @@ export default function AdEditModal({ ad, onClose, onSaved }: AdEditModalProps) 
                   <Users className="w-4 h-4" /> Tražim radnike
                 </button>
               </div>
+            </div>
+
+            <div>
+              <span className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">
+                Vidljivost broja telefona
+              </span>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={showPhone}
+                onClick={() => setShowPhone((v) => !v)}
+                className="w-full flex items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
+              >
+                <span
+                  className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${
+                    showPhone ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-700'
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${
+                      showPhone ? 'left-[22px]' : 'left-0.5'
+                    }`}
+                  />
+                </span>
+                <span className="flex items-center gap-2 text-sm text-gray-900 dark:text-white">
+                  <Phone className="w-4 h-4 text-green-600" />
+                  {showPhone ? 'Broj je vidljiv - klijenti mogu zvati' : 'Broj je sakriven'}
+                </span>
+              </button>
             </div>
 
             <button

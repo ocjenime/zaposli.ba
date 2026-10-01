@@ -25,6 +25,7 @@ import {
   ImageIcon,
   Pencil,
   RotateCw,
+  Phone,
 } from 'lucide-react';
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -55,6 +56,7 @@ interface PromotedAd {
   source: 'included' | 'paid';
   created_at: string;
   ends_at: string | null;
+  show_phone: boolean | null;
 }
 
 interface FirmAdsTabProps {
@@ -119,6 +121,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [adType, setAdType] = useState<AdType>('promotion');
+  const [showPhone, setShowPhone] = useState(true);
 
   const [banner, setBanner] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
@@ -297,6 +300,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
         banner_url: bannerUrl,
         ad_type: adType,
         destination,
+        show_phone: showPhone,
         amount,
         status: 'pending',
         source,
@@ -307,6 +311,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
       setTitle('');
       setDescription('');
       setAdType('promotion');
+      setShowPhone(true);
       removeBanner();
       setStep(1);
 
@@ -557,6 +562,38 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                 />
                 <p className="text-xs text-steel mt-1.5">Minimum 20 znakova.</p>
               </div>
+
+              <div>
+                <span className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
+                  Vidljivost broja telefona
+                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={showPhone}
+                  onClick={() => setShowPhone((v) => !v)}
+                  className="w-full flex items-center gap-3 rounded-xl border border-gray-200 dark:border-ink-700 px-4 py-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-ink-800"
+                >
+                  <span
+                    className={`relative w-11 h-6 rounded-full transition-colors shrink-0 ${
+                      showPhone ? 'bg-green-500' : 'bg-gray-300 dark:bg-ink-700'
+                    }`}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-all ${
+                        showPhone ? 'left-[22px]' : 'left-0.5'
+                      }`}
+                    />
+                  </span>
+                  <span className="flex items-center gap-2 text-sm text-gray-900 dark:text-white">
+                    <Phone className="w-4 h-4 text-green-600" />
+                    {showPhone ? 'Broj je vidljiv - klijenti mogu zvati' : 'Broj je sakriven'}
+                  </span>
+                </button>
+                <p className="text-xs text-steel mt-1.5">
+                  Ako je uključeno, na oglasu se prikazuje zeleni Pozovi button sa vašim brojem. Možete promijeniti i kasnije kroz Uredi oglas.
+                </p>
+              </div>
             </div>
           )}
 
@@ -625,6 +662,12 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                   <span className="text-sm text-steel">Tip</span>
                   <span className="text-sm font-bold text-gray-900 dark:text-white">
                     {adType === 'promotion' ? 'Promocija firme' : 'Tražim radnike'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-steel">Broj telefona</span>
+                  <span className="text-sm font-bold text-gray-900 dark:text-white">
+                    {showPhone ? 'Vidljiv' : 'Sakriven'}
                   </span>
                 </div>
                 <div className="border-t border-gray-200 dark:border-ink-800 pt-4">

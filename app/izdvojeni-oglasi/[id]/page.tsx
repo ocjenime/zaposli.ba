@@ -93,7 +93,8 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
   }
 
   const profileHref = firm?.slug ? `/firma-profil/${firm.slug}/` : '/top-firme/';
-  const phoneHref = firm?.phone ? `tel:${firm.phone.replace(/\s/g, '')}` : null;
+  // Pozovi button samo ako je firma dozvolila prikaz broja i broj postoji.
+  const phoneHref = ad.show_phone !== false && firm?.phone ? `tel:${firm.phone.replace(/\s/g, '')}` : null;
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -259,7 +260,7 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
             className={`inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-extrabold transition-all hover:shadow-xl hover:shadow-brand-orange/25 active:scale-[0.99] min-h-[56px] ${phoneHref ? '' : 'col-span-2'}`}
           >
             <Building2 className="w-5 h-5 shrink-0" />
-            <span className="text-[15px]">Pogledaj profil firme</span>
+            <span className="text-[15px] [font-variant-ligatures:none]">Pogledaj profil firme</span>
             <ArrowRight className="w-4 h-4 shrink-0" />
           </Link>
         </div>
