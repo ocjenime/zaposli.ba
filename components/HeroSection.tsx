@@ -103,7 +103,7 @@ export default function HeroSection() {
                     ))}
                   </div>
                   <div>
-                    <p className="text-white font-bold text-sm leading-tight">Već 10.000+ korisnika</p>
+                    <p className="text-white font-bold text-sm leading-tight">Sve nas je više!</p>
                     <p className="text-white/60 text-xs">na Zaposli.ba</p>
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export default function HeroSection() {
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
-                  <span className="ml-2 text-white/80 text-sm font-semibold">4.8 / 5</span>
+                  <span className="ml-2 text-white/80 text-sm font-semibold">5/5</span>
                 </div>
               </div>
             </div>
