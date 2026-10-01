@@ -17,6 +17,7 @@ export default function BuyAdPage() {
 
   const [firmId, setFirmId] = useState<string | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [profileComplete, setProfileComplete] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -39,7 +40,7 @@ export default function BuyAdPage() {
     try {
       const { data: firmData, error: firmErr } = await supabase
         .from('firms')
-        .select('id')
+        .select('id, city')
         .eq('owner_id', user.id)
         .maybeSingle();
       if (firmErr) throw firmErr;
@@ -50,6 +51,11 @@ export default function BuyAdPage() {
       }
       const id = firmData.id as string;
       setFirmId(id);
+      const { count: catCount } = await supabase
+        .from('firm_categories')
+        .select('*', { count: 'exact', head: true })
+        .eq('firm_id', id);
+      setProfileComplete(!!(firmData as { city?: string | null }).city?.trim() && (catCount || 0) > 0);
       const usage = await getPlanAndUsage(id);
       setSubscription(usage.subscription);
     } catch (err) {
@@ -100,7 +106,13 @@ export default function BuyAdPage() {
                 <Loader2 className="w-5 h-5 animate-spin mr-2" /> Učitavanje...
               </div>
             }>
-              <FirmAdsTab firmId={firmId} subscription={subscription} />
+              {!profileComplete && (
+                <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm">
+                  Prije objave oglasa dopunite grad i kategorije na{' '}
+                  <a href="/dashboard/firma/profil/" className="font-semibold underline">profesionalnom profilu</a>.
+                </div>
+              )}
+              <FirmAdsTab firmId={firmId} subscription={subscription} profileComplete={profileComplete} />
             </Suspense>
           )}
         </div>

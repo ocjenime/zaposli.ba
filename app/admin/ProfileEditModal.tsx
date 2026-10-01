@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { roleLabel, roleInputOptions, type UserRole } from '@/lib/roles';
+import { roleLabel, roleInputOptions, isFirmRole, type UserRole } from '@/lib/roles';
+import { cities } from '@/lib/data';
 import {
   X, Loader2, Crown, AlertCircle, Check, KeyRound, Mail, Phone, User, Trash2, ShieldAlert, Eye, EyeOff,
 } from 'lucide-react';
@@ -34,6 +35,7 @@ export default function ProfileEditModal({
   const [fullName, setFullName] = useState(profile?.full_name || '');
   const [phone, setPhone] = useState(profile?.phone || '');
   const [role, setRole] = useState<UserRole>(profile?.role || 'client');
+  const [firmCity, setFirmCity] = useState('');
   const [isAdmin, setIsAdmin] = useState(profile?.is_admin || false);
   const [blocked, setBlocked] = useState(profile?.blocked || false);
   const [saving, setSaving] = useState(false);
@@ -50,6 +52,14 @@ export default function ProfileEditModal({
     setError('');
     setSuccess('');
 
+    // Prelazak na firmu/majstora: grad je obavezan (DB trigger bi odbio firmu bez grada).
+    const becomesFirm = isFirmRole(role) && !isFirmRole(profile!.role);
+    if (becomesFirm && !firmCity.trim()) {
+      setSaving(false);
+      setError('Odaberite grad za firmu. Bez grada profil je nevidljiv u pretragama.');
+      return;
+    }
+
     const { error: err } = await supabase
       .from('profiles')
       .update({
@@ -61,12 +71,32 @@ export default function ProfileEditModal({
       })
       .eq('id', profile!.id);
 
-    setSaving(false);
     if (err) {
+      setSaving(false);
       setError(err.message);
       return;
     }
-    setSuccess('Profil je uspješno ažuriran.');
+
+    // Trigger je auto-kreirao firmu bez grada - dopuni grad odmah.
+    if (becomesFirm) {
+      const { error: firmErr } = await supabase
+        .from('firms')
+        .update({ city: firmCity.trim() })
+        .eq('owner_id', profile!.id);
+      if (firmErr) {
+        setSaving(false);
+        setError(`Uloga promijenjena, ali grad firme nije spremljen: ${firmErr.message} Dopunite ga kroz Firme -> Uredi.`);
+        onSaved();
+        return;
+      }
+    }
+
+    setSaving(false);
+    setSuccess(
+      becomesFirm
+        ? 'Profil je uspješno ažuriran. Dodajte kategorije kroz Firme -> Uredi da profil bude vidljiv.'
+        : 'Profil je uspješno ažuriran.'
+    );
     onSaved();
   }
 
@@ -237,8 +267,7 @@ export default function ProfileEditModal({
                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
-              </div>
-              <div>
+              </div>              <div>
                 <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">Admin</label>
                 <button
                   type="button"
@@ -254,6 +283,27 @@ export default function ProfileEditModal({
                 </button>
               </div>
             </div>
+
+            {isFirmRole(role) && !isFirmRole(profile!.role) && (
+              <div>
+                <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1.5">
+                  Grad firme <span className="text-red-500">*</span>
+                </label>
+                <select
+                  value={firmCity}
+                  onChange={(e) => setFirmCity(e.target.value)}
+                  className="w-full bg-cloud dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-orange focus:border-transparent"
+                >
+                  <option value="">Odaberite grad...</option>
+                  {cities.map((c) => (
+                    <option key={c.slug} value={c.name}>{c.name}</option>
+                  ))}
+                </select>
+                <p className="text-xs text-steel dark:text-gray-500 mt-1">
+                  Obavezno: bez grada firma je nevidljiva. Kategorije dodajte nakon spremanja kroz Firme -&gt; Uredi.
+                </p>
+              </div>
+            )}
 
             <div className="pt-2 flex flex-col-reverse sm:flex-row gap-3">
               <button

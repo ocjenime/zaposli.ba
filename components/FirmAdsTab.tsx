@@ -62,6 +62,8 @@ interface PromotedAd {
 interface FirmAdsTabProps {
   firmId: string;
   subscription: Subscription | null;
+  /** false = firma nema grad/kategorije -> objava oglasa blokirana uz poruku */
+  profileComplete?: boolean;
 }
 
 const destinationMeta: Record<
@@ -109,7 +111,7 @@ const destinationMeta: Record<
   },
 };
 
-export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
+export default function FirmAdsTab({ firmId, subscription, profileComplete = true }: FirmAdsTabProps) {
   const [ads, setAds] = useState<PromotedAd[]>([]);
   const [adsUsed, setAdsUsed] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -275,6 +277,10 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   }
 
   async function submitAd() {
+    if (!profileComplete) {
+      setError('Prije objave oglasa dopunite grad i kategorije na profesionalnom profilu.');
+      return;
+    }
     if (!validateStep(2) || !banner) {
       setStep(banner ? 2 : 3);
       return;

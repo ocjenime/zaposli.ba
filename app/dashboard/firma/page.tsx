@@ -499,6 +499,10 @@ function FirmDashboardContent() {
 
   async function submitBid(job: Job) {
     if (!firmId) return;
+    if (!firmCity?.trim() || firmCategories.length === 0) {
+      setError('Prije slanja ponuda dopunite grad i kategorije na profesionalnom profilu.');
+      return;
+    }
     if (hasBidForJob(job.id)) {
       setError('Već ste poslali ponudu za ovaj posao.');
       return;
@@ -1478,7 +1482,7 @@ function FirmDashboardContent() {
               </section>
 
               {activeTab === 'ads' && (
-                <FirmAdsTab firmId={firmId || ''} subscription={subscription} />
+                <FirmAdsTab firmId={firmId || ''} subscription={subscription} profileComplete={!!firmCity?.trim() && firmCategories.length > 0} />
               )}
 
               {activeTab === 'stats' && (
