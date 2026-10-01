@@ -26,6 +26,7 @@ export interface PublicPromotedAd {
     slug: string | null;
     city: string | null;
     logo_url: string | null;
+    phone: string | null;
     verified: boolean | null;
     average_rating: number | null;
     review_count: number | null;
@@ -41,7 +42,7 @@ export async function fetchActivePromotedAds(limit?: number): Promise<PublicProm
   let query = publicAdsClient
     .from('promoted_ads')
     .select(
-      'id,title,description,image_url,banner_url,cta_url,ad_type,destination,ends_at,created_at,firms(name,slug,city,logo_url,verified,average_rating,review_count)'
+      'id,title,description,image_url,banner_url,cta_url,ad_type,destination,ends_at,created_at,firms(name,slug,city,logo_url,phone,verified,average_rating,review_count)'
     )
     .eq('status', 'active')
     .gt('ends_at', new Date().toISOString())
