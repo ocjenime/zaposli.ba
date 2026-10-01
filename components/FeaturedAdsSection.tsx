@@ -16,7 +16,6 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
   const isWorkerSearch = ad.ad_type === 'worker_search';
   const bannerUrl = ad.banner_url || ad.image_url;
-  const firm = ad.firms;
 
   return (
     <Link
@@ -60,54 +59,8 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
         </div>
       )}
 
-      {/* Content */}
-      <div className="flex flex-col flex-1 p-4">
-        <h3 className="text-sm md:text-base font-bold text-gray-900 dark:text-[#ffffff] leading-snug line-clamp-2 mb-2 group-hover:text-brand-orange transition-colors">
-          {ad.title}
-        </h3>
-
-        <span
-          className={`self-start text-[10px] font-bold px-2 py-0.5 rounded-lg border mb-3 ${
-            isWorkerSearch
-              ? 'bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-500/10 dark:text-blue-300 dark:border-blue-500/20'
-              : 'bg-orange-50 text-brand-orange border-orange-100 dark:bg-orange-500/10 dark:text-orange-200 dark:border-orange-500/20'
-          }`}
-        >
-          {getAdTypeLabel(ad.ad_type)}
-        </span>
-
-        <div className="flex items-center gap-2 mb-4">
-          <div className="shrink-0">
-            <LogoDisplay
-              name={firm?.name || 'Firma'}
-              src={firm?.logo_url}
-              alt={firm?.name || 'Firma'}
-              size="sm"
-              rounded="lg"
-              className="border border-gray-100 dark:border-ink-700"
-            />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start gap-1">
-              <p className="text-xs font-bold text-gray-900 dark:text-[#ffffff] leading-tight whitespace-normal break-words">{firm?.name || 'Firma'}</p>
-              {firm?.verified && (
-                <VerifiedBadge size="sm" showLabel={false} className="shrink-0 border-transparent bg-transparent px-0 py-0 mt-0.5" />
-              )}
-            </div>
-            <div className="flex items-center gap-2 text-[11px] text-gray-600 dark:text-[#ffffff]/70">
-              {firm?.city && <span>{firm.city}</span>}
-              <span className="inline-flex items-center gap-0.5">
-                <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                {(firm?.average_rating || 0).toFixed(1)} ({firm?.review_count || 0})
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <span className="mt-auto hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 group-hover:bg-brand-orange group-hover:text-white dark:group-hover:bg-brand-orange dark:group-hover:text-white transition-colors self-end">
-          <ArrowRight className="w-4 h-4" />
-        </span>
-      </div>
+      {/* Content - samo skriveni naslov za SEO/čitače ekrana */}
+      <span className="sr-only">{ad.title}</span>
     </Link>
   );
 }
