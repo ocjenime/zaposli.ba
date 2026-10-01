@@ -276,6 +276,12 @@ function PostProjectContent() {
     e.preventDefault();
     setError('');
     if (!user) { router.push('/prijava/?redirectTo=/objavi-projekat/'); return; }
+    // Poslove smiju objavljivati samo klijenti - firme i majstori imaju oglase.
+    if (isFirmRole(role)) {
+      setError('Poslove mogu objavljivati samo klijenti. Kao firma/majstor koristite sponzorirane oglase.');
+      router.push('/dashboard/firma/');
+      return;
+    }
 
     const cat = categories.find((c) => c.name === formData.category);
     if (!cat) { setError('Odaberite kategoriju'); return; }
