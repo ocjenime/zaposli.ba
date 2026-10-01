@@ -204,7 +204,7 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
                     className="bg-cloud rounded-xl px-1 py-3 flex flex-col items-center justify-center gap-1.5 text-center min-h-[86px] min-w-0 overflow-hidden"
                   >
                     <s.Icon className="w-6 h-6 text-brand-orange shrink-0" />
-                    <span className="text-[10px] sm:text-[11px] font-medium text-gray-800 leading-tight break-words line-clamp-2 overflow-hidden">
+                    <span className="w-full text-center text-[10px] sm:text-[11px] font-medium text-gray-800 leading-tight [overflow-wrap:anywhere] line-clamp-2 overflow-hidden">
                       {s.name}
                     </span>
                   </div>
