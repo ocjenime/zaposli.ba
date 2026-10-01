@@ -23,11 +23,13 @@ import {
   Eye,
   Wallet,
   ImageIcon,
+  Pencil,
 } from 'lucide-react';
 import NextImage from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/date';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
+import AdEditModal from '@/components/AdEditModal';
 
 const HOMEPAGE_MINI_PRICE = 19;
 const HOMEPAGE_BANNER_PRICE = 49;
@@ -38,6 +40,7 @@ type AdType = 'promotion' | 'worker_search';
 
 interface PromotedAd {
   id: string;
+  firm_id: string;
   title: string;
   description: string;
   image_url: string | null;
@@ -118,6 +121,7 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
   const [banner, setBanner] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const bannerInputRef = useRef<HTMLInputElement>(null);
+  const [editingAd, setEditingAd] = useState<PromotedAd | null>(null);
 
   const searchParams = useSearchParams();
   const [destination, setDestination] = useState<Destination>(() => {
@@ -724,6 +728,14 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
                         ? `Vrijedi do ${formatDate(ad.ends_at)}`
                         : 'Aktivan'}
                     </p>
+                    <button
+                      type="button"
+                      onClick={() => setEditingAd(ad)}
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-orange hover:underline"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      Uredi oglas
+                    </button>
                   </div>
                 </div>
               </div>
@@ -731,6 +743,14 @@ export default function FirmAdsTab({ firmId, subscription }: FirmAdsTabProps) {
           </div>
         )}
       </div>
+
+      {editingAd && (
+        <AdEditModal
+          ad={editingAd}
+          onClose={() => setEditingAd(null)}
+          onSaved={() => loadData()}
+        />
+      )}
     </section>
   );
 }

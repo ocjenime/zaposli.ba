@@ -24,6 +24,7 @@ import {
 import ProfileEditModal, { AdminProfile } from './ProfileEditModal';
 import FirmEditModal, { AdminFirm } from './FirmEditModal';
 import SubscriptionEditModal from './SubscriptionEditModal';
+import AdEditModal from '@/components/AdEditModal';
 import AdminDashboardWelcome from '@/components/dashboard/AdminDashboardWelcome';
 import AdminQuickStats from '@/components/dashboard/AdminQuickStats';
 import AdminIconMenu from '@/components/dashboard/AdminIconMenu';
@@ -256,6 +257,7 @@ function AdminPage() {
   const [editingProfile, setEditingProfile] = useState<AdminProfile | null>(null);
   const [editingFirm, setEditingFirm] = useState<AdminFirm | null>(null);
   const [editingSubscription, setEditingSubscription] = useState<FirmPlan | null>(null);
+  const [editingAd, setEditingAd] = useState<AdminPromotion | null>(null);
   const [promoCount, setPromoCount] = useState(0);
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -2109,6 +2111,22 @@ function AdminPage() {
                                 >
                                   <XCircle className="w-3.5 h-3.5" /> Odbij
                                 </button>
+                                <button
+                                  onClick={() => setEditingAd(p)}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors inline-flex items-center gap-1.5"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" /> Uredi
+                                </button>
+                              </div>
+                            )}
+                            {p.status !== 'pending' && (
+                              <div className="flex flex-wrap items-center gap-2 lg:shrink-0">
+                                <button
+                                  onClick={() => setEditingAd(p)}
+                                  className="text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors inline-flex items-center gap-1.5"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" /> Uredi
+                                </button>
                               </div>
                             )}
                           </div>
@@ -2210,6 +2228,17 @@ function AdminPage() {
                 loadFirmPlans();
                 loadPromoCount();
                 setSuccess('Pretplata ažurirana.');
+              }}
+            />
+          )}
+
+          {editingAd && (
+            <AdEditModal
+              ad={editingAd}
+              onClose={() => setEditingAd(null)}
+              onSaved={() => {
+                loadPromotions();
+                setSuccess('Oglas ažuriran.');
               }}
             />
           )}
