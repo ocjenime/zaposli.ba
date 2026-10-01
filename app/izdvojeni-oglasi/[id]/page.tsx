@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdBannerImage from '@/components/AdBannerImage';
 import ShareButtons from '@/components/ShareButtons';
+import CopyTextButton from '@/components/CopyTextButton';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
@@ -167,6 +168,10 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
               <div className="flex justify-center sm:justify-start">
                 <ShareButtons title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
               </div>
+              <CopyTextButton
+                className="w-full"
+                text={`🔥 ${ad.title}\n🏢 ${firm?.name || 'Zaposli.ba'}${firm?.city ? ` | 📍 ${firm.city}` : ''}\n\n👉 Pogledaj oglas:\n${site.url}/izdvojeni-oglasi/${ad.id}/`}
+              />
             </div>
           </div>
         </section>

@@ -19,8 +19,10 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import AdBannerImage from '@/components/AdBannerImage';
 import ShareButtons from '@/components/ShareButtons';
+import CopyTextButton from '@/components/CopyTextButton';
 import { formatDate } from '@/lib/date';
 import { plural } from '@/lib/plural';
+import { site } from '@/lib/site';
 
 function relativeTime(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
@@ -255,8 +257,13 @@ export default function PromotedAdRowCard({
                     <ArrowRight className="w-4 h-4" />
                   </Link>
 
-                  <div onClick={(e) => e.stopPropagation()} className="flex justify-center">
+                  <div onClick={(e) => e.stopPropagation()} className="flex flex-col items-center gap-2">
                     <ShareButtons compact title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
+                    <CopyTextButton
+                      label="Kopiraj tekst"
+                      className="w-full !py-2 !text-xs"
+                      text={`🔥 ${ad.title}\n🏢 ${firm?.name || 'Zaposli.ba'}${firm?.city ? ` | 📍 ${firm.city}` : ''}\n\n👉 Pogledaj oglas:\n${site.url}/izdvojeni-oglasi/${ad.id}/`}
+                    />
                   </div>
 
                   <button
