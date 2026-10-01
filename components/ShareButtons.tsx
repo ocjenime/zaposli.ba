@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { Phone, MessageCircle, Link2, Check, Share2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Phone, MessageCircle, Link2, Check, Share2, MoreHorizontal } from 'lucide-react';
 import { site } from '@/lib/site';
 
 interface ShareButtonsProps {
@@ -12,9 +12,22 @@ interface ShareButtonsProps {
 
 export default function ShareButtons({ title, path, compact }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [nativeShare, setNativeShare] = useState(false);
   const url = `${site.url}${path}`;
   const text = `${title} - Zaposli.ba`;
   const encoded = encodeURIComponent(`${text}\n${url}`);
+
+  useEffect(() => {
+    setNativeShare(typeof navigator !== 'undefined' && 'share' in navigator);
+  }, []);
+
+  async function systemShare() {
+    try {
+      await navigator.share({ title: text, text, url });
+    } catch {
+      // korisnik odustao - ignoriši
+    }
+  }
 
   const links = [
     {
@@ -53,6 +66,18 @@ export default function ShareButtons({ title, path, compact }: ShareButtonsProps
           <Share2 className="w-3.5 h-3.5" />
           Podijeli:
         </span>
+      )}
+      {nativeShare && (
+        <button
+          type="button"
+          onClick={systemShare}
+          aria-label="Podijeli na društvene mreže"
+          title="Podijeli na društvene mreže"
+          className="inline-flex items-center gap-1 text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-2 rounded-xl bg-gray-900 hover:bg-black transition-all active:scale-95"
+        >
+          <MoreHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          Više
+        </button>
       )}
       {links.map(({ label, href, bg, Icon }) => (
         <a

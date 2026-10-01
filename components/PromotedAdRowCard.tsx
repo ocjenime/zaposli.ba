@@ -18,6 +18,7 @@ import { getAdTypeLabel } from '@/lib/promoted-ads';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import AdBannerImage from '@/components/AdBannerImage';
+import ShareButtons from '@/components/ShareButtons';
 import { formatDate } from '@/lib/date';
 import { plural } from '@/lib/plural';
 
@@ -253,6 +254,10 @@ export default function PromotedAdRowCard({
                     Pogledaj oglas
                     <ArrowRight className="w-4 h-4" />
                   </Link>
+
+                  <div onClick={(e) => e.stopPropagation()} className="flex justify-center">
+                    <ShareButtons compact title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
+                  </div>
 
                   <button
                     type="button"

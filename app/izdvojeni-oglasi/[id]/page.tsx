@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AdBannerImage from '@/components/AdBannerImage';
+import ShareButtons from '@/components/ShareButtons';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
@@ -162,6 +163,9 @@ export default async function AdDetailPage({ params }: AdDetailPageProps) {
                   <Megaphone className="w-4 h-4" />
                   Svi oglasi
                 </Link>
+              </div>
+              <div className="flex justify-center sm:justify-start">
+                <ShareButtons title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
               </div>
             </div>
           </div>

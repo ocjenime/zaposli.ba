@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { PublicPromotedAd } from '@/lib/promoted-ads';
+import ShareIconButton from '@/components/ShareIconButton';
 
 function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
   const isWorkerSearch = ad.ad_type === 'worker_search';
@@ -27,6 +28,11 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
       {/* Sponsored badge */}
       <div className="absolute top-3 right-3 z-20 inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-orange text-white shadow-lg shadow-brand-orange/20">
         <Crown className="w-3 h-3" /> Sponzorirano
+      </div>
+
+      {/* Share overlay */}
+      <div className="absolute bottom-3 right-3 z-20">
+        <ShareIconButton title={ad.title} path={`/izdvojeni-oglasi/${ad.id}/`} />
       </div>
 
       {/* Banner - kvadrat, slika preko cijelog kadra */}
