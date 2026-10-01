@@ -157,6 +157,7 @@ interface AdminPromotion {
   title: string;
   description: string;
   image_url: string | null;
+  banner_url: string | null;
   ad_type: 'promotion' | 'worker_search';
   destination: 'homepage' | 'homepage_banner' | 'listing' | null;
   amount: number;
@@ -2047,12 +2048,12 @@ function AdminPage() {
                           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
                             <div className="flex-1">
                               <div className="flex flex-wrap items-center gap-2 mb-2">
-                                {p.image_url && (
+                                {(p.banner_url || p.image_url) ? (
                                   <>
                                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={p.image_url} alt="" className="w-16 h-12 object-cover rounded-lg border border-gray-100" />
+                                    <img src={p.banner_url || p.image_url || ''} alt="" className="w-16 h-12 object-cover rounded-lg border border-gray-100" />
                                   </>
-                                )}
+                                ) : null}
                                 <div>
                                   <p className="font-medium text-gray-900">{p.title}</p>
                                   <div className="flex flex-wrap items-center gap-1.5 mt-1">

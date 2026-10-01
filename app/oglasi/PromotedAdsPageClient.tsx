@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, Megaphone,
-  Crown, MapPin, ShieldCheck, Clock, Users, Sparkles,
+  Users, Sparkles,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -30,13 +30,6 @@ const TYPE_TABS: { value: TypeFilter; label: string; icon: typeof Sparkles }[] =
   { value: 'all', label: 'Svi oglasi', icon: Megaphone },
   { value: 'promotion', label: 'Promocije', icon: Sparkles },
   { value: 'worker_search', label: 'Tražim radnike', icon: Users },
-];
-
-const TRUST_BADGES = [
-  { icon: ShieldCheck, label: 'Provjerene firme' },
-  { icon: Crown, label: 'Premium oglasi' },
-  { icon: MapPin, label: 'Cijela BiH' },
-  { icon: Clock, label: 'Novi oglasi stalno' },
 ];
 
 export default function PromotedAdsPageClient({
@@ -96,64 +89,84 @@ export default function PromotedAdsPageClient({
     setSortBy('newest');
   }
 
+  function scrollToList() {
+    document.getElementById('listings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
-        <Breadcrumbs items={[{ name: breadcrumbLabel }]} />
+        {/* Hero - isti model kao /kategorije/ i /gradovi/ */}
+        <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] flex flex-col overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/poslovi-hero.jpg"
+              alt="Premium oglasi za firme i majstore"
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
+          </div>
 
-        {/* Hero */}
-        <section className="relative overflow-hidden border-b border-white/5">
-          <Image
-            src="/images/poslovi-hero.jpg"
-            alt="Premium oglasi za firme i majstore"
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-ink-950/90 via-ink-950/55 to-ink-950/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-ink-950/30 to-ink-950/40" />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-28 md:pt-36 pb-10 md:pb-14">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
-                <Megaphone className="w-4 h-4 text-brand-orange" />
-                {eyebrow}
-              </div>
+          <div className="relative z-20 flex-1 flex items-end md:items-center">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-7">
+              <div className="max-w-2xl">
+                <Breadcrumbs dark bare items={[{ name: breadcrumbLabel }]} />
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 mt-3 animate-fade-in">
+                  <Megaphone className="w-3.5 h-3.5" />
+                  {eyebrow}
+                </span>
+                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
+                  {title}
+                </h1>
+                <p className="text-sm sm:text-base text-white/85 leading-snug sm:leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
+                  {subtitle}
+                </p>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-[1.1] tracking-tight">
-                {title}
-              </h1>
-
-              <p className="mt-4 text-base md:text-lg text-white/85 leading-relaxed max-w-2xl mx-auto">
-                {subtitle}
-              </p>
-
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-                <AdCreateCTA
-                  variant="button"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white font-bold transition-all active:scale-95 shadow-lg shadow-brand-orange/25"
-                />
-              </div>
-
-              <div className="mt-8 max-w-2xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-                {TRUST_BADGES.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <div
-                      key={item.label}
-                      className="flex items-center gap-2.5 px-3 py-3 rounded-xl bg-white/5 border border-white/10 text-white/90"
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    scrollToList();
+                  }}
+                  className="flex items-center gap-2 bg-white rounded-2xl p-1.5 pl-4 shadow-xl shadow-black/20 max-w-xl animate-fade-in"
+                  role="search"
+                >
+                  <Search className="w-5 h-5 text-gray-900 shrink-0" />
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Pretraži oglase..."
+                    aria-label="Pretraži oglase"
+                    className="flex-1 min-w-0 bg-transparent text-sm md:text-base text-gray-900 placeholder-gray-400 outline-none"
+                  />
+                  {search && (
+                    <button
+                      type="button"
+                      onClick={() => setSearch('')}
+                      aria-label="Očisti pretragu"
+                      className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500 shrink-0"
                     >
-                      <Icon className="w-4 h-4 md:w-5 md:h-5 text-brand-orange shrink-0" />
-                      <p className="text-xs md:text-sm font-medium text-left leading-tight">{item.label}</p>
-                    </div>
-                  );
-                })}
+                      <X className="w-4 h-4" aria-hidden="true" />
+                    </button>
+                  )}
+                  <button
+                    type="submit"
+                    aria-label="Pretraži oglase"
+                    className="h-11 w-12 rounded-xl bg-brand-orange hover:bg-brand-orange-dark text-white flex items-center justify-center shrink-0 transition-colors"
+                  >
+                    <Search className="w-5 h-5" />
+                  </button>
+                </form>
               </div>
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
+          <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
         </section>
 
         <section id="listings" className="py-10 md:py-14">
