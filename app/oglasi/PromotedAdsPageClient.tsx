@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   ArrowRight, Search, X, SlidersHorizontal, ArrowUpDown, Megaphone,
-  Users, Sparkles,
+  Users, Sparkles, MapPin, ChevronDown, Calendar,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -44,6 +44,7 @@ export default function PromotedAdsPageClient({
   const [cityFilter, setCityFilter] = useState('');
   const [sortBy, setSortBy] = useState<SortBy>('newest');
   const [showFilters, setShowFilters] = useState(false);
+  const [openPanel, setOpenPanel] = useState<null | 'tip' | 'lokacija'>(null);
 
   const cities = useMemo(
     () =>
@@ -87,6 +88,7 @@ export default function PromotedAdsPageClient({
     setTypeFilter('all');
     setCityFilter('');
     setSortBy('newest');
+    setOpenPanel(null);
   }
 
   function scrollToList() {
@@ -97,8 +99,8 @@ export default function PromotedAdsPageClient({
     <div className="min-h-screen flex flex-col bg-[#f8f7f4]">
       <Header />
       <main className="flex-grow">
-        {/* Hero - isti model kao /kategorije/ i /gradovi/ */}
-        <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] flex flex-col overflow-hidden">
+        {/* Hero - samo desktop; mobitel koristi light header ispod kao /poslovi/ */}
+        <section className="relative min-h-[360px] sm:min-h-[430px] lg:min-h-[540px] hidden md:flex flex-col overflow-hidden">
           <div className="absolute inset-0">
             <Image
               src="/images/poslovi-hero.jpg"
@@ -169,10 +171,163 @@ export default function PromotedAdsPageClient({
           <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f7f4] to-transparent z-10" />
         </section>
 
-        <section id="listings" className="py-10 md:py-14">
+        {/* Mobilni light header - isti model kao /poslovi/ */}
+        <section className="md:hidden pt-1 pb-4">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <Breadcrumbs items={[{ name: breadcrumbLabel }]} />
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">{breadcrumbLabel}</h1>
+                <p className="text-steel mt-1 text-sm">{subtitle}</p>
+              </div>
+              <div className="flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-2xl px-3 py-2 shrink-0">
+                <Megaphone className="w-5 h-5 text-brand-orange shrink-0" />
+                <p className="text-xs font-bold text-gray-900 leading-tight">
+                  {ads.length} {plural(ads.length, ['aktivan oglas', 'aktivna oglasa', 'aktivnih oglasa'])}
+                </p>
+              </div>
+            </div>
+
+            {/* Search */}
+            <div className="relative mt-4">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-900" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Pretraži oglase..."
+                aria-label="Pretraži oglase"
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-gray-200 bg-white text-[15px] text-gray-900 placeholder-gray-400 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all shadow-sm"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  aria-label="Očisti pretragu"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500"
+                >
+                  <X className="w-3.5 h-3.5" aria-hidden="true" />
+                </button>
+              )}
+            </div>
+
+            {/* Location */}
+            <div className="relative mt-2.5">
+              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-900 pointer-events-none" />
+              <select
+                value={cityFilter}
+                onChange={(e) => setCityFilter(e.target.value)}
+                aria-label="Lokacija"
+                className="w-full pl-12 pr-10 py-3.5 rounded-2xl border border-gray-200 bg-white text-[15px] font-medium text-gray-900 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none appearance-none cursor-pointer shadow-sm"
+              >
+                <option value="">Cijela BiH</option>
+                {cities.map((city) => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            </div>
+
+            {/* Filter pills */}
+            <div className="flex gap-2 mt-2.5 overflow-x-auto no-scrollbar -mx-4 px-4 pb-1">
+              {[
+                { key: 'tip' as const, icon: Sparkles, label: typeFilter === 'all' ? 'Tip oglasa' : TYPE_TABS.find((t) => t.value === typeFilter)?.label || 'Tip oglasa', active: typeFilter !== 'all' },
+                { key: 'lokacija' as const, icon: MapPin, label: cityFilter || 'Lokacija', active: !!cityFilter },
+              ].map((pill) => (
+                <button
+                  key={pill.key}
+                  type="button"
+                  onClick={() => setOpenPanel(openPanel === pill.key ? null : pill.key)}
+                  className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full border text-sm font-medium whitespace-nowrap transition-all min-h-[44px] max-w-[200px] ${
+                    openPanel === pill.key || pill.active
+                      ? 'bg-ink-950 text-white border-ink-950'
+                      : 'bg-white text-gray-800 border-gray-200'
+                  }`}
+                >
+                  <pill.icon className="w-4 h-4 shrink-0" />
+                  <span className="truncate">{pill.label}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 shrink-0 transition-transform ${openPanel === pill.key ? 'rotate-180' : ''}`} />
+                </button>
+              ))}
+            </div>
+
+            {/* Filter panels */}
+            {openPanel === 'tip' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-2">
+                {TYPE_TABS.map((tab) => (
+                  <button
+                    key={tab.value}
+                    type="button"
+                    onClick={() => { setTypeFilter(tab.value); setOpenPanel(null); }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${typeFilter === tab.value ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {openPanel === 'lokacija' && (
+              <div className="mt-2 bg-white border border-gray-200 rounded-2xl shadow-lg p-2 max-h-64 overflow-y-auto">
+                <button
+                  type="button"
+                  onClick={() => { setCityFilter(''); setOpenPanel(null); }}
+                  className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${!cityFilter ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  Cijela BiH
+                </button>
+                {cities.map((city) => (
+                  <button
+                    key={city}
+                    type="button"
+                    onClick={() => { setCityFilter(city); setOpenPanel(null); }}
+                    className={`w-full text-left px-3 py-2.5 rounded-xl text-sm font-medium ${cityFilter === city ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {city}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Sort toggle */}
+            <div className="flex bg-gray-100 rounded-full p-1 mt-2.5">
+              <button
+                type="button"
+                onClick={() => setSortBy('newest')}
+                className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all min-h-[44px] ${
+                  sortBy === 'newest' ? 'bg-ink-950 text-white shadow' : 'text-gray-500'
+                }`}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Najnoviji
+              </button>
+              <button
+                type="button"
+                onClick={() => setSortBy('ending')}
+                className={`flex-1 inline-flex items-center justify-center gap-2 py-2.5 rounded-full text-sm font-semibold transition-all min-h-[44px] ${
+                  sortBy === 'ending' ? 'bg-ink-950 text-white shadow' : 'text-gray-500'
+                }`}
+              >
+                <Calendar className="w-4 h-4" />
+                Ističu uskoro
+              </button>
+            </div>
+
+            {activeFiltersCount > 0 && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="mt-2.5 text-sm text-brand-orange font-semibold inline-flex items-center gap-1 min-h-[36px]"
+              >
+                <X className="w-4 h-4" /> Poništi filtere ({activeFiltersCount})
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section id="listings" className="pt-2 pb-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Filter bar */}
-            <div className="bg-[#f8f7f4] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60">
+            {/* Filter bar - samo desktop; mobitel koristi header pillove iznad */}
+            <div className="hidden md:block bg-[#f8f7f4] -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 md:py-4 mb-6 md:mb-8 border-b border-gray-200/60">
               <div className="max-w-7xl mx-auto">
                 <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                   <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1">
