@@ -52,8 +52,35 @@ export default function NewPasswordForm() {
       const token = hashParams.access_token || hashParams.token || url.searchParams.get('token') || undefined;
       const tokenHash = hashParams.token_hash || url.searchParams.get('token_hash') || undefined;
       const code = url.searchParams.get('code') || undefined;
+      const accessToken = hashParams.access_token || undefined;
+      const refreshToken = hashParams.refresh_token || undefined;
 
       if (cancelled) return;
+
+      const debugInfo = `(type=${type || 'nema'}, token=${token ? 'da' : 'ne'}, token_hash=${tokenHash ? 'da' : 'ne'}, code=${code ? 'da' : 'ne'}, sesija=${accessToken && refreshToken ? 'da' : 'ne'})`;
+
+      // Format 1: implicitni flow - sesija direktno u hash fragmentu.
+      if (accessToken && refreshToken) {
+        try {
+          const { error: sessionError } = await client.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          if (cancelled) return;
+          if (sessionError) {
+            setError(`Link za reset lozinke je istekao ili nije važeći. Zatražite novi link. ${debugInfo}`);
+            setLoading(false);
+            return;
+          }
+          setSessionReady(true);
+          setLoading(false);
+          return;
+        } catch {
+          setError(`Link za reset lozinke je istekao ili nije važeći. Zatražite novi link. ${debugInfo}`);
+          setLoading(false);
+          return;
+        }
+      }
 
       // PKCE format: Supabase verify vrati ?code= koji mijenjamo za sesiju.
       if (code && !token && !tokenHash) {
