@@ -402,7 +402,9 @@ function AdminPage() {
 
   useEffect(() => {
     const t = searchParams.get('tab');
-    if (t && validTabs.includes(t)) setActiveTab(t);
+    // Bez parametra (dugme Pregled) ili uz nevažeći param -> overview,
+    // inače tab ostane stari i dugme izgleda mrtvo.
+    setActiveTab(t && validTabs.includes(t) ? t : 'overview');
   }, [searchParams]);
 
   const loadConversations = useCallback(async () => {

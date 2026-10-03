@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
@@ -23,6 +23,33 @@ export default function LoginForm() {
     if (!url) return false;
     return url.startsWith('/') && !url.startsWith('//') && !url.startsWith('/api');
   };
+
+  // Već ulogovan (npr. back button nakon prijave) -> odmah na pravi dashboard,
+  // da forma ne izgleda kao da sesija ne postoji.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (cancelled || !data.session) return;
+      if (redirectTo && isSafeRedirect(redirectTo)) {
+        router.replace(redirectTo);
+        return;
+      }
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role, is_admin')
+        .eq('id', data.session.user.id)
+        .maybeSingle();
+      if (cancelled) return;
+      const p = profile as { role?: string | null; is_admin?: boolean } | null;
+      if (p?.is_admin) router.replace('/admin/');
+      else if (isFirmRole(p?.role ?? null)) router.replace('/dashboard/firma/');
+      else router.replace('/dashboard/');
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [router, redirectTo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
