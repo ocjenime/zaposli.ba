@@ -334,7 +334,7 @@ export default function Header({ dark = false }: { dark?: boolean }) {
                             : 'text-gray-700 dark:text-white/90 hover:bg-gray-50 dark:hover:bg-ink-800'
                         }`}
                       >
-                        <Building2 className="w-4 h-4" /> Dashboard
+                        <Building2 className="w-4 h-4" /> {isAdmin ? 'Admin panel' : 'Dashboard'}
                       </Link>
                       <Link
                         href={profileHref}
@@ -417,7 +417,7 @@ export default function Header({ dark = false }: { dark?: boolean }) {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-[15px] font-semibold text-gray-900 dark:text-white truncate">{displayName}</p>
-                    <p className="text-xs text-gray-500 dark:text-white/60">{roleLabel} - Idi na dashboard</p>
+                    <p className="text-xs text-gray-500 dark:text-white/60">{roleLabel} - {isAdmin ? 'Idi na admin panel' : 'Idi na dashboard'}</p>
                   </div>
                   <ChevronRight className="w-[18px] h-[18px] text-gray-400 dark:text-white/40 shrink-0" />
                 </Link>
