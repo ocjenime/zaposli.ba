@@ -6,7 +6,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Mail, ArrowLeft, AlertCircle, Check, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { site } from '@/lib/site';
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState('');
@@ -24,8 +23,9 @@ export default function ForgotPasswordForm() {
     }
 
     setLoading(true);
-    const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${site.url}/nova-lozinka/`,
+    // Reset ide preko naše Edge Function (Resend API) jer je dokazano pouzdan.
+    const { error: resetError } = await supabase.functions.invoke('send-password-reset', {
+      body: { email: email.trim() },
     });
     setLoading(false);
 
