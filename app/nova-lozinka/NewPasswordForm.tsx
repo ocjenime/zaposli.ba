@@ -185,6 +185,8 @@ export default function NewPasswordForm() {
     }
 
     setSuccess(true);
+    // Odjavi recovery sesiju pa vodi na prijavu - bez zabune čiji je nalog aktivan.
+    await client.auth.signOut();
     setTimeout(() => {
       router.push('/prijava/');
     }, 2500);
