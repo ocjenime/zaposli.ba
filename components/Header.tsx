@@ -182,8 +182,8 @@ export default function Header({ dark = false }: { dark?: boolean }) {
     };
   }, [mobileMenuOpen]);
 
-  const dashboardHref = isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/';
-  const profileHref = isFirmRole(role) ? '/dashboard/firma/profil/' : '/dashboard/profil/';
+  const dashboardHref = isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/dashboard/';
+  const profileHref = isAdmin ? '/admin/?tab=users' : isFirmRole(role) ? '/dashboard/firma/profil/' : '/dashboard/profil/';
   const ctaHref = isAdmin ? '/admin/' : isFirmRole(role) ? '/dashboard/firma/' : '/objavi-projekat/';
   const ctaLabel = isAdmin ? 'Admin panel' : isFirmRole(role) ? 'Moja firma' : 'Objavi posao';
   const CtaIcon = isAdmin ? Shield : isFirmRole(role) ? Building2 : FilePlus;
