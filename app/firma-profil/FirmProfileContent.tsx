@@ -11,6 +11,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
 import { getCategory, cities } from '@/lib/data';
+import { CATEGORY_GROUPS, getGroupCategories } from '@/lib/category-groups';
 import { normalizeCityName } from '@/lib/city-utils';
 import { site } from '@/lib/site';
 import Image from 'next/image';
@@ -107,7 +108,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('pregled');
-  const [showAllServices, setShowAllServices] = useState(false);
 
   const loadFirm = useCallback(async () => {
     if (!slug) {
@@ -377,9 +377,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     ? 'Online sada'
     : `Zadnji put online: ${formatLastActive(firm.last_active_at)}`;
 
-  const visibleServiceLinks = (showAllServices ? firmCategories : firmCategories.slice(0, 6))
-    .map((c) => ({ slug: c.category_slug, name: getCategory(c.category_slug)?.name }))
-    .filter((s): s is { slug: string; name: string } => !!s.name);
   const firmCitySlug = firm?.city
     ? cities.find((c) => normalizeCityName(c.name) === normalizeCityName(firm.city!))?.slug
     : undefined;
@@ -581,32 +578,45 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   <List className="w-5 h-5" />
                   Usluge
                 </h2>
-                {categoryNames.length > 6 && (
-                  <button
-                    type="button"
-                    onClick={() => setShowAllServices((v) => !v)}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-brand-orange"
-                  >
-                    {showAllServices ? 'Prikaži manje' : 'Pogledaj sve'}
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                )}
               </div>
-              {visibleServiceLinks.length > 0 ? (
-                <div className="grid grid-cols-2 gap-2">
-                  {visibleServiceLinks.map((s) => (
-                    <Link
-                      key={s.slug}
-                      href={`/kategorije/${s.slug}/`}
-                      className="bg-gray-100 text-gray-800 rounded-xl px-3 py-2.5 text-[13px] sm:text-sm font-medium leading-snug hover:bg-orange-50 hover:text-brand-orange transition-colors"
-                    >
-                      {s.name}
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-steel">Firma još nije dodala usluge.</p>
-              )}
+              {(() => {
+                const firmSlugs = new Set(firmCategories.map((c) => c.category_slug));
+                const grouped = CATEGORY_GROUPS.map((g) => ({
+                  ...g,
+                  items: getGroupCategories(g).filter((c) => firmSlugs.has(c.slug)),
+                })).filter((g) => g.items.length > 0);
+                if (grouped.length === 0) {
+                  return <p className="text-sm text-steel">Firma još nije dodala usluge.</p>;
+                }
+                return (
+                  <div className="space-y-4">
+                    {grouped.map((g) => {
+                      const GroupIcon = g.Icon;
+                      return (
+                        <div key={g.slug}>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="w-7 h-7 rounded-lg bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+                              <GroupIcon className="w-4 h-4 text-brand-orange" />
+                            </span>
+                            <p className="text-sm font-extrabold text-gray-900">{g.title}</p>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            {g.items.map((c) => (
+                              <Link
+                                key={c.slug}
+                                href={`/kategorije/${c.slug}/`}
+                                className="bg-gray-100 text-gray-800 rounded-xl px-3 py-2.5 text-[13px] sm:text-sm font-medium leading-snug hover:bg-orange-50 hover:text-brand-orange transition-colors"
+                              >
+                                {c.name}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </section>

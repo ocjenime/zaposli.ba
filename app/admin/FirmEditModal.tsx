@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
-import { categories } from '@/lib/data';
+import CategoryPicker from '@/components/CategoryPicker';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import {
@@ -503,26 +503,7 @@ export default function FirmEditModal({ firm, onClose, onSaved }: FirmEditModalP
                 Kategorije
                 {loadingCategories && <Loader2 className="w-3.5 h-3.5 inline ml-2 animate-spin" />}
               </label>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => {
-                  const selected = selectedCategories.includes(category.slug);
-                  return (
-                    <button
-                      key={category.slug}
-                      type="button"
-                      onClick={() => toggleCategory(category.slug)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm border transition-colors ${
-                        selected
-                          ? 'bg-brand-orange text-[#ffffff] border-brand-orange'
-                          : 'bg-cloud dark:bg-gray-800 text-gray-900 dark:text-gray-200 border-gray-200 dark:border-gray-700 hover:border-brand-orange'
-                      }`}
-                    >
-                      {selected && <Check className="w-3.5 h-3.5" />}
-                      {category.name}
-                    </button>
-                  );
-                })}
-              </div>
+              <CategoryPicker selected={selectedCategories} onToggle={toggleCategory} />
             </div>
 
             <div className="pt-2 flex flex-col-reverse sm:flex-row gap-3">

@@ -9,7 +9,7 @@ import DashboardHeader from '@/components/ui/DashboardHeader';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
-import { categories } from '@/lib/data';
+import CategoryPicker from '@/components/CategoryPicker';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import useFirmActivityHeartbeat from '@/lib/hooks/useFirmActivityHeartbeat';
 import { getCurrentSubscription, Subscription } from '@/lib/subscriptions';
@@ -761,36 +761,7 @@ export default function FirmProfileEditorPage() {
                     Kategorije <span className="text-red-500">*</span>
                   </label>
                   <p className="text-xs text-steel mb-3">Označite bar jednu kategoriju koju pokrivate. Obavještenja možete podesiti na dashboardu.</p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {categories.map((category) => {
-                      const selected = selectedCategories.includes(category.slug);
-                      return (
-                        <button
-                          key={category.slug}
-                          type="button"
-                          onClick={() => toggleCategory(category.slug)}
-                          className={`flex items-center gap-3 text-left rounded-xl border p-4 transition-colors ${
-                            selected
-                              ? 'bg-orange-50/50 border-brand-orange'
-                              : 'bg-white border-gray-200 hover:border-gray-300'
-                          }`}
-                        >
-                          <div
-                            className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
-                              selected
-                                ? 'bg-brand-orange border-brand-orange'
-                                : 'border-gray-300 bg-white'
-                            }`}
-                          >
-                            {selected && <Check className="w-3.5 h-3.5 text-white" />}
-                          </div>
-                          <span className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-600'}`}>
-                            {category.name}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                  <CategoryPicker selected={selectedCategories} onToggle={toggleCategory} />
                   {selectedCategories.length === 0 && (
                     <p className="text-xs text-steel mt-2">Odaberite bar jednu kategoriju.</p>
                   )}

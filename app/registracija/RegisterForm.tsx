@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2, MapPin, Tag, Check, Gift } from 'lucide-react';
+import { User, Mail, Lock, Phone, Eye, EyeOff, AlertCircle, Loader2, MapPin, Tag, Gift } from 'lucide-react';
+import CategoryPicker from '@/components/CategoryPicker';
 import { supabase } from '@/lib/supabase';
 import { isFirmRole, type UserRole } from '@/lib/roles';
 import { slugify } from '@/lib/slugify';
 import { site } from '@/lib/site';
-import { categories, cities } from '@/lib/data';
+import { cities } from '@/lib/data';
 import { saveRefFromUrl, resolveReferrerId, applyAttribution } from '@/lib/referral';
 
 function formatError(err: unknown): string {
@@ -343,42 +344,14 @@ export default function RegisterForm() {
                     <p className="text-xs text-gray-500 mb-3">
                       Odaberite bar jednu kategoriju u kojoj radite.
                     </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {categories.map((category) => {
-                        const selected = selectedCategories.includes(category.slug);
-                        return (
-                          <button
-                            key={category.slug}
-                            type="button"
-                            onClick={() =>
-                              setSelectedCategories((prev) =>
-                                prev.includes(category.slug)
-                                  ? prev.filter((s) => s !== category.slug)
-                                  : [...prev, category.slug]
-                              )
-                            }
-                            className={`flex items-center gap-3 text-left rounded-lg border p-3 transition-colors ${
-                              selected
-                                ? 'bg-orange-50 border-brand-orange'
-                                : 'bg-white border-gray-200 hover:border-gray-300'
-                            }`}
-                          >
-                            <div
-                              className={`w-5 h-5 rounded-md border flex items-center justify-center transition-colors shrink-0 ${
-                                selected
-                                  ? 'bg-brand-orange border-brand-orange'
-                                  : 'border-gray-300 bg-white'
-                              }`}
-                            >
-                              {selected && <Check className="w-3.5 h-3.5 text-white" />}
-                            </div>
-                            <span className={`text-sm font-medium ${selected ? 'text-gray-900' : 'text-gray-600'}`}>
-                              {category.name}
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <CategoryPicker
+                      selected={selectedCategories}
+                      onToggle={(slug) =>
+                        setSelectedCategories((prev) =>
+                          prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
+                        )
+                      }
+                    />
                     {selectedCategories.length === 0 && (
                       <p className="text-xs text-steel mt-2">Odaberite bar jednu kategoriju.</p>
                     )}
