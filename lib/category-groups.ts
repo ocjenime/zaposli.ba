@@ -91,7 +91,7 @@ export const CATEGORY_GROUPS: CategoryGroup[] = [
     title: 'Ostalo',
     sub: 'Ostale usluge...',
     Icon: LayoutGrid,
-    slugs: ['ostale-usluge', 'hitne-intervencije'],
+    slugs: ['ostale-usluge', 'hitne-intervencije', 'krojenje-sivenje', 'tekstilne-usluge'],
   },
 ];
 

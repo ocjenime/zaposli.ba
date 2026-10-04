@@ -5,6 +5,7 @@ import {
   Waves, Flame, Wrench, Construction, Fence, Grid2x2,
   FlameKindling, Wind, Cog, GlassWater, SwatchBook, UtensilsCrossed,
   SprayCan, SquareStack, Tractor, Bath, PanelTop, Triangle,
+  Scissors, Shirt,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -587,6 +588,22 @@ export const categories: Category[] = [
     count: 0, priceRange: 'po dogovoru', priceNote: 'opširnije u poslu',
     group: 'Ostalo', noSeo: true,
     services: ['Sastavljanje namještaja', 'Vješanje TV-a i polica', 'Odnošenje starih stvari', 'Sitni popravci'],
+  },
+  {
+    name: 'Krojenje i šivanje', slug: 'krojenje-sivenje', seoSlug: 'krojenje-sivenje',
+    profession: 'Krojač', icon: Scissors,
+    description: 'Krojenje i šivanje odjeće po mjeri, prepravke, skraćivanje i popravke garderobe',
+    count: 0, priceRange: 'od 10 KM', priceNote: 'po usluzi',
+    group: 'Ostalo',
+    services: ['Krojenje po mjeri', 'Šivanje odjeće', 'Prepravke garderobe', 'Skraćivanje i sužavanje', 'Šivanje zavjesa i posteljine'],
+  },
+  {
+    name: 'Tekstilne usluge', slug: 'tekstilne-usluge', seoSlug: 'tekstilne-usluge',
+    profession: 'Tekstilni majstor', icon: Shirt,
+    description: 'Tekstilne usluge za dom i posao: presvlake, dekorativni tekstil, obrada i popravke',
+    count: 0, priceRange: 'od 15 KM', priceNote: 'po usluzi',
+    group: 'Ostalo',
+    services: ['Presvlake za namještaj', 'Dekorativni tekstil', 'Popravke tekstila', 'Šivanje po narudžbi', 'Peglanje i obrada tekstila'],
   },
 ];
 
