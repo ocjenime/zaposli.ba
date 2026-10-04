@@ -5,8 +5,11 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { Upload, MapPin, Calendar, DollarSign, ChevronRight, X, ImageIcon, ClipboardList, Clock, ShieldCheck, Users } from 'lucide-react';
+import {
+  Hammer, Wrench, Home, Car, PaintRoller, Zap, Droplet, Leaf, Briefcase, LayoutGrid,
+  ChevronRight, ChevronDown, X, Check, MapPin, Camera, Lightbulb, ShieldCheck, Star,
+  Phone, EyeOff, Calendar, ArrowRight, Search,
+} from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
@@ -15,6 +18,37 @@ import { supabase } from '@/lib/supabase';
 const categories = allCategories.filter((c) => !c.noSeo);
 const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'bs'));
 
+/** 10 mockup grupa, svaka mapira na prave kategorije iz baze. */
+const STEP_GROUPS: { title: string; sub: string; Icon: typeof Hammer; slugs: string[] }[] = [
+  { title: 'Građevina', sub: 'Fasade, zidanje, adaptacije...', Icon: Hammer, slugs: ['gradjevinarstvo', 'zidarski-radovi', 'tesarski-radovi', 'betoniranje-i-armatura', 'zemljani-radovi', 'rusenje', 'krovopokrivanje', 'limarski-radovi', 'izolacija', 'hidroizolacija'] },
+  { title: 'Popravke i montaža', sub: 'Montaža, popravke, instalacije...', Icon: Wrench, slugs: ['stolarija', 'varilac', 'servis-aparata', 'sigurnost'] },
+  { title: 'Dom i održavanje', sub: 'Čišćenje, vrt, održavanje...', Icon: Home, slugs: ['ciscenje', 'pranje-fasada-i-krovova', 'dimnjacar', 'odrzavanje-zgrada'] },
+  { title: 'Auto i transport', sub: 'Prijevoz, selidbe, automehanika...', Icon: Car, slugs: ['auto-usluge', 'selidbe'] },
+  { title: 'Adaptacije i uređenje', sub: 'Moleraj, keramika, podovi...', Icon: PaintRoller, slugs: ['molerski-radovi', 'masinsko-nabacivanje', 'gipsarski-radovi', 'zavrsni-radovi', 'tapetarski-radovi', 'keramicarski-radovi', 'podovi', 'tlakovi-estrih', 'staklar', 'kamen-i-poplocavanje', 'adaptacije', 'kupatila-kljuc-u-ruke', 'kuhinje-po-mjeri'] },
+  { title: 'Električne instalacije', sub: 'Električari, rasvjeta, smart home...', Icon: Zap, slugs: ['elektroinstalacije', 'tehnologija'] },
+  { title: 'Voda i grijanje', sub: 'Vodoinstalacije, grijanje, klima...', Icon: Droplet, slugs: ['vodoinstalacije', 'grijanje-i-hladjenje', 'plinske-instalacije', 'solarne-instalacije', 'kamin-i-peci'] },
+  { title: 'Vrt i okućnica', sub: 'Košenje, sadnja, uređenje vrta...', Icon: Leaf, slugs: ['vrtlarstvo', 'pergole-nadstresnice-tende', 'bazeni-i-fontane', 'poplocavanje-dvorista-i-terasa', 'rusenje-stabala-drvoreda', 'ograde'] },
+  { title: 'Poslovne usluge', sub: 'IT, marketing, dizajn...', Icon: Briefcase, slugs: ['projektovanje-i-arhitektura', 'dizajn-enterijera', 'dizajn-eksterijera', 'statika-i-nadzor', 'energetska-obnova'] },
+  { title: 'Ostalo', sub: 'Ostale usluge...', Icon: LayoutGrid, slugs: ['hitne-intervencije'] },
+];
+
+const STEP_LABELS = ['Kategorija', 'Detalji posla', 'Lokacija i dodatno'];
+const STEP_TITLES = ['Šta vam je potrebno?', 'Opišite šta vam treba', 'Gdje i kada?'];
+const STEP_SUBS = [
+  'Odaberite kategoriju koja najbolje opisuje vaš posao.',
+  'Što više detalja, to bolje ponude od majstora i firmi.',
+  'Još samo nekoliko informacija i vaš oglas je spreman.',
+];
+
+type BudgetOption = 'dogovor' | 'do500' | '500-1000' | 'preko1000';
+
+const BUDGET_OPTIONS: { value: BudgetOption; label: string }[] = [
+  { value: 'dogovor', label: 'Po dogovoru' },
+  { value: 'do500', label: 'Do 500 KM' },
+  { value: '500-1000', label: '500 - 1.000 KM' },
+  { value: 'preko1000', label: 'Više od 1.000 KM' },
+];
+
 function findCategoryByService(service: string) {
   const s = service.toLowerCase();
   return (
@@ -22,6 +56,40 @@ function findCategoryByService(service: string) {
     categories.find((c) => c.name.toLowerCase().includes(s)) ||
     categories.find((c) => c.services.some((svc) => svc.toLowerCase().includes(s) || s.includes(svc.toLowerCase()))) ||
     null
+  );
+}
+
+function groupIndexForCategoryName(name: string): number | null {
+  const cat = categories.find((c) => c.name === name);
+  if (!cat) return null;
+  const idx = STEP_GROUPS.findIndex((g) => g.slugs.includes(cat.slug));
+  return idx >= 0 ? idx : null;
+}
+
+function ToggleRow({
+  Icon, title, sub, on, onChange,
+}: {
+  Icon: typeof Star; title: string; sub: string; on: boolean; onChange: (v: boolean) => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={() => onChange(!on)}
+      className="w-full flex items-center gap-3 py-2 text-left"
+    >
+      <span className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+        <Icon className="w-[18px] h-[18px] text-gray-900" />
+      </span>
+      <span className="flex-1 min-w-0">
+        <span className="block text-[15px] font-bold text-gray-900 leading-tight">{title}</span>
+        <span className="block text-xs text-gray-500 leading-snug">{sub}</span>
+      </span>
+      <span className={`relative w-12 h-7 rounded-full transition-colors shrink-0 ${on ? 'bg-brand-orange' : 'bg-gray-200'}`}>
+        <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all ${on ? 'left-6' : 'left-1'}`} />
+      </span>
+    </button>
   );
 }
 
@@ -36,12 +104,16 @@ function PostProjectContent() {
     category: '',
     description: '',
     city: '',
-    address: '',
-    budgetMode: 'open',
-    budgetMin: '',
-    budgetMax: '',
+    budgetOption: 'dogovor' as BudgetOption,
+    deadlineMode: 'asap' as 'asap' | 'custom',
     deadline: '',
+    isUrgent: false,
+    showPhone: true,
+    isAnonymous: false,
   });
+  const [expandedGroup, setExpandedGroup] = useState<number | null>(null);
+  const [citySheetOpen, setCitySheetOpen] = useState(false);
+  const [cityQuery, setCityQuery] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -161,42 +233,19 @@ function PostProjectContent() {
     }
   }, [searchParams]);
 
+  // Otvori grupu koja sadrži već odabranu/prefill kategoriju
+  useEffect(() => {
+    if (formData.category && expandedGroup === null) {
+      const idx = groupIndexForCategoryName(formData.category);
+      if (idx !== null) setExpandedGroup(idx);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.category]);
+
   useEffect(() => {
     if (!loading && !user) router.push('/prijava/?redirectTo=/objavi-projekat/');
     if (!loading && user && isFirmRole(role)) router.push('/dashboard/firma/');
   }, [user, loading, role, router]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'budgetMin' || name === 'budgetMax') setError('');
-  };
-
-  const handleBudgetModeChange = (mode: 'open' | 'fixed') => {
-    setFormData((prev) => ({
-      ...prev,
-      budgetMode: mode,
-      budgetMin: mode === 'open' ? '' : prev.budgetMin,
-      budgetMax: mode === 'open' ? '' : prev.budgetMax,
-    }));
-    setError('');
-  };
-
-  const validateBudget = () => {
-    if (formData.budgetMode === 'fixed') {
-      const min = formData.budgetMin ? parseFloat(formData.budgetMin) : null;
-      const max = formData.budgetMax ? parseFloat(formData.budgetMax) : null;
-      if (min === null && max === null) {
-        setError('Unesite minimalni ili maksimalni budžet.');
-        return false;
-      }
-      if (min !== null && max !== null && min > max) {
-        setError('Maksimalni budžet ne može biti manji od minimalnog.');
-        return false;
-      }
-    }
-    return true;
-  };
 
   const compressImage = async (file: File): Promise<File> => {
     return new Promise((resolve, reject) => {
@@ -272,6 +321,36 @@ function PostProjectContent() {
     setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
+  function budgetToDb(): { mode: 'open' | 'fixed'; min: number | null; max: number | null } {
+    switch (formData.budgetOption) {
+      case 'do500':
+        return { mode: 'fixed', min: null, max: 500 };
+      case '500-1000':
+        return { mode: 'fixed', min: 500, max: 1000 };
+      case 'preko1000':
+        return { mode: 'fixed', min: 1000, max: null };
+      default:
+        return { mode: 'open', min: null, max: null };
+    }
+  }
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setNotifiedCount(null);
+    setStep(1);
+    setExpandedGroup(null);
+    setFormData({
+      title: '', category: '', description: '', city: '',
+      budgetOption: 'dogovor', deadlineMode: 'asap', deadline: '',
+      isUrgent: false, showPhone: true, isAnonymous: false,
+    });
+    setImages([]);
+    setImagePreviews([]);
+    try {
+      if (typeof window !== 'undefined') localStorage.removeItem(STORAGE_KEY);
+    } catch { /* ignore */ }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -287,28 +366,29 @@ function PostProjectContent() {
     if (!cat) { setError('Odaberite kategoriju'); return; }
     if (formData.title.trim().length < 5) { setError('Naslov mora imati najmanje 5 znakova'); return; }
     if (formData.description.trim().length < 20) { setError('Opis mora imati najmanje 20 znakova'); return; }
-    if (!formData.city.trim()) { setError('Unesite grad'); return; }
-    if (!validateBudget()) return;
+    if (!formData.city.trim()) { setError('Odaberite grad'); return; }
 
     setSubmitting(true);
-    const budgetMin = formData.budgetMin ? parseFloat(formData.budgetMin) : null;
-    const budgetMax = formData.budgetMax ? parseFloat(formData.budgetMax) : null;
-    const deadline = formData.deadline || null;
+    const budget = budgetToDb();
+    const deadline = formData.deadlineMode === 'custom' && formData.deadline ? formData.deadline : null;
 
     const { data: jobData, error: err } = await supabase
       .from('jobs')
       .insert({
         client_id: user.id,
         category_slug: cat.slug,
-        title: formData.title,
-        description: formData.description,
+        title: formData.title.trim().slice(0, 80),
+        description: formData.description.trim().slice(0, 500),
         city: formData.city,
-        address: formData.address || null,
+        address: null,
         status: 'open',
-        budget_mode: formData.budgetMode,
-        budget_min: budgetMin,
-        budget_max: budgetMax,
+        budget_mode: budget.mode,
+        budget_min: budget.min,
+        budget_max: budget.max,
         deadline: deadline,
+        is_urgent: formData.isUrgent,
+        show_phone: formData.showPhone,
+        is_anonymous: formData.isAnonymous,
       })
       .select('id')
       .single();
@@ -354,32 +434,26 @@ function PostProjectContent() {
     setSubmitted(true);
     try {
       if (typeof window !== 'undefined') localStorage.removeItem(STORAGE_KEY);
-    } catch {}
+    } catch { /* ignore */ }
   };
 
+  const selectedSlug = categories.find((c) => c.name === formData.category)?.slug;
+  const filteredCities = cityQuery.trim()
+    ? cities.filter((c) => c.toLowerCase().includes(cityQuery.trim().toLowerCase()))
+    : cities;
+
   if (loading || !user) return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-[#f4f4f5]">
       <Header />
-      <main className="flex-grow pt-28 pb-12 px-4 sm:px-6">
-        <div className="mx-auto max-w-3xl">
-          <div className="bg-white rounded-xl shadow-md p-6 md:p-8 animate-pulse">
-            <div className="w-48 h-7 bg-gray-200 rounded mb-2" />
-            <div className="w-3/4 h-4 bg-gray-200 rounded mb-8" />
-            <div className="space-y-6">
-              <div>
-                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
-                <div className="w-full h-12 bg-gray-200 rounded-xl" />
-              </div>
-              <div>
-                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
-                <div className="w-full h-12 bg-gray-200 rounded-xl" />
-              </div>
-              <div>
-                <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
-                <div className="w-full h-32 bg-gray-200 rounded-xl" />
-              </div>
-              <div className="w-full h-12 bg-gray-200 rounded-xl" />
-            </div>
+      <main className="flex-grow px-4 pt-8 pb-12">
+        <div className="mx-auto w-full max-w-[520px] animate-pulse">
+          <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
+          <div className="w-3/4 h-9 bg-gray-200 rounded-xl mb-2" />
+          <div className="w-full h-16 bg-gray-200 rounded-2xl mb-4" />
+          <div className="space-y-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="w-full h-20 bg-gray-200 rounded-2xl" />
+            ))}
           </div>
         </div>
       </main>
@@ -389,17 +463,17 @@ function PostProjectContent() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen flex flex-col bg-cloud">
+      <div className="min-h-screen flex flex-col bg-[#f4f4f5]">
         <Header />
-        <main className="flex-grow flex items-center justify-center pt-28 pb-20 px-4">
-          <div className="w-full max-w-lg text-center">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-orange/25">
-              <svg className="w-10 h-10 text-[#ffffff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <main className="flex-grow flex items-start justify-center px-4 pt-10 pb-16">
+          <div className="mx-auto w-full max-w-[520px] bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-orange to-brand-orange-dark flex items-center justify-center mx-auto mb-5 shadow-lg shadow-brand-orange/25">
+              <svg className="w-8 h-8 text-[#ffffff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-3">Posao je objavljen!</h1>
-            <p className="text-steel mb-8 leading-relaxed">
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight mb-2">Posao je objavljen!</h1>
+            <p className="text-[15px] text-gray-500 leading-relaxed mb-6">
               Vaš posao <b className="text-gray-900">&ldquo;{formData.title || 'Adaptacija'}&rdquo;</b> je sada vidljiv provjerenim firmama.
               {notifiedCount != null && notifiedCount > 0 && (
                 <>
@@ -408,14 +482,20 @@ function PostProjectContent() {
               )}
               {' '}Prve ponude obično stižu u roku od <b className="text-gray-900">24 sata</b>.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/dashboard/" className="btn-secondary">Idi na dashboard</Link>
+            <div className="flex flex-col gap-2.5">
               <button
-                onClick={() => { setSubmitted(false); setNotifiedCount(null); setStep(1); setFormData({ title: '', category: '', description: '', city: '', address: '', budgetMode: 'open', budgetMin: '', budgetMax: '', deadline: '' }); setImages([]); setImagePreviews([]); try { if (typeof window !== 'undefined') localStorage.removeItem(STORAGE_KEY); } catch {} }}
-                className="btn-primary"
+                onClick={resetForm}
+                className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-extrabold text-[15px] px-4 py-4 rounded-2xl hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-[0.99] min-h-[56px]"
               >
                 Objavite još jedan posao
+                <ArrowRight className="w-4 h-4" />
               </button>
+              <Link
+                href="/dashboard/"
+                className="w-full inline-flex items-center justify-center gap-2 bg-gray-100 text-gray-900 font-bold text-[15px] px-4 py-4 rounded-2xl hover:bg-gray-200 transition-colors min-h-[56px]"
+              >
+                Idi na dashboard
+              </Link>
             </div>
           </div>
         </main>
@@ -425,262 +505,462 @@ function PostProjectContent() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-cloud">
+    <div className="min-h-screen flex flex-col bg-[#f4f4f5]">
       <Header />
-      <main className="flex-grow pb-16">
-        <section className="relative overflow-hidden pt-12 md:pt-16 pb-20 md:pb-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-orange-950 to-slate-900" />
-          <div className="absolute inset-0 opacity-[0.07] bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.4),transparent_40%),radial-gradient(circle_at_70%_70%,rgba(249,115,22,0.3),transparent_40%)]" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-white/5 rounded-full blur-[80px] -translate-x-1/4 translate-y-1/4" />
-          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <Breadcrumbs dark bare items={[{ name: 'Objavi posao' }]} />
-            <div className="max-w-3xl mt-3">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-semibold tracking-wide uppercase mb-6">
-                Besplatno i neobavezujuće
-              </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-5">
-                {targetProvider ? 'Zatraži ponudu' : 'Objavite posao besplatno'}
-              </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-8 max-w-2xl">
-                {targetProvider ? `Pošaljite zahtjev firmi ${targetProvider.name}. U par koraka do ponude.` : 'U 3 koraka do ponuda provjerenih majstora i firmi iz vašeg grada.'}
+      <main className="flex-grow px-4 pt-5 sm:pt-8 pb-16">
+        <div className="mx-auto w-full max-w-[520px]">
+          {/* Step header */}
+          <div className="flex items-baseline gap-3 mb-1.5">
+            <span className="text-sm font-bold text-gray-900">{step} / 3</span>
+            <span className="text-sm font-semibold text-gray-900">{STEP_LABELS[step - 1]}</span>
+          </div>
+          <div className="h-1.5 rounded-full bg-gray-200 overflow-hidden mb-5">
+            <div
+              className="h-full rounded-full bg-brand-orange transition-all duration-300"
+              style={{ width: `${(step / 3) * 100}%` }}
+            />
+          </div>
+
+          <h1 className="text-[32px] leading-[1.1] font-extrabold text-gray-900 tracking-tight">
+            {targetProvider ? 'Zatražite ponudu' : STEP_TITLES[step - 1]}
+          </h1>
+          <p className="text-[15px] text-gray-500 leading-snug mt-1.5 mb-5">
+            {targetProvider ? `Zahtjev za firmu ${targetProvider.name}.` : STEP_SUBS[step - 1]}
+          </p>
+
+          {targetProvider && (
+            <div className="mb-4 p-3 bg-orange-50 border border-orange-100 rounded-2xl text-sm">
+              <p className="text-gray-500">Zahtjev za ponudu od:</p>
+              <p className="font-bold text-gray-900 text-base">{targetProvider.name}</p>
+            </div>
+          )}
+          {(prefill.service || prefill.city) && (
+            <div className="mb-4 p-3 bg-orange-50 border border-orange-100 rounded-2xl text-sm">
+              <p className="text-gray-500">Preuzeto iz pretrage:</p>
+              <p className="font-medium text-gray-900">
+                {prefill.service && <span className="text-brand-orange">{prefill.service}</span>}
+                {prefill.service && prefill.city && <span className="text-gray-400 mx-1">·</span>}
+                {prefill.city && <span>{prefill.city}</span>}
               </p>
-              <div className="flex flex-wrap gap-4 text-sm text-white/80">
-                <span className="flex items-center gap-2"><ShieldCheck className="w-4 h-4 text-brand-orange" /> Verificirane firme</span>
-                <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-brand-orange" /> Prve ponude u 24h</span>
-                <span className="flex items-center gap-2"><Users className="w-4 h-4 text-brand-orange" /> 50+ kategorija</span>
-              </div>
             </div>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-cloud to-transparent z-10" />
-        </section>
+          )}
 
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              {[
-                { n: 1, label: 'Osnovno' },
-                { n: 2, label: 'Detalji' },
-                { n: 3, label: 'Pregled' },
-              ].map((s, idx) => (
-                <div key={s.n} className="flex items-center flex-1">
-                  <div className="flex flex-col items-center text-center flex-1">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm border-2 transition-colors ${step >= s.n ? 'bg-brand-orange border-brand-orange text-white' : 'bg-white border-gray-200 text-gray-400'}`}>
-                      {step > s.n ? '✓' : s.n}
-                    </div>
-                    <span className={`mt-1.5 text-xs font-medium ${step >= s.n ? 'text-brand-orange' : 'text-gray-400'}`}>
-                      {s.label}
+          {error && (
+            <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-100 rounded-2xl px-4 py-3">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            {/* ================= KORAK 1: kategorija ================= */}
+            {step === 1 && (
+              <div>
+                <div className="space-y-2.5">
+                  {STEP_GROUPS.map((group, gi) => {
+                    const groupCats = categories.filter((c) => group.slugs.includes(c.slug));
+                    if (groupCats.length === 0) return null;
+                    const isSelected = !!selectedSlug && group.slugs.includes(selectedSlug);
+                    const isOpen = expandedGroup === gi;
+                    const GroupIcon = group.Icon;
+                    return (
+                      <div
+                        key={group.title}
+                        className={`bg-white rounded-2xl border transition-colors overflow-hidden ${
+                          isSelected ? 'border-brand-orange ring-1 ring-brand-orange' : 'border-gray-100'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setExpandedGroup(isOpen ? null : gi)}
+                          aria-expanded={isOpen}
+                          className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
+                        >
+                          <span className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
+                            <GroupIcon className="w-6 h-6 text-gray-900" strokeWidth={2.2} />
+                          </span>
+                          <span className="flex-1 min-w-0">
+                            <span className="block text-[16px] font-bold text-gray-900 leading-tight">
+                              {group.title}
+                            </span>
+                            <span className="block text-[13px] text-gray-500 leading-snug truncate">
+                              {isSelected
+                                ? categories.find((c) => c.slug === selectedSlug)?.name
+                                : group.sub}
+                            </span>
+                          </span>
+                          {isSelected && !isOpen ? (
+                            <span className="w-7 h-7 rounded-full bg-brand-orange text-white flex items-center justify-center shrink-0">
+                              <ChevronRight className="w-4 h-4" />
+                            </span>
+                          ) : (
+                            <ChevronRight
+                              className={`w-5 h-5 text-gray-300 shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
+                            />
+                          )}
+                        </button>
+                        {isOpen && (
+                          <div className="px-3 pb-3 pt-1 border-t border-gray-50">
+                            {groupCats.map((c) => {
+                              const active = formData.category === c.name;
+                              return (
+                                <button
+                                  key={c.slug}
+                                  type="button"
+                                  onClick={() => setFormData((prev) => ({ ...prev, category: c.name }))}
+                                  className={`w-full flex items-center justify-between gap-2 text-left px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                                    active ? 'bg-orange-50 text-brand-orange' : 'text-gray-700 hover:bg-gray-50'
+                                  }`}
+                                >
+                                  {c.name}
+                                  {active && <Check className="w-4 h-4 shrink-0" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="mt-4 bg-[#eef6f6] border border-[#d9ecec] rounded-2xl p-4 flex items-start gap-3">
+                  <span className="w-10 h-10 rounded-xl bg-white border border-[#d9ecec] flex items-center justify-center shrink-0">
+                    <ShieldCheck className="w-5 h-5 text-teal-600" />
+                  </span>
+                  <span>
+                    <span className="block text-[15px] font-bold text-gray-900">Potpuno besplatno</span>
+                    <span className="block text-[13px] text-gray-600 leading-snug">
+                      Vaš oglas mogu vidjeti provjereni majstori i firme u vašem području.
                     </span>
-                  </div>
-                  {idx < 2 && (
-                    <div className={`flex-1 h-1 mx-2 sm:mx-4 rounded-full ${step > s.n ? 'bg-brand-orange' : 'bg-gray-200'}`} />
-                  )}
+                  </span>
                 </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 p-6 md:p-10">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-              {targetProvider ? 'Zatraži ponudu' : 'Objavite novi posao'}
-            </h1>
-            {targetProvider && (
-              <div className="mb-6 p-3 bg-gradient-to-r from-brand-orange/10 to-brand-orange/5 border border-brand-orange/20 rounded-xl text-sm">
-                <p className="text-steel">Zahtjev za ponudu od:</p>
-                <p className="font-bold text-gray-900 text-lg">{targetProvider.name}</p>
-              </div>
-            )}
-            {(prefill.service || prefill.city) && (
-              <div className="mb-6 p-3 bg-orange-50 border border-orange-100 rounded-xl text-sm">
-                <p className="text-steel">Preuzeto iz pretrage:</p>
-                <p className="font-medium text-gray-900">
-                  {prefill.service && <span className="text-brand-orange">{prefill.service}</span>}
-                  {prefill.service && prefill.city && <span className="text-steel mx-1">·</span>}
-                  {prefill.city && <span className="inline-flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {prefill.city}</span>}
-                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!formData.category) { setError('Odaberite kategoriju koja najbolje opisuje vaš posao.'); return; }
+                    setError('');
+                    setStep(2);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-extrabold text-[16px] px-4 py-4 rounded-2xl hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-[0.99] min-h-[56px]"
+                >
+                  Nastavi
+                  <ChevronRight className="w-5 h-5" />
+                </button>
               </div>
             )}
 
-            {error && <p className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2 mb-4">{error}</p>}
+            {/* ================= KORAK 2: detalji ================= */}
+            {step === 2 && (
+              <div>
+                <div className="mb-4">
+                  <label htmlFor="job-title" className="block text-[15px] font-bold text-gray-900 mb-1.5">
+                    Naslov oglasa
+                  </label>
+                  <input
+                    id="job-title"
+                    type="text"
+                    value={formData.title}
+                    maxLength={80}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
+                    placeholder="Npr. Potrebna izrada fasade na kući"
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 placeholder-gray-400 outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 transition-all"
+                  />
+                  <p className="text-right text-xs text-gray-400 mt-1">{formData.title.length}/80</p>
+                </div>
 
-            <form onSubmit={handleSubmit}>
-              {step === 1 && (
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Naslov posla *</label>
-                    <input type="text" name="title" value={formData.title} onChange={handleInputChange} placeholder="npr. Adaptacija kupatila" className="input-field" required />
+                <div className="mb-4">
+                  <label htmlFor="job-desc" className="block text-[15px] font-bold text-gray-900 mb-1.5">
+                    Detaljan opis
+                  </label>
+                  <textarea
+                    id="job-desc"
+                    value={formData.description}
+                    maxLength={500}
+                    rows={6}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
+                    placeholder="Opišite šta trebate, koje radove, materijale, dimenzije, specifične zahtjeve, rokove..."
+                    className="w-full bg-white border border-gray-200 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 placeholder-gray-400 outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 transition-all resize-none"
+                  />
+                  <p className="text-right text-xs text-gray-400 mt-1">{formData.description.length}/500</p>
+                </div>
+
+                <div className="mb-4">
+                  <p className="text-[15px] font-bold text-gray-900 mb-2">
+                    Dodajte fotografije <span className="font-medium text-gray-400">(opcionalno)</span>
+                  </p>
+                  <div className="flex gap-2.5">
+                    <label
+                      htmlFor="job-images"
+                      className="w-[104px] h-[104px] shrink-0 rounded-2xl border-2 border-dashed border-gray-200 bg-white flex flex-col items-center justify-center gap-1.5 cursor-pointer hover:border-brand-orange transition-colors"
+                    >
+                      <Camera className="w-6 h-6 text-gray-900" />
+                      <span className="text-[11px] font-medium text-gray-600 text-center leading-tight px-1">
+                        Dodaj fotografije
+                      </span>
+                    </label>
+                    <input
+                      type="file"
+                      id="job-images"
+                      accept=".jpg,.jpeg,.png"
+                      multiple
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="relative w-[104px] h-[104px] shrink-0 rounded-2xl overflow-hidden border border-gray-100">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={preview} alt={`Fotografija ${index + 1}`} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          aria-label={`Ukloni fotografiju ${index + 1}`}
+                          className="absolute top-1.5 right-1.5 w-6 h-6 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Kategorija *</label>
-                    <select name="category" value={formData.category} onChange={handleInputChange} className="input-field" required>
-                      <option value="">Odaberite kategoriju</option>
-                      {categories.map((cat) => <option key={cat.slug} value={cat.name}>{cat.name}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Opis posla *</label>
-                    <textarea name="description" value={formData.description} onChange={handleInputChange} placeholder="Opišite detaljno šta vam je potrebno..." rows={5} className="input-field" required />
-                    <p className="mt-1 text-sm text-gray-500">Što detaljniji opis, to ćete preciznije ponude dobiti.</p>
-                  </div>
-                  <button type="button" onClick={() => {
+                </div>
+
+                <div className="mb-5 bg-[#fdf3e7] border border-[#f5e3c8] rounded-2xl p-4 flex items-start gap-3">
+                  <Lightbulb className="w-6 h-6 text-brand-orange shrink-0 mt-0.5" />
+                  <span>
+                    <span className="block text-[15px] font-bold text-brand-orange">Savjet</span>
+                    <span className="block text-[13px] text-gray-600 leading-snug">
+                      Fotografije pomažu majstorima da brže i tačnije ponude cijenu.
+                    </span>
+                  </span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
                     if (formData.title.trim().length < 5) { setError('Naslov mora imati najmanje 5 znakova'); return; }
-                    if (!formData.category) { setError('Odaberite kategoriju'); return; }
                     if (formData.description.trim().length < 20) { setError('Opis mora imati najmanje 20 znakova'); return; }
-                    setError(''); setStep(2);
-                  }} className="w-full btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
-                </div>
-              )}
+                    setError('');
+                    setStep(3);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-extrabold text-[16px] px-4 py-4 rounded-2xl hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-[0.99] min-h-[56px]"
+                >
+                  Nastavi
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setError(''); setStep(1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="mt-1 w-full py-3 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Nazad
+                </button>
+              </div>
+            )}
 
-              {step === 2 && (
-                <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2"><MapPin className="w-4 h-4 inline mr-1" />Grad *</label>
-                      <select name="city" value={formData.city} onChange={handleInputChange} className="input-field" required>
-                        <option value="">Odaberite grad</option>
-                        {cities.map((city) => <option key={city} value={city}>{city}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Adresa / Lokacija</label>
-                      <input type="text" name="address" value={formData.address} onChange={handleInputChange} placeholder="Ulica, broj..." className="input-field" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">Imate li okvirni budžet?</label>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <label className={`relative flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors ${formData.budgetMode === 'open' ? 'border-brand-orange bg-orange-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
-                        <input type="radio" name="budgetMode" value="open" checked={formData.budgetMode === 'open'} onChange={() => handleBudgetModeChange('open')} className="mt-1 h-4 w-4 text-brand-orange border-gray-300 focus:ring-brand-orange" />
-                        <div className="text-sm">
-                          <div className="font-semibold text-gray-900 flex items-center gap-2 flex-wrap">
-                            Želim da mi majstori predlože cijenu
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-brand-orange text-white">Preporučeno</span>
-                          </div>
-                          <div className="text-gray-500 mt-0.5">Povećava šansu za više ponuda</div>
-                        </div>
-                      </label>
-                      <label className={`relative flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-colors ${formData.budgetMode === 'fixed' ? 'border-brand-orange bg-orange-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
-                        <input type="radio" name="budgetMode" value="fixed" checked={formData.budgetMode === 'fixed'} onChange={() => handleBudgetModeChange('fixed')} className="mt-1 h-4 w-4 text-brand-orange border-gray-300 focus:ring-brand-orange" />
-                        <div className="text-sm">
-                          <div className="font-semibold text-gray-900">Već imam okvirni budžet</div>
-                          <div className="text-gray-500 mt-0.5">Unesite procijenjeni raspon</div>
-                        </div>
-                      </label>
-                    </div>
-                    {formData.budgetMode === 'fixed' && (
-                      <div className="grid md:grid-cols-2 gap-6 mt-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (min)</label>
-                          <input type="number" name="budgetMin" value={formData.budgetMin} onChange={handleInputChange} placeholder="Minimalni budžet (KM)" className="input-field" />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2"><DollarSign className="w-4 h-4 inline mr-1" />Budžet (max)</label>
-                          <input type="number" name="budgetMax" value={formData.budgetMax} onChange={handleInputChange} placeholder="Maksimalni budžet (KM)" className="input-field" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2"><Calendar className="w-4 h-4 inline mr-1" />Rok izvršenja <span className="text-gray-400 font-normal">- opcionalno</span></label>
-                    <input type="date" name="deadline" value={formData.deadline} onChange={handleInputChange} className="input-field" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2"><ImageIcon className="w-4 h-4 inline mr-1" />Fotografije posla (opcionalno)</label>
-                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:bg-gray-50 transition-colors">
-                      <input
-                        type="file"
-                        id="job-images"
-                        accept=".jpg,.jpeg,.png"
-                        multiple
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                      <label htmlFor="job-images" className="cursor-pointer inline-flex flex-col items-center gap-2">
-                        <Upload className="w-8 h-8 text-gray-400" />
-                        <span className="text-sm text-gray-600 font-medium">Kliknite za upload fotografija</span>
-                        <span className="text-xs text-gray-400">Do 5 fotografija (JPG, JPEG, PNG), max 2 MB po slici</span>
-                      </label>
-                    </div>
-                    {imagePreviews.length > 0 && (
-                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-4">
-                        {imagePreviews.map((preview, index) => (
-                          <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={preview} alt={`Pregled fotografije ${index + 1} za posao`} className="w-full h-full object-cover" />
-                            <button
-                              type="button"
-                              onClick={() => removeImage(index)}
-                              aria-label={`Ukloni fotografiju ${index + 1}`}
-                              className="absolute top-1 right-1 w-6 h-6 bg-white rounded-full shadow flex items-center justify-center text-gray-600 hover:text-red-600"
-                            >
-                              <X className="w-4 h-4" aria-hidden="true" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button type="button" onClick={() => setStep(1)} className="flex-1 btn-secondary">Nazad</button>
-                    <button type="button" onClick={() => { if (!formData.city.trim()) { setError('Odaberite grad'); return; } if (validateBudget()) { setError(''); setStep(3); } }} className="flex-1 btn-primary flex items-center justify-center gap-2">Nastavi <ChevronRight className="w-5 h-5" /></button>
-                  </div>
-                </div>
-              )}
+            {/* ================= KORAK 3: lokacija i dodatno ================= */}
+            {step === 3 && (
+              <div>
+                <p className="text-[15px] font-bold text-gray-900 mb-1.5">Lokacija</p>
+                <button
+                  type="button"
+                  onClick={() => { setCityQuery(''); setCitySheetOpen(true); }}
+                  className="w-full flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-3.5 text-left focus:border-brand-orange transition-colors"
+                >
+                  <MapPin className="w-5 h-5 text-gray-900 shrink-0" />
+                  <span className={`flex-1 text-[15px] ${formData.city ? 'font-semibold text-gray-900' : 'text-gray-400'}`}>
+                    {formData.city || 'Odaberite grad'}
+                  </span>
+                  {formData.city && (
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Ukloni grad"
+                      onClick={(e) => { e.stopPropagation(); setFormData((prev) => ({ ...prev, city: '' })); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); setFormData((prev) => ({ ...prev, city: '' })); } }}
+                      className="text-gray-400 hover:text-gray-900 p-1"
+                    >
+                      <X className="w-4 h-4" />
+                    </span>
+                  )}
+                </button>
+                <p className="flex items-start gap-2 text-[13px] text-gray-500 leading-snug mt-2 mb-5">
+                  <MapPin className="w-4 h-4 shrink-0 mt-0.5" />
+                  Oglas će biti vidljiv majstorima u vašem području.
+                </p>
 
-              {step === 3 && (
-                <div className="space-y-6">
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <h3 className="font-semibold text-gray-900 mb-4">Pregled posla</h3>
-                    <dl className="space-y-3">
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                        <dt className="text-gray-500 text-sm sm:text-base">Naslov</dt>
-                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right break-words">{formData.title || '-'}</dd>
-                      </div>
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                        <dt className="text-gray-500 text-sm sm:text-base">Kategorija</dt>
-                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">{formData.category || '-'}</dd>
-                      </div>
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                        <dt className="text-gray-500 text-sm sm:text-base">Grad</dt>
-                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">{formData.city || '-'}</dd>
-                      </div>
-                      <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-4">
-                        <dt className="text-gray-500 text-sm sm:text-base">Budžet</dt>
-                        <dd className="font-medium text-gray-900 text-sm sm:text-base text-left sm:text-right">
-                          {formData.budgetMode === 'open'
-                            ? 'Majstori predlažu cijenu'
-                            : formData.budgetMin && formData.budgetMax
-                            ? `${formData.budgetMin} - ${formData.budgetMax} KM`
-                            : formData.budgetMin
-                            ? `od ${formData.budgetMin} KM`
-                            : formData.budgetMax
-                            ? `do ${formData.budgetMax} KM`
-                            : 'Budžet po dogovoru'}
-                        </dd>
-                      </div>
-                    </dl>
-                    {formData.description && (
-                      <div className="mt-4 pt-4 border-t border-gray-200">
-                        <dt className="text-gray-500 text-sm sm:text-base mb-2">Opis</dt>
-                        <dd className="text-gray-700 whitespace-pre-wrap text-sm sm:text-base break-words">{formData.description}</dd>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button type="button" onClick={() => setStep(2)} className="flex-1 btn-secondary">Nazad</button>
-                    <button type="submit" disabled={submitting} className="flex-1 btn-primary disabled:opacity-50">
-                      {submitting
-                        ? (targetProvider ? 'Slanje...' : 'Objavljivanje...')
-                        : (targetProvider ? 'Zatraži ponudu' : 'Objavi posao besplatno')}
+                <p className="text-[15px] font-bold text-gray-900 mb-2">
+                  Okvirni budžet <span className="font-medium text-gray-400">(opcionalno)</span>
+                </p>
+                <div className="space-y-2.5 mb-5">
+                  {BUDGET_OPTIONS.map((opt) => {
+                    const activeOpt = formData.budgetOption === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, budgetOption: opt.value }))}
+                        aria-pressed={activeOpt}
+                        className={`w-full px-4 py-3.5 rounded-2xl border text-[15px] font-semibold transition-colors ${
+                          activeOpt
+                            ? 'border-brand-orange bg-orange-50 text-brand-orange'
+                            : 'border-gray-200 bg-white text-gray-900'
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <p className="text-[15px] font-bold text-gray-900 mb-1.5">Kada vam treba?</p>
+                {formData.deadlineMode === 'asap' ? (
+                  <button
+                    type="button"
+                    onClick={() => setFormData((prev) => ({ ...prev, deadlineMode: 'custom' }))}
+                    className="w-full flex items-center gap-3 bg-white border border-gray-200 rounded-2xl px-4 py-3.5 text-left"
+                  >
+                    <Calendar className="w-5 h-5 text-gray-900 shrink-0" />
+                    <span className="flex-1 text-[15px] font-semibold text-gray-900">Što prije</span>
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
+                  </button>
+                ) : (
+                  <div className="flex gap-2">
+                    <input
+                      type="date"
+                      value={formData.deadline}
+                      min={new Date().toISOString().slice(0, 10)}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, deadline: e.target.value }))}
+                      className="flex-1 bg-white border border-gray-200 rounded-2xl px-4 py-3.5 text-[15px] text-gray-900 outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 min-h-[56px]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, deadlineMode: 'asap', deadline: '' }))}
+                      className="px-4 rounded-2xl border border-gray-200 bg-white text-sm font-semibold text-gray-500 hover:text-gray-900"
+                    >
+                      Što prije
                     </button>
                   </div>
+                )}
+
+                <p className="text-[15px] font-bold text-gray-900 mt-5 mb-1">
+                  Dodatne opcije <span className="font-medium text-gray-400">(opcionalno)</span>
+                </p>
+                <div className="divide-y divide-gray-100">
+                  <ToggleRow
+                    Icon={Star}
+                    title="Hitno"
+                    sub="Oglas označen kao hitan"
+                    on={formData.isUrgent}
+                    onChange={(v) => setFormData((prev) => ({ ...prev, isUrgent: v }))}
+                  />
+                  <ToggleRow
+                    Icon={Phone}
+                    title="Prikaži moj broj telefona"
+                    sub="Majstori vas mogu direktno kontaktirati"
+                    on={formData.showPhone}
+                    onChange={(v) => setFormData((prev) => ({ ...prev, showPhone: v }))}
+                  />
+                  <ToggleRow
+                    Icon={EyeOff}
+                    title="Ostati anoniman"
+                    sub="Prikazuje se samo grad"
+                    on={formData.isAnonymous}
+                    onChange={(v) => setFormData((prev) => ({ ...prev, isAnonymous: v }))}
+                  />
                 </div>
-              )}
-            </form>
-          </div>
+
+                <div className="mt-4 bg-[#eef6f6] border border-[#d9ecec] rounded-2xl p-4 flex items-start gap-3">
+                  <ShieldCheck className="w-6 h-6 text-teal-600 shrink-0 mt-0.5" />
+                  <span>
+                    <span className="block text-[15px] font-bold text-gray-900">Spremni za objavu!</span>
+                    <span className="block text-[13px] text-gray-600 leading-snug">
+                      Vaš oglas je besplatan i mogu ga vidjeti provjereni majstori i firme u vašem području.
+                    </span>
+                  </span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="mt-4 w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white font-extrabold text-[16px] px-4 py-4 rounded-2xl hover:shadow-xl hover:shadow-brand-orange/25 transition-all active:scale-[0.99] min-h-[56px] disabled:opacity-50"
+                >
+                  {submitting ? 'Objavljivanje...' : targetProvider ? 'Zatraži ponudu' : 'Objavi posao — besplatno'}
+                  {!submitting && <ChevronRight className="w-5 h-5" />}
+                </button>
+                <p className="text-center text-xs text-gray-400 mt-2.5">
+                  Objavom pristajete na naše{' '}
+                  <Link href="/uslovi-koristenja/" className="underline hover:text-gray-600">
+                    Uslove korištenja
+                  </Link>.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => { setError(''); setStep(2); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="mt-1 w-full py-3 text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+                >
+                  Nazad
+                </button>
+              </div>
+            )}
+          </form>
         </div>
       </main>
       <Footer />
+
+      {/* City bottom sheet */}
+      {citySheetOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" role="dialog" aria-modal="true" aria-label="Odaberite grad">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setCitySheetOpen(false)} />
+          <div className="relative w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl max-h-[75vh] flex flex-col overflow-hidden animate-fade-in">
+            <div className="flex items-center justify-between px-5 pt-5 pb-3">
+              <p className="text-lg font-extrabold text-gray-900">Odaberite grad</p>
+              <button
+                type="button"
+                onClick={() => setCitySheetOpen(false)}
+                aria-label="Zatvori"
+                className="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="px-5 pb-3">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  type="text"
+                  value={cityQuery}
+                  onChange={(e) => setCityQuery(e.target.value)}
+                  placeholder="Pretraži gradove..."
+                  className="w-full pl-10 pr-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 text-[15px] outline-none focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15"
+                />
+              </div>
+            </div>
+            <div className="overflow-y-auto px-2 pb-6">
+              {filteredCities.map((city) => (
+                <button
+                  key={city}
+                  type="button"
+                  onClick={() => {
+                    setFormData((prev) => ({ ...prev, city }));
+                    setCitySheetOpen(false);
+                  }}
+                  className={`w-full flex items-center justify-between text-left px-4 py-3 rounded-xl text-[15px] font-medium transition-colors ${
+                    formData.city === city ? 'bg-orange-50 text-brand-orange' : 'text-gray-900 hover:bg-gray-50'
+                  }`}
+                >
+                  {city}
+                  {formData.city === city && <Check className="w-4 h-4 shrink-0" />}
+                </button>
+              ))}
+              {filteredCities.length === 0 && (
+                <p className="text-center text-sm text-gray-400 py-6">Nema gradova za pretragu.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -689,17 +969,17 @@ export default function PostProjectPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex flex-col bg-cloud">
+        <div className="min-h-screen flex flex-col bg-[#f4f4f5]">
           <Header />
-          <main className="flex-grow pt-28 pb-12 px-4 sm:px-6">
-            <div className="mx-auto max-w-3xl bg-white rounded-xl shadow-md p-6 md:p-8 animate-pulse">
-              <div className="w-48 h-7 bg-gray-200 rounded mb-2" />
-              <div className="w-3/4 h-4 bg-gray-200 rounded mb-8" />
-              <div className="space-y-6">
-                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-12 bg-gray-200 rounded-xl" /></div>
-                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-12 bg-gray-200 rounded-xl" /></div>
-                <div><div className="w-24 h-4 bg-gray-200 rounded mb-2" /><div className="w-full h-32 bg-gray-200 rounded-xl" /></div>
-                <div className="w-full h-12 bg-gray-200 rounded-xl" />
+          <main className="flex-grow px-4 pt-8 pb-12">
+            <div className="mx-auto w-full max-w-[520px] animate-pulse">
+              <div className="w-24 h-4 bg-gray-200 rounded mb-2" />
+              <div className="w-3/4 h-9 bg-gray-200 rounded-xl mb-2" />
+              <div className="w-full h-16 bg-gray-200 rounded-2xl mb-4" />
+              <div className="space-y-3">
+                <div className="w-full h-20 bg-gray-200 rounded-2xl" />
+                <div className="w-full h-20 bg-gray-200 rounded-2xl" />
+                <div className="w-full h-20 bg-gray-200 rounded-2xl" />
               </div>
             </div>
           </main>
