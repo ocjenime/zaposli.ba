@@ -6,31 +6,20 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import {
-  Hammer, Wrench, Home, Car, PaintRoller, Zap, Droplet, Leaf, Briefcase, LayoutGrid,
   ChevronRight, ChevronDown, X, Check, MapPin, Camera, Lightbulb, ShieldCheck, Star,
   Phone, EyeOff, Calendar, ArrowRight, Search,
 } from 'lucide-react';
 import { categories as allCategories, cities as allCities, getCategory } from '@/lib/data';
+import { CATEGORY_GROUPS, findGroupIndexForSlug, getGroupCategories } from '@/lib/category-groups';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 import { supabase } from '@/lib/supabase';
 
-const categories = allCategories.filter((c) => !c.noSeo);
+const categories = allCategories;
 const cities = allCities.map((c) => c.name).sort((a, b) => a.localeCompare(b, 'bs'));
 
-/** 10 mockup grupa, svaka mapira na prave kategorije iz baze. */
-const STEP_GROUPS: { title: string; sub: string; Icon: typeof Hammer; slugs: string[] }[] = [
-  { title: 'Građevina', sub: 'Fasade, zidanje, adaptacije...', Icon: Hammer, slugs: ['gradjevinarstvo', 'zidarski-radovi', 'tesarski-radovi', 'betoniranje-i-armatura', 'zemljani-radovi', 'rusenje', 'krovopokrivanje', 'limarski-radovi', 'izolacija', 'hidroizolacija'] },
-  { title: 'Popravke i montaža', sub: 'Montaža, popravke, instalacije...', Icon: Wrench, slugs: ['stolarija', 'varilac', 'servis-aparata', 'sigurnost'] },
-  { title: 'Dom i održavanje', sub: 'Čišćenje, vrt, održavanje...', Icon: Home, slugs: ['ciscenje', 'pranje-fasada-i-krovova', 'dimnjacar', 'odrzavanje-zgrada'] },
-  { title: 'Auto i transport', sub: 'Prijevoz, selidbe, automehanika...', Icon: Car, slugs: ['auto-usluge', 'selidbe'] },
-  { title: 'Adaptacije i uređenje', sub: 'Moleraj, keramika, podovi...', Icon: PaintRoller, slugs: ['molerski-radovi', 'masinsko-nabacivanje', 'gipsarski-radovi', 'zavrsni-radovi', 'tapetarski-radovi', 'keramicarski-radovi', 'podovi', 'tlakovi-estrih', 'staklar', 'kamen-i-poplocavanje', 'adaptacije', 'kupatila-kljuc-u-ruke', 'kuhinje-po-mjeri'] },
-  { title: 'Električne instalacije', sub: 'Električari, rasvjeta, smart home...', Icon: Zap, slugs: ['elektroinstalacije', 'tehnologija'] },
-  { title: 'Voda i grijanje', sub: 'Vodoinstalacije, grijanje, klima...', Icon: Droplet, slugs: ['vodoinstalacije', 'grijanje-i-hladjenje', 'plinske-instalacije', 'solarne-instalacije', 'kamin-i-peci'] },
-  { title: 'Vrt i okućnica', sub: 'Košenje, sadnja, uređenje vrta...', Icon: Leaf, slugs: ['vrtlarstvo', 'pergole-nadstresnice-tende', 'bazeni-i-fontane', 'poplocavanje-dvorista-i-terasa', 'rusenje-stabala-drvoreda', 'ograde'] },
-  { title: 'Poslovne usluge', sub: 'IT, marketing, dizajn...', Icon: Briefcase, slugs: ['projektovanje-i-arhitektura', 'dizajn-enterijera', 'dizajn-eksterijera', 'statika-i-nadzor', 'energetska-obnova'] },
-  { title: 'Ostalo', sub: 'Ostale usluge...', Icon: LayoutGrid, slugs: ['hitne-intervencije'] },
-];
+/** 10 mockup grupa iz zajedničkog modula (isti nazivi/ikone kao homepage i /kategorije/). */
+const STEP_GROUPS = CATEGORY_GROUPS;
 
 const STEP_LABELS = ['Kategorija', 'Detalji posla', 'Lokacija i dodatno'];
 const STEP_TITLES = ['Šta vam je potrebno?', 'Opišite šta vam treba', 'Gdje i kada?'];
@@ -62,8 +51,7 @@ function findCategoryByService(service: string) {
 function groupIndexForCategoryName(name: string): number | null {
   const cat = categories.find((c) => c.name === name);
   if (!cat) return null;
-  const idx = STEP_GROUPS.findIndex((g) => g.slugs.includes(cat.slug));
-  return idx >= 0 ? idx : null;
+  return findGroupIndexForSlug(cat.slug);
 }
 
 function ToggleRow({
@@ -557,7 +545,7 @@ function PostProjectContent() {
               <div>
                 <div className="space-y-2.5">
                   {STEP_GROUPS.map((group, gi) => {
-                    const groupCats = categories.filter((c) => group.slugs.includes(c.slug));
+                    const groupCats = getGroupCategories(group);
                     if (groupCats.length === 0) return null;
                     const isSelected = !!selectedSlug && group.slugs.includes(selectedSlug);
                     const isOpen = expandedGroup === gi;

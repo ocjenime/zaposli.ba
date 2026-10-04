@@ -8,6 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { categories, type Category } from '@/lib/data';
+import { CATEGORY_GROUPS, getGroupCategories } from '@/lib/category-groups';
 import { plural } from '@/lib/plural';
 
 const POPULAR_SLUGS = [
@@ -21,22 +22,8 @@ const POPULAR_SLUGS = [
   'podovi',
 ];
 
-const ALPHABET = [
-  'A', 'B', 'C', 'Č', 'Ć', 'D', 'Dž', 'Đ', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Lj',
-  'M', 'N', 'Nj', 'O', 'P', 'R', 'S', 'Š', 'T', 'U', 'V', 'Z', 'Ž',
-];
-
-function letterKey(name: string): string {
-  const upper = name.toUpperCase();
-  for (const digraph of ['DŽ', 'LJ', 'NJ']) {
-    if (upper.startsWith(digraph)) return digraph;
-  }
-  return upper.charAt(0);
-}
-
 export default function CategoriesClient() {
   const [query, setQuery] = useState('');
-  const [activeLetter, setActiveLetter] = useState('Svi');
 
   const popular = useMemo(
     () =>
@@ -46,33 +33,19 @@ export default function CategoriesClient() {
     []
   );
 
-  const letters = useMemo(() => {
-    const visible = categories.filter((c) => !c.noSeo && !c.featured);
-    return ALPHABET.filter((L) => visible.some((c) => letterKey(c.name) === L));
-  }, []);
-
+  // Istih 10 grupa kao homepage bar i objava posla (single source).
   const groups = useMemo(() => {
     const term = query.trim().toLowerCase();
-    const visible = categories
-      .filter((c) => !c.noSeo && !c.featured)
-      .sort((a, b) => a.name.localeCompare(b.name, 'bs'));
-    const result: { letter: string; items: Category[] }[] = [];
-    for (const c of visible) {
-      if (
-        term &&
-        !c.name.toLowerCase().includes(term) &&
-        !c.description.toLowerCase().includes(term)
-      ) {
-        continue;
-      }
-      const letter = letterKey(c.name);
-      if (activeLetter !== 'Svi' && letter !== activeLetter) continue;
-      const g = result.find((g) => g.letter === letter);
-      if (g) g.items.push(c);
-      else result.push({ letter, items: [c] });
-    }
-    return result;
-  }, [query, activeLetter]);
+    return CATEGORY_GROUPS.map((g) => {
+      const items = getGroupCategories(g).filter(
+        (c) =>
+          !term ||
+          c.name.toLowerCase().includes(term) ||
+          c.description.toLowerCase().includes(term)
+      );
+      return { ...g, items };
+    }).filter((g) => g.items.length > 0);
+  }, [query]);
 
   const matchCount = useMemo(() => groups.reduce((n, g) => n + g.items.length, 0), [groups]);
 
@@ -196,7 +169,7 @@ export default function CategoriesClient() {
           </div>
         </section>
 
-        {/* Sve kategorije */}
+        {/* Sve kategorije - istih 10 grupa kao objava posla */}
         <section id="sve-kategorije" className="pb-12 md:pb-16 scroll-mt-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between gap-3 mb-3">
@@ -208,10 +181,7 @@ export default function CategoriesClient() {
                 <input
                   type="text"
                   value={query}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                    setActiveLetter('Svi');
-                  }}
+                  onChange={(e) => setQuery(e.target.value)}
                   placeholder="Pretraži kategorije..."
                   aria-label="Pretraži kategorije"
                   className="w-44 sm:w-56 pl-10 pr-4 py-2.5 rounded-full border border-gray-200 bg-white text-sm text-gray-900 placeholder-gray-400 focus:border-brand-orange focus:ring-2 focus:ring-brand-orange/15 outline-none transition-all"
@@ -219,32 +189,21 @@ export default function CategoriesClient() {
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-x-1 gap-y-1.5 mb-2">
-              <button
-                type="button"
-                onClick={() => setActiveLetter('Svi')}
-                className={`px-3 py-1.5 rounded-lg text-sm font-bold transition-colors min-h-[36px] ${
-                  activeLetter === 'Svi'
-                    ? 'bg-brand-orange text-white'
-                    : 'text-gray-700 hover:text-brand-orange'
-                }`}
-              >
-                Svi
-              </button>
-              {letters.map((L) => (
-                <button
-                  key={L}
-                  type="button"
-                  onClick={() => setActiveLetter(activeLetter === L ? 'Svi' : L)}
-                  className={`px-2 py-1.5 rounded-lg text-sm font-semibold transition-colors min-h-[36px] min-w-[28px] ${
-                    activeLetter === L
-                      ? 'bg-brand-orange text-white'
-                      : 'text-gray-700 hover:text-brand-orange'
-                  }`}
-                >
-                  {L}
-                </button>
-              ))}
+            {/* Brzi skok na grupu */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 mb-2">
+              {CATEGORY_GROUPS.map((g) => {
+                const Icon = g.Icon;
+                return (
+                  <a
+                    key={g.slug}
+                    href={`#grupa-${g.slug}`}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-gray-200 bg-white text-[13px] font-semibold text-gray-800 whitespace-nowrap hover:border-brand-orange hover:text-brand-orange transition-colors min-h-[40px]"
+                  >
+                    <Icon className="w-4 h-4" />
+                    {g.title}
+                  </a>
+                );
+              })}
             </div>
 
             {query.trim() && (
@@ -258,35 +217,46 @@ export default function CategoriesClient() {
                 <p className="font-bold text-gray-900 mb-1">Nema kategorija za zadati filter</p>
                 <button
                   type="button"
-                  onClick={() => {
-                    setQuery('');
-                    setActiveLetter('Svi');
-                  }}
+                  onClick={() => setQuery('')}
                   className="text-sm font-semibold text-brand-orange"
                 >
                   Poništi filtere
                 </button>
               </div>
             ) : (
-              groups.map((g) => (
-                <div key={g.letter}>
-                  <h3 className="text-xl font-extrabold text-gray-900 mt-5 mb-1">{g.letter}</h3>
-                  <div>
-                    {g.items.map((cat) => (
-                      <Link
-                        key={cat.slug}
-                        href={`/kategorije/${cat.slug}/`}
-                        className="group flex items-center justify-between gap-3 py-3 border-b border-gray-200/70"
-                      >
-                        <span className="text-[15px] text-gray-900 group-hover:text-brand-orange transition-colors">
-                          {cat.name}
-                        </span>
-                        <ChevronRight className="w-5 h-5 text-gray-900 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
-                      </Link>
-                    ))}
+              groups.map((g) => {
+                const Icon = g.Icon;
+                return (
+                  <div key={g.slug} id={`grupa-${g.slug}`} className="scroll-mt-24 mt-5 first:mt-2">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+                        <Icon className="w-5 h-5 text-brand-orange" />
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="text-lg font-extrabold text-gray-900 leading-tight">{g.title}</h3>
+                        <p className="text-xs text-gray-500 leading-snug">
+                          {g.sub} · {g.items.length}{' '}
+                          {plural(g.items.length, ['kategorija', 'kategorije', 'kategorija'])}
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      {g.items.map((cat) => (
+                        <Link
+                          key={cat.slug}
+                          href={`/kategorije/${cat.slug}/`}
+                          className="group flex items-center justify-between gap-3 py-3 border-b border-gray-200/70"
+                        >
+                          <span className="text-[15px] text-gray-900 group-hover:text-brand-orange transition-colors">
+                            {cat.name}
+                          </span>
+                          <ChevronRight className="w-5 h-5 text-gray-900 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </section>
