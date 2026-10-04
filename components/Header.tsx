@@ -207,7 +207,7 @@ export default function Header({ dark = false }: { dark?: boolean }) {
         } ${scrolled ? 'shadow-sm dark:shadow-ink-900/50' : ''}`}
       >
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] lg:flex h-12 md:h-16 items-center lg:justify-between">
+          <div className="grid grid-cols-[1fr_auto_1fr] lg:flex h-12 md:h-16 items-center lg:justify-between">
             <button
               ref={mobileButtonRef}
               type="button"
