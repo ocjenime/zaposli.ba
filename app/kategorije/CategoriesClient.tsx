@@ -3,35 +3,15 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Search, ChevronRight, ArrowRight, X, LayoutGrid } from 'lucide-react';
+import { Search, ChevronRight, X, LayoutGrid } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import { categories, type Category } from '@/lib/data';
 import { CATEGORY_GROUPS, getGroupCategories } from '@/lib/category-groups';
 import { plural } from '@/lib/plural';
 
-const POPULAR_SLUGS = [
-  'adaptacije',
-  'keramicarski-radovi',
-  'elektroinstalacije',
-  'vodoinstalacije',
-  'molerski-radovi',
-  'krovopokrivanje',
-  'stolarija',
-  'podovi',
-];
-
 export default function CategoriesClient() {
   const [query, setQuery] = useState('');
-
-  const popular = useMemo(
-    () =>
-      POPULAR_SLUGS.map((slug) => categories.find((c) => c.slug === slug)).filter(
-        (c): c is Category => Boolean(c)
-      ),
-    []
-  );
 
   // Istih 10 grupa kao homepage bar i objava posla (single source).
   const groups = useMemo(() => {
@@ -132,12 +112,12 @@ export default function CategoriesClient() {
           <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent z-10" />
         </section>
 
-        {/* Popularne kategorije */}
+        {/* Kategorije - istih 10 grupa sa istim ikonama kao objava posla */}
         <section className="py-6 md:py-8">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight">
-                Popularne kategorije
+                Kategorije
               </h2>
               <button
                 type="button"
@@ -145,24 +125,31 @@ export default function CategoriesClient() {
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:text-brand-orange transition-colors shrink-0"
               >
                 Pogledajte sve
-                <ArrowRight className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
             <div className="grid grid-cols-2 gap-2 md:gap-4">
-              {popular.map((cat) => {
-                const Icon = cat.icon;
+              {CATEGORY_GROUPS.map((g) => {
+                const Icon = g.Icon;
                 return (
-                  <Link
-                    key={cat.slug}
-                    href={`/kategorije/${cat.slug}/`}
+                  <a
+                    key={g.slug}
+                    href={`#grupa-${g.slug}`}
                     className="group flex items-center gap-2 sm:gap-3 bg-white border border-gray-100 rounded-2xl px-3 sm:px-4 py-3 shadow-sm hover:border-brand-orange/40 hover:shadow-md transition-all min-w-0"
                   >
-                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-gray-800 group-hover:text-brand-orange transition-colors shrink-0" />
-                    <span className="flex-1 min-w-0 text-[13px] sm:text-[15px] font-semibold text-gray-900 leading-snug">
-                      {cat.name}
+                    <span className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-brand-orange shrink-0" />
+                    </span>
+                    <span className="flex-1 min-w-0">
+                      <span className="block text-[13px] sm:text-[15px] font-bold text-gray-900 leading-snug">
+                        {g.title}
+                      </span>
+                      <span className="block text-[11px] sm:text-xs text-gray-500 leading-snug truncate">
+                        {g.sub}
+                      </span>
                     </span>
                     <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-900 group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
-                  </Link>
+                  </a>
                 );
               })}
             </div>

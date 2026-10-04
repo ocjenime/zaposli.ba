@@ -14,6 +14,11 @@ const nextConfig = {
         hostname: 'nwgbrvpomjkzkofjknyi.supabase.co',
         pathname: '/storage/v1/object/**',
       },
+      // Banneri oglasa mogu biti i na eksternim hostovima (firme lijepe svoje URL-ove)
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
     ],
   },
   trailingSlash: true,

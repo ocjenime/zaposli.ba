@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { X } from 'lucide-react';
 
 const STORAGE_KEY = 'appStickerDismissed';
-const SCROLL_THRESHOLD = 400;
 
 export default function AppStickerPopup() {
   const [visible, setVisible] = useState(false);
@@ -22,15 +21,22 @@ export default function AppStickerPopup() {
   useEffect(() => {
     if (dismissed) return;
 
-    const handleScroll = () => {
-      if (window.scrollY > SCROLL_THRESHOLD) {
-        setVisible(true);
-      }
-    };
+    // Prikaži tek kad korisnik stigne do završne CTA sekcije (Započnite danas),
+    // a ne na svaki skrol - manje iritantno.
+    const target = document.getElementById('cta-pocetak');
+    if (!target) return;
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
   }, [dismissed]);
 
   const close = () => {

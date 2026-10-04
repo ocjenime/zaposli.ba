@@ -14,6 +14,8 @@ import ShareIconButton from '@/components/ShareIconButton';
 function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
   const isWorkerSearch = ad.ad_type === 'worker_search';
   const bannerUrl = ad.banner_url || ad.image_url;
+  const [imgError, setImgError] = useState(false);
+  const showBanner = !!bannerUrl && !imgError;
 
   return (
     <Link
@@ -36,12 +38,13 @@ function FeaturedAdCard({ ad, rank }: { ad: PublicPromotedAd; rank: number }) {
       </div>
 
       {/* Banner - kvadrat, cijela slika uvijek vidljiva bez rezanja */}
-      {bannerUrl ? (
+      {showBanner ? (
         <div className="relative aspect-square overflow-hidden bg-ink-950">
           <NextImage
-            src={bannerUrl}
+            src={bannerUrl!}
             alt={ad.title}
             fill
+            onError={() => setImgError(true)}
             className="object-contain transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 20vw"
           />
