@@ -129,7 +129,6 @@ export default function FeaturedWorkers() {
                     fill
                     sizes="64px"
                     className="rounded-2xl object-cover border border-gray-100"
-                    unoptimized
                   />
                 </div>
               ) : (

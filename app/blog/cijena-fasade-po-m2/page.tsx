@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, Hash, Shield, Wallet, FileCheck, HelpCircle } from 'lucide-react';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
-import { JsonLd, articleSchema } from '@/lib/jsonld';
+import { JsonLd, articleSchema, faqSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Cijena fasade po m² u BiH: vodič za 2026. | Zaposli.ba',
@@ -73,14 +73,17 @@ export default function CijenaFasadePoM2Page() {
           ]}
         />
         <JsonLd
-          data={articleSchema({
+          data={[
+            articleSchema({
             title: 'Cijena fasade po m² u BiH: vodič za 2026.',
             description:
               'Koliko košta fasada po m² u BiH 2026: stiropor vs kamena vuna, cijene po sistemu, šta ulazi u cijenu i greške koje poskupljuju radove.',
             slug: 'cijena-fasade-po-m2',
             datePublished: '2026-07-05',
             dateModified: '2026-07-30',
-          })}
+            }),
+            faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a }))),
+          ]}
         />
         <PageHero
           title="Cijena fasade po m² u BiH: vodič za 2026."

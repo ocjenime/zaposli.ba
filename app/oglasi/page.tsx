@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Oglasi | Zaposli.ba',
   description:
     'Pregledajte premium oglase provjerenih firmi i majstora. Pronađite promocije usluga ili ponude posla širom Bosne i Hercegovine.',
-  alternates: { canonical: `${site.url}/oglasi/` },
+  alternates: { canonical: `${site.url}/izdvojeni-oglasi/` },
   openGraph: {
     title: 'Oglasi | Zaposli.ba',
     description:

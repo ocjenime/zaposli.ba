@@ -340,7 +340,6 @@ function RequestContent() {
                   src={firm.logo_url}
                   alt={firm.name}
                   fill
-                  unoptimized
                   sizes="32px"
                   className="object-cover"
                 />
@@ -378,7 +377,6 @@ function RequestContent() {
                             src={firm.logo_url}
                             alt={firm.name}
                             fill
-                            unoptimized
                             sizes="64px"
                             className="object-cover"
                           />

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, Hash, ShieldCheck, ClipboardList, Wallet, HelpCircle, FileCheckIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
-import { JsonLd, articleSchema } from '@/lib/jsonld';
+import { JsonLd, articleSchema, faqSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Posao u BiH: kako brzo naći majstora ili objaviti posao | Zaposli.ba',
@@ -66,14 +66,17 @@ export default function PosaoUBiHPage() {
           ]}
         />
         <JsonLd
-          data={articleSchema({
+          data={[
+            articleSchema({
             title: 'Posao u BiH: kako brzo naći majstora ili objaviti posao',
             description:
               'Trebate posao u Sarajevu, Banjoj Luci, Mostaru, Tuzli ili drugom gradu u BiH? Vodič kroz besplatnu objavu posla, poređenje ponuda i izbor provjerenog majstora.',
             slug: 'posao-u-bih-kako-naci-majstora',
             datePublished: '2026-09-22',
             dateModified: '2026-09-22',
-          })}
+            }),
+            faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a }))),
+          ]}
         />
         <PageHero
           title="Posao u BiH: kako brzo naći majstora ili objaviti posao"

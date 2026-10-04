@@ -10,7 +10,8 @@ import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth-context';
-import { getCategory } from '@/lib/data';
+import { getCategory, cities } from '@/lib/data';
+import { normalizeCityName } from '@/lib/city-utils';
 import { site } from '@/lib/site';
 import Image from 'next/image';
 import { formatDate, formatMonthYear } from '@/lib/date';
@@ -376,7 +377,12 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
     ? 'Online sada'
     : `Zadnji put online: ${formatLastActive(firm.last_active_at)}`;
 
-  const visibleServices = showAllServices ? categoryNames : categoryNames.slice(0, 6);
+  const visibleServiceLinks = (showAllServices ? firmCategories : firmCategories.slice(0, 6))
+    .map((c) => ({ slug: c.category_slug, name: getCategory(c.category_slug)?.name }))
+    .filter((s): s is { slug: string; name: string } => !!s.name);
+  const firmCitySlug = firm?.city
+    ? cities.find((c) => normalizeCityName(c.name) === normalizeCityName(firm.city!))?.slug
+    : undefined;
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -586,15 +592,16 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   </button>
                 )}
               </div>
-              {visibleServices.length > 0 ? (
+              {visibleServiceLinks.length > 0 ? (
                 <div className="grid grid-cols-2 gap-2">
-                  {visibleServices.map((name) => (
-                    <span
-                      key={name}
-                      className="bg-gray-100 text-gray-800 rounded-xl px-3 py-2.5 text-[13px] sm:text-sm font-medium leading-snug"
+                  {visibleServiceLinks.map((s) => (
+                    <Link
+                      key={s.slug}
+                      href={`/kategorije/${s.slug}/`}
+                      className="bg-gray-100 text-gray-800 rounded-xl px-3 py-2.5 text-[13px] sm:text-sm font-medium leading-snug hover:bg-orange-50 hover:text-brand-orange transition-colors"
                     >
-                      {name}
-                    </span>
+                      {s.name}
+                    </Link>
                   ))}
                 </div>
               ) : (
@@ -620,7 +627,13 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                     <MapPin className="w-4 h-4 text-brand-orange shrink-0" />
                     <div className="min-w-0">
                       <p className="text-[11px] text-steel">Grad</p>
-                      <p className="font-bold text-gray-900 truncate">{firm.city}</p>
+                      {firmCitySlug ? (
+                        <Link href={`/gradovi/${firmCitySlug}/`} className="font-bold text-gray-900 truncate block hover:text-brand-orange transition-colors">
+                          {firm.city}
+                        </Link>
+                      ) : (
+                        <p className="font-bold text-gray-900 truncate">{firm.city}</p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -693,7 +706,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                         src={url}
                         alt={`Portfolio firme ${firm.name} - fotografija ${index + 1}`}
                         fill
-                        unoptimized
                         sizes="(max-width: 640px) 33vw, 20vw"
                         className="object-cover group-hover:scale-105 transition-transform"
                       />
@@ -819,7 +831,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                                       src={img.url}
                                       alt={`Fotografija recenzije ${idx + 1}`}
                                       fill
-                                      unoptimized
                                       sizes="25vw"
                                       className="object-cover group-hover:scale-105 transition-transform"
                                     />
@@ -875,7 +886,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   src={selectedPortfolioImage}
                   alt={`Uvećana fotografija portfolioa firme ${firm.name}`}
                   fill
-                  unoptimized
                   sizes="100vw"
                   className="object-contain rounded-lg shadow-2xl"
                 />
@@ -905,7 +915,6 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
                   src={selectedReviewImage}
                   alt="Uvećana fotografija recenzije"
                   fill
-                  unoptimized
                   sizes="100vw"
                   className="object-contain rounded-lg shadow-2xl"
                 />

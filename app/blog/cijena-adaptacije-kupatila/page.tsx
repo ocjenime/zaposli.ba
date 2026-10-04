@@ -5,7 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, Hash, Bath, Wallet, FileCheck, HelpCircle, ShieldCheck } from 'lucide-react';
 import type { Metadata } from 'next';
-import { JsonLd, articleSchema } from '@/lib/jsonld';
+import { JsonLd, articleSchema, faqSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Koliko košta adaptacija kupatila u 2026? | Zaposli.ba',
@@ -74,14 +74,17 @@ export default function CijenaAdaptacijeKupatilaPage() {
           ]}
         />
         <JsonLd
-          data={articleSchema({
+          data={[
+            articleSchema({
             title: 'Koliko košta adaptacija kupatila u 2026?',
             description:
               'Cijena adaptacije kupatila u BiH 2026: demontaža, instalacije, keramika i sanitarije: realni rasponi u KM i savjeti za upoređivanje ponuda.',
             slug: 'cijena-adaptacije-kupatila',
             datePublished: '2026-07-15',
             dateModified: '2026-07-30',
-          })}
+            }),
+            faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a }))),
+          ]}
         />
         <PageHero
           title="Koliko košta adaptacija kupatila u 2026?"

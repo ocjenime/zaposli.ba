@@ -7,7 +7,7 @@ import ProjectsPageClient from './ProjectsPageClient';
 import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Posao u BiH - aktuelni poslovi i projekti, ponude majstora | Zaposli.ba',
+  title: 'Aktivni poslovi u BiH - objavite posao, primite ponude majstora | Zaposli.ba',
   description:
     'Posao u Sarajevu, Banjoj Luci, Mostaru, Tuzli i cijeloj BiH: aktuelni građevinski i majstorski poslovi i projekti. Filtrirajte po gradu, kategoriji i budžetu. Firme i majstori šalju ponude besplatno nakon registracije.',
   keywords: [

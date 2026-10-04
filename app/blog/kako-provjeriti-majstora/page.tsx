@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, Hash, ShieldCheck, FileCheck, Wallet, FileText, HelpCircle, FileCheckIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import { site } from '@/lib/site';
-import { JsonLd, articleSchema } from '@/lib/jsonld';
+import { JsonLd, articleSchema, faqSchema } from '@/lib/jsonld';
 
 export const metadata: Metadata = {
   title: 'Kako provjeriti majstora prije avansa | Zaposli.ba',
@@ -67,14 +67,17 @@ export default function KakoProvjeritiMajstoraPage() {
           ]}
         />
         <JsonLd
-          data={articleSchema({
+          data={[
+            articleSchema({
             title: 'Kako provjeriti majstora prije nego što mu date avans',
             description:
               'Kontrolna lista prije nego date avans majstoru: registracija firme, recenzije, fotografije radova, ugovor i plaćanje po fazama.',
             slug: 'kako-provjeriti-majstora',
             datePublished: '2026-07-10',
             dateModified: '2026-07-30',
-          })}
+            }),
+            faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a }))),
+          ]}
         />
         <PageHero
           title="Kako provjeriti majstora prije nego što mu date avans"

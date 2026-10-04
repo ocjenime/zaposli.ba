@@ -36,7 +36,6 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
               src={current}
               alt={title}
               fill
-              unoptimized
               priority
               onLoad={(e) => {
                 const img = e.currentTarget;
@@ -80,7 +79,6 @@ export default function AdGallery({ images, title, adType }: AdGalleryProps) {
                 src={src}
                 alt={`${title} - ${i + 1}`}
                 fill
-                unoptimized
                 className="object-cover"
                 sizes="20vw"
               />

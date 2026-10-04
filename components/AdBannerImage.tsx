@@ -30,7 +30,6 @@ export default function AdBannerImage({
         alt=""
         aria-hidden="true"
         fill
-        unoptimized
         sizes={sizes}
         className="object-cover blur-2xl scale-125 opacity-70 brightness-[0.45] saturate-150"
       />
@@ -39,7 +38,6 @@ export default function AdBannerImage({
         src={src}
         alt={alt}
         fill
-        unoptimized
         sizes={sizes}
         priority={priority}
         className="object-contain"

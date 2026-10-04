@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import PageHero from '@/components/ui/PageHero';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { site } from '@/lib/site';
-import { JsonLd, articleSchema, breadcrumbSchema } from '@/lib/jsonld';
+import { JsonLd, articleSchema, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
 
 export interface RelatedArticle {
   slug: string;
@@ -95,6 +95,9 @@ export default function ArticleLayout({
             { name: title },
           ])}
         />
+        {faqs && faqs.length > 0 && (
+          <JsonLd data={faqSchema(faqs.map((f) => ({ question: f.q, answer: f.a })))} />
+        )}
         <PageHero title={title} subtitle={subtitle} />
 
         <article className="py-16">

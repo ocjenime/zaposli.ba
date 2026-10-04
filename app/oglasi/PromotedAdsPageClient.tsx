@@ -122,9 +122,9 @@ export default function PromotedAdsPageClient({
                   <Megaphone className="w-3.5 h-3.5" />
                   {eyebrow}
                 </span>
-                <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
+                <p className="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-white leading-[1.1] tracking-tight mb-2 sm:mb-3 animate-fade-in">
                   {title}
-                </h1>
+                </p>
                 <p className="text-sm sm:text-base text-white/85 leading-snug sm:leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
                   {subtitle}
                 </p>
