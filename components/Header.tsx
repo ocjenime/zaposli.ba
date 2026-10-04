@@ -226,7 +226,7 @@ export default function Header({ dark = false }: { dark?: boolean }) {
 
             <Link
               href="/"
-              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-100 md:scale-110 translate-x-[17px] md:translate-x-[19px] lg:translate-x-0"
+              className="col-start-2 lg:col-start-auto justify-self-center lg:justify-self-auto flex items-center group hover:opacity-80 transition-opacity duration-200 scale-100 md:scale-110 -translate-x-[17px] md:-translate-x-[19px] lg:translate-x-0"
             >
               <Logo variant={dark ? 'light' : 'dark'} />
             </Link>
