@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { roleLabel, roleInputOptions, isFirmRole, type UserRole } from '@/lib/roles';
+import { generateUniqueFirmSlug } from '@/lib/slugify';
 import { cities } from '@/lib/data';
 import {
   X, Loader2, Crown, AlertCircle, Check, KeyRound, Mail, Phone, User, Trash2, ShieldAlert, Eye, EyeOff,
@@ -52,12 +53,47 @@ export default function ProfileEditModal({
     setError('');
     setSuccess('');
 
-    // Prelazak na firmu/majstora: grad je obavezan (DB trigger bi odbio firmu bez grada).
+    // Prelazak na firmu/majstora: grad je obavezan.
+    // REDOSLIJED JE BITAN: firma sa gradom se kreira/dopuni PRIJE promjene uloge,
+    // jer role-change trigger ne zna grad, a DB gate odbija firmu bez grada.
     const becomesFirm = isFirmRole(role) && !isFirmRole(profile!.role);
     if (becomesFirm && !firmCity.trim()) {
       setSaving(false);
       setError('Odaberite grad za firmu. Bez grada profil je nevidljiv u pretragama.');
       return;
+    }
+
+    if (becomesFirm) {
+      try {
+        const { data: existingFirm } = await supabase
+          .from('firms')
+          .select('id')
+          .eq('owner_id', profile!.id)
+          .maybeSingle();
+        if (existingFirm) {
+          const { error: cityErr } = await supabase
+            .from('firms')
+            .update({ city: firmCity.trim() })
+            .eq('owner_id', profile!.id);
+          if (cityErr) throw cityErr;
+        } else {
+          const baseName = fullName.trim() || profile!.email.split('@')[0] || 'firma';
+          const slug = await generateUniqueFirmSlug(supabase, baseName);
+          const { error: firmErr } = await supabase.from('firms').insert({
+            owner_id: profile!.id,
+            name: baseName,
+            slug,
+            email: profile!.email,
+            phone: phone.trim() || null,
+            city: firmCity.trim(),
+          });
+          if (firmErr) throw firmErr;
+        }
+      } catch (err) {
+        setSaving(false);
+        setError(err instanceof Error ? err.message : 'Grad firme nije spremljen.');
+        return;
+      }
     }
 
     const { error: err } = await supabase
@@ -75,20 +111,6 @@ export default function ProfileEditModal({
       setSaving(false);
       setError(err.message);
       return;
-    }
-
-    // Trigger je auto-kreirao firmu bez grada - dopuni grad odmah.
-    if (becomesFirm) {
-      const { error: firmErr } = await supabase
-        .from('firms')
-        .update({ city: firmCity.trim() })
-        .eq('owner_id', profile!.id);
-      if (firmErr) {
-        setSaving(false);
-        setError(`Uloga promijenjena, ali grad firme nije spremljen: ${firmErr.message} Dopunite ga kroz Firme -> Uredi.`);
-        onSaved();
-        return;
-      }
     }
 
     setSaving(false);
