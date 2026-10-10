@@ -24,11 +24,11 @@ export default function HeroSection() {
           priority
           fetchPriority="high"
           sizes="100vw"
-          className="object-cover object-[60%_center]"
+          className="object-cover object-[60%_center] saturate-[1.25]"
         />
-        {/* Cinematic overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/60 via-ink-950/35 to-ink-950/10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/45 via-ink-950/10 to-ink-950/15" />
+        {/* Lagani overlay da slika ostane šarena - tekst i dalje čitljiv */}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/45 via-ink-950/20 to-ink-950/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-ink-950/30 via-ink-950/5 to-ink-950/10" />
       </div>
 
       {/* Hero content */}
