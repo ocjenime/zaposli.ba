@@ -1,20 +1,19 @@
 'use client';
 
+import Link from 'next/link';
 import NextImage from 'next/image';
 
 export default function PromoBanner() {
   return (
     <section className="relative py-5 md:py-6 bg-cloud px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <a
-          href="https://www.arilux.ba"
-          target="_blank"
-          rel="sponsored noopener noreferrer"
-          aria-label="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija"
-          className="group relative block w-full sm:max-w-md lg:max-w-none mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/15 border border-gray-100"
+        <Link
+          href="/firma-profil/arilux-doo/"
+          aria-label="Arilux d.o.o. - pogledaj profil firme"
+          className="group relative block w-full rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/15 border border-gray-100 bg-ink-950"
         >
-          {/* Mobitel: portret verzija */}
-          <div className="relative aspect-[2/3] bg-ink-950 md:hidden">
+          {/* Mobitel: portret verzija, puna širina */}
+          <div className="relative aspect-[2/3] md:hidden">
             <NextImage
               src="/images/arilux-reklama.jpg"
               alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
@@ -23,13 +22,13 @@ export default function PromoBanner() {
               sizes="100vw"
             />
           </div>
-          {/* Desktop: landscape verzija */}
-          <div className="relative hidden md:block aspect-[3/2] bg-ink-950">
+          {/* Desktop: landscape verzija, visina kao stari okvir, cijela slika vidljiva */}
+          <div className="relative hidden md:block h-[380px] lg:h-[440px]">
             <NextImage
               src="/images/arilux-reklama-wide.jpg"
               alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.01]"
+              className="object-contain transition-transform duration-700 group-hover:scale-[1.01]"
               sizes="(max-width: 1280px) 100vw, 1280px"
             />
           </div>
