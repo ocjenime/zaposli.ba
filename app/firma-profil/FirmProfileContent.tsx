@@ -93,6 +93,47 @@ const TABS = [
   { id: 'recenzije', label: 'Recenzije' },
 ];
 
+/** Opis firme: čuva entere iz unosa, bullet redove pretvara u stilizovanu listu. */
+function renderFirmDescription(text: string) {
+  const lines = text.split('\n');
+  const blocks: { type: 'p' | 'ul'; items: string[] }[] = [];
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) continue;
+    const bullet = line.match(/^[•\-\*–—]\s*(.+)$/);
+    if (bullet) {
+      const last = blocks[blocks.length - 1];
+      if (last && last.type === 'ul') last.items.push(bullet[1]);
+      else blocks.push({ type: 'ul', items: [bullet[1]] });
+    } else {
+      blocks.push({ type: 'p', items: [line] });
+    }
+  }
+  if (blocks.length === 0) {
+    return <p className="text-sm sm:text-[15px] text-steel leading-relaxed mb-4">Firma još nije dodala opis.</p>;
+  }
+  return (
+    <div className="mb-4 space-y-3">
+      {blocks.map((b, i) =>
+        b.type === 'ul' ? (
+          <ul key={i} className="space-y-2 rounded-2xl bg-cloud px-4 py-3.5">
+            {b.items.map((item, j) => (
+              <li key={j} className="flex items-start gap-2.5 text-sm sm:text-[15px] text-gray-800 leading-relaxed">
+                <span className="mt-[7px] w-2 h-2 rounded-full bg-brand-orange shrink-0" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p key={i} className="text-sm sm:text-[15px] text-steel leading-relaxed">
+            {b.items[0]}
+          </p>
+        )
+      )}
+    </div>
+  );
+}
+
 export default function FirmProfileContent({ slug: propSlug }: { slug?: string }) {
   const searchParams = useSearchParams();
   const slug = propSlug || searchParams.get('slug') || '';
@@ -628,9 +669,13 @@ export default function FirmProfileContent({ slug: propSlug }: { slug?: string }
               <h2 className="flex items-center gap-2 text-lg sm:text-xl font-extrabold text-gray-900 mb-2">
                 <Info className="w-5 h-5" />O firmi
               </h2>
-              <p className="text-sm sm:text-[15px] text-steel leading-relaxed mb-4">
-                {firm.description || 'Firma još nije dodala opis.'}
-              </p>
+              {firm.description ? (
+                renderFirmDescription(firm.description)
+              ) : (
+                <p className="text-sm sm:text-[15px] text-steel leading-relaxed mb-4">
+                  Firma još nije dodala opis.
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-x-4 gap-y-3 pt-4 border-t border-gray-100 text-sm">
                 {firm.city && (
                   <div className="flex items-center gap-2 min-w-0">
