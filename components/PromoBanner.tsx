@@ -12,10 +12,10 @@ export default function PromoBanner() {
           aria-label="Arilux d.o.o. - pogledaj profil firme"
           className="group relative block w-full rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/15 border border-gray-100 bg-ink-950"
         >
-          {/* Mobitel: portret verzija, puna širina */}
-          <div className="relative aspect-[2/3] md:hidden">
+          {/* Mobitel: landscape verzija, puna širina */}
+          <div className="relative aspect-[1920/661] md:hidden">
             <NextImage
-              src="/images/arilux-reklama.jpg"
+              src="/images/arilux-reklama-wide.jpg"
               alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
               fill
               className="object-cover"
