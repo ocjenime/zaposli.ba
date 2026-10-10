@@ -35,7 +35,7 @@ export default function PromoBanner() {
           <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/60 text-white backdrop-blur-sm border border-white/20">
             Sponzorirano
           </span>
-        </a>
+        </Link>
       </div>
     </section>
   );
