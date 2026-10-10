@@ -1,17 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import NextImage from 'next/image';
-import Logo from '@/components/Logo';
 import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
-
-const benefits = [
-  'Veća vidljivost',
-  'Više upita',
-  'Gradite svoj brend',
-];
 
 export default function PromoBanner() {
   const { role } = useAuth();
@@ -54,21 +47,26 @@ export default function PromoBanner() {
           </div>
 
           <div className="flex flex-col items-start lg:items-end">
-            <div className="bg-ink-900/80 backdrop-blur-xl border border-[#ffffff]/10 rounded-2xl p-5 md:p-6 w-full max-w-sm">
-              <div className="mb-5">
-                <Logo variant="light" className="h-8" />
+            <a
+              href="https://www.arilux.ba"
+              target="_blank"
+              rel="sponsored noopener noreferrer"
+              aria-label="Arilux - luksuzno uređenje dvorišta i limarija"
+              className="group relative block w-full max-w-sm rounded-2xl overflow-hidden border border-[#ffffff]/15 shadow-2xl shadow-black/40"
+            >
+              <div className="relative aspect-[2/3] bg-ink-950">
+                <NextImage
+                  src="/images/arilux-reklama.jpg"
+                  alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  sizes="(max-width: 1024px) 100vw, 400px"
+                />
               </div>
-              <ul className="space-y-3">
-                {benefits.map((benefit) => (
-                  <li key={benefit} className="flex items-center gap-3 text-white/90 text-sm md:text-base">
-                    <span className="w-6 h-6 rounded-full bg-brand-orange/20 flex items-center justify-center shrink-0">
-                      <CheckCircle2 className="w-4 h-4 text-brand-orange" />
-                    </span>
-                    {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/60 text-white backdrop-blur-sm border border-white/20">
+                Sponzorirano
+              </span>
+            </a>
           </div>
         </div>
       </div>
