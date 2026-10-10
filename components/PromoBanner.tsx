@@ -11,15 +11,26 @@ export default function PromoBanner() {
           target="_blank"
           rel="sponsored noopener noreferrer"
           aria-label="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija"
-          className="group relative block w-full sm:max-w-md lg:max-w-lg mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/15 border border-gray-100"
+          className="group relative block w-full sm:max-w-md lg:max-w-none mx-auto rounded-3xl overflow-hidden shadow-2xl shadow-[#000000]/15 border border-gray-100"
         >
-          <div className="relative aspect-[2/3] bg-ink-950">
+          {/* Mobitel: portret verzija */}
+          <div className="relative aspect-[2/3] bg-ink-950 md:hidden">
             <NextImage
               src="/images/arilux-reklama.jpg"
               alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
               fill
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
+          {/* Desktop: landscape verzija */}
+          <div className="relative hidden md:block aspect-[3/2] bg-ink-950">
+            <NextImage
+              src="/images/arilux-reklama-wide.jpg"
+              alt="Arilux - luksuzno uređenje dvorišta i eksterijera, građevinska limarija. Telefon 061 770 707"
+              fill
               className="object-cover transition-transform duration-700 group-hover:scale-[1.01]"
-              sizes="(max-width: 640px) 100vw, 512px"
+              sizes="(max-width: 1280px) 100vw, 1280px"
             />
           </div>
           <span className="absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/60 text-white backdrop-blur-sm border border-white/20">
