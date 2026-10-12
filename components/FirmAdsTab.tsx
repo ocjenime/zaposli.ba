@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Subscription, getFeaturedAdsUsedThisMonth, getIncludedAdsRemaining } from '@/lib/subscriptions';
+import { Subscription } from '@/lib/subscriptions';
 import {
   Megaphone,
   Loader2,
@@ -21,22 +21,17 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Wallet,
   ImageIcon,
   Pencil,
   RotateCw,
   Phone,
+  Mail,
 } from 'lucide-react';
 import NextImage from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import { formatDate } from '@/lib/date';
 import { resizeAndCompressImage, blobToFile } from '@/lib/image-utils';
 import { nextAdEndsAt } from '@/lib/ad-storage';
 import AdEditModal from '@/components/AdEditModal';
-
-const HOMEPAGE_MINI_PRICE = 19;
-const HOMEPAGE_BANNER_PRICE = 49;
-const LISTING_AD_PRICE = 5;
 
 type Destination = 'homepage' | 'homepage_banner' | 'listing';
 type AdType = 'promotion' | 'worker_search';
@@ -72,7 +67,6 @@ const destinationMeta: Record<
     label: string;
     shortLabel: string;
     icon: React.ElementType;
-    price: number;
     aspect: string;
     aspectClass: string;
     dimensions: string;
@@ -83,7 +77,6 @@ const destinationMeta: Record<
     label: 'Homepage mini oglas',
     shortLabel: 'Homepage mini',
     icon: Home,
-    price: HOMEPAGE_MINI_PRICE,
     aspect: '16:10',
     aspectClass: 'aspect-[16/10]',
     dimensions: '640 × 400 px',
@@ -93,7 +86,6 @@ const destinationMeta: Record<
     label: 'Homepage banner',
     shortLabel: 'Homepage banner',
     icon: Monitor,
-    price: HOMEPAGE_BANNER_PRICE,
     aspect: '3:1',
     aspectClass: 'aspect-[3/1]',
     dimensions: '1200 × 400 px',
@@ -103,7 +95,6 @@ const destinationMeta: Record<
     label: 'Oglas na stranici svih oglasa',
     shortLabel: 'Svi oglasi',
     icon: LayoutGrid,
-    price: LISTING_AD_PRICE,
     aspect: '3:1',
     aspectClass: 'aspect-[3/1]',
     dimensions: '900 × 300 px',
@@ -113,7 +104,6 @@ const destinationMeta: Record<
 
 export default function FirmAdsTab({ firmId, subscription, profileComplete = true }: FirmAdsTabProps) {
   const [ads, setAds] = useState<PromotedAd[]>([]);
-  const [adsUsed, setAdsUsed] = useState(0);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -131,47 +121,28 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
   const [editingAd, setEditingAd] = useState<PromotedAd | null>(null);
   const [renewingId, setRenewingId] = useState<string | null>(null);
 
-  const searchParams = useSearchParams();
-  const [destination, setDestination] = useState<Destination>(() => {
-    const d = searchParams.get('destination');
-    return d === 'listing' ? 'listing' : d === 'homepage_banner' ? 'homepage_banner' : 'homepage';
-  });
-
-  const includedRemaining = getIncludedAdsRemaining(subscription, adsUsed);
-  const hasPaidPlan = !!subscription?.plans && (subscription.plans.price_monthly ?? 0) > 0;
-  const isHomepageMini = destination === 'homepage';
-  const isHomepageBanner = destination === 'homepage_banner';
-  const isListing = destination === 'listing';
-  const canUseIncluded = isHomepageMini && includedRemaining > 0;
-  const isFreeListing = isListing && hasPaidPlan;
-
-  const effectivePrice = isHomepageMini
-    ? HOMEPAGE_MINI_PRICE
-    : isHomepageBanner
-    ? HOMEPAGE_BANNER_PRICE
-    : LISTING_AD_PRICE;
+  // Svi oglasi su besplatni. Premium članovi su automatski sticky na vrhu
+  // liste i prikazuju se u homepage traci.
+  const isPremiumPlan = subscription?.plans?.slug === 'premium';
+  const destination: Destination = isPremiumPlan ? 'homepage' : 'listing';
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const [usedCount, adsData] = await Promise.all([
-        getFeaturedAdsUsedThisMonth(firmId, subscription),
-        supabase
-          .from('promoted_ads')
-          .select('*')
-          .eq('firm_id', firmId)
-          .order('created_at', { ascending: false })
-          .limit(50),
-      ]);
-      setAdsUsed(usedCount);
-      setAds((adsData.data || []) as unknown as PromotedAd[]);
+      const { data: adsData } = await supabase
+        .from('promoted_ads')
+        .select('*')
+        .eq('firm_id', firmId)
+        .order('created_at', { ascending: false })
+        .limit(50);
+      setAds((adsData || []) as unknown as PromotedAd[]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Greška prilikom učitavanja.');
     } finally {
       setLoading(false);
     }
-  }, [firmId, subscription]);
+  }, [firmId]);
 
   useEffect(() => {
     loadData();
@@ -292,12 +263,6 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
 
     try {
       const bannerUrl = await uploadBanner();
-      let source: 'included' | 'paid' = canUseIncluded ? 'included' : 'paid';
-      let amount = canUseIncluded ? 0 : effectivePrice;
-      if (isFreeListing) {
-        source = 'paid';
-        amount = 0;
-      }
 
       const { error: insertErr } = await supabase.from('promoted_ads').insert({
         firm_id: firmId,
@@ -307,9 +272,9 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
         ad_type: adType,
         destination,
         show_phone: showPhone,
-        amount,
+        amount: 0,
         status: 'pending',
-        source,
+        source: 'included',
       });
 
       if (insertErr) throw insertErr;
@@ -321,14 +286,11 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
       removeBanner();
       setStep(1);
 
-      if (canUseIncluded) {
-        setSuccess('Oglas je poslan na odobrenje (uključen u paket).');
-      } else if (isFreeListing) {
-        setSuccess('Oglas je poslan na odobrenje. Besplatan je jer imate plaćeni paket.');
-      } else {
-        const place = isListing ? 'stranici svih oglasa' : isHomepageBanner ? 'homepage banner poziciji' : 'homepage-u';
-        setSuccess(`Oglas je poslan na odobrenje. Nakon odobrenja plaćate ${amount} KM za prikaz na ${place}.`);
-      }
+      setSuccess(
+        isPremiumPlan
+          ? 'Oglas je poslan na odobrenje. Kao Premium član bit ćete sticky na vrhu liste.'
+          : 'Oglas je poslan na odobrenje. Objavljivanje je besplatno.'
+      );
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Greška prilikom slanja oglasa.');
@@ -346,12 +308,8 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
   }
 
   const meta = destinationMeta[destination];
-  const finalPrice = canUseIncluded || isFreeListing ? 0 : effectivePrice;
-  const priceLabel = canUseIncluded
-    ? 'Uključen u paket'
-    : isFreeListing
-    ? 'Besplatno'
-    : `${finalPrice} KM`;
+
+  const activeAdsCount = ads.filter((a) => a.status === 'active').length;
 
   return (
     <section className="animate-fade-in space-y-6">
@@ -374,8 +332,8 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
               <Zap className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Preostalo uključenih mini oglasa</p>
-              <p className="font-bold text-gray-900 dark:text-white">{includedRemaining} preostalo</p>
+              <p className="text-sm text-steel">Cijena objave oglasa</p>
+              <p className="font-bold text-gray-900 dark:text-white">Besplatno (0 KM)</p>
             </div>
           </div>
         </div>
@@ -385,8 +343,8 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
               <Megaphone className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-sm text-steel">Najpopularnija pozicija</p>
-              <p className="font-bold text-gray-900 dark:text-white">Homepage banner 49 KM/mj</p>
+              <p className="text-sm text-steel">Aktivni oglasi</p>
+              <p className="font-bold text-gray-900 dark:text-white">{activeAdsCount} aktivno</p>
             </div>
           </div>
         </div>
@@ -410,7 +368,7 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
         {/* Stepper header */}
         <div className="px-6 pt-6 pb-2">
           <div className="flex items-center justify-between mb-2">
-            {['Pozicija', 'Sadržaj', 'Vizual', 'Pregled'].map((label, idx) => {
+              {['Info', 'Sadržaj', 'Vizual', 'Pregled'].map((label, idx) => {
               const stepNumber = idx + 1;
               const active = step === stepNumber;
               const done = step > stepNumber;
@@ -451,62 +409,48 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
           {step === 1 && (
             <div className="space-y-4 animate-fade-in">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Odaberite poziciju oglasa</h3>
-                <p className="text-sm text-steel">Svaka pozicija ima drugačiju vidljivost i cijenu.</p>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Objava oglasa je besplatna</h3>
+                <p className="text-sm text-steel">Sve firme i majstori objavljuju bez naplate. Premium članovi su automatski sticky na vrhu liste oglasa.</p>
               </div>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {(Object.keys(destinationMeta) as Destination[]).map((key) => {
-                  const d = destinationMeta[key];
-                  const Icon = d.icon;
-                  const selected = destination === key;
-                  const isListingFree = key === 'listing' && hasPaidPlan;
-                  return (
-                    <button
-                      key={key}
-                      type="button"
-                      onClick={() => setDestination(key)}
-                      className={`relative text-left rounded-2xl border p-5 transition-all ${
-                        selected
-                          ? 'border-brand-orange bg-orange-50 dark:bg-orange-500/10 ring-1 ring-brand-orange'
-                          : 'border-gray-200 dark:border-ink-700 hover:border-gray-300 dark:hover:border-ink-600 bg-white dark:bg-ink-900'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div
-                          className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                            selected ? 'bg-brand-orange text-white' : 'bg-gray-100 dark:bg-ink-800 text-gray-600 dark:text-gray-300'
-                          }`}
-                        >
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <p className={`font-bold text-sm ${selected ? 'text-brand-orange' : 'text-gray-900 dark:text-white'}`}>
-                            {d.shortLabel}
-                          </p>
-                          <p className="text-xs text-steel">Omjer {d.aspect}</p>
-                        </div>
-                      </div>
-                      <p className="text-xs text-steel mb-3">{d.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium text-steel">Preporučene dimenzije:</span>
-                        <span className="text-xs font-bold text-gray-900 dark:text-white">{d.dimensions}</span>
-                      </div>
-                      <div className="mt-3 pt-3 border-t border-gray-100 dark:border-ink-800 flex items-center justify-between">
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">
-                          {isListingFree ? 'Besplatno' : key === 'homepage' && includedRemaining > 0 ? `0 KM (još ${includedRemaining})` : `${d.price} KM`}
-                        </span>
-                        <span className="text-xs text-steel">
-                          {key === 'homepage' ? '/ mjesečno' : key === 'homepage_banner' ? '/ mjesečno' : '/ oglas'}
-                        </span>
-                      </div>
-                      {selected && (
-                        <div className="absolute top-3 right-3 w-5 h-5 rounded-full bg-brand-orange text-white flex items-center justify-center">
-                          <CheckCircle className="w-3 h-3" />
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
+              <div className="rounded-2xl border border-brand-orange bg-orange-50 dark:bg-orange-500/10 p-5">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-brand-orange text-white flex items-center justify-center">
+                    <Megaphone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-brand-orange">Sponzorirani oglas</p>
+                    <p className="text-xs text-steel">0 KM · bez limita</p>
+                  </div>
+                </div>
+                <p className="text-xs text-steel">
+                  {isPremiumPlan
+                    ? 'Kao Premium član vaš oglas ide na sticky vrh liste i u homepage traku.'
+                    : 'Vaš oglas se prikazuje na stranici svih oglasa. Sa Premium paketom ide na sticky vrh.'}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 dark:border-ink-700 p-5">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-ink-800 text-gray-600 dark:text-gray-300 flex items-center justify-center">
+                    <Monitor className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-sm text-gray-900 dark:text-white">Homepage banner (1200 × 400)</p>
+                    <p className="text-xs text-steel">Veliki banner na vrhu homepage-a</p>
+                  </div>
+                </div>
+                <p className="text-xs text-steel mb-3">
+                  Banner se dogovara direktno - pišite nam na{' '}
+                  <a href="mailto:info@zaposli.ba" className="font-semibold text-brand-orange hover:underline">
+                    info@zaposli.ba
+                  </a>
+                  .
+                </p>
+                <a
+                  href="mailto:info@zaposli.ba?subject=Homepage%20banner%20-%20upit"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+                >
+                  <Mail className="w-4 h-4" /> Kontaktirajte nas
+                </a>
               </div>
             </div>
           )}
@@ -652,16 +596,16 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
           {step === 4 && (
             <div className="space-y-6 animate-fade-in max-w-2xl">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Pregled i plaćanje</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">Pregled prije slanja</h3>
                 <p className="text-sm text-steel">Provjerite detalje prije slanja na odobrenje.</p>
               </div>
 
               <div className="rounded-2xl border border-gray-100 dark:border-ink-800 bg-gray-50 dark:bg-ink-900/50 p-5 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-steel">Pozicija</span>
+                  <span className="text-sm text-steel">Prikaz</span>
                   <span className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
                     <meta.icon className="w-4 h-4 text-brand-orange" />
-                    {meta.label}
+                    {isPremiumPlan ? 'Sticky vrh + homepage traka' : 'Stranica svih oglasa'}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -688,14 +632,8 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
                 )}
                 <div className="flex items-center justify-between border-t border-gray-200 dark:border-ink-800 pt-4">
                   <span className="text-sm text-steel">Cijena</span>
-                  <span className="text-2xl font-extrabold text-gray-900 dark:text-white">{priceLabel}</span>
+                  <span className="text-2xl font-extrabold text-green-600">Besplatno</span>
                 </div>
-                {!canUseIncluded && !isFreeListing && (
-                  <p className="text-xs text-steel flex items-start gap-2">
-                    <Wallet className="w-4 h-4 shrink-0" />
-                    Nakon što admin odobri oglas, dobijate uputstvo za uplatu {effectivePrice} KM. Oglas postaje aktivan nakon potvrde uplate.
-                  </p>
-                )}
               </div>
 
               <button
@@ -704,11 +642,7 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-brand-orange text-white font-semibold hover:bg-brand-orange-dark transition-colors disabled:opacity-50"
               >
                 {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Megaphone className="w-4 h-4" />}
-                {canUseIncluded
-                  ? 'Pošalji oglas (uključen u paket)'
-                  : isFreeListing
-                  ? 'Pošalji oglas (besplatno)'
-                  : `Pošalji oglas i zatraži uputstvo za uplatu`}
+                Pošalji oglas besplatno
               </button>
             </div>
           )}
@@ -784,7 +718,7 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
                             : 'bg-brand-orange/10 text-brand-orange'
                         }`}
                       >
-                        {ad.source === 'included' ? 'Uključen u paket' : ad.amount === 0 ? 'Besplatan' : `Plaćeno ${ad.amount} KM`}
+                        {ad.amount > 0 ? `Plaćeno ${ad.amount} KM` : 'Besplatno'}
                       </span>
                       {ad.destination && (
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">

@@ -2115,8 +2115,8 @@ function AdminPage() {
                                     <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
                                       {p.ad_type === 'worker_search' ? 'Tražim radnike' : 'Promocija'}
                                     </span>
-                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.source === 'included' ? 'bg-blue-100 text-blue-700' : 'bg-brand-orange/10 text-brand-orange'}`}>
-                                      {p.source === 'included' ? 'Uključen u paket' : `Plaćeno ${p.amount} KM`}
+                                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.amount > 0 ? 'bg-brand-orange/10 text-brand-orange' : 'bg-green-100 text-green-700'}`}>
+                                      {p.amount > 0 ? `Plaćeno ${p.amount} KM` : 'Besplatno'}
                                     </span>
                                     {p.destination && (
                                       <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">

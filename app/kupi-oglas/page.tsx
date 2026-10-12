@@ -92,10 +92,10 @@ export default function BuyAdPage() {
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-2">
-              Kreirajte premium oglas
+              Kreirajte besplatan oglas
             </h1>
             <p className="text-steel">
-              Odaberite poziciju, unesite sadržaj i pošaljite oglas na odobrenje.
+              Unesite sadržaj i pošaljite oglas na odobrenje - potpuno besplatno za sve firme i majstore.
             </p>
           </div>
           {error ? (

@@ -44,7 +44,7 @@ export default function AdCreateCTA({ destination = 'listing', variant = 'banner
           </div>
           <div>
             <p className="font-bold">Želite da vaš oglas bude ovdje?</p>
-            <p className="text-sm text-white/90">Besplatno za Start/Pro/Premium pakete, ili 5 KM za besplatne profile.</p>
+            <p className="text-sm text-white/90">Besplatno za sve firme i majstore. Premium članovi su sticky na vrhu.</p>
           </div>
         </div>
         <span className="inline-flex items-center justify-center gap-2 self-start sm:self-center bg-white text-brand-orange px-4 py-2 rounded-xl text-sm font-bold hover:bg-white/90 transition-colors shrink-0">

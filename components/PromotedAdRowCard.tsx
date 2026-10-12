@@ -8,6 +8,7 @@ import {
   Clock,
   ArrowRight,
   Crown,
+  Pin,
   Users,
   Sparkles,
   Star,
@@ -154,7 +155,13 @@ export default function PromotedAdRowCard({
 
         {/* Right meta column */}
         <div className="w-[6.5rem] sm:w-36 md:w-44 shrink-0 flex flex-col justify-between items-stretch p-2.5 sm:p-4 border-l border-gray-100 dark:border-ink-800">
-          <div className="flex items-center justify-end">
+          <div className="flex items-center justify-end gap-1.5">
+            {ad.is_premium && (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-brand-orange text-white shadow-sm">
+                <Pin className="w-3 h-3" />
+                Istaknuto
+              </span>
+            )}
             <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-amber-50 dark:bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-100 dark:border-amber-500/20">
               <Crown className="w-3 h-3" />
               Sponzorirano

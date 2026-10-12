@@ -22,6 +22,8 @@ export interface PublicPromotedAd {
   show_phone: boolean | null;
   homepage_position: number | null;
   homepage_sticky_until: string | null;
+  /** true = firma ima aktivni Premium paket -> sticky vrh liste */
+  is_premium?: boolean;
   firms: {
     name: string | null;
     slug: string | null;
@@ -59,7 +61,35 @@ export async function fetchActivePromotedAds(limit?: number): Promise<PublicProm
     throw new Error(error.message);
   }
 
-  return (data || []) as unknown as PublicPromotedAd[];
+  const ads = (data || []) as unknown as PublicPromotedAd[];
+
+  // Označi Premium firme (sticky vrh) - ignoriši grešku, samo neće biti stickyja.
+  try {
+    const { data: premiumIds } = await publicAdsClient.rpc('get_premium_firm_ids');
+    const premiumSet = new Set((premiumIds || []) as string[]);
+    const firmIds = await resolveAdFirmIds(ads);
+    for (const ad of ads) {
+      const fid = firmIds.get(ad.id);
+      ad.is_premium = !!fid && premiumSet.has(fid);
+    }
+  } catch {
+    for (const ad of ads) ad.is_premium = false;
+  }
+
+  return ads;
+}
+
+async function resolveAdFirmIds(ads: PublicPromotedAd[]): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  if (ads.length === 0) return map;
+  const { data } = await publicAdsClient
+    .from('promoted_ads')
+    .select('id, firm_id')
+    .in('id', ads.map((a) => a.id));
+  for (const row of (data || []) as { id: string; firm_id: string }[]) {
+    map.set(row.id, row.firm_id);
+  }
+  return map;
 }
 
 export function getPromotedAdHref(ad: PublicPromotedAd): string {

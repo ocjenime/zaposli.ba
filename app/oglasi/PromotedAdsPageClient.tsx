@@ -69,6 +69,10 @@ export default function PromotedAdsPageClient({
         return matchesSearch && matchesType && matchesCity;
       })
       .sort((a, b) => {
+        // Premium firme su sticky - uvijek na vrhu, bez obzira na sortiranje.
+        const aPremium = a.is_premium ? 1 : 0;
+        const bPremium = b.is_premium ? 1 : 0;
+        if (aPremium !== bPremium) return bPremium - aPremium;
         if (sortBy === 'name') return a.title.localeCompare(b.title, 'bs');
         if (sortBy === 'ending') {
           const at = a.ends_at ? new Date(a.ends_at).getTime() : Infinity;
@@ -569,8 +573,8 @@ export default function PromotedAdsPageClient({
                   Želite da i vaš oglas bude ovdje?
                 </h2>
                 <p className="text-steel mb-6 md:mb-8 max-w-xl mx-auto">
-                  Registrujte firmu ili majstora i objavite premium oglas. Besplatno za Start, Pro i Premium
-                  pakete, ili od 5 KM za ostale profile.
+                  Registrujte firmu ili majstora i objavite premium oglas - potpuno besplatno.
+                  Premium članovi su automatski sticky na vrhu liste.
                 </p>
                 <AdCreateCTA
                   variant="button"
