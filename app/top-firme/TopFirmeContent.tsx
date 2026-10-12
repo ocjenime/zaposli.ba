@@ -217,7 +217,7 @@ export default function TopFirmeContent() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-5 sm:pb-7">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-10 sm:pt-8 pb-5 sm:pb-7">
               <div className="max-w-2xl">
                 <Breadcrumbs dark bare items={[{ name: 'Top firme' }]} />
                 <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 mt-3 animate-fade-in">
@@ -285,7 +285,7 @@ export default function TopFirmeContent() {
         </section>
 
         {/* Category bar - isti stil kao homepage CategoryIconRow */}
-        <section className="relative z-30 px-4 sm:px-6 lg:px-8 -mt-6 md:-mt-8">
+        <section className="relative z-30 px-4 sm:px-6 lg:px-8 -mt-2 md:-mt-8">
           <div className="mx-auto max-w-7xl">
             <div className="bg-white dark:bg-ink-900 rounded-2xl border border-gray-100 dark:border-ink-800 shadow-xl shadow-black/5 p-2 sm:p-4">
               <div className="flex items-start justify-start gap-3 overflow-x-auto no-scrollbar pb-0.5">
