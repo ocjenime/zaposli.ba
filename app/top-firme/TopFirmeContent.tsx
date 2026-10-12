@@ -24,7 +24,8 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import VerifiedBadge from '@/components/ui/VerifiedBadge';
 import LogoDisplay from '@/components/ui/LogoDisplay';
 import { supabase } from '@/lib/supabase';
-import { getCategory, getCategoryShortName, getCategoryBarLabel, categories } from '@/lib/data';
+import { getCategory, getCategoryShortName } from '@/lib/data';
+import { CATEGORY_GROUPS } from '@/lib/category-groups';
 import { JsonLd, localBusinessListSchema } from '@/lib/jsonld';
 
 interface Firm {
@@ -59,19 +60,7 @@ const TABS: { id: TabId; label: string }[] = [
 
 const FILTER_CATS: { label: string; icon: typeof LayoutGrid; slugs: string[] }[] = [
   { label: 'Sve kategorije', icon: LayoutGrid, slugs: [] },
-  ...[
-    'adaptacije',
-    'keramicarski-radovi',
-    'elektroinstalacije',
-    'vodoinstalacije',
-    'stolarija',
-    'krovopokrivanje',
-    'molerski-radovi',
-    'gipsarski-radovi',
-  ].map((slug) => {
-    const cat = categories.find((c) => c.slug === slug)!;
-    return { label: getCategoryBarLabel(cat), icon: cat.icon, slugs: [slug] };
-  }),
+  ...CATEGORY_GROUPS.map((g) => ({ label: g.title, icon: g.Icon, slugs: g.slugs })),
 ];
 
 const TRUST_ITEMS = [
@@ -212,8 +201,8 @@ export default function TopFirmeContent() {
           />
         )}
 
-        {/* Hero */}
-        <section className="relative min-h-[440px] sm:min-h-[500px] flex flex-col overflow-hidden pt-12 md:pt-16">
+        {/* Hero - kompaktan, isti model kao /kategorije/ i /gradovi/ */}
+        <section className="relative min-h-[300px] sm:min-h-[360px] flex flex-col overflow-hidden pt-12 md:pt-16">
           <div className="absolute inset-0">
             <Image
               src="/images/herozaposli.png"
@@ -228,29 +217,28 @@ export default function TopFirmeContent() {
           </div>
 
           <div className="relative z-20 flex-1 flex items-end">
-            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-8 sm:pb-10">
+            <div className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-5 sm:pb-7">
               <div className="max-w-2xl">
                 <Breadcrumbs dark bare items={[{ name: 'Top firme' }]} />
-                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2.5 mt-3 animate-fade-in">
+                <span className="inline-flex items-center gap-1.5 bg-white/10 backdrop-blur-md border border-white/10 rounded-full px-3 py-1 text-[11px] sm:text-xs font-bold text-brand-orange uppercase tracking-wider mb-2 mt-3 animate-fade-in">
                   <Trophy className="w-3.5 h-3.5" />
                   Povjerenje stvara rezultate.
                 </span>
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-3 animate-fade-in">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-[1.05] tracking-tight mb-2 sm:mb-3 animate-fade-in">
                   Top{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
                     firme
                   </span>
                 </h1>
-                <p className="text-sm sm:text-base text-white/85 leading-relaxed mb-4 max-w-xl animate-fade-in">
-                  Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata. Izaberite firmu
-                  sa povjerenjem.
+                <p className="text-sm sm:text-base text-white/85 leading-relaxed mb-3 sm:mb-4 max-w-xl animate-fade-in">
+                  Provjereni profesionalci sa najboljim ocjenama stvarnih klijenata.
                 </p>
 
-                <div className="grid grid-cols-3 gap-2 mb-4 max-w-xl animate-fade-in">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 mb-3 sm:mb-4 max-w-xl animate-fade-in">
                   {TRUST_ITEMS.map((t) => (
-                    <div key={t.text} className="flex items-start gap-1.5">
-                      <t.icon className="w-4 h-4 sm:w-5 sm:h-5 text-brand-orange shrink-0 mt-0.5" />
-                      <p className="text-[11px] sm:text-[13px] text-white/85 leading-snug">{t.text}</p>
+                    <div key={t.text} className="flex items-center gap-1.5">
+                      <t.icon className="w-4 h-4 text-brand-orange shrink-0" />
+                      <p className="text-[11px] sm:text-xs text-white/85 leading-snug">{t.text}</p>
                     </div>
                   ))}
                 </div>
