@@ -10,6 +10,10 @@ export function getNotificationHref(notification: Notification, role: string | n
     return '/admin/?tab=bids';
   }
 
+  if (type === 'new_job_pending') {
+    return '/admin/?tab=jobs';
+  }
+
   if (type === 'subscription_request') {
     return '/admin/?tab=requests';
   }
@@ -28,6 +32,10 @@ export function getNotificationHref(notification: Notification, role: string | n
   }
 
   if (!job_id) return undefined;
+
+  if (type === 'job_approved' || type === 'job_rejected') {
+    return `/dashboard/poslovi/?id=${job_id}`;
+  }
 
   if (type === 'bid_accepted') {
     return `/dashboard/razgovor/?job_id=${job_id}`;

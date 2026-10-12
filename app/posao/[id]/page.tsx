@@ -88,6 +88,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!job) {
     return { title: 'Posao nije pronađen | Zaposli.ba', robots: { index: false, follow: true } };
   }
+  if (!isActive(job.status)) {
+    return { title: 'Posao nije pronađen | Zaposli.ba', robots: { index: false, follow: true } };
+  }
   const category = getCategory(job.category_slug);
   const desc = job.description.length > 155 ? `${job.description.slice(0, 152)}...` : job.description;
   return {
@@ -120,7 +123,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ id: 
   if (!job) notFound();
 
   const category = getCategory(job.category_slug);
-  const related = isActive(job.status) ? await fetchRelated(job.category_slug, job.id) : [];
+  // Neodobreni/odbijeni poslovi nisu javni - direktan link vodi na 404.
+  if (!isActive(job.status)) notFound();
+  const related = await fetchRelated(job.category_slug, job.id);
   const active = isActive(job.status);
   const budget = formatBudget(job);
   const images = job.job_images || [];

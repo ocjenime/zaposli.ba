@@ -369,7 +369,7 @@ function PostProjectContent() {
         description: formData.description.trim().slice(0, 500),
         city: formData.city,
         address: null,
-        status: 'open',
+        status: 'pending_approval',
         budget_mode: budget.mode,
         budget_min: budget.min,
         budget_max: budget.max,
@@ -460,15 +460,15 @@ function PostProjectContent() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight mb-2">Posao je objavljen!</h1>
+            <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight mb-2">Posao je poslan na odobrenje!</h1>
             <p className="text-[15px] text-gray-500 leading-relaxed mb-6">
-              Vaš posao <b className="text-gray-900">&ldquo;{formData.title || 'Adaptacija'}&rdquo;</b> je sada vidljiv provjerenim firmama.
+              Vaš posao <b className="text-gray-900">&ldquo;{formData.title || 'Adaptacija'}&rdquo;</b> čeka pregled administratora i još nije vidljiv firmama.
               {notifiedCount != null && notifiedCount > 0 && (
                 <>
-                  {' '}Obavijestili smo <b className="text-gray-900">{notifiedCount} {notifiedCount === 1 ? 'firmu' : notifiedCount < 5 ? 'firme' : 'firmi'}</b> iz kategorije.
+                  {' '}Nakon odobrenja obavještavamo <b className="text-gray-900">{notifiedCount} {notifiedCount === 1 ? 'firmu' : notifiedCount < 5 ? 'firme' : 'firmi'}</b> iz kategorije.
                 </>
               )}
-              {' '}Prve ponude obično stižu u roku od <b className="text-gray-900">24 sata</b>.
+              {' '}Obično odobravamo u roku od <b className="text-gray-900">24 sata</b>.
             </p>
             <div className="flex flex-col gap-2.5">
               <button

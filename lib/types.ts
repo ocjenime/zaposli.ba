@@ -18,7 +18,10 @@ export type NotificationType =
   | 'mediation_requested'
   | 'subscription_request'
   | 'new_user'
-  | 'new_bid_admin';
+  | 'new_bid_admin'
+  | 'new_job_pending'
+  | 'job_approved'
+  | 'job_rejected';
 
 export interface Notification {
   id: string;

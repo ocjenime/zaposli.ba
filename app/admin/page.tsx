@@ -639,6 +639,25 @@ function AdminPage() {
     if (err) throw err;
   }
 
+  async function updateJobStatus(job: AdminJob, status: 'open' | 'rejected') {
+    const action = status === 'open' ? 'odobriti' : 'odbiti';
+    if (!confirm(`Jeste li sigurni da želite ${action} posao "${job.title}"?`)) return;
+    setSavingJob(job.id);
+    setError('');
+    setSuccess('');
+    const { error: err } = await supabase
+      .from('jobs')
+      .update({ status, updated_at: new Date().toISOString() })
+      .eq('id', job.id);
+    setSavingJob(null);
+    if (err) {
+      setError(`Akcija nije uspjela: ${err.message}`);
+      return;
+    }
+    setJobs((prev) => prev.map((j) => (j.id === job.id ? { ...j, status } : j)));
+    setSuccess(status === 'open' ? 'Posao je odobren i vidljiv je firmama.' : 'Posao je odbijen. Klijent je obaviješten.');
+  }
+
   async function deleteJob(job: AdminJob) {
     if (!confirm(`Jeste li sigurni da želite obrisati posao "${job.title}"? Ova akcija je nepovratna.`)) return;
     setSavingJob(job.id);
@@ -1550,13 +1569,45 @@ function AdminPage() {
                             </div>
                             <p className="text-sm text-steel">
                               {job.city} · {formatDate(job.created_at)}
-                              {job.status !== 'open' && (
-                                <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
-                                  {job.status}
+                              {job.status === 'pending_approval' ? (
+                                <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded">
+                                  NA ČEKANJU
                                 </span>
+                              ) : (
+                                job.status !== 'open' && (
+                                  <span className="ml-2 text-[10px] font-bold px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded">
+                                    {job.status}
+                                  </span>
+                                )
                               )}
                             </p>
                           </div>
+                          <div className="flex flex-wrap gap-2">
+                          {job.status === 'pending_approval' && (
+                            <>
+                              <button
+                                onClick={() => updateJobStatus(job, 'open')}
+                                disabled={savingJob === job.id}
+                                className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50"
+                              >
+                                {savingJob === job.id ? (
+                                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                                ) : (
+                                  <>
+                                    <Check className="w-3.5 h-3.5" />
+                                    Odobri
+                                  </>
+                                )}
+                              </button>
+                              <button
+                                onClick={() => updateJobStatus(job, 'rejected')}
+                                disabled={savingJob === job.id}
+                                className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-2 md:py-1.5 rounded-lg bg-white border border-red-200 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50"
+                              >
+                                Odbij
+                              </button>
+                            </>
+                          )}
                           <button
                             onClick={() => toggleJobFeatured(job)}
                             disabled={savingJob === job.id}
@@ -1594,6 +1645,7 @@ function AdminPage() {
                               </>
                             )}
                           </button>
+                          </div>
                         </div>
                       ))}
                     </div>

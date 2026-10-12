@@ -10,7 +10,7 @@ interface Job {
   title: string;
   city: string;
   category_slug: string;
-  status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled';
+  status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled' | 'pending_approval' | 'rejected';
   created_at: string;
   bids: { id: string }[];
 }
@@ -21,6 +21,8 @@ const statusLabels: Record<Job['status'], string> = {
   in_progress: 'U toku',
   completed: 'Završen',
   cancelled: 'Otkazan',
+  pending_approval: 'Na čekanju',
+  rejected: 'Odbijen',
 };
 
 const statusClass: Record<Job['status'], string> = {
@@ -29,6 +31,8 @@ const statusClass: Record<Job['status'], string> = {
   in_progress: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400 border-yellow-100 dark:border-yellow-500/20',
   completed: 'bg-green-50 text-green-700 dark:bg-green-500/15 dark:text-green-400 border-green-100 dark:border-green-500/20',
   cancelled: 'bg-gray-100 text-gray-700 dark:bg-ink-800 dark:text-white/60 border-gray-200 dark:border-ink-700',
+  pending_approval: 'bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400 border-amber-100 dark:border-amber-500/20',
+  rejected: 'bg-red-50 text-red-600 dark:bg-red-500/15 dark:text-red-400 border-red-100 dark:border-red-500/20',
 };
 
 interface ClientMyJobsListProps {

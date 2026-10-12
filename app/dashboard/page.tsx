@@ -31,7 +31,7 @@ interface Job {
   category_slug: string;
   description: string;
   address: string | null;
-  status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled';
+  status: 'open' | 'bidding' | 'in_progress' | 'completed' | 'cancelled' | 'pending_approval' | 'rejected';
   budget_mode: 'open' | 'fixed' | null;
   budget_min: number | null;
   budget_max: number | null;
@@ -68,6 +68,8 @@ const statusLabels: Record<Job['status'], string> = {
   in_progress: 'U toku',
   completed: 'Završen',
   cancelled: 'Otkazan',
+  pending_approval: 'Na čekanju',
+  rejected: 'Odbijen',
 };
 
 const statusColors: Record<Job['status'], string> = {
@@ -76,6 +78,8 @@ const statusColors: Record<Job['status'], string> = {
   in_progress: 'bg-yellow-50 text-yellow-700',
   completed: 'bg-green-50 text-green-700',
   cancelled: 'bg-gray-100 text-gray-600',
+  pending_approval: 'bg-amber-50 text-amber-700',
+  rejected: 'bg-red-50 text-red-600',
 };
 
 const emptyEditForm: EditForm = {
@@ -142,7 +146,7 @@ function DashboardPageContent() {
       return;
     }
     const job = jobs.find((j) => j.id === editJobId);
-    if (job && (job.status === 'open' || job.status === 'bidding')) {
+    if (job && (job.status === 'open' || job.status === 'bidding' || job.status === 'pending_approval')) {
       openEdit(job);
     }
     editParamOpened.current = true;
@@ -488,7 +492,7 @@ function DashboardPageContent() {
                         Ostavi recenziju
                       </Link>
                     )}
-                    {(job.status === 'open' || job.status === 'bidding') && (
+                    {(job.status === 'open' || job.status === 'bidding' || job.status === 'pending_approval') && (
                       <>
                         <button
                           onClick={() => openEdit(job)}

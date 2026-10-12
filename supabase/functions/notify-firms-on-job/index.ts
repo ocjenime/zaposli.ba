@@ -15,6 +15,8 @@ interface JobRecord {
   budget_min: number | null;
   budget_max: number | null;
   client_id: string;
+  status?: string | null;
+  is_private?: boolean | null;
 }
 
 interface FirmRow {
@@ -66,11 +68,19 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "Invalid JSON" }), { status: 400 });
   }
 
-  if (!payload || payload.type !== "INSERT" || payload.table !== "jobs") {
+  if (!payload || payload.table !== "jobs") {
+    return new Response(JSON.stringify({ message: "Skipped" }), { status: 200 });
+  }
+
+  const isInsert = payload.type === "INSERT";
+  const isApproval = payload.type === "UPDATE";
+  if (!isInsert && !isApproval) {
     return new Response(JSON.stringify({ message: "Skipped" }), { status: 200 });
   }
 
   const job = payload.record;
+  // Moderacija: poslovi na čekanju ne idu firmama - samo adminu na odobrenje.
+  const isPending = (job.status || "") === "pending_approval";
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || Deno.env.get("SB_URL") || "";
   const supabaseServiceRole = serviceRoleKey;
 
@@ -128,6 +138,8 @@ Deno.serve(async (req: Request) => {
 
   const results: { email: string; status: "sent" | "skipped" | "error"; error?: string }[] = [];
 
+  // Neodobreni poslovi: firme se preskaču, ide samo admin email ispod.
+  if (!isPending) {
   for (const firm of recipients) {
     if (!RESEND_API_KEY) {
       results.push({ email: firm.email, status: "skipped" });
@@ -183,19 +195,25 @@ Deno.serve(async (req: Request) => {
       results.push({ email: firm.email, status: "error", error: String(err) });
     }
   }
+  }
 
   // Send a summary email to the admin address.
-  if (RESEND_API_KEY && ADMIN_EMAIL) {
+  // UPDATE (odobrenje) ne šalje adminu - on je već obaviješten pri prijemu na čekanje.
+  if (RESEND_API_KEY && ADMIN_EMAIL && !isApproval) {
     try {
-      const adminUrl = `${SITE_URL}/admin/`;
+      const adminUrl = `${SITE_URL}/admin/?tab=jobs`;
+      const pendingTitle = isPending ? "Novi posao čeka odobrenje" : "Novi posao objavljen";
+      const pendingIntro = isPending
+        ? "Novi posao je na čekanju i nije vidljiv firmama. Pregledajte ga i odobrite ili odbijte."
+        : "Upravo je objavljen novi posao na platformi.";
       const adminHtml = `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px; color: #1f1f1f;">
           <div style="margin-bottom: 24px;">
             <strong style="font-size: 20px; color: #f97316;">Zaposli.ba</strong>
           </div>
-          <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">Novi posao objavljen</h1>
+          <h1 style="font-size: 24px; font-weight: 700; margin: 0 0 16px;">${pendingTitle}</h1>
           <p style="font-size: 16px; line-height: 1.5; margin: 0 0 24px;">
-            Upravo je objavljen novi posao na platformi.
+            ${pendingIntro}
           </p>
           <div style="background: #f8f8fb; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
             <p style="margin: 0 0 8px; font-size: 18px; font-weight: 700;">${job.title}</p>
@@ -219,7 +237,7 @@ Deno.serve(async (req: Request) => {
         body: JSON.stringify({
           from: FROM_EMAIL,
           to: ADMIN_EMAIL,
-          subject: `Novi posao objavljen: ${job.title}`,
+          subject: `${pendingTitle}: ${job.title}`,
           html: adminHtml,
         }),
       });
