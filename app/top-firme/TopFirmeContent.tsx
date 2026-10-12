@@ -332,7 +332,7 @@ export default function TopFirmeContent() {
         </section>
 
         {/* Promo banner */}
-        <section className="bg-white">
+        <section className="bg-white pt-4 md:pt-0">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-2">
             <div className="relative overflow-hidden rounded-3xl min-h-[190px] sm:min-h-[220px] flex items-center">
               <Image
