@@ -8,8 +8,8 @@ import { useAuth } from '@/lib/auth-context';
 import { isFirmRole } from '@/lib/roles';
 
 const benefits = [
-  'Ve─ça vidljivost',
-  'Vi┼íe upita',
+  'Veća vidljivost',
+  'Više upita',
   'Gradite svoj brend',
 ];
 
@@ -36,13 +36,13 @@ export default function PromoBanner() {
         <div className="relative grid lg:grid-cols-2 gap-8 lg:gap-12 items-center p-6 md:p-10 lg:p-12">
           <div>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 tracking-tight">
-              Ovo mo┼że biti{' '}
+              Ovo može biti{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-amber-400">
-                va┼ía reklama.
+                vaša reklama.
               </span>
             </h2>
             <p className="text-white/70 mb-6 max-w-md leading-relaxed">
-              Dosegnite hiljade klijenata na Zaposli.ba. Istaknite svoju firmu, privucite nove kupce i budite prvi izbor za projekte u va┼íem gradu.
+              Dosegnite hiljade klijenata na Zaposli.ba. Istaknite svoju firmu, privucite nove kupce i budite prvi izbor za projekte u vašem gradu.
             </p>
             <Link
               href={href}
