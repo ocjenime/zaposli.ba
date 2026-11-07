@@ -48,7 +48,7 @@ export default function PromoBanner() {
               href={href}
               className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-brand-orange/30 hover:shadow-xl hover:shadow-brand-orange/40"
             >
-              Kreiraj oglas
+              Kreirajte oglas
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
