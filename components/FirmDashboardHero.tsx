@@ -139,11 +139,11 @@ export default function FirmDashboardHero({
               Uredi profil
             </Link>
             <Link
-              href="/dashboard/firma/pretplata/"
+              href="/dashboard/firma/profil/"
               className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white shadow-lg shadow-brand-orange/25 hover:shadow-xl hover:shadow-brand-orange/40 hover:-translate-y-0.5 transition-all duration-200 active:scale-95 active:translate-y-0"
             >
               <Crown className="w-4 h-4" />
-              Pretplata
+              Profil
             </Link>
           </div>
         </div>
@@ -151,9 +151,9 @@ export default function FirmDashboardHero({
         {/* KPI cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           <StatCard
-            label="Preostale ponude"
-            value={loadingPlan ? '-' : remainingBidsText(bidsUsed, bidsLimit)}
-            sub={loadingPlan ? '' : canBid ? 'Možete slati nove ponude' : 'Dostignuto ograničenje'}
+            label="Poslane ponude"
+            value={String(bidsUsed)}
+            sub="Besplatno, bez ograničenja"
             icon={Send}
             tone={canBid ? 'green' : 'red'}
             isLoading={loadingPlan}

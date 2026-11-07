@@ -26,6 +26,8 @@ interface JobChatProps {
   role: 'client' | 'firm' | 'admin';
   partnerName?: string | null;
   partnerIsAdmin?: boolean;
+  /** false = firma nije verificirana -> ne može slati poruke */
+  verified?: boolean;
 }
 
 function formatTime(iso: string) {
@@ -36,7 +38,7 @@ function formatDate(iso: string) {
   return formatDateHelper(iso);
 }
 
-export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdmin }: JobChatProps) {
+export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdmin, verified = true }: JobChatProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(true);
@@ -119,6 +121,10 @@ export default function JobChat({ jobId, userId, role, partnerName, partnerIsAdm
   async function sendMessage(e: React.FormEvent) {
     e.preventDefault();
     if (!input.trim() || !jobId || !userId || sending) return;
+    if (!verified) {
+      setError('Vaš profil nije verificiran. Ne možete slati poruke dok ne dobijete verifikaciju.');
+      return;
+    }
     setSending(true);
     const { error: err } = await supabase.from('messages').insert({
       job_id: jobId,

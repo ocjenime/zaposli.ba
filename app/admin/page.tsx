@@ -1484,15 +1484,12 @@ function AdminPage() {
                           </div>
                           <p className="text-sm text-steel">{plan.description}</p>
                           <p className="text-xs text-steel mt-1">
-                            {plan.bids_per_month === 9999 ? 'Neograničene ponude' : `${plan.bids_per_month} ponuda/mj`}
-                            {' · '}
-                            {plan.verified_badge && 'verifikacija · '}
-                            {plan.priority_support && 'prioritetna podrška'}
+                            Sve besplatno - verifikacija obavezna
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-gray-900">{formatPrice(plan.price_monthly)} KM/mj</p>
-                          <p className="text-xs text-steel">{formatPrice(plan.price_yearly)} KM/god</p>
+                          <p className="font-bold text-green-600">0 KM</p>
+                          <p className="text-xs text-steel">zauvijek</p>
                         </div>
                       </div>
                     ))}

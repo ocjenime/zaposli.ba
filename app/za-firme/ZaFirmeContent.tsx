@@ -1,15 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import Link from 'next/link';
 import Image from 'next/image';
 import PricingCTA from '@/components/PricingCTA';
-import AdPricingCTA from '@/components/AdPricingCTA';
 import { JsonLd, breadcrumbSchema, faqSchema } from '@/lib/jsonld';
-import { planFeatures } from '@/lib/plan-features';
 
 import {
   CheckCircle,
@@ -30,6 +27,7 @@ import {
   ChevronDown,
   HelpCircle,
   TrendingUp,
+  ArrowRight,
 } from 'lucide-react';
 
 const notifications = [
@@ -74,79 +72,36 @@ const benefits = [
   },
 ];
 
-const pricingPlans = [
-  {
-    name: 'Besplatno',
-    slug: 'besplatno',
-    price: '0',
-    regularPrice: '0',
-    description: 'Idealno za početak i testiranje tržišta.',
-    cta: 'Počni besplatno',
-    popular: false,
-    launch: false,
-  },
-  {
-    name: 'Start',
-    slug: 'start',
-    price: '19',
-    regularPrice: '29',
-    description: 'Za početnike koji žele više poslova.',
-    cta: 'Odaberi Start',
-    popular: true,
-    launch: true,
-  },
-  {
-    name: 'Pro',
-    slug: 'pro',
-    price: '49',
-    regularPrice: '79',
-    description: 'Za aktivne firme i majstore koji žele rasti.',
-    cta: 'Odaberi Pro',
-    popular: false,
-    launch: true,
-  },
-  {
-    name: 'Premium',
-    slug: 'premium',
-    price: '99',
-    regularPrice: '149',
-    description: 'Za najzahtjevnije profesionalce i firme.',
-    cta: 'Odaberi Premium',
-    popular: false,
-    launch: true,
-  },
-];
-
 const faqs = [
   {
     question: 'Koliko košta registracija firme ili majstora?',
     answer:
-      'Registracija je potpuno besplatna. Plaćate tek kada odlučite nadograditi paket radi više ponuda i dodatnih pogodnosti.',
+      'Sve je potpuno besplatno. Registracija, objava oglasa, slanje ponuda i komunikacija - ništa se ne naplaćuje.',
   },
   {
-    question: 'Šta znači "ponuda mjesečno"?',
+    question: 'Šta treba da uradim da mogu slati ponude?',
     answer:
-      'To je broj poslova na koje možete poslati ponudu u toku jednog kalendarskog mjeseca. Broj se resetuje prvog u mjesecu.',
-  },
-  {
-    question: 'Mogu li otkazati pretplatu u bilo kom trenutku?',
-    answer:
-      'Da. Bez ugovorne obaveze i bez skrivenih naknadi. Pretplatu možete otkazati ili promijeniti iz svog dashboarda.',
+      'Verifikujte profil - unesite ID broj firme i naš tim će ga provjeriti na companywall. Nakon verifikacije možete slati ponude, objavljivati oglase i komunicirati sa klijentima.',
   },
   {
     question: 'Kako funkcioniše verifikacija profila?',
     answer:
-      'Verifikacija uključuje provjeru dokumentacije i kvaliteta prethodnih radova. Verifikovani profili dobijaju značku i bolju poziciju.',
+      'Unesite ID broj firme na profilu. Admin ga provjerava na companywall u BiH da firma stvarno postoji. Nakon odobrenja dobijate značku verifikacije i puni pristup.',
   },
   {
     question: 'Da li postoji provizija po dobijenom poslu?',
     answer:
-      'Ne. Zaposli.ba ne naplaćuje proviziju po dobijenom poslu. Plaćate samo fiksnu mjesečnu naknadu prema odabranom paketu.',
+      'Ne. Zaposli.ba ne naplaćuje ništa - ni pretplatu, ni proviziju. Platforma je potpuno besplatna za firme i majstore.',
   },
   {
-    question: 'Kako se plaćaju paketi?',
+    question: 'Koliko traje verifikacija?',
     answer:
-      'Paketi se plaćaju mjesečno ili godišnje, a godišnje plaćanje donosi 10% popusta. Uplata se vrši bankovnom uplatom preko platnog naloga, a uputstvo dobijate odmah nakon odabira paketa.',
+      'Obično 1-2 radna dana. Čim admin provjeri vaš ID broj, dobijate obavještenje i profil postaje aktivan.',
+  },
+  {
+    question: 'Šta ako nemam firma ID broj?',
+    answer:
+      'Firme i majstori koji nemaju registrovanu firmu (obrtnici, fizička lica) - kontaktirajte nas na info@zaposli.ba za poseban postupak verifikacije.',
   },
 ];
 
@@ -158,12 +113,6 @@ const trustFooter = [
 ];
 
 export default function ZaFirmeContent() {
-  const popularRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    popularRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' });
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col bg-ink-950">
       <Header />
@@ -278,88 +227,88 @@ export default function ZaFirmeContent() {
           </div>
         </section>
 
-        {/* Pricing */}
+        {/* Pricing - sve besplatno, samo verifikacija */}
         <section id="cijene" className="relative py-10 md:py-16 scroll-mt-20">
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-8 md:mb-12">
               <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight mb-2">
-                Jednostavni paketi za svaki biznis
+                Sve je potpuno besplatno
               </h2>
               <p className="text-white/60 text-sm md:text-base mb-4">
-                Pronađite paket koji odgovara vašim ciljevima.
+                Bez pretplata, bez provizija, bez skrivenih troškova. Jedini uvjet je verifikacija.
               </p>
               <p className="inline-flex items-center gap-2 text-xs font-semibold text-green-400 bg-green-500/10 px-4 py-2 rounded-full border border-green-500/20">
-                Godišnje plaćanje: 10% popusta
+                0 KM - zauvijek besplatno
               </p>
             </div>
 
-            <div className="flex gap-3 sm:gap-4 md:gap-5 overflow-x-auto no-scrollbar snap-x snap-mandatory scroll-smooth -mx-4 px-4 sm:mx-0 sm:px-1 pt-4 pb-2 items-stretch">
-              {pricingPlans.map((plan) => (
-                <div
-                  key={plan.name}
-                  ref={plan.popular ? popularRef : undefined}
-                  className={`relative rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 flex flex-col text-center snap-center shrink-0 w-[82%] sm:w-[330px] lg:w-[350px] transition-colors duration-300 ${
-                    plan.popular
-                      ? 'bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-xl shadow-brand-orange/20'
-                      : 'bg-white/[0.04] border border-white/10'
-                  }`}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10">
-                      <span className="inline-flex items-center px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30 whitespace-nowrap">
-                        Najpopularniji
-                      </span>
-                    </div>
-                  )}
-
-                  <h3 className="text-[13px] sm:text-base md:text-lg font-bold text-white mb-1">
-                    {plan.name}
-                  </h3>
-                  <p className="text-[11px] sm:text-sm text-white/60 mb-2">{plan.description}</p>
-                  {plan.launch && (
-                    <span className="inline-flex items-center self-center gap-1 px-2.5 py-0.5 rounded-full bg-green-500/20 text-green-300 text-[10px] sm:text-xs font-bold uppercase tracking-wide mb-2">
-                      Launch ponuda
-                    </span>
-                  )}
-                  <div className="flex items-end justify-center gap-0.5">
-                    <span className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-none">
-                      {plan.price}
-                    </span>
-                    <span className="text-white/60 font-semibold text-[11px] sm:text-sm mb-0.5">KM</span>
-                  </div>
-                  {plan.launch ? (
-                    <div className="mt-1 mb-1 space-y-0.5">
-                      <p className="text-[11px] sm:text-sm text-white/60 line-through">
-                        {plan.regularPrice} KM/mj
-                      </p>
-                      <p className="text-[11px] sm:text-sm text-green-300 font-medium">
-                        Prvih 3 mjeseca · zatim {plan.regularPrice} KM/mj
-                      </p>
-                    </div>
-                  ) : (
-                    <p className="text-[11px] sm:text-sm text-white/60 mt-1 mb-1">/mjesečno</p>
-                  )}
-
-                  <ul className="space-y-1.5 sm:space-y-2.5 my-3 sm:my-4 flex-1 text-left">
-                    {planFeatures[plan.slug].map((feature) => (
-                      <li key={feature} className="flex items-start gap-1.5 sm:gap-2.5">
-                        <span
-                          className={`flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center mt-0.5 ${
-                            plan.popular ? 'bg-brand-orange text-white' : 'bg-white/10 text-brand-orange'
-                          }`}
-                        >
-                          <CheckCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                        </span>
-                        <span className="text-white/80 text-[11px] sm:text-sm leading-snug">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <PricingCTA popular={plan.popular} className="w-full text-xs sm:text-sm">
-                    {plan.cta}
-                  </PricingCTA>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+              {/* Besplatno */}
+              <div className="relative rounded-2xl p-5 sm:p-6 bg-white/[0.04] border border-white/10 text-center">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-brand-orange/10 flex items-center justify-center mb-3">
+                  <CheckCircle className="w-6 h-6 text-brand-orange" />
                 </div>
-              ))}
+                <h3 className="text-base md:text-lg font-bold text-white mb-1">Sve besplatno</h3>
+                <div className="flex items-end justify-center gap-0.5 mb-1">
+                  <span className="text-4xl md:text-5xl font-extrabold text-white leading-none">0</span>
+                  <span className="text-white/60 font-semibold text-sm mb-0.5">KM</span>
+                </div>
+                <p className="text-xs text-white/60 mb-4">zauvijek, bez ograničenja</p>
+                <ul className="space-y-2 text-left">
+                  {['Neograničene ponude', 'Neograničeni oglasi', 'Direktna komunikacija', 'Sve funkcije platforme'].map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-sm leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Verifikacija */}
+              <div className="relative rounded-2xl p-5 sm:p-6 bg-white/[0.07] backdrop-blur-md border border-brand-orange/60 shadow-xl shadow-brand-orange/20 text-center">
+                <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10">
+                  <span className="inline-flex items-center px-2.5 py-0.5 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full shadow-lg shadow-brand-orange/30">
+                    Obavezno
+                  </span>
+                </div>
+                <div className="w-12 h-12 mx-auto rounded-xl bg-brand-orange/10 flex items-center justify-center mb-3">
+                  <ShieldCheck className="w-6 h-6 text-brand-orange" />
+                </div>
+                <h3 className="text-base md:text-lg font-bold text-white mb-1">Verifikacija</h3>
+                <p className="text-xs text-white/60 mb-4">ID broj firme - companywall provjera</p>
+                <ul className="space-y-2 text-left">
+                  {['Unesite ID broj firme', 'Admin provjerava na companywall', 'Odobrenje u 1-2 dana', 'Značka verifikacije na profilu'].map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-sm leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/registracija/"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-brand-orange to-brand-orange-dark text-white px-4 py-3 rounded-xl text-sm font-semibold hover:shadow-lg hover:shadow-brand-orange/25 transition-all active:scale-95"
+                >
+                  Registrujte firmu
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+
+              {/* Šta dobijate */}
+              <div className="relative rounded-2xl p-5 sm:p-6 bg-white/[0.04] border border-white/10 text-center sm:col-span-2 lg:col-span-1">
+                <div className="w-12 h-12 mx-auto rounded-xl bg-brand-orange/10 flex items-center justify-center mb-3">
+                  <TrendingUp className="w-6 h-6 text-brand-orange" />
+                </div>
+                <h3 className="text-base md:text-lg font-bold text-white mb-1">Puni pristup</h3>
+                <p className="text-xs text-white/60 mb-4">Nakon verifikacije dobijate sve</p>
+                <ul className="space-y-2 text-left">
+                  {['Slanje ponuda na poslove', 'Objava sponzoriranih oglasa', 'Direktna poruka klijentima', 'Verifikovana značka'].map((f) => (
+                    <li key={f} className="flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" />
+                      <span className="text-white/80 text-sm leading-snug">{f}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
@@ -407,9 +356,12 @@ export default function ZaFirmeContent() {
                     </li>
                   ))}
                 </ul>
-                <AdPricingCTA destination="listing" variant="primary" className="w-full text-xs sm:text-sm">
+                <Link
+                  href="/kupi-oglas/"
+                  className="w-full text-xs sm:text-sm inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-brand-orange text-white font-semibold hover:bg-brand-orange-dark transition-colors"
+                >
                   Kreiraj oglas
-                </AdPricingCTA>
+                </Link>
               </div>
 
               {/* Homepage banner - dogovor */}

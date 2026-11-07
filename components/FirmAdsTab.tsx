@@ -59,6 +59,8 @@ interface FirmAdsTabProps {
   subscription: Subscription | null;
   /** false = firma nema grad/kategorije -> objava oglasa blokirana uz poruku */
   profileComplete?: boolean;
+  /** false = firma nije verificirana -> objava oglasa blokirana */
+  verified?: boolean;
 }
 
 const destinationMeta: Record<
@@ -102,7 +104,7 @@ const destinationMeta: Record<
   },
 };
 
-export default function FirmAdsTab({ firmId, subscription, profileComplete = true }: FirmAdsTabProps) {
+export default function FirmAdsTab({ firmId, subscription, profileComplete = true, verified = true }: FirmAdsTabProps) {
   const [ads, setAds] = useState<PromotedAd[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -248,6 +250,10 @@ export default function FirmAdsTab({ firmId, subscription, profileComplete = tru
   }
 
   async function submitAd() {
+    if (!verified) {
+      setError('Vaš profil još nije verificiran. Donesite ID broj firme na provjeru (companywall) da biste mogli objavljivati oglase.');
+      return;
+    }
     if (!profileComplete) {
       setError('Prije objave oglasa dopunite grad i kategorije na profesionalnom profilu.');
       return;

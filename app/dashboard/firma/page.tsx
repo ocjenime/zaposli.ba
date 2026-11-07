@@ -67,6 +67,7 @@ import {
   BarChart3,
   TrendingUp,
   Eye,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface Job {
@@ -216,6 +217,7 @@ function FirmDashboardContent() {
   const [prefsSaved, setPrefsSaved] = useState(false);
   const [firmCity, setFirmCity] = useState<string | null>(null);
   const [firmName, setFirmName] = useState<string | null>(null);
+  const [firmVerified, setFirmVerified] = useState(false);
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [reviewCount, setReviewCount] = useState<number | null>(null);
 
@@ -444,7 +446,7 @@ function FirmDashboardContent() {
 
     const { data, error: err } = await supabase
       .from('firms')
-      .select('id, name, city, average_rating, review_count')
+      .select('id, name, city, average_rating, review_count, verified')
       .eq('owner_id', user.id)
       .single();
 
@@ -457,6 +459,7 @@ function FirmDashboardContent() {
     setFirmId(data.id);
     setFirmName(data.name || null);
     setFirmCity(data.city || null);
+    setFirmVerified(!!data.verified);
     setAverageRating(data.average_rating ?? null);
     setReviewCount(data.review_count ?? null);
     setLoadingFirm(false);
@@ -499,6 +502,10 @@ function FirmDashboardContent() {
 
   async function submitBid(job: Job) {
     if (!firmId) return;
+    if (!firmVerified) {
+      setError('Vaš profil još nije verificiran. Donesite ID broj firme na provjeru (companywall) da biste mogli slati ponude.');
+      return;
+    }
     if (!firmCity?.trim() || firmCategories.length === 0) {
       setError('Prije slanja ponuda dopunite grad i kategorije na profesionalnom profilu.');
       return;
@@ -562,6 +569,10 @@ function FirmDashboardContent() {
 
   async function updatePrivateStatus(job: DirectJob, newStatus: PrivateStatus) {
     if (!firmId) return;
+    if (!firmVerified) {
+      setError('Vaš profil još nije verificiran. Ne možete odgovarati na zahtjeve dok ne dobijete verifikaciju.');
+      return;
+    }
     setDirectActionId(job.id);
     setError('');
 
@@ -673,6 +684,28 @@ function FirmDashboardContent() {
             </div>
           )}
 
+          {firmId && !loadingFirm && !firmVerified && (
+            <div className="hidden md:block rounded-2xl bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200 p-6 text-sm text-red-800 animate-fade-in mb-4">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-6 h-6 text-red-700" />
+                </div>
+                <div>
+                  <p className="font-bold text-base mb-1">Profil nije verificiran</p>
+                  <p className="mb-4">
+                    Donesite ID broj firme na provjeru da biste mogli slati ponude, objavljivati oglase i pisati klijentima.
+                  </p>
+                  <Link
+                    href="/dashboard/firma/profil/"
+                    className="inline-flex items-center gap-2 font-semibold text-red-700 hover:underline"
+                  >
+                    Verifikuj profil (ID broj firme) <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          )}
+
           {firmId && !loadingFirm && (!firmCity?.trim() || firmCategories.length === 0) && (
             <div className="hidden md:block rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-6 text-sm text-amber-800 animate-fade-in">
               <div className="flex items-start gap-4">
@@ -715,6 +748,27 @@ function FirmDashboardContent() {
               {/* Mobile home overview */}
               {activeTab === 'home' && (
                 <div className="md:hidden space-y-4">
+                  {!firmVerified && (
+                    <div className="rounded-2xl bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200 p-4 text-sm text-red-800 animate-fade-in">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center shrink-0">
+                          <ShieldCheck className="w-5 h-5 text-red-700" />
+                        </div>
+                        <div>
+                          <p className="font-bold mb-0.5">Profil nije verificiran</p>
+                          <p className="text-xs mb-2">
+                            Donesite ID broj firme na provjeru da biste mogli slati ponude i objavljivati oglase.
+                          </p>
+                          <Link
+                            href="/dashboard/firma/profil/"
+                            className="inline-flex items-center gap-1 font-semibold text-red-700 hover:underline"
+                          >
+                            Verifikuj profil <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   {(!firmCity?.trim() || firmCategories.length === 0) && (
                     <div className="rounded-2xl bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-100 p-4 text-sm text-amber-800 animate-fade-in">
                       <div className="flex items-start gap-3">
@@ -738,12 +792,7 @@ function FirmDashboardContent() {
                   )}
 
                   <FirmDashboardWelcome firmName={firmName} />
-                  <FirmPlanCard
-                    planName={planName}
-                    planFeatured={planFeatured}
-                    planActiveDate={planActiveDate}
-                    loadingPlan={loadingPlan}
-                  />
+                  <FirmPlanCard verified={firmVerified} />
                   <FirmQuickStats
                     adsCount={adsCount}
                     bidsCount={myBids.length}
@@ -1386,6 +1435,7 @@ function FirmDashboardContent() {
                                         role="firm"
                                         partnerName={clientName}
                                         partnerIsAdmin={false}
+                                        verified={firmVerified}
                                       />
                                     )}
                                   </div>
@@ -1482,7 +1532,7 @@ function FirmDashboardContent() {
               </section>
 
               {activeTab === 'ads' && (
-                <FirmAdsTab firmId={firmId || ''} subscription={subscription} profileComplete={!!firmCity?.trim() && firmCategories.length > 0} />
+                <FirmAdsTab firmId={firmId || ''} subscription={subscription} profileComplete={!!firmCity?.trim() && firmCategories.length > 0} verified={firmVerified} />
               )}
 
               {activeTab === 'stats' && (

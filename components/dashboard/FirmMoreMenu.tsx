@@ -69,11 +69,11 @@ export default function FirmMoreMenu({ open, onClose }: FirmMoreMenuProps) {
             <ThemeToggle />
           </div>
           <Link
-            href="/dashboard/firma/pretplata/"
+            href="/dashboard/firma/profil/"
             onClick={onClose}
             className="flex items-center gap-3 px-3 py-3 rounded-xl text-gray-700 dark:text-white/90 font-medium hover:bg-gray-50 dark:hover:bg-ink-800 transition-colors"
           >
-            <Settings className="w-5 h-5 text-brand-orange" /> Pretplata
+            <Settings className="w-5 h-5 text-brand-orange" /> Verifikacija
           </Link>
           <button
             type="button"
